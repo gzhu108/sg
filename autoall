@@ -1,0 +1,152 @@
+#!/bin/bash
+
+sudo apt-get install g++ -y
+sudo apt-get install automake -y
+sudo apt-get install pkg-config -y
+sudo apt-get install cmake -y
+sudo apt-get install uuid-dev -y
+sudo apt-get install openssl libssl-dev -y
+
+echo "Compiler = $1"
+if [ "$1" == "gcc" ] ; then
+    export TARGET=x86_64-linux-gnu
+    export HOST=x86_64-linux-gnu
+    export CC=gcc
+    export CXX=g++
+elif [ "$1" == "clang" ] ; then
+    export TARGET=x86_64-linux-gnu
+    export HOST=x86_64-linux-gnu
+    export CC=clang
+    export CXX=clang++
+elif [ "$1" == "arm" ] ; then
+    export TARGET=armv7a-linux-eabi
+    export HOST=x86_64-linux-gnu
+    export CC=arm-linux-gnueabi-gcc
+    export CXX=arm-linux-gnueabi-g++
+elif [ "$1" == "arm-clang" ] ; then
+    export TARGET=armv7a-linux-eabi
+    export HOST=x86_64-linux-gnu
+    export CC="clang -target $TARGET"
+    export CXX="clang++ -target $TARGET"
+else
+    unset CC
+    unset CXX
+    unset TARGET
+    unset HOST
+fi
+
+echo "CC=$CC"
+echo "CXX=$CXX"
+echo "TARGET=$TARGET"
+echo "HOST=$HOST"
+
+pushd tools/googletest
+cmake CMakeLists.txt
+make
+popd
+
+pushd tools/protobuf
+if [ ! -d linux ] ; then
+    tar -xzvf linux.tar.gz
+fi
+popd
+
+pushd tools/openssl
+if [ ! -d linux ] ; then
+    tar -xzvf linux.tar.gz
+fi
+popd
+
+pushd microreactor
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+pushd example/discoveryservice
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+pushd example/metricatorapi
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+pushd example/metricator
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+pushd example/streetgangapi
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+pushd protobuf
+export LD_LIBRARY_PATH=%LD_LIBRARY_PATH:../../../tools/protobuf/linux/lib
+rm -rf cpp
+mkdir cpp
+../../../tools/protobuf/linux/bin/protoc --cpp_out=cpp *.proto
+rm -rf java
+mkdir java
+../../../tools/protobuf/linux/bin/protoc --java_out=java *.proto
+popd
+popd
+
+pushd example/streetgangserver
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+pushd example/streetgangclient
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+pushd example/simplewebserver
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+pushd example/bouncer
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+echo "./configure --build=$TARGET --host=$HOST --target=$TARGET"
+./configure --build=$TARGET --host=$HOST --target=$TARGET
+
+make
+make check
+
+./example/bin/mkdist.sh

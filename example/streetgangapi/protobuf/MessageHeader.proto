@@ -1,0 +1,10 @@
+syntax = "proto3";
+package streetgangpb;
+
+
+message MessageHeader
+{
+    string track_id = 1;
+	string message_id = 2;
+	int32 result = 3;
+}

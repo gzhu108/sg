@@ -1,0 +1,130 @@
+#pragma once
+#ifndef sg_microreactor_StringUtility
+#define sg_microreactor_StringUtility
+
+#include <vector>
+#include <locale>
+#include <algorithm>
+#include "Common.h"
+
+
+namespace sg { namespace microreactor
+{
+    namespace StringUtility
+    {
+        enum : int32_t
+        {
+            Unspecified = -1,
+        };
+
+        template <typename String>
+        void ToUpper(String& original)
+        {
+            std::transform(original.begin(), original.end(), original.begin(), [](typename String::value_type c)->typename String::value_type
+            {
+                return (typename String::value_type)::toupper((int)c);
+            });
+        }
+
+        template <typename String>
+        String GetUpper(const String& original)
+        {
+            String destination(original);
+            ToUpper(destination);
+            return destination;
+        }
+
+        template <typename String>
+        void ToLower(String& original)
+        {
+            std::transform(original.begin(), original.end(), original.begin(), [](typename String::value_type c)->typename String::value_type
+            {
+                return (typename String::value_type)::tolower((int)c);
+            });
+        }
+
+        template <typename String>
+        String GetLower(const String& original)
+        {
+            String destination(original);
+            ToLower(destination);
+            return destination;
+        }
+
+        template<typename String>
+        bool Split(const String& str, const String& delimiters, std::vector<String>& parts, int32_t totalSplits = Unspecified, bool ignoreEmpty = true)
+        {
+            bool status = false;
+
+            if (((totalSplits != Unspecified) && (totalSplits < 2)) || (delimiters.length() == 0))
+            {
+                return status;
+            }
+
+            size_t offset = 0;
+            size_t eol = String::npos;
+
+            do
+            {
+                bool emptypart = false;
+                eol = str.find(delimiters, offset);
+                bool noMoreDelimiters = eol == String::npos;
+                bool noMoreSplits = (totalSplits != -1) && (parts.size() == size_t(totalSplits - 1));
+                if (!noMoreDelimiters && !noMoreSplits)
+                {
+                    String line = str.substr(offset, eol - offset);
+                    offset = eol + delimiters.length();
+                    emptypart = line.length() == 0;
+                    if (!(emptypart && ignoreEmpty))
+                    {
+                        parts.emplace_back(line);
+                        status = true;
+                    }
+                }
+                else
+                {
+                    String remainder = str.substr(offset, str.length() - offset);
+                    if (remainder.length() > 0)
+                    {
+                        parts.emplace_back(remainder);
+                        status = true;
+                        break;
+                    }
+                }
+            } while (eol != String::npos);
+
+            return status;
+        }
+        
+        template<typename String>
+        String Trim(const String& str, const String& trimmedChars)
+        {
+            if ((str.length() == 0))
+            {
+                return String();
+            }
+
+            String trimmedStr = str;
+            size_t first = str.find_first_not_of(trimmedChars);
+            if (String::npos == first)
+            {
+                trimmedStr = str.substr(first, str.find_last_not_of(trimmedChars) - first + 1);
+            }
+
+            return trimmedStr;
+        }
+
+        /*
+        bool Convert(const std::string& source, std::wstring& target);
+        bool Convert(const std::wstring& source, std::string& target);
+
+        bool GetHttpDateString(std::wstring& httpDate);
+        bool GetHttpDateString(std::string& httpDate);
+        */
+
+        bool CompareStringICase(const std::string& l, const std::string& r);
+        bool CompareStringICase(const std::wstring& l, const std::wstring& r);
+    }
+}}
+
+#endif // sg_microreactor_StringUtility

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir out
+
+nohup ../streetgangserver/bin/streetgangserver --config ../streetgangserver/config/conf.xml > out/sgs.out &
+

@@ -1,0 +1,129 @@
+AUTOMAKE_OPTIONS = foreign
+
+# what flags you want to pass to the C compiler & linker
+AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -O2 -pthread -pipe
+AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++11 \
+    -Isrc \
+    -I../tools/rapidxml \
+    -I../tools/googletest/googletest/include \
+    -I../tools/openssl/linux/include \
+    -I../tools/http-parser
+
+AM_LDFLAGS = -static-libstdc++
+
+# this lists the binaries to produce, the (non-PHONY, binary) targets in
+# the previous manual Makefile
+lib_LIBRARIES = $(top_builddir)/lib/libmicroreactor.a
+
+nobase_include_HEADERS = \
+    src/Api.h \
+    src/BinarySerializer.h \
+    src/Cancelable.h \
+    src/Client.h \
+    src/Common.h \
+    src/Comparable.h \
+    src/Configuration.h \
+    src/ConfigurationXml.h \
+    src/Connection.h \
+    src/Dispatcher.h \
+    src/Emittable.h \
+    src/Endianness.h \
+    src/Exception.h \
+    src/Host.h \
+    src/Listener.h \
+    src/LoggerSingleton.h \
+    src/MemoryTrack.h \
+    src/MessageDecoder.h \
+    src/Message.h \
+    src/MessageReactor.h \
+    src/Microreactor.h \
+    src/Microservice.h \
+    src/NetworkUtility.h \
+    src/Profile.h \
+    src/Property.h \
+    src/Reactor.h \
+    src/ScopeLock.h \
+    src/SecureTcpSocket.h \
+    src/Serializable.h \
+    src/Serializer.h \
+    src/Service.h \
+    src/Socket.h \
+    src/StringSerializer.h \
+    src/StringUtility.h \
+    src/TaskFuture.h \
+    src/Task.h \
+    src/TaskManager.h \
+    src/TaskManagerSingleton.h \
+    src/TaskProcessHook.h \
+    src/TaskQueue.h \
+    src/TcpConnection.h \
+    src/TcpHost.h \
+    src/TcpSocket.h \
+    src/ThreadPool.h \
+    src/UdpConnection.h \
+    src/UdpHost.h \
+    src/UdpSocket.h \
+    src/Uuid.h \
+    src/HttpHeader.h \
+    src/RestApi.h \
+    src/RestFileResponse.h \
+    src/RestMessageDecoder.h \
+    src/RestRequest.h \
+    src/RestResponse.h \
+    src/RestService.h \
+    src/UriCodec.h
+
+__top_builddir__lib_libmicroreactor_a_SOURCES = \
+    src/BinarySerializer.cpp \
+    src/Client.cpp \
+    src/ConfigurationXml.cpp \
+    src/Connection.cpp \
+    src/Dispatcher.cpp \
+    src/Host.cpp \
+    src/Listener.cpp \
+    src/LoggerSingleton.cpp \
+    src/Message.cpp \
+    src/MessageDecoder.cpp \
+    src/Microservice.cpp \
+    src/NetworkUtility.cpp \
+    src/Profile.cpp \
+    src/Reactor.cpp \
+    src/Serializer.cpp \
+    src/Service.cpp \
+    src/Socket.cpp \
+    src/StringSerializer.cpp \
+    src/StringUtility.cpp \
+    src/Task.cpp \
+    src/TaskManager.cpp \
+    src/TaskManagerSingleton.cpp \
+    src/TaskQueue.cpp \
+    src/TcpConnection.cpp \
+    src/TcpHost.cpp \
+    src/TcpSocket.cpp \
+    src/SecureTcpSocket.cpp \
+    src/ThreadPool.cpp \
+    src/UdpConnection.cpp \
+    src/UdpHost.cpp \
+    src/UdpSocket.cpp \
+    src/Uuid.cpp \
+    src/RestRequest.cpp \
+    src/RestResponse.cpp \
+    src/RestFileResponse.cpp \
+    src/RestMessageDecoder.cpp \
+    src/RestService.cpp \
+    ../tools/http-parser/http_parser.c
+
+check_PROGRAMS = $(top_builddir)/test/bin/microreactor_test
+
+__top_builddir__test_bin_microreactor_test_SOURCES = \
+    test/test_main.cpp \
+    test/UuidTest.cpp \
+    test/RestMessageDecoderTest.cpp
+    
+__top_builddir__test_bin_microreactor_test_LDADD = \
+    lib/libmicroreactor.a \
+    ../tools/googletest/googlemock/libgmock.a \
+    ../tools/googletest/googlemock/gtest/libgtest.a \
+    -luuid
+
+TESTS = $(check_PROGRAMS)

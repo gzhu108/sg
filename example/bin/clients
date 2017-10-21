@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mkdir out
+
+for i in {1..100}
+do
+    nohup ../streetgangclient/bin/streetgangclient --config ../streetgangclient/config/conf.xml > out/sgc-$i.out &
+done
+

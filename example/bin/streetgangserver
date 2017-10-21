@@ -1,0 +1,4 @@
+#!/bin/bash
+
+../streetgangserver/bin/streetgangserver --config ../streetgangserver/config/conf.xml
+

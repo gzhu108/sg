@@ -1,0 +1,10 @@
+syntax = "proto3";
+import "Rectangle.proto";
+package streetgangpb;
+
+
+message GetSceneRequest
+{
+	uint64 world_id = 1;
+	Rectangle rect = 2;
+}

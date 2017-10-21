@@ -1,0 +1,4 @@
+#!/bin/bash
+
+../streetgangclient/bin/streetgangclient --config ../streetgangclient/config/conf.xml
+

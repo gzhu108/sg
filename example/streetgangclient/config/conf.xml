@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Client>
+    <Protocol>tcp</Protocol>
+    <ServerAddress>127.0.0.1</ServerAddress>
+    <ServerPort>8390</ServerPort>
+</Client>

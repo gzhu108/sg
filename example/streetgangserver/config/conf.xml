@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Service>
+    <Version>1.0.0.1</Version>
+    <ListenTimeout>1</ListenTimeout>
+    <ReceiveTimeout>1</ReceiveTimeout>
+    <SendTimeout>100</SendTimeout>
+    <ThreadPoolSize>8</ThreadPoolSize>
+    <Protocol>tcp</Protocol>
+    <ServiceAddress>0.0.0.0</ServiceAddress>
+    <PBPort>7390</PBPort>
+    <ServicePort>8390</ServicePort>
+    <RestPort>9390</RestPort>
+    <MetricatorHost>127.0.0.1</MetricatorHost>
+    <MetricatorPort>8490</MetricatorPort>
+    <MetricatorProtocol>udp</MetricatorProtocol>
+    <TaskLatencyThreshold>2.03</TaskLatencyThreshold>
+</Service>

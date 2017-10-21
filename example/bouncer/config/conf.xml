@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Service>
+    <Protocol>tcp</Protocol>
+    <HostName>0.0.0.0</HostName>
+    <HostPort>1234</HostPort>
+    <TargetName>www.facebook.com</TargetName>
+    <TargetPort>80</TargetPort>
+</Service>

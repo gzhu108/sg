@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Service>
+    <Protocol>udp</Protocol>
+    <HostName>0.0.0.0</HostName>
+    <HostPort>8490</HostPort>
+</Service>
