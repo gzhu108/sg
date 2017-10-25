@@ -1,4 +1,4 @@
 #!/bin/bash
 
-../metricator/bin/metricator -config ../metricator/config/conf.xml
+../metricator/bin/metricator --config ../metricator/config/conf.xml
 

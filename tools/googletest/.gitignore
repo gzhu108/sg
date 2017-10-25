@@ -8,5 +8,6 @@ bazel-genfiles
 bazel-googletest
 bazel-out
 bazel-testlogs
+*.pc
 # python
 *.pyc
