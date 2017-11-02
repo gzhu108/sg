@@ -6,7 +6,6 @@
 #define DEFAULT_HTTP_BUFFER_SIZE 10240
 
 using namespace sg::microreactor;
-using namespace sg::microreactor;
 
 
 RestMessageDecoder::RestMessageDecoder()

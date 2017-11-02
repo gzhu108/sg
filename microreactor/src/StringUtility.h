@@ -5,6 +5,9 @@
 #include <vector>
 #include <locale>
 #include <algorithm>
+#include <regex>
+#include <chrono>
+#include <iomanip>
 #include "Common.h"
 
 
@@ -49,6 +52,15 @@ namespace sg { namespace microreactor
             String destination(original);
             ToLower(destination);
             return destination;
+        }
+
+        template<typename String>
+        bool Split(const String& str, const std::regex& regex, std::vector<String>& parts)
+        {
+            // std::regex regex{R"([\s,]+)"}; // split on space and comma
+            std::sregex_token_iterator it{str.begin(), str.end(), regex, -1};
+            parts.assign(it, {});
+            return !parts.empty();
         }
 
         template<typename String>
@@ -121,6 +133,14 @@ namespace sg { namespace microreactor
         bool GetHttpDateString(std::wstring& httpDate);
         bool GetHttpDateString(std::string& httpDate);
         */
+
+        inline std::string GetHttpTimeString()
+        {
+            std::stringstream stream;
+            time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+            stream << std::put_time(std::gmtime(&now), "%a, %d %b %Y %T %Z");
+            return stream.str();
+        }
 
         bool CompareStringICase(const std::string& l, const std::string& r);
         bool CompareStringICase(const std::wstring& l, const std::wstring& r);

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "RestService.h"
 #include "GetFileApi.h"
+#include "StringUtility.h"
 
 using namespace sg::microreactor;
 using namespace simplewebserver;
@@ -23,7 +24,7 @@ int32_t main(int32_t argc, const char* argv[])
         printf("%s\n", text.c_str());
     });
 
-    LOG("simplewebserver");
+    LOG("simplewebserver (%s)", sg::microreactor::StringUtility::GetHttpTimeString().c_str());
     LOG("press ctrl+c to terminate");
 
     // Set signal handlers for graceful termination

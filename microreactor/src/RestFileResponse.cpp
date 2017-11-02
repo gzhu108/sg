@@ -1,7 +1,7 @@
 #include "RestFileResponse.h"
 #include "Serializer.h"
+#include "StringUtility.h"
 
-using namespace sg::microreactor;
 using namespace sg::microreactor;
 
 
@@ -17,7 +17,7 @@ RestFileResponse::RestFileResponse(const std::string& path)
         mVersion = "HTTP/1.1";
         mStatusCode = 200;
         mStatusText = "OK";
-        //mHeaders.emplace_back(HttpHeader("Content-Type", "image/jpg"));
+        mHeaders.emplace_back(HttpHeader("Date", StringUtility::GetHttpTimeString()));
 
         uint64_t fileSize = GetStreamSize(mFileStream);
         if (fileSize < CHUNK_SIZE)

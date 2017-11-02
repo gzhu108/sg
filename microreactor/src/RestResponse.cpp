@@ -1,7 +1,6 @@
 #include "RestResponse.h"
 
 using namespace sg::microreactor;
-using namespace sg::microreactor;
 
 
 bool RestResponse::Send(Connection& connection)
