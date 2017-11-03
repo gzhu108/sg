@@ -239,6 +239,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -263,6 +264,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -286,6 +288,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -310,6 +313,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -334,6 +338,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -357,6 +362,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -381,6 +387,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -405,6 +412,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp
@@ -428,6 +436,7 @@ $(SolutionDir)tools\protobuf\$(Platform)\Release\bin\protoc.exe --proto_path=$(P
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <CustomBuild>
       <Command>IF NOT EXIST $(ProjectDir)protobuf\cpp md $(ProjectDir)protobuf\cpp

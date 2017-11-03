@@ -32,6 +32,10 @@ int32_t main(int32_t argc, const char* argv[])
     signal(SIGINT, SingalHandler);
     signal(SIGTERM, SingalHandler);
 
+#ifndef _MSC_VER
+    signal(SIGPIPE, SIG_IGN);
+#endif
+
     std::string configFilePath;
     std::string hostName;
     uint16_t hostPort = 0;

@@ -177,7 +177,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -192,7 +192,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Check|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -207,7 +207,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -221,7 +221,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -236,7 +236,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Check|ARM'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -251,7 +251,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -265,7 +265,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -280,7 +280,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Check|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -295,7 +295,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
