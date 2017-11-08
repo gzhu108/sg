@@ -15,7 +15,7 @@ namespace sg { namespace microreactor
         virtual ~RestFileResponse();
 
     public:
-        virtual bool Send(sg::microreactor::Connection& connection) override;
+        virtual bool Send(Connection& connection) override;
 
     protected:
         std::ifstream mFileStream;

@@ -1,5 +1,4 @@
 #include "GetFileReactor.h"
-#include <fstream>
 
 using namespace sg::microreactor;
 using namespace simplewebserver;

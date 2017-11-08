@@ -26,6 +26,32 @@ void RestMessageDecoder::Dispatch(Connection& connection)
     }
 }
 
+void RestMessageDecoder::RegisterRestApi(std::shared_ptr<RestApi> restApi)
+{
+    if (restApi == nullptr)
+    {
+        return;
+    }
+
+    auto methodFound = mRestApiTable.find(restApi->mMethod);
+    if (methodFound == mRestApiTable.end())
+    {
+        RestApiList restApiList;
+        restApiList[restApi->mPath] = restApi;
+        mRestApiTable[restApi->mMethod] = restApiList;
+    }
+    else
+    {
+        auto apiFound = methodFound->second.find(restApi->mPath);
+        if (apiFound != methodFound->second.end())
+        {
+            LOG("Duplicate API found [Method=%s] [Path=%s]", restApi->mMethod.c_str(), restApi->mPath.c_str());
+        }
+
+        methodFound->second[restApi->mPath] = restApi;
+    }
+}
+
 std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
 {
     auto message = std::make_shared<std::string>();
@@ -114,32 +140,6 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
 
     PushChunkedRequest(connection, restRequest);
     return nullptr;
-}
-
-void RestMessageDecoder::RegisterRestApi(std::shared_ptr<RestApi> restApi)
-{
-    if (restApi == nullptr)
-    {
-        return;
-    }
-
-    auto methodFound = mRestApiTable.find(restApi->mMethod);
-    if (methodFound == mRestApiTable.end())
-    {
-        RestApiList restApiList;
-        restApiList[restApi->mPath] = restApi;
-        mRestApiTable[restApi->mMethod] = restApiList;
-    }
-    else
-    {
-        auto apiFound = methodFound->second.find(restApi->mPath);
-        if (apiFound != methodFound->second.end())
-        {
-            LOG("Duplicate API found [Method=%s] [Path=%s]", restApi->mMethod.c_str(), restApi->mPath.c_str());
-        }
-
-        methodFound->second[restApi->mPath] = restApi;
-    }
 }
 
 std::shared_ptr<RestApi> RestMessageDecoder::GetRestApi(std::shared_ptr<RestRequest> restRequest)

@@ -9,21 +9,21 @@
 
 namespace sg { namespace microreactor
 {
-    class RestMessageDecoder : public sg::microreactor::Dispatcher
+    class RestMessageDecoder : public Dispatcher
     {
     public:
         RestMessageDecoder();
         virtual ~RestMessageDecoder();
 
     public:
-        virtual void Dispatch(sg::microreactor::Connection& connection) override;
-        virtual std::shared_ptr<sg::microreactor::Reactor> Decode(sg::microreactor::Connection& connection);
+        virtual void Dispatch(Connection& connection) override;
         virtual void RegisterRestApi(std::shared_ptr<RestApi> restApi);
 
     protected:
+        virtual std::shared_ptr<Reactor> Decode(Connection& connection);
         virtual std::shared_ptr<RestApi> GetRestApi(std::shared_ptr<RestRequest> restRequest);
-        virtual void PushChunkedRequest(sg::microreactor::Connection& connection, std::shared_ptr<RestRequest> restRequest);
-        virtual std::shared_ptr<RestRequest> PopChunkedRequest(sg::microreactor::Connection& connection);
+        virtual void PushChunkedRequest(Connection& connection, std::shared_ptr<RestRequest> restRequest);
+        virtual std::shared_ptr<RestRequest> PopChunkedRequest(Connection& connection);
 
     protected:
         std::recursive_mutex mLock;

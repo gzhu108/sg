@@ -14,12 +14,12 @@
 
 namespace sg { namespace microreactor
 {
-    class RestService : public sg::microreactor::Microservice
+    class RestService : public Microservice
     {
     public:
         RestService(const std::string& hostName, uint16_t port);
-        explicit RestService(std::shared_ptr<sg::microreactor::Profile> profile);
-        RestService(std::shared_ptr<sg::microreactor::Host> host, std::shared_ptr<sg::microreactor::Profile> profile);
+        explicit RestService(std::shared_ptr<Profile> profile);
+        RestService(std::shared_ptr<Host> host, std::shared_ptr<Profile> profile);
         virtual ~RestService();
 
     public:

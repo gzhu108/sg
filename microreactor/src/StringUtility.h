@@ -126,14 +126,6 @@ namespace sg { namespace microreactor
             return trimmedStr;
         }
 
-        /*
-        bool Convert(const std::string& source, std::wstring& target);
-        bool Convert(const std::wstring& source, std::string& target);
-
-        bool GetHttpDateString(std::wstring& httpDate);
-        bool GetHttpDateString(std::string& httpDate);
-        */
-
         inline std::string GetHttpTimeString()
         {
             std::stringstream stream;

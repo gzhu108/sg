@@ -18,7 +18,7 @@ namespace sg { namespace microreactor
         std::vector<HttpHeader> mHeaders;
         std::string mBody;
 
-        virtual bool Send(sg::microreactor::Connection& connection);
+        virtual bool Send(Connection& connection);
         virtual bool FlushToBuffer(std::string& buffer);
         virtual bool FlushToStream(std::ostream& stream);
     };
