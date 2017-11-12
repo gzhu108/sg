@@ -16,6 +16,7 @@ bin_PROGRAMS = \
 
 __top_builddir__bin_simplewebserver_SOURCES = \
     main.cpp \
+	SimpleWebService.cpp \
     GetFileApi.cpp \
     GetFileReactor.cpp
 

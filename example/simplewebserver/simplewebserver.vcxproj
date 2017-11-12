@@ -42,10 +42,12 @@
     <ClCompile Include="GetFileApi.cpp" />
     <ClCompile Include="GetFileReactor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SimpleWebService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GetFileApi.h" />
     <ClInclude Include="GetFileReactor.h" />
+    <ClInclude Include="SimpleWebService.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1354265D-CEC7-4B71-9D56-1978F779432F}</ProjectGuid>

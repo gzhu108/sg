@@ -2,8 +2,7 @@
 
 #include <signal.h>
 #include <stdlib.h>
-#include "RestService.h"
-#include "GetFileApi.h"
+#include "SimpleWebService.h"
 #include "StringUtility.h"
 
 using namespace sg::microreactor;
@@ -91,15 +90,24 @@ int32_t main(int32_t argc, const char* argv[])
         configuration->GetValue("SecurePort", securePort);
     }
 
-    // Create the REST service
-    RestService restService(hostName, hostPort);
-    restService.GetProfile()->Configuration.set(configuration);
-    restService.RegisterRestApi(std::make_shared<GetFileApi>());
+    // Create the simple REST service
+    auto simpleProfile = std::make_shared<Profile>();
+    simpleProfile->Address.set(hostName);
+    simpleProfile->Port.set(hostPort);
+    simpleProfile->Configuration.set(configuration);
+
+    auto simpleSocket = std::make_shared<TcpSocket>();
+    auto simpleHost = std::make_shared<TcpHost>(simpleSocket, simpleProfile);
+
+    SimpleWebService simpleWebService(simpleHost, simpleProfile);
+    simpleSocket = nullptr;
+    simpleHost = nullptr;
 
     // Initialize OpenSSL
     SSL_load_error_strings();
     OpenSSL_add_ssl_algorithms();
 
+    // Create the secure REST service
     // Create the secure REST service
     auto secureProfile = std::make_shared<Profile>();
     secureProfile->Address.set(hostName);
@@ -110,19 +118,18 @@ int32_t main(int32_t argc, const char* argv[])
     secureSocket->ConfigureContext("selfsigned.key", "cert.pem");
     auto secureHost = std::make_shared<TcpHost>(secureSocket, secureProfile);
 
-    RestService secureService(secureHost, secureProfile);
-    secureService.RegisterRestApi(std::make_shared<GetFileApi>());
+    SimpleWebService secureWebService(secureHost, secureProfile);
     secureSocket = nullptr;
     secureHost = nullptr;
 
     // Start the REST services
-    if (restService.Start() && secureService.Start())
+    if (simpleWebService.Start() && secureWebService.Start())
     {
         START_BLOCKING_TASK_LOOP();
 
         // Stop REST services
-        restService.Stop();
-        secureService.Stop();
+        simpleWebService.Stop();
+        secureWebService.Stop();
     }
     else
     {
