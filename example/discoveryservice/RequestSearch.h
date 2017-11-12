@@ -18,7 +18,7 @@ namespace sg { namespace service
         virtual ~RequestSearch();
 
         PROPERTY(MessageLine, std::string);
-        PROPERTY(Host, std::string);
+        PROPERTY(Endpoint, std::string);
         PROPERTY(Man, std::string);
         PROPERTY(Mx, uint32_t, 0);
         PROPERTY(St, std::string);

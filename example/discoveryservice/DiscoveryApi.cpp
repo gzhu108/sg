@@ -18,7 +18,7 @@ DiscoveryApi::~DiscoveryApi()
 void DiscoveryApi::MulticastSearch(const std::string& serviceType, const std::string& multicastAddress, uint16_t port)
 {
     std::shared_ptr<RequestSearch> request = std::make_shared<RequestSearch>();
-    request->Host.set(multicastAddress + ":" + std::to_string(port));
+    request->Endpoint.set(multicastAddress + ":" + std::to_string(port));
     request->Mx.set(5);
     request->St.set(serviceType);
     
@@ -33,7 +33,7 @@ void DiscoveryApi::MulticastSearch(const std::string& serviceType, const std::st
 void DiscoveryApi::UnicastSearch(const std::string& serviceType, const std::string& unicastAddress, uint16_t port)
 {
     std::shared_ptr<RequestSearch> request = std::make_shared<RequestSearch>();
-    request->Host.set(unicastAddress + ":" + std::to_string(port));
+    request->Endpoint.set(unicastAddress + ":" + std::to_string(port));
     request->Mx.set(0);
     request->St.set(serviceType);
 

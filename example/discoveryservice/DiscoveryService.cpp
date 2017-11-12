@@ -5,7 +5,7 @@
 #include "TaskManager.h"
 #include "Connection.h"
 #include "Listener.h"
-#include "UdpHost.h"
+#include "UdpEndpoint.h"
 #include "UdpConnection.h"
 
 using namespace sg::microreactor;
@@ -35,20 +35,20 @@ DiscoveryService::~DiscoveryService()
 
 bool DiscoveryService::Initialize()
 {
-    LOG("Discovery Server HOST: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
+    LOG("Discovery Server Endpoint: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
    
     try
     {
         // Initialize multicasting
         if (mSocket->JoinMulticastGoup(mMulticastAddress, 0))
         {
-            std::shared_ptr<Host> host = std::make_shared<UdpHost>(mSocket, mProfile);
-            host->ListenTimeout.set(std::chrono::milliseconds(30));
-            host->ReceiveTimeout.set(std::chrono::milliseconds(30));
-            host->SendTimeout.set(std::chrono::milliseconds(1000));
+            std::shared_ptr<Endpoint> endpoint = std::make_shared<UdpEndpoint>(mSocket, mProfile);
+            endpoint->ListenTimeout.set(std::chrono::milliseconds(30));
+            endpoint->ReceiveTimeout.set(std::chrono::milliseconds(30));
+            endpoint->SendTimeout.set(std::chrono::milliseconds(1000));
 
             mListener = std::make_shared<Listener>();
-            return mListener->Initialize(host);
+            return mListener->Initialize(endpoint);
         }
     }
     catch (SocketException& e)

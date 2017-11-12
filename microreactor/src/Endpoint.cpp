@@ -1,20 +1,20 @@
-#include "Host.h"
+#include "Endpoint.h"
 #include "Dispatcher.h"
 #include "TaskManagerSingleton.h"
 
 using namespace sg::microreactor;
 
 
-std::map<std::shared_ptr<Connection>, Host*> Host::mActiveConnections;
-std::recursive_mutex Host::mActiveConnectionsLock;
+std::map<std::shared_ptr<Connection>, Endpoint*> Endpoint::mActiveConnections;
+std::recursive_mutex Endpoint::mActiveConnectionsLock;
 
 
-Host::Host(std::shared_ptr<Profile> profile)
+Endpoint::Endpoint(std::shared_ptr<Profile> profile)
     : mProfile(profile)
 {
 }
 
-Host::~Host()
+Endpoint::~Endpoint()
 {
     ScopeLock<decltype(mActiveConnectionsLock)> scopeLock(mActiveConnectionsLock);
     for (auto& connection : mActiveConnections)
@@ -28,18 +28,18 @@ Host::~Host()
 
     CancelAllTasks(ListenTimeout.cref());
     
-    // Do not clear connections as the mActiveConnections is shared with all host.
+    // Do not clear connections as the mActiveConnections is shared with all endpoint.
     //mActiveConnections.clear();
 }
 
-bool Host::Start()
+bool Endpoint::Start()
 {
-    // Start listen on the host
-    SUBMIT(std::bind(&Host::AcceptConnection, this), reinterpret_cast<uintptr_t>(this), "Host::AcceptConnection");
+    // Start listening on the endpoint
+    SUBMIT(std::bind(&Endpoint::AcceptConnection, this), reinterpret_cast<uintptr_t>(this), "Endpoint::AcceptConnection");
     return true;
 }
 
-bool Host::Stop()
+bool Endpoint::Stop()
 {
     if (!IsClosed())
     {
@@ -51,7 +51,7 @@ bool Host::Stop()
     return true;
 }
 
-void Host::AcceptConnection()
+void Endpoint::AcceptConnection()
 {
     if (IsClosed())
     {
@@ -95,11 +95,11 @@ void Host::AcceptConnection()
 
     if (!IsClosed())
     {
-        SUBMIT(std::bind(&Host::AcceptConnection, this), reinterpret_cast<uintptr_t>(this), "Host::AcceptConnection");
+        SUBMIT(std::bind(&Endpoint::AcceptConnection, this), reinterpret_cast<uintptr_t>(this), "Endpoint::AcceptConnection");
     }
 }
 
-void Host::CancelAllTasks(const std::chrono::microseconds& waitTime)
+void Endpoint::CancelAllTasks(const std::chrono::microseconds& waitTime)
 {
     uint64_t cancelCount = CANCEL_TASKS(reinterpret_cast<uintptr_t>(this));
 
@@ -112,7 +112,7 @@ void Host::CancelAllTasks(const std::chrono::microseconds& waitTime)
     }
 }
 
-void Host::RemoveClosedConnections()
+void Endpoint::RemoveClosedConnections()
 {
     ScopeLock<decltype(mActiveConnectionsLock)> scopeLock(mActiveConnectionsLock);
 

@@ -23,8 +23,8 @@ RestService::RestService(std::shared_ptr<Profile> profile)
     }
 }
 
-RestService::RestService(std::shared_ptr<Host> host, std::shared_ptr<Profile> profile)
-    : Microservice(host, profile)
+RestService::RestService(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
+    : Microservice(endpoint, profile)
     , mRestMessageDecoder(std::make_shared<RestMessageDecoder>())
 {
     if (mProfile != nullptr)

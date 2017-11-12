@@ -11,7 +11,7 @@ Listener::Listener()
 Listener::~Listener()
 {
     Stop();
-    mHost = nullptr;
+    mEndpoint = nullptr;
 }
 
 bool Listener::Start()
@@ -24,8 +24,8 @@ bool Listener::Start()
     
     mStatus = Status::Started;
     
-    // Start listen on the host
-    return mHost->Start();
+    // Start listening on the endpoint
+    return mEndpoint->Start();
 }
 
 bool Listener::Stop()
@@ -36,7 +36,7 @@ bool Listener::Stop()
         return false;
     }
 
-    if (mHost->Stop())
+    if (mEndpoint->Stop())
     {
         mStatus = Status::Stopped;
         return true;
@@ -45,10 +45,10 @@ bool Listener::Stop()
     return false;
 }
 
-bool Listener::Initialize(std::shared_ptr<Host> host)
+bool Listener::Initialize(std::shared_ptr<Endpoint> endpoint)
 {
-    mHost = host;
-    if (mHost != nullptr && !mHost->IsClosed())
+    mEndpoint = endpoint;
+    if (mEndpoint != nullptr && !mEndpoint->IsClosed())
     {
         mStatus = Status::Initialized;
         return true;

@@ -50,9 +50,9 @@ std::shared_ptr<std::string> mRawMessage;
 
     for (const auto& header : request->mHeaders)
     {
-        if (header.mName == "Host")
+        if (header.mName == "Endpoint")
         {
-            stream << "Host" << ": " << targetName << "\r\n";
+            stream << "Endpoint" << ": " << targetName << "\r\n";
         }
         else
         {

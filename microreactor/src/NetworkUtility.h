@@ -5,7 +5,7 @@
 #include <vector>
 #include "Profile.h"
 #include "Connection.h"
-#include "Host.h"
+#include "Endpoint.h"
 
 
 namespace sg { namespace microreactor
@@ -13,7 +13,7 @@ namespace sg { namespace microreactor
     namespace NetworkUtility
     {
         std::shared_ptr<Connection> CreateConnection(std::shared_ptr<Profile> profile);
-        std::shared_ptr<Host> CreateHost(std::shared_ptr<Profile> profile);
+        std::shared_ptr<Endpoint> CreateEndpoint(std::shared_ptr<Profile> profile);
 
         struct NetworkInterfaceInfo
         {

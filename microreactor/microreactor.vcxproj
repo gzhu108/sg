@@ -177,7 +177,7 @@
     <ClCompile Include="src\ConfigurationXml.cpp" />
     <ClCompile Include="src\Connection.cpp" />
     <ClCompile Include="src\Dispatcher.cpp" />
-    <ClCompile Include="src\Host.cpp" />
+    <ClCompile Include="src\Endpoint.cpp" />
     <ClCompile Include="src\Listener.cpp" />
     <ClCompile Include="src\LoggerSingleton.cpp" />
     <ClCompile Include="src\Message.cpp" />
@@ -202,11 +202,11 @@
     <ClCompile Include="src\TaskManagerSingleton.cpp" />
     <ClCompile Include="src\TaskQueue.cpp" />
     <ClCompile Include="src\TcpConnection.cpp" />
-    <ClCompile Include="src\TcpHost.cpp" />
+    <ClCompile Include="src\TcpEndpoint.cpp" />
     <ClCompile Include="src\TcpSocket.cpp" />
     <ClCompile Include="src\ThreadPool.cpp" />
     <ClCompile Include="src\UdpConnection.cpp" />
-    <ClCompile Include="src\UdpHost.cpp" />
+    <ClCompile Include="src\UdpEndpoint.cpp" />
     <ClCompile Include="src\UdpSocket.cpp" />
     <ClCompile Include="src\Uuid.cpp" />
     <ClCompile Include="test\test_main.cpp">
@@ -237,7 +237,7 @@
     <ClInclude Include="src\Emittable.h" />
     <ClInclude Include="src\Endianness.h" />
     <ClInclude Include="src\Exception.h" />
-    <ClInclude Include="src\Host.h" />
+    <ClInclude Include="src\Endpoint.h" />
     <ClInclude Include="src\HttpHeader.h" />
     <ClInclude Include="src\Listener.h" />
     <ClInclude Include="src\LoggerSingleton.h" />
@@ -272,11 +272,11 @@
     <ClInclude Include="src\TaskProcessHook.h" />
     <ClInclude Include="src\TaskQueue.h" />
     <ClInclude Include="src\TcpConnection.h" />
-    <ClInclude Include="src\TcpHost.h" />
+    <ClInclude Include="src\TcpEndpoint.h" />
     <ClInclude Include="src\TcpSocket.h" />
     <ClInclude Include="src\ThreadPool.h" />
     <ClInclude Include="src\UdpConnection.h" />
-    <ClInclude Include="src\UdpHost.h" />
+    <ClInclude Include="src\UdpEndpoint.h" />
     <ClInclude Include="src\UdpSocket.h" />
     <ClInclude Include="src\UriCodec.h" />
     <ClInclude Include="src\Uuid.h" />

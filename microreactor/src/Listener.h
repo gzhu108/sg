@@ -4,7 +4,7 @@
 
 #include <atomic>
 #include "Profile.h"
-#include "Host.h"
+#include "Endpoint.h"
 
 
 namespace sg { namespace microreactor
@@ -28,13 +28,13 @@ namespace sg { namespace microreactor
         virtual bool Stop();
 
         virtual Status GetStatus() { return mStatus; }
-        virtual std::shared_ptr<Host> GetHost() { return mHost; }
+        virtual std::shared_ptr<Endpoint> GetEndpoint() { return mEndpoint; }
 
-        virtual bool Initialize(std::shared_ptr<Host> host);
+        virtual bool Initialize(std::shared_ptr<Endpoint> endpoint);
         
     protected:
         std::atomic<Status> mStatus;
-        std::shared_ptr<Host> mHost;
+        std::shared_ptr<Endpoint> mEndpoint;
     };
 }}
 

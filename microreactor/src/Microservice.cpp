@@ -13,11 +13,11 @@ Microservice::Microservice(std::shared_ptr<Profile> profile)
 {
 }
 
-Microservice::Microservice(std::shared_ptr<Host> host, std::shared_ptr<Profile> profile)
+Microservice::Microservice(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
     : mProfile(profile)
     , mListener(std::make_shared<Listener>())
 {
-    mListener->Initialize(host);
+    mListener->Initialize(endpoint);
 }
 
 Microservice::~Microservice()
@@ -32,10 +32,10 @@ bool Microservice::Start()
         if (mListener->Start())
         {
             // Connection to the ConnectonMade signal
-            auto host = mListener->GetHost();
-            if (host != nullptr)
+            auto endpoint = mListener->GetEndpoint();
+            if (endpoint != nullptr)
             {
-                host->ConnectionMade.Connect(std::bind(&Microservice::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
+                endpoint->ConnectionMade.Connect(std::bind(&Microservice::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
                 return true;
             }
         }
@@ -56,9 +56,9 @@ bool Microservice::Stop()
         }
 
         // Disconnect the ConnectonMade signal
-        if (mListener->GetHost() != nullptr)
+        if (mListener->GetEndpoint() != nullptr)
         {
-            mListener->GetHost()->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
+            mListener->GetEndpoint()->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
         }
 
         mListener = nullptr;
@@ -75,14 +75,14 @@ bool Microservice::Initialize()
         return true;
     }
 
-    std::shared_ptr<Host> host = NetworkUtility::CreateHost(mProfile);
-    if (host == nullptr)
+    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(mProfile);
+    if (endpoint == nullptr)
     {
         return false;
     }
 
     mListener = std::make_shared<Listener>();
-    return mListener->Initialize(host);
+    return mListener->Initialize(endpoint);
 }
 
 void Microservice::OnConnectionMade(const std::shared_ptr<Connection>& connection)

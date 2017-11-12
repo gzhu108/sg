@@ -13,7 +13,7 @@ namespace sg { namespace microreactor
     public:
         Microservice();
         explicit Microservice(std::shared_ptr<Profile> profile);
-        Microservice(std::shared_ptr<Host> host, std::shared_ptr<Profile> profile);
+        Microservice(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile);
         virtual ~Microservice();
 
     public:

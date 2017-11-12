@@ -25,7 +25,7 @@ RequestSearch::~RequestSearch()
 bool RequestSearch::Serialize(Serializer& serializer, std::ostream& stream) const
 {
     serializer.Write(M_SEARCH + "\r\n", stream);
-    serializer.Write(HOST + " " + Host.get() + "\r\n", stream);
+    serializer.Write(HOST + " " + Endpoint.get() + "\r\n", stream);
     serializer.Write(MAN + "\r\n", stream);
 
     if (Mx.get())
@@ -72,7 +72,7 @@ bool RequestSearch::Deserialize(std::istream& stream, Serializer& serializer)
         found = line.find(HOST);
         if (std::string::npos != found)
         {
-            Host.set(StringUtility::Trim(line.substr(found + HOST.length()), std::string(" ")));
+            Endpoint.set(StringUtility::Trim(line.substr(found + HOST.length()), std::string(" ")));
             continue;
         }
 

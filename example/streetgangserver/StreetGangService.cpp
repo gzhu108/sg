@@ -69,10 +69,10 @@ bool StreetGangService::Start()
             }
 
             // Connection to the ConnectonMade signal
-            auto host = listener->GetHost();
-            if (host != nullptr)
+            auto endpoint = listener->GetEndpoint();
+            if (endpoint != nullptr)
             {
-                host->ConnectionMade.Connect(std::bind(&StreetGangService::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
+                endpoint->ConnectionMade.Connect(std::bind(&StreetGangService::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
             }
         }
 
@@ -95,10 +95,10 @@ bool StreetGangService::Stop()
         }
 
         // Disconnect the ConnectonMade signal
-        auto host = listener->GetHost();
-        if (host != nullptr)
+        auto endpoint = listener->GetEndpoint();
+        if (endpoint != nullptr)
         {
-            host->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
+            endpoint->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
         }
     }
 
@@ -152,13 +152,13 @@ bool StreetGangService::CreateBinaryListener()
 
     profile->Dispatcher.set(std::make_shared<StreetGangMessageDecoder>());
 
-    std::shared_ptr<Host> host = NetworkUtility::CreateHost(profile);
-    host->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    host->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    host->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
+    endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
     auto listener = std::make_shared<Listener>();
-    if (listener->Initialize(host))
+    if (listener->Initialize(endpoint))
     {
         mListenerCollection.emplace_back(listener);
         return true;
@@ -199,13 +199,13 @@ bool StreetGangService::CreatePBListener()
 
     profile->Dispatcher.set(std::make_shared<StreetGangPBDecoder>());
 
-    std::shared_ptr<Host> host = NetworkUtility::CreateHost(profile);
-    host->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    host->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    host->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
+    endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
     
     auto listener = std::make_shared<Listener>();
-    if (listener->Initialize(host))
+    if (listener->Initialize(endpoint))
     {
         mListenerCollection.emplace_back(listener);
         return true;
@@ -246,13 +246,13 @@ bool StreetGangService::CreateRestListener()
     profile->Port.set(restPort);
     profile->Dispatcher.set(restMessageDecoder);
 
-    std::shared_ptr<Host> host = NetworkUtility::CreateHost(profile);
-    host->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    host->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    host->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
+    endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
     
     auto listener = std::make_shared<Listener>();
-    if (listener->Initialize(host))
+    if (listener->Initialize(endpoint))
     {
         mListenerCollection.emplace_back(listener);
         return true;

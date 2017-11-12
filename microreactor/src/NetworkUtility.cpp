@@ -1,8 +1,8 @@
 #include "NetworkUtility.h"
 #include "TcpConnection.h"
 #include "UdpConnection.h"
-#include "TcpHost.h"
-#include "UdpHost.h"
+#include "TcpEndpoint.h"
+#include "UdpEndpoint.h"
 
 using namespace sg::microreactor;
 
@@ -29,7 +29,7 @@ std::shared_ptr<Connection> NetworkUtility::CreateConnection(std::shared_ptr<Pro
 }
 
 
-std::shared_ptr<Host> NetworkUtility::CreateHost(std::shared_ptr<Profile> profile)
+std::shared_ptr<Endpoint> NetworkUtility::CreateEndpoint(std::shared_ptr<Profile> profile)
 {
     if (profile == nullptr)
     {
@@ -38,15 +38,15 @@ std::shared_ptr<Host> NetworkUtility::CreateHost(std::shared_ptr<Profile> profil
 
     if (profile->Protocol.cref() == "tcp")
     {
-        auto host = std::make_shared<TcpHost>(nullptr, profile);
-        LOG("TCP HOST: %s", host->Name->c_str());
-        return host;
+        auto endpoint = std::make_shared<TcpEndpoint>(nullptr, profile);
+        LOG("TCP HOST: %s", endpoint->Name->c_str());
+        return endpoint;
     }
     else if (profile->Protocol.cref() == "udp")
     {
-        auto host = std::make_shared<UdpHost>(nullptr, profile);
-        LOG("UDP HOST: %s", host->Name->c_str());
-        return host;
+        auto endpoint = std::make_shared<UdpEndpoint>(nullptr, profile);
+        LOG("UDP HOST: %s", endpoint->Name->c_str());
+        return endpoint;
     }
     else
     {

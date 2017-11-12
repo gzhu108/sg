@@ -19,7 +19,7 @@ namespace sg { namespace microreactor
     public:
         RestService(const std::string& hostName, uint16_t port);
         explicit RestService(std::shared_ptr<Profile> profile);
-        RestService(std::shared_ptr<Host> host, std::shared_ptr<Profile> profile);
+        RestService(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile);
         virtual ~RestService();
 
     public:

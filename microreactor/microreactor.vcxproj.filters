@@ -39,9 +39,6 @@
     <ClCompile Include="src\Dispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Host.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Listener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
     <ClCompile Include="src\TcpConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TcpHost.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TcpSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -126,9 +120,6 @@
     <ClCompile Include="src\UdpConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\UdpHost.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\UdpSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -136,6 +127,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\tools\http-parser\http_parser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Endpoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UdpEndpoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TcpEndpoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -177,9 +177,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Host.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\HttpHeader.h">
@@ -284,9 +281,6 @@
     <ClInclude Include="src\TcpConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TcpHost.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\TcpSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -294,9 +288,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\UdpConnection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UdpHost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\UdpSocket.h">
@@ -309,6 +300,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tools\http-parser\http_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Endpoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UdpEndpoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TcpEndpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
