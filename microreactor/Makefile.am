@@ -68,6 +68,7 @@ nobase_include_HEADERS = \
     src/RestApi.h \
     src/RestFileResponse.h \
     src/RestMessageDecoder.h \
+	src/RestReactor.h \
     src/RestRequest.h \
     src/RestResponse.h \
     src/RestService.h \

@@ -254,6 +254,7 @@
     <ClInclude Include="src\RestApi.h" />
     <ClInclude Include="src\RestFileResponse.h" />
     <ClInclude Include="src\RestMessageDecoder.h" />
+    <ClInclude Include="src\RestReactor.h" />
     <ClInclude Include="src\RestRequest.h" />
     <ClInclude Include="src\RestResponse.h" />
     <ClInclude Include="src\RestService.h" />

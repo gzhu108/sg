@@ -24,4 +24,5 @@ __top_builddir__bin_simplewebserver_LDADD = \
     ../../microreactor/lib/libmicroreactor.a \
     ../../tools/openssl/linux/lib/libssl.a \
     ../../tools/openssl/linux/lib/libcrypto.a \
+    -luuid \
     -ldl

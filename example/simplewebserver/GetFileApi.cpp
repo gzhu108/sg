@@ -22,7 +22,8 @@ std::shared_ptr<Reactor> GetFileApi::CreateReactor(std::shared_ptr<RestRequest> 
     }
 
     // No need to parse JSON
-    
-    auto reactor = std::make_shared<GetFileReactor>(connection, request);
+    auto input = std::make_shared<Message>();
+
+    auto reactor = std::make_shared<GetFileReactor>(connection, request, input);
     return reactor;
 }
