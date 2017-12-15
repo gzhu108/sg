@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClInclude Include="..\tools\http-parser\http_parser.h" />
     <ClInclude Include="src\Api.h" />
+    <ClInclude Include="src\Shareable.h" />
     <ClInclude Include="src\BinarySerializer.h" />
     <ClInclude Include="src\Cancelable.h" />
     <ClInclude Include="src\Client.h" />

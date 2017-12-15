@@ -69,7 +69,7 @@ TaskPtr TaskQueue::DequeueTask()
     mTaskQueue.pop_front();
 
     // Move the task to the active pool
-    mActivePool.insert(std::make_pair(task->Owner.cref(), task));
+    mActivePool.insert(std::make_pair(task->ActiveId.cref(), task));
 
     return task;
 }
@@ -147,7 +147,7 @@ uint64_t TaskQueue::CancelTasks(uintptr_t owner)
     auto task = mTaskQueue.begin();
     while (task != mTaskQueue.end())
     {
-        if (owner == 0 || owner == (*task)->Owner.cref())
+        if (owner == 0 || owner == (*task)->ActiveId.cref())
         {
             (*task)->Cancel();
             task = mTaskQueue.erase(task);
@@ -167,7 +167,7 @@ void TaskQueue::CompleteTask(TaskPtr task)
     std::lock_guard<decltype(mTaskQueueMutex)> scopeLock(mTaskQueueMutex);
 
     // Remove tasks in the active pool
-    auto range = mActivePool.equal_range(task->Owner.cref());
+    auto range = mActivePool.equal_range(task->ActiveId.cref());
     for (auto activeTask = range.first; activeTask != range.second; activeTask++)
     {
         if (activeTask->second == task)

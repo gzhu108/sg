@@ -17,6 +17,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "discoveryservice", "example
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "metricator", "example\metricator\metricator.vcxproj", "{BEA86BF1-CDE6-41E0-AB13-014DD329BD27}"
 	ProjectSection(ProjectDependencies) = postProject
+		{A1CF5343-D95A-4247-A634-897BD8DB454E} = {A1CF5343-D95A-4247-A634-897BD8DB454E}
 		{413C7965-2700-4619-A353-681891E20AF2} = {413C7965-2700-4619-A353-681891E20AF2}
 	EndProjectSection
 EndProject

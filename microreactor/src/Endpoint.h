@@ -3,12 +3,13 @@
 #define sg_microreactor_Endpoint
 
 #include <chrono>
+#include "Shareable.h"
 #include "Connection.h"
 
 
 namespace sg { namespace microreactor
 {
-    class Endpoint
+    class Endpoint : public Shareable
     {
     public:
         explicit Endpoint(std::shared_ptr<Profile> profile);

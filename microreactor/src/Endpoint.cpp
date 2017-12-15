@@ -35,7 +35,7 @@ Endpoint::~Endpoint()
 bool Endpoint::Start()
 {
     // Start listening on the endpoint
-    SUBMIT(std::bind(&Endpoint::AcceptConnection, this), reinterpret_cast<uintptr_t>(this), "Endpoint::AcceptConnection");
+    SUBMIT(std::bind(&Endpoint::AcceptConnection, this), shared_from_this(), this, "Endpoint::AcceptConnection");
     return true;
 }
 
@@ -95,17 +95,17 @@ void Endpoint::AcceptConnection()
 
     if (!IsClosed())
     {
-        SUBMIT(std::bind(&Endpoint::AcceptConnection, this), reinterpret_cast<uintptr_t>(this), "Endpoint::AcceptConnection");
+        SUBMIT(std::bind(&Endpoint::AcceptConnection, this), shared_from_this(), this, "Endpoint::AcceptConnection");
     }
 }
 
 void Endpoint::CancelAllTasks(const std::chrono::microseconds& waitTime)
 {
-    uint64_t cancelCount = CANCEL_TASKS(reinterpret_cast<uintptr_t>(this));
+    uint64_t cancelCount = CANCEL_TASKS(this);
 
     if (waitTime.count() > 0 && cancelCount > 0)
     {
-        while (GET_ACTIVE_TASK_COUNT(reinterpret_cast<uintptr_t>(this)) > 0)
+        while (GET_ACTIVE_TASK_COUNT(this) > 0)
         {
             std::this_thread::sleep_for(waitTime);
         }

@@ -3,7 +3,7 @@
 #define sg_microreactor_Dispatcher
 
 #include <unordered_map>
-#include "Common.h"
+#include "Shareable.h"
 
 
 namespace sg { namespace microreactor
@@ -12,7 +12,7 @@ namespace sg { namespace microreactor
     class Message;
     class Reactor;
 
-    class Dispatcher
+    class Dispatcher : public Shareable
     {
     public:
         Dispatcher();

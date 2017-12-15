@@ -110,7 +110,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*streetGangClient->GetConnection(), nullptr);
     responseGetSceneReactor->SetMessageEncoder(streetGangClient->GetStreetGangRequestEncoder());
-    SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), 0, "ResponseGetSceneReactor::SendNextRequest");
+    SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, "ResponseGetSceneReactor::SendNextRequest");
     responseGetSceneReactor = nullptr;
 
     START_BLOCKING_TASK_LOOP();

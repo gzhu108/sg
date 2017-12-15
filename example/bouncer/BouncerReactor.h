@@ -8,9 +8,7 @@
 
 namespace bouncer
 {
-    class BouncerReactor
-        : public sg::microreactor::Reactor
-        , public std::enable_shared_from_this<BouncerReactor>
+    class BouncerReactor : public sg::microreactor::Reactor
     {
     public:
         BouncerReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::Connection> target, std::istream& stream);

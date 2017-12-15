@@ -32,24 +32,24 @@ namespace sg { namespace microreactor
         virtual void Resume();
 
         virtual TaskProcessHook& GetTaskProcessHook();
-        virtual uint64_t CancelTasks(uintptr_t owner = 0) { return mTaskQueue->CancelTasks(owner); }
-        virtual uint64_t GetActiveTaskCount(uintptr_t owner = 0) { return mTaskQueue->GetActiveTaskCount(owner); }
+        virtual uint64_t CancelTasks(void* activeId = nullptr) { return mTaskQueue->CancelTasks(reinterpret_cast<uintptr_t>(activeId)); }
+        virtual uint64_t GetActiveTaskCount(void* activeId = nullptr) { return mTaskQueue->GetActiveTaskCount(reinterpret_cast<uintptr_t>(activeId)); }
         virtual uint64_t GetQueueDepth() { return mTaskQueue->GetQueueDepth(); }
 
 #if defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
 
         // Submit(1)
         template <typename TaskFunc>
-        auto Submit(TaskFunc&& taskFunc, uintptr_t owner, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
+        auto Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
         {
             typedef decltype(taskFunc()) ValueType;
             std::function<ValueType ()> run = std::bind(taskFunc);
-            return Submit(run, owner, taskName, insertBack); // Call Submit(3)
+            return Submit(run, owner, activeId, taskName, insertBack); // Call Submit(3)
         }
 
         // Submit(2)
         template <typename TaskFunc, typename ValueType>
-        auto Submit(TaskFunc&& taskFunc, uintptr_t owner, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
+        auto Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
         {
             //std::function<ValueType ()> run = std::bind(taskFunc);
             //return Submit(run, insertBack); // Call Submit(3)
@@ -57,6 +57,7 @@ namespace sg { namespace microreactor
             auto task = std::make_shared<PackagedTask<TaskFunc, ValueType>>(taskFunc);
             task->Owner.set(owner);
             task->Name.set(taskName);
+            task->ActiveId.set(reinterpret_cast<uintptr_t>(activeId));
             TaskFuture<ValueType> future(task->GetFuture().share(), task);
             mTaskQueue->Submit(task, insertBack);
             return future;
@@ -64,21 +65,23 @@ namespace sg { namespace microreactor
         
         // Submit(3)
         template <typename ValueType>
-        auto Submit(std::function<ValueType ()> run, uintptr_t owner, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<ValueType>
+        auto Submit(std::function<ValueType ()> run, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<ValueType>
         {
             auto task = std::make_shared<PromisedTask<ValueType>>(run);
             task->Owner.set(owner);
             task->Name.set(taskName);
+            task->ActiveId.set(reinterpret_cast<uintptr_t>(activeId));
             TaskFuture<ValueType> future(task->GetFuture().share(), task);
             mTaskQueue->Submit(task, insertBack);
             return future;
         }
 
         // Submit(4)
-        TaskFuture<void> Submit(BaseTaskPtr task, uintptr_t owner, const std::string& taskName = "", bool insertBack = true)
+        TaskFuture<void> Submit(BaseTaskPtr task, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
         {
             task->Owner.set(owner);
             task->Name.set(taskName);
+            task->ActiveId.set(reinterpret_cast<uintptr_t>(activeId));
             TaskFuture<void> future(task->GetFuture().share(), task);
             mTaskQueue->Submit(task, insertBack);
             return future;
@@ -86,25 +89,26 @@ namespace sg { namespace microreactor
 
 #else // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
         template <typename TaskFunc>
-        bool Submit(TaskFunc&& taskFunc, uintptr_t owner, const std::string& taskName = "", bool insertBack = true)
+        bool Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
         {
             auto task = std::make_shared<Task>(taskFunc);
-            return Submit(task, owner, taskName, insertBack);
+            return Submit(task, owner, activeId, taskName, insertBack);
         }
 
-        inline bool Submit(std::function<void ()> run, uintptr_t owner, const std::string& taskName = "", bool insertBack = true)
+        inline bool Submit(std::function<void ()> run, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
         {
             auto task = std::make_shared<Task>(run);
-            return Submit(task, owner, taskName, insertBack);
+            return Submit(task, owner, activeId, taskName, insertBack);
         }
 
 #endif // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
 
         // Submit(5)
-        inline bool Submit(TaskPtr task, uintptr_t owner, const std::string& taskName = "", bool insertBack = true)
+        inline bool Submit(TaskPtr task, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
         {
             task->Owner.set(owner);
             task->Name.set(taskName);
+            task->ActiveId.set(reinterpret_cast<uintptr_t>(activeId));
 
             if (GetThreadPoolSize() == 0)
             {

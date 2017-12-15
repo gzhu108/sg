@@ -9,9 +9,7 @@
 
 namespace streetgangclient
 {
-    class ResponseCreateWorldReactor
-        : public sg::microreactor::MessageReactor<streetgangapi::ResponseCreateWorld, streetgangapi::StreetGangRequestEncoder>
-        , public std::enable_shared_from_this<ResponseCreateWorldReactor>
+    class ResponseCreateWorldReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseCreateWorld, streetgangapi::StreetGangRequestEncoder>
     {
     public:
         ResponseCreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseCreateWorld> message);

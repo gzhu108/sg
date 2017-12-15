@@ -94,7 +94,7 @@ bool Connection::Start()
     if (!IsClosed() && ReceiveTimeout->count())
     {
         // Push to the queue to receive connection data.
-        SUBMIT(std::bind(&Connection::ReceiveMessage, this), reinterpret_cast<uintptr_t>(this), "Connection::ReceiveMessage");
+        SUBMIT(std::bind(&Connection::ReceiveMessage, this), shared_from_this(), this, "Connection::ReceiveMessage");
         return true;
     }
 
@@ -137,17 +137,17 @@ void Connection::ReceiveMessage()
     if (!IsClosed())
     {
         // Push to the queue to receive connection data.
-        SUBMIT(std::bind(&Connection::ReceiveMessage, this), reinterpret_cast<uintptr_t>(this), "Connection::ReceiveMessage");
+        SUBMIT(std::bind(&Connection::ReceiveMessage, this), shared_from_this(), this, "Connection::ReceiveMessage");
     }
 }
 
 void Connection::CancelAllTasks(const std::chrono::microseconds& waitTime)
 {
-    uint64_t cancelCount = CANCEL_TASKS(reinterpret_cast<uintptr_t>(this));
+    uint64_t cancelCount = CANCEL_TASKS(this);
 
     if (waitTime.count() > 0 && cancelCount > 0)
     {
-        while (GET_ACTIVE_TASK_COUNT(reinterpret_cast<uintptr_t>(this)) > 0)
+        while (GET_ACTIVE_TASK_COUNT(this) > 0)
         {
             std::this_thread::sleep_for(waitTime);
         }

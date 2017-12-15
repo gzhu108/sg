@@ -2,13 +2,14 @@
 #ifndef sg_microreactor_Reactor
 #define sg_microreactor_Reactor
 
+#include "Shareable.h"
 #include "Message.h"
 #include "Connection.h"
 
 
 namespace sg { namespace microreactor
 {
-    class Reactor
+    class Reactor : public Shareable
     {
     public:
         explicit Reactor(Connection& connection);

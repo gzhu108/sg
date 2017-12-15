@@ -5,6 +5,7 @@
 #include <functional>
 #include <atomic>
 #include <future>
+#include "Shareable.h"
 #include "Cancelable.h"
 
 
@@ -27,8 +28,9 @@ namespace sg { namespace microreactor
         explicit Task(std::function<void ()> run);
         virtual ~Task();
 
-        PROPERTY(Owner, uintptr_t, 0);
-        PROPERTY(Name, std::string, "");
+        PROPERTY(Owner, std::shared_ptr<Shareable>);
+        PROPERTY(Name, std::string);
+        PROPERTY(ActiveId, uintptr_t, 0);
 
     public:
         virtual TaskStatus GetStatus() const { return mStatus; }
@@ -129,7 +131,7 @@ namespace sg { namespace microreactor
         virtual void Run() = 0;
     };
     typedef std::shared_ptr<BaseTask> BaseTaskPtr;
-    
+
 #endif // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
 }}
 

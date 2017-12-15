@@ -9,9 +9,7 @@
 
 namespace streetgangclient
 {
-    class ResponseGetVersionReactor
-        : public sg::microreactor::MessageReactor<streetgangapi::ResponseGetVersion, streetgangapi::StreetGangRequestEncoder>
-        , public std::enable_shared_from_this<ResponseGetVersionReactor>
+    class ResponseGetVersionReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseGetVersion, streetgangapi::StreetGangRequestEncoder>
     {
     public:
         ResponseGetVersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseGetVersion> message);

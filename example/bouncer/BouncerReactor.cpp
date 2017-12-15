@@ -65,7 +65,7 @@ bool BouncerReactor::ReceiveTarget()
             LOG("%s: Sent " FMT_UINT64 " bytes", mConnection.Name->c_str(), bytesSent);
         }
 
-        SUBMIT(std::bind(&BouncerReactor::ReceiveTarget, shared_from_this()), 0, "BouncerReactor::ReceiveTarget");
+        SUBMIT(std::bind(&BouncerReactor::ReceiveTarget, this), shared_from_this(), this, "BouncerReactor::ReceiveTarget");
         return true;
     }
 
