@@ -136,8 +136,8 @@ int32_t main(int32_t argc, const char* argv[])
 
     // Create a REST service for settings
     RestService restService(profile);
-    restService.RegisterRestApi(std::make_shared<RestSettings>());
-    restService.RegisterRestApi(std::make_shared<RestBouncer>());
+    restService.RegisterRestFactory(std::make_shared<RestSettings>());
+    restService.RegisterRestFactory(std::make_shared<RestBouncer>());
 
     if (restService.Start())
     {

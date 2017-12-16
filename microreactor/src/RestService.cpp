@@ -37,7 +37,7 @@ RestService::~RestService()
 {
 }
 
-void RestService::RegisterRestApi(std::shared_ptr<RestApi> restApi)
+void RestService::RegisterRestFactory(std::shared_ptr<RestFactory> restFactory)
 { 
-    return mRestMessageDecoder->RegisterRestApi(restApi);
+    return mRestMessageDecoder->RegisterRestFactory(restFactory);
 }

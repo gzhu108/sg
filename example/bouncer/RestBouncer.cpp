@@ -9,7 +9,7 @@ using namespace bouncer;
 
 
 RestBouncer::RestBouncer()
-    : RestApi("GET", "/", "ContentType: */*")
+    : RestFactory("GET", "/", "ContentType: */*")
 {
 }
 

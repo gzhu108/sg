@@ -9,7 +9,7 @@ using namespace streetgangserver;
 
 
 RestCreateWorld::RestCreateWorld()
-    : RestApi("POST", "/createworld", "ContentType: text/plain, application/json")
+    : RestFactory("POST", "/createworld", "ContentType: text/plain, application/json")
 {
 }
 

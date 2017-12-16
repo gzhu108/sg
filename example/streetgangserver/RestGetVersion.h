@@ -2,12 +2,12 @@
 #ifndef streetgangserver_RestGetVersion
 #define streetgangserver_RestGetVersion
 
-#include "RestApi.h"
+#include "RestFactory.h"
 
 
 namespace streetgangserver
 {
-    class RestGetVersion : public sg::microreactor::RestApi
+    class RestGetVersion : public sg::microreactor::RestFactory
     {
     public:
         RestGetVersion();

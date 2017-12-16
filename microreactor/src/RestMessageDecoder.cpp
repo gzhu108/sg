@@ -26,29 +26,29 @@ void RestMessageDecoder::Dispatch(Connection& connection)
     }
 }
 
-void RestMessageDecoder::RegisterRestApi(std::shared_ptr<RestApi> restApi)
+void RestMessageDecoder::RegisterRestFactory(std::shared_ptr<RestFactory> restFactory)
 {
-    if (restApi == nullptr)
+    if (restFactory == nullptr)
     {
         return;
     }
 
-    auto methodFound = mRestApiTable.find(restApi->mMethod);
-    if (methodFound == mRestApiTable.end())
+    auto methodFound = mRestFactoryTable.find(restFactory->mMethod);
+    if (methodFound == mRestFactoryTable.end())
     {
-        RestApiList restApiList;
-        restApiList[restApi->mPath] = restApi;
-        mRestApiTable[restApi->mMethod] = restApiList;
+        RestFactoryList restFactoryList;
+        restFactoryList[restFactory->mPath] = restFactory;
+        mRestFactoryTable[restFactory->mMethod] = restFactoryList;
     }
     else
     {
-        auto apiFound = methodFound->second.find(restApi->mPath);
+        auto apiFound = methodFound->second.find(restFactory->mPath);
         if (apiFound != methodFound->second.end())
         {
-            LOG("Duplicate API found [Method=%s] [Path=%s]", restApi->mMethod.c_str(), restApi->mPath.c_str());
+            LOG("Duplicate API found [Method=%s] [Path=%s]", restFactory->mMethod.c_str(), restFactory->mPath.c_str());
         }
 
-        methodFound->second[restApi->mPath] = restApi;
+        methodFound->second[restFactory->mPath] = restFactory;
     }
 }
 
@@ -106,8 +106,8 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
     // Handle chunked data before Getting the API object.
     if (restRequest->mChunks.empty() || restRequest->mChunkCompleted)
     {
-        auto restApi = GetRestApi(restRequest);
-        if (restApi == nullptr)
+        auto restFactory = GetRestFactory(restRequest);
+        if (restFactory == nullptr)
         {
             RestResponse errorResponse;
             errorResponse.mVersion = "HTTP/1.1";
@@ -121,7 +121,7 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
             return nullptr;
         }
 
-        auto reactor = restApi->CreateReactor(restRequest, connection);
+        auto reactor = restFactory->CreateReactor(restRequest, connection);
         if (reactor == nullptr)
         {
             RestResponse errorResponse;
@@ -142,15 +142,15 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
     return nullptr;
 }
 
-std::shared_ptr<RestApi> RestMessageDecoder::GetRestApi(std::shared_ptr<RestRequest> restRequest)
+std::shared_ptr<RestFactory> RestMessageDecoder::GetRestFactory(std::shared_ptr<RestRequest> restRequest)
 {
-    if (restRequest == nullptr || restRequest->mUri.empty() || mRestApiTable.empty())
+    if (restRequest == nullptr || restRequest->mUri.empty() || mRestFactoryTable.empty())
     {
         return nullptr;
     }
 
-    auto methodFound = mRestApiTable.find(restRequest->mMethod);
-    if (methodFound == mRestApiTable.end())
+    auto methodFound = mRestFactoryTable.find(restRequest->mMethod);
+    if (methodFound == mRestFactoryTable.end())
     {
         return nullptr;
     }

@@ -1,20 +1,20 @@
-#include "GetFileApi.h"
+#include "GetFileFactory.h"
 #include "GetFileReactor.h"
 
 using namespace sg::microreactor;
 using namespace simplewebserver;
 
 
-GetFileApi::GetFileApi()
-    : RestApi("GET", "/")
+GetFileFactory::GetFileFactory()
+    : RestFactory("GET", "/")
 {
 }
 
-GetFileApi::~GetFileApi()
+GetFileFactory::~GetFileFactory()
 {
 }
 
-std::shared_ptr<Reactor> GetFileApi::CreateReactor(std::shared_ptr<RestRequest> request, Connection& connection)
+std::shared_ptr<Reactor> GetFileFactory::CreateReactor(std::shared_ptr<RestRequest> request, Connection& connection)
 {
     if (request->mUri.length() < mPath.length())
     {

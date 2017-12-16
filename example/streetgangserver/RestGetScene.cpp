@@ -18,7 +18,7 @@ using namespace streetgangserver;
 
 
 RestGetScene::RestGetScene()
-    : RestApi("POST", "/getscene", "ContentType: text/plain, application/json")
+    : RestFactory("POST", "/getscene", "ContentType: text/plain, application/json")
 {
 }
 

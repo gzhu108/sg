@@ -2,12 +2,12 @@
 #ifndef streetgangserver_RestCreateWorld
 #define streetgangserver_RestCreateWorld
 
-#include "RestApi.h"
+#include "RestFactory.h"
 
 
 namespace streetgangserver
 {
-    class RestCreateWorld : public sg::microreactor::RestApi
+    class RestCreateWorld : public sg::microreactor::RestFactory
     {
     public:
         RestCreateWorld();

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_RestApi
-#define sg_microreactor_RestApi
+#ifndef sg_microreactor_RestFactory
+#define sg_microreactor_RestFactory
 
 #include "Reactor.h"
 #include "RestRequest.h"
@@ -8,10 +8,10 @@
 
 namespace sg { namespace microreactor
 {
-    class RestApi
+    class RestFactory
     {
     public:
-        RestApi(const std::string& method, const std::string& path, const std::string& contentType = "ContentType: */*")
+        RestFactory(const std::string& method, const std::string& path, const std::string& contentType = "ContentType: */*")
             : mMethod(method)
             , mPath(path)
             , mContentType(contentType)
@@ -28,4 +28,4 @@ namespace sg { namespace microreactor
 }}
 
 
-#endif // sg_microreactor_RestApi
+#endif // sg_microreactor_RestFactory

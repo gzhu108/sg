@@ -47,6 +47,7 @@ nobase_include_HEADERS = \
     src/Serializable.h \
     src/Serializer.h \
     src/Service.h \
+    src/Shareable.h \
     src/Socket.h \
     src/StringSerializer.h \
     src/StringUtility.h \
@@ -65,7 +66,7 @@ nobase_include_HEADERS = \
     src/UdpSocket.h \
     src/Uuid.h \
     src/HttpHeader.h \
-    src/RestApi.h \
+    src/RestFactory.h \
     src/RestFileResponse.h \
     src/RestMessageDecoder.h \
 	src/RestReactor.h \

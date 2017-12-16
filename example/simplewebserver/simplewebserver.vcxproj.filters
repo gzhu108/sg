@@ -18,13 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GetFileApi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GetFileReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimpleWebService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GetFileFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="GetFileReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GetFileApi.h">
+    <ClInclude Include="SimpleWebService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleWebService.h">
+    <ClInclude Include="GetFileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

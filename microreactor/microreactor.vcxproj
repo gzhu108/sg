@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClInclude Include="..\tools\http-parser\http_parser.h" />
     <ClInclude Include="src\Api.h" />
+    <ClInclude Include="src\RestFactory.h" />
     <ClInclude Include="src\Shareable.h" />
     <ClInclude Include="src\BinarySerializer.h" />
     <ClInclude Include="src\Cancelable.h" />
@@ -252,7 +253,6 @@
     <ClInclude Include="src\Profile.h" />
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\Reactor.h" />
-    <ClInclude Include="src\RestApi.h" />
     <ClInclude Include="src\RestFileResponse.h" />
     <ClInclude Include="src\RestMessageDecoder.h" />
     <ClInclude Include="src\RestReactor.h" />

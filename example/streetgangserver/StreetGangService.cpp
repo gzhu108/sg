@@ -230,9 +230,9 @@ bool StreetGangService::CreateRestListener()
     mConfiguration->GetValue("SendTimeout", sendTimeout);
 
     auto restMessageDecoder = std::make_shared<RestMessageDecoder>();
-    restMessageDecoder->RegisterRestApi(std::make_shared<RestGetVersion>());
-    restMessageDecoder->RegisterRestApi(std::make_shared<RestCreateWorld>());
-    restMessageDecoder->RegisterRestApi(std::make_shared<RestGetScene>());
+    restMessageDecoder->RegisterRestFactory(std::make_shared<RestGetVersion>());
+    restMessageDecoder->RegisterRestFactory(std::make_shared<RestCreateWorld>());
+    restMessageDecoder->RegisterRestFactory(std::make_shared<RestGetScene>());
 
     std::string serviceAddress = "0.0.0.0";
     uint16_t restPort = 9390;

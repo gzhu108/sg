@@ -7,11 +7,11 @@
 
 namespace simplewebserver
 {
-    class GetFileApi : public sg::microreactor::RestApi
+    class GetFileFactory : public sg::microreactor::RestFactory
     {
     public:
-        GetFileApi();
-        virtual ~GetFileApi();
+        GetFileFactory();
+        virtual ~GetFileFactory();
 
     public:
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection) override;

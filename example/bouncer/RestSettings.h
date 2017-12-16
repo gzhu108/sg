@@ -2,12 +2,12 @@
 #ifndef bouncer_RestSettings
 #define bouncer_RestSettings
 
-#include "RestApi.h"
+#include "RestFactory.h"
 
 
 namespace bouncer
 {
-    class RestSettings : public sg::microreactor::RestApi
+    class RestSettings : public sg::microreactor::RestFactory
     {
     public:
         RestSettings();

@@ -24,7 +24,7 @@
 #include "NetworkUtility.h"
 #include "Profile.h"
 #include "Reactor.h"
-#include "RestApi.h"
+#include "RestFactory.h"
 #include "RestFileResponse.h"
 #include "RestMessageDecoder.h"
 #include "RestReactor.h"

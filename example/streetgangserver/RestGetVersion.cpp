@@ -9,7 +9,7 @@ using namespace streetgangserver;
 
 
 RestGetVersion::RestGetVersion()
-    : RestApi("GET", "/version", "ContentType: text/plain, application/json")
+    : RestFactory("GET", "/version", "ContentType: text/plain, application/json")
 {
 }
 

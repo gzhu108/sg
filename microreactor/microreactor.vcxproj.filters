@@ -218,9 +218,6 @@
     <ClInclude Include="src\Reactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\RestApi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\RestFileResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -315,6 +312,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Shareable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RestFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

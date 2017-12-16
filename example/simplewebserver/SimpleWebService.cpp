@@ -1,5 +1,5 @@
 #include "SimpleWebService.h"
-#include "GetFileApi.h"
+#include "GetFileFactory.h"
 
 using namespace sg::microreactor;
 using namespace simplewebserver;
@@ -8,7 +8,7 @@ using namespace simplewebserver;
 SimpleWebService::SimpleWebService(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
     : RestService(endpoint, profile)
 {
-    RegisterRestApi(std::make_shared<GetFileApi>());
+    RegisterRestFactory(std::make_shared<GetFileFactory>());
 }
 
 SimpleWebService::~SimpleWebService()

@@ -14,7 +14,7 @@ using namespace bouncer;
 
 
 RestSettings::RestSettings()
-    : RestApi("POST", "/settings", "ContentType: application/json")
+    : RestFactory("POST", "/settings", "ContentType: application/json")
 {
 }
 

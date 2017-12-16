@@ -2,12 +2,12 @@
 #ifndef streetgangserver_RestGetScene
 #define streetgangserver_RestGetScene
 
-#include "RestApi.h"
+#include "RestFactory.h"
 
 
 namespace streetgangserver
 {
-    class RestGetScene : public sg::microreactor::RestApi
+    class RestGetScene : public sg::microreactor::RestFactory
     {
     public:
         RestGetScene();

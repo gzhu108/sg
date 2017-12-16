@@ -4,7 +4,7 @@
 
 #include "Microreactor.h"
 #include "HttpHeader.h"
-#include "RestApi.h"
+#include "RestFactory.h"
 #include "RestFileResponse.h"
 #include "RestMessageDecoder.h"
 #include "RestRequest.h"
@@ -23,7 +23,7 @@ namespace sg { namespace microreactor
         virtual ~RestService();
 
     public:
-        void RegisterRestApi(std::shared_ptr<RestApi> restApi);
+        void RegisterRestFactory(std::shared_ptr<RestFactory> restFactory);
 
     protected:
         std::shared_ptr<RestMessageDecoder> mRestMessageDecoder;
