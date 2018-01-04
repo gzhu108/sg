@@ -115,7 +115,7 @@ int32_t main(int32_t argc, const char* argv[])
     secureProfile->Configuration.set(configuration);
 
     auto secureSocket = std::make_shared<SecureTcpSocket>();
-    secureSocket->ConfigureContext("selfsigned.key", "cert.pem");
+    secureSocket->ConfigureServerContext("selfsigned.key", "cert.pem");
     auto secureEndpoint = std::make_shared<TcpEndpoint>(secureSocket, secureProfile);
 
     SimpleWebService secureWebService(secureEndpoint, secureProfile);
