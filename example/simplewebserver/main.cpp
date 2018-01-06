@@ -98,16 +98,11 @@ int32_t main(int32_t argc, const char* argv[])
 
     auto simpleSocket = std::make_shared<TcpSocket>();
     auto simpleEndpoint = std::make_shared<TcpEndpoint>(simpleSocket, simpleProfile);
+    simpleSocket = nullptr;
 
     SimpleWebService simpleWebService(simpleEndpoint, simpleProfile);
-    simpleSocket = nullptr;
     simpleEndpoint = nullptr;
 
-    // Initialize OpenSSL
-    SSL_load_error_strings();
-    OpenSSL_add_ssl_algorithms();
-
-    // Create the secure REST service
     // Create the secure REST service
     auto secureProfile = std::make_shared<Profile>();
     secureProfile->Address.set(hostName);
@@ -117,9 +112,9 @@ int32_t main(int32_t argc, const char* argv[])
     auto secureSocket = std::make_shared<SecureTcpSocket>();
     secureSocket->ConfigureServerContext("selfsigned.key", "cert.pem");
     auto secureEndpoint = std::make_shared<TcpEndpoint>(secureSocket, secureProfile);
+    secureSocket = nullptr;
 
     SimpleWebService secureWebService(secureEndpoint, secureProfile);
-    secureSocket = nullptr;
     secureEndpoint = nullptr;
 
     // Start the REST services
