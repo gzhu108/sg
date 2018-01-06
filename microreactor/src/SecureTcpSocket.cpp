@@ -1,5 +1,6 @@
 #include "SecureTcpSocket.h"
 #include "Exception.h"
+#include <openssl/bio.h>
 
 #ifndef SSL_CTX_set_ecdh_auto
 # define SSL_CTX_set_ecdh_auto(dummy, onoff) ((void)0)
@@ -166,22 +167,26 @@ void SecureTcpSocket::ShowCerts()
         return;
     }
 
+    ERR_load_BIO_strings();
+    ERR_load_crypto_strings();
+
+    BIO* outbio = BIO_new_fp(stdout, BIO_NOCLOSE);
+
     X509* cert = SSL_get_peer_certificate(mSsl);
     if (cert != nullptr)
     {
-        printf("certificates:\n");
-        char* line = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0);
-        printf("Subject: %s\n", line);
-        free(line);
+        printf("Certificate Subject:\n");
+        X509_NAME_print_ex(outbio, X509_get_subject_name(cert), 0, 0);
+        BIO_printf(outbio, "\n");
 
-        line = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0);
-        printf("Issuer: %s\n", line);
-        free(line);
+        printf("Certificate Issuer:\n");
+        X509_NAME_print_ex(outbio, X509_get_issuer_name(cert), 0, 0);
+        BIO_printf(outbio, "\n");
 
         X509_free(cert);
     }
     else
     {
-        printf("No certificates.\n");
+        printf("No certificate.\n");
     }
 }

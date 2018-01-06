@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Service>
+    <Address>127.0.0.1</Address>
+    <Port>80</Port>
+    <SecurePort>443</SecurePort>
+    <WebRoot>webroot</WebRoot>
+</Service>

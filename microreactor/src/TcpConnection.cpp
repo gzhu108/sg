@@ -11,17 +11,20 @@ TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<
     , mSocket(socket)
     , mServerConnection(false)
 {
-    if (mSocket == nullptr || !mSocket->IsValid())
-    {
-        mSocket = std::make_shared<TcpSocket>();
-
-        // Client connection to a server
-        mServerConnection = false;
-    }
-    else
+    if (mSocket != nullptr && mSocket->IsValid())
     {
         // Server connection received from a client
         mServerConnection = true;
+    }
+    else
+    {
+        if (mSocket == nullptr)
+        {
+            mSocket = std::make_shared<TcpSocket>();
+        }
+
+        // Client connection to a server
+        mServerConnection = false;
     }
 
     if (!mSocket->HostName->empty())
