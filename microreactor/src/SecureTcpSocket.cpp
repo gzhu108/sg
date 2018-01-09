@@ -170,23 +170,30 @@ void SecureTcpSocket::ShowCerts()
     ERR_load_BIO_strings();
     ERR_load_crypto_strings();
 
-    BIO* outbio = BIO_new_fp(stdout, BIO_NOCLOSE);
+    BUF_MEM* bptr = nullptr;
+    BIO* outbio = BIO_new(BIO_s_mem());
+    BIO_get_mem_ptr(outbio, &bptr);
 
     X509* cert = SSL_get_peer_certificate(mSsl);
     if (cert != nullptr)
     {
-        printf("Certificate Subject:\n");
+        BIO_printf(outbio, "Certificate Subject:\n");
         X509_NAME_print_ex(outbio, X509_get_subject_name(cert), 0, 0);
         BIO_printf(outbio, "\n");
 
-        printf("Certificate Issuer:\n");
+        BIO_printf(outbio, "Certificate Issuer:\n");
         X509_NAME_print_ex(outbio, X509_get_issuer_name(cert), 0, 0);
         BIO_printf(outbio, "\n");
+
+        std::string s(bptr->data, bptr->length);
+        LOG("%s\n", s.c_str());
 
         X509_free(cert);
     }
     else
     {
-        printf("No certificate.\n");
+        LOG("No certificate.\n");
     }
+
+    BIO_free(outbio);
 }

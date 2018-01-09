@@ -2,7 +2,6 @@
 
 <Service>
     <Address>127.0.0.1</Address>
-    <Port>80</Port>
     <SecurePort>443</SecurePort>
     <WebRoot>webroot</WebRoot>
 </Service>
