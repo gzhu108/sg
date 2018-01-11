@@ -2,28 +2,27 @@
 #include "RestMessageDecoder.h"
 
 using namespace sg::microreactor;
-using namespace sg::microreactor;
 
 
 class RestMessageDecoderMock : public RestMessageDecoder
 {
 public:
-    void GetRegisteredRestApis(std::map<std::string, RestMessageDecoder::RestApiList>& registeredRestApis)
+    void GetRegisteredRestFactorys(std::map<std::string, RestMessageDecoder::RestFactoryList>& registeredRestFactorys)
     {
-        registeredRestApis = mRestApiTable;
+        registeredRestFactorys = mRestFactoryTable;
     }
 
-    virtual std::shared_ptr<RestApi> GetRestApi(std::shared_ptr<RestRequest> restRequest) override
+    virtual std::shared_ptr<RestFactory> GetRestFactory(std::shared_ptr<RestRequest> restRequest) override
     {
-        return RestMessageDecoder::GetRestApi(restRequest);
+        return RestMessageDecoder::GetRestFactory(restRequest);
     }
 };
 
-class RestApiMock : public RestApi
+class RestFactoryMock : public RestFactory
 {
 public:
-    RestApiMock(const std::string& method, const std::string& path, const std::string& contentType)
-        : RestApi(method, path, contentType)
+    RestFactoryMock(const std::string& method, const std::string& path, const std::string& contentType)
+        : RestFactory(method, path, contentType)
     {
     }
 
@@ -34,20 +33,20 @@ public:
 };
 
 
-TEST(RestMessageDecoderTest, RegisterRestApiNormal)
+TEST(RestMessageDecoderTest, RegisterRestFactoryNormal)
 {
-    auto api_1 = std::make_shared<RestApiMock>("GET", "/api_1/data", "ContentType: text/plain");
-    auto api_2 = std::make_shared<RestApiMock>("POST", "/api_2/save", "ContentType: application/json");
+    auto api_1 = std::make_shared<RestFactoryMock>("GET", "/api_1/data", "ContentType: text/plain");
+    auto api_2 = std::make_shared<RestFactoryMock>("POST", "/api_2/save", "ContentType: application/json");
     
     RestMessageDecoderMock decoder;
-    decoder.RegisterRestApi(api_1);
-    decoder.RegisterRestApi(api_2);
+    decoder.RegisterRestFactory(api_1);
+    decoder.RegisterRestFactory(api_2);
 
     auto restRequest_1 = std::make_shared<RestRequest>();
     restRequest_1->mMethod = "GET";
     restRequest_1->mUri = "/api_1/data";
 
-    auto found_api_1 = decoder.GetRestApi(restRequest_1);
+    auto found_api_1 = decoder.GetRestFactory(restRequest_1);
     EXPECT_NE(nullptr, found_api_1);
     EXPECT_EQ("/api_1/data", found_api_1->mPath);
     EXPECT_EQ("GET", found_api_1->mMethod);
@@ -56,25 +55,25 @@ TEST(RestMessageDecoderTest, RegisterRestApiNormal)
     restRequest_2->mMethod = "POST";
     restRequest_2->mUri = "/api_2/save";
 
-    auto found_api_2 = decoder.GetRestApi(restRequest_2);
+    auto found_api_2 = decoder.GetRestFactory(restRequest_2);
     EXPECT_NE(nullptr, found_api_2);
     EXPECT_EQ("/api_2/save", found_api_2->mPath);
     EXPECT_EQ("POST", found_api_2->mMethod);
 
 
 #if 0
-    std::map<std::string, RestMessageDecoder::RestApiList> registeredRestApis;
-    codec.GetRegisteredRestApis(registeredRestApis);
+    std::map<std::string, RestMessageDecoder::RestFactoryList> registeredRestFactorys;
+    codec.GetRegisteredRestFactorys(registeredRestFactorys);
     
-    auto found_1 = registeredRestApis.find("/api_1/data");
-    EXPECT_NE(registeredRestApis.end(), found_1.first);
+    auto found_1 = registeredRestFactorys.find("/api_1/data");
+    EXPECT_NE(registeredRestFactorys.end(), found_1.first);
     EXPECT_EQ("/api_1/data", found_1.first->first);
     EXPECT_EQ("/api_1/data", found_1.first->second->mPath);
     EXPECT_EQ("GET", found_1.first->second->mMethod);
     EXPECT_EQ("test/plain", found_1.first->second->mContentType);
     
-    auto found_2 = registeredRestApis.find("/api_2/save");
-    EXPECT_NE(registeredRestApis.end(), found_2.first);
+    auto found_2 = registeredRestFactorys.find("/api_2/save");
+    EXPECT_NE(registeredRestFactorys.end(), found_2.first);
     EXPECT_EQ("/api_2/save", found_2.first->first);
     EXPECT_EQ("/api_2/save", found_2.first->second->mPath);
     EXPECT_EQ("POST", found_2.first->second->mMethod);

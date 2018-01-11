@@ -24,6 +24,7 @@ __top_builddir__lib_libstreetgangapi_a_SOURCES = \
     protobuf/cpp/MessageHeader.pb.cc \
     protobuf/cpp/Rectangle.pb.cc \
     protobuf/cpp/Point.pb.cc \
+    protobuf/cpp/StreetGangPBService.pb.cc \
     MessageBase.cpp \
     RequestByebye.cpp \
     RequestCreateWorld.cpp \
