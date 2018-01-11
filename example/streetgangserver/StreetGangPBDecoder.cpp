@@ -51,9 +51,7 @@ std::shared_ptr<Reactor> StreetGangPBDecoder::Decode(std::istream& stream, Conne
     google::protobuf::io::IstreamInputStream istreamInputStream(&stream);
     google::protobuf::io::CodedInputStream codedInputStream(&istreamInputStream);
 
-    uint32_t size = 0;
-    codedInputStream.ReadVarint32(&size);
-    uint32_t previous = codedInputStream.PushLimit(size);
+    google::protobuf::io::CodedInputStream::Limit previous = codedInputStream.ReadLengthAndPushLimit();
     streetgangpb::MessageHeader pbMessageHeader;
     bool result = pbMessageHeader.ParseFromCodedStream(&codedInputStream);
     codedInputStream.PopLimit(previous);
@@ -78,8 +76,7 @@ std::shared_ptr<Reactor> StreetGangPBDecoder::Decode(std::istream& stream, Conne
     }
     else if (pbMessageHeader.message_id() == "CreateWorldRequest")
     {
-        codedInputStream.ReadVarint32(&size);
-        uint32_t previousSize = codedInputStream.PushLimit(size);
+        google::protobuf::io::CodedInputStream::Limit previousSize = codedInputStream.ReadLengthAndPushLimit();
         CreateWorldRequest pbCresateWorldRequest;
         bool result = pbCresateWorldRequest.ParseFromCodedStream(&codedInputStream);
         codedInputStream.PopLimit(previousSize);
@@ -96,8 +93,7 @@ std::shared_ptr<Reactor> StreetGangPBDecoder::Decode(std::istream& stream, Conne
     }
     else if (pbMessageHeader.message_id() == "GetSceneRequest")
     {
-        codedInputStream.ReadVarint32(&size);
-        uint32_t previousSize = codedInputStream.PushLimit(size);
+        google::protobuf::io::CodedInputStream::Limit previousSize = codedInputStream.ReadLengthAndPushLimit();
         GetSceneRequest pbGetSceneRequest;
         bool result = pbGetSceneRequest.ParseFromCodedStream(&codedInputStream);
         codedInputStream.PopLimit(previousSize);

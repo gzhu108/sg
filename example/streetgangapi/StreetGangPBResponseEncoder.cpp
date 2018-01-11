@@ -51,7 +51,7 @@ bool StreetGangPBResponseEncoder::EncodeMessage(std::shared_ptr<ResponseError> m
     codedOutputStream.WriteVarint32(size);
     pbMessageHeader.SerializeToCodedStream(&codedOutputStream);
 
-    size = (int32_t)pbErrorResponse.ByteSizeLong();
+    size = (uint32_t)pbErrorResponse.ByteSizeLong();
     codedOutputStream.WriteVarint32(size);
     return pbErrorResponse.SerializeToCodedStream(&codedOutputStream);
 }
@@ -82,7 +82,7 @@ bool StreetGangPBResponseEncoder::EncodeMessage(std::shared_ptr<ResponseGetVersi
     codedOutputStream.WriteVarint32(size);
     pbMessageHeader.SerializeToCodedStream(&codedOutputStream);
 
-    size = (int32_t)pbGetVersionResponse.ByteSizeLong();
+    size = (uint32_t)pbGetVersionResponse.ByteSizeLong();
     codedOutputStream.WriteVarint32(size);
     return pbGetVersionResponse.SerializeToCodedStream(&codedOutputStream);
 }
@@ -115,7 +115,7 @@ bool StreetGangPBResponseEncoder::EncodeMessage(std::shared_ptr<ResponseCreateWo
     codedOutputStream.WriteVarint32(size);
     pbMessageHeader.SerializeToCodedStream(&codedOutputStream);
 
-    size = (int32_t)pbCreateWorldResponse.ByteSizeLong();
+    size = (uint32_t)pbCreateWorldResponse.ByteSizeLong();
     codedOutputStream.WriteVarint32(size);
     return pbCreateWorldResponse.SerializeToCodedStream(&codedOutputStream);
 }
@@ -161,7 +161,7 @@ bool StreetGangPBResponseEncoder::EncodeMessage(std::shared_ptr<ResponseGetScene
     codedOutputStream.WriteVarint32(size);
     pbMessageHeader.SerializeToCodedStream(&codedOutputStream);
 
-    size = (int32_t)pbGetSceneResponse.ByteSizeLong();
+    size = (uint32_t)pbGetSceneResponse.ByteSizeLong();
     codedOutputStream.WriteVarint32(size);
     return pbGetSceneResponse.SerializeToCodedStream(&codedOutputStream);
 }
