@@ -29,9 +29,7 @@ __top_builddir__bin_streetgangserver_SOURCES = \
     StreetGangService.cpp \
     StreetGangSessionManager.cpp \
     WorldServiceProvider.cpp \
-    RestGetVersion.cpp \
-    RestCreateWorld.cpp \
-    RestGetScene.cpp
+    StreetGangRestService.cpp
 
 __top_builddir__bin_streetgangserver_LDADD = \
     ../metricatorapi/lib/libmetricatorapi.a \

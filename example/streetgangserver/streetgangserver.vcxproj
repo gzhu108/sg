@@ -44,12 +44,10 @@
     <ClCompile Include="RequestErrorReactor.cpp" />
     <ClCompile Include="RequestGetSceneReactor.cpp" />
     <ClCompile Include="RequestGetVersionReactor.cpp" />
-    <ClCompile Include="RestCreateWorld.cpp" />
-    <ClCompile Include="RestGetScene.cpp" />
-    <ClCompile Include="RestGetVersion.cpp" />
     <ClCompile Include="StreetGangMessageDecoder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StreetGangPBDecoder.cpp" />
+    <ClCompile Include="StreetGangRestService.cpp" />
     <ClCompile Include="StreetGangService.cpp" />
     <ClCompile Include="StreetGangSessionManager.cpp" />
     <ClCompile Include="WorldServiceProvider.cpp" />
@@ -60,11 +58,9 @@
     <ClInclude Include="RequestErrorReactor.h" />
     <ClInclude Include="RequestGetSceneReactor.h" />
     <ClInclude Include="RequestGetVersionReactor.h" />
-    <ClInclude Include="RestCreateWorld.h" />
-    <ClInclude Include="RestGetScene.h" />
-    <ClInclude Include="RestGetVersion.h" />
     <ClInclude Include="StreetGangMessageDecoder.h" />
     <ClInclude Include="StreetGangPBDecoder.h" />
+    <ClInclude Include="StreetGangRestService.h" />
     <ClInclude Include="StreetGangService.h" />
     <ClInclude Include="StreetGangSessionManager.h" />
     <ClInclude Include="WorldServiceProvider.h" />

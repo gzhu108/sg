@@ -9,6 +9,7 @@
 #include "Microreactor.h"
 #include "NetworkUtility.h"
 #include "StreetGangService.h"
+#include "StreetGangRestService.h"
 #include "ConfigurationXml.h"
 #include "MetricatorLogger.h"
 //#include "UdpSocket.h"
@@ -37,6 +38,40 @@ void SingalHandler(int type)
 {
     terminateSignal = true;
     STOP_TASK_MANAGER();
+}
+
+static std::shared_ptr<StreetGangRestService> CreateRestService(std::shared_ptr<Configuration> configuration)
+{
+    if (configuration == nullptr)
+    {
+        return false;
+    }
+
+    uint32_t listenTimeout = 30;
+    uint32_t receiveTimeout = 30;
+    uint32_t sendTimeout = 100;
+
+    configuration->GetValue("ListenTimeout", listenTimeout);
+    configuration->GetValue("ReceiveTimeout", receiveTimeout);
+    configuration->GetValue("SendTimeout", sendTimeout);
+
+    std::string serviceAddress = "0.0.0.0";
+    uint16_t restPort = 9390;
+    configuration->GetValue("ServiceAddress", serviceAddress);
+    configuration->GetValue("RestPort", restPort);
+
+    auto profile = std::make_shared<Profile>();
+    profile->Configuration.set(configuration);
+    profile->Protocol.set("tcp");
+    profile->Address.set(serviceAddress);
+    profile->Port.set(restPort);
+
+    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
+    endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+
+    return std::make_shared<StreetGangRestService>(endpoint, profile);
 }
 
 int32_t main(int32_t argc, const char* argv[])
@@ -142,18 +177,22 @@ int32_t main(int32_t argc, const char* argv[])
     //profile->Port.set(8390);
     //Microservice streetGangService(profile);
 
-    // Create StreetGangService
-    StreetGangService streetGangService(configuration);
-    if (streetGangService.Start())
+    std::shared_ptr<StreetGangRestService> streetGangRestService = CreateRestService(configuration);
+    if (streetGangRestService->Start())
     {
-        START_BLOCKING_TASK_LOOP();
+        // Create StreetGangService
+        StreetGangService streetGangService(configuration);
+        if (streetGangService.Start())
+        {
+            START_BLOCKING_TASK_LOOP();
 
-        // Stop StreetGangService
-        streetGangService.Stop();
-    }
-    else
-    {
-        LOG("Failed to start the streetgangserver");
+            // Stop StreetGangService
+            streetGangService.Stop();
+        }
+        else
+        {
+            LOG("Failed to start the streetgangserver");
+        }
     }
 
     // Optional: Delete all global objects allocated by libprotobuf.

@@ -24,7 +24,6 @@ namespace streetgangserver
         bool CreateListeners();
         bool CreateBinaryListener();
         bool CreatePBListener();
-        bool CreateRestListener();
         
         void OnConnectionMade(const std::shared_ptr<const sg::microreactor::Connection>& connection);
 

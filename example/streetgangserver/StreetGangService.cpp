@@ -4,10 +4,6 @@
 #include "StreetGangMessageDecoder.h"
 #include "StreetGangPBDecoder.h"
 #include "DiscoveryApi.h"
-#include "RestMessageDecoder.h"
-#include "RestGetVersion.h"
-#include "RestCreateWorld.h"
-#include "RestGetScene.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -114,7 +110,6 @@ bool StreetGangService::CreateListeners()
 
     CreateBinaryListener();
     CreatePBListener();
-    CreateRestListener();
     
     mConfigurationConnectionId = mConfiguration->ValueUpdated.Connect(std::bind(&StreetGangService::Restart, this));
     return !mListenerCollection.empty();
@@ -198,53 +193,6 @@ bool StreetGangService::CreatePBListener()
     profile->Port.set(port);
 
     profile->Dispatcher.set(std::make_shared<StreetGangPBDecoder>());
-
-    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
-    endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
-    
-    auto listener = std::make_shared<Listener>();
-    if (listener->Initialize(endpoint))
-    {
-        mListenerCollection.emplace_back(listener);
-        return true;
-    }
-
-    return false;
-}
-
-bool StreetGangService::CreateRestListener()
-{
-    if (mConfiguration == nullptr)
-    {
-        return false;
-    }
-
-    uint32_t listenTimeout = 30;
-    uint32_t receiveTimeout = 30;
-    uint32_t sendTimeout = 100;
-
-    mConfiguration->GetValue("ListenTimeout", listenTimeout);
-    mConfiguration->GetValue("ReceiveTimeout", receiveTimeout);
-    mConfiguration->GetValue("SendTimeout", sendTimeout);
-
-    auto restMessageDecoder = std::make_shared<RestMessageDecoder>();
-    restMessageDecoder->RegisterRestFactory(std::make_shared<RestGetVersion>());
-    restMessageDecoder->RegisterRestFactory(std::make_shared<RestCreateWorld>());
-    restMessageDecoder->RegisterRestFactory(std::make_shared<RestGetScene>());
-
-    std::string serviceAddress = "0.0.0.0";
-    uint16_t restPort = 9390;
-    mConfiguration->GetValue("ServiceAddress", serviceAddress);
-    mConfiguration->GetValue("RestPort", restPort);
-
-    auto profile = std::make_shared<Profile>();
-    profile->Configuration.set(mConfiguration);
-    profile->Protocol.set("tcp");
-    profile->Address.set(serviceAddress);
-    profile->Port.set(restPort);
-    profile->Dispatcher.set(restMessageDecoder);
 
     std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
     endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));

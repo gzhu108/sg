@@ -42,19 +42,13 @@
     <ClCompile Include="StreetGangSessionManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RestGetVersion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StreetGangMessageDecoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StreetGangPBDecoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RestCreateWorld.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RestGetScene.cpp">
+    <ClCompile Include="StreetGangRestService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,19 +77,13 @@
     <ClInclude Include="StreetGangSessionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RestGetVersion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StreetGangMessageDecoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreetGangPBDecoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RestCreateWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RestGetScene.h">
+    <ClInclude Include="StreetGangRestService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
