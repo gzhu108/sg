@@ -39,13 +39,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GetFileFactory.cpp" />
     <ClCompile Include="GetFileReactor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SimpleWebService.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GetFileFactory.h" />
     <ClInclude Include="GetFileReactor.h" />
     <ClInclude Include="SimpleWebService.h" />
   </ItemGroup>

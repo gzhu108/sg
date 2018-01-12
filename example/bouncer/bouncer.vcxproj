@@ -141,15 +141,13 @@
     <ClCompile Include="BouncerProfile.cpp" />
     <ClCompile Include="BouncerReactor.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RestBouncer.cpp" />
-    <ClCompile Include="RestSettings.cpp" />
+    <ClCompile Include="BouncerRestService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BouncerDecoder.h" />
     <ClInclude Include="BouncerProfile.h" />
     <ClInclude Include="BouncerReactor.h" />
-    <ClInclude Include="RestBouncer.h" />
-    <ClInclude Include="RestSettings.h" />
+    <ClInclude Include="BouncerRestService.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,11 +5,9 @@
 #include <stdlib.h>
 #include <thread>
 #include <functional>
-#include "RestService.h"
+#include "BouncerRestService.h"
 #include "BouncerProfile.h"
 #include "BouncerDecoder.h"
-#include "RestSettings.h"
-#include "RestBouncer.h"
 
 using namespace sg::microreactor;
 using namespace bouncer;
@@ -135,10 +133,7 @@ int32_t main(int32_t argc, const char* argv[])
     profile->TargetPort.set(targetPort);
 
     // Create a REST service for settings
-    RestService restService(profile);
-    restService.RegisterRestFactory(std::make_shared<RestSettings>());
-    restService.RegisterRestFactory(std::make_shared<RestBouncer>());
-
+    BouncerRestService restService(profile);
     if (restService.Start())
     {
         profile->Address.set(hostName);

@@ -18,8 +18,7 @@ __top_builddir__bin_bouncer_SOURCES = \
     BouncerProfile.cpp \
     BouncerDecoder.cpp \
     BouncerReactor.cpp \
-    RestSettings.cpp \
-    RestBouncer.cpp
+    BouncerRestService.cpp
     
 __top_builddir__bin_bouncer_LDADD = \
     ../../microreactor/lib/libmicroreactor.a

@@ -24,13 +24,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RestSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BouncerProfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RestBouncer.cpp">
+    <ClCompile Include="BouncerRestService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,13 +38,10 @@
     <ClInclude Include="BouncerReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RestSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BouncerProfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RestBouncer.h">
+    <ClInclude Include="BouncerRestService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

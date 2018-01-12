@@ -17,7 +17,6 @@ bin_PROGRAMS = \
 __top_builddir__bin_simplewebserver_SOURCES = \
     main.cpp \
 	SimpleWebService.cpp \
-    GetFileFactory.cpp \
     GetFileReactor.cpp
 
 __top_builddir__bin_simplewebserver_LDADD = \

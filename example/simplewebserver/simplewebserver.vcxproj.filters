@@ -24,18 +24,12 @@
     <ClCompile Include="SimpleWebService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GetFileFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GetFileReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SimpleWebService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GetFileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

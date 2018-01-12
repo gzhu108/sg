@@ -4,11 +4,14 @@
 
 #include <map>
 #include "Dispatcher.h"
-#include "RestFactory.h"
+#include "Reactor.h"
+#include "RestRequest.h"
 
 
 namespace sg { namespace microreactor
 {
+    typedef std::function<std::shared_ptr<Reactor> (std::shared_ptr<RestRequest>, Connection&)> RestReactorFactory;
+
     class RestMessageDecoder : public Dispatcher
     {
     public:
@@ -17,11 +20,11 @@ namespace sg { namespace microreactor
 
     public:
         virtual void Dispatch(Connection& connection) override;
-        virtual void RegisterRestFactory(std::shared_ptr<RestFactory> restFactory);
+        virtual void RegisterRestReactorFactory(const std::string& method, const std::string& uri, RestReactorFactory factory);
 
     protected:
         virtual std::shared_ptr<Reactor> Decode(Connection& connection);
-        virtual std::shared_ptr<RestFactory> GetRestFactory(std::shared_ptr<RestRequest> restRequest);
+        virtual RestReactorFactory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest);
         virtual void PushChunkedRequest(Connection& connection, std::shared_ptr<RestRequest> restRequest);
         virtual std::shared_ptr<RestRequest> PopChunkedRequest(Connection& connection);
 
@@ -29,10 +32,12 @@ namespace sg { namespace microreactor
         std::recursive_mutex mLock;
         std::map<uintptr_t, std::shared_ptr<RestRequest>> mChunkedRequestStore;
 
-        // <URI, RestFactory>
-        typedef std::map<std::string, std::shared_ptr<RestFactory>> RestFactoryList;
-        // <METHOD, RestFactoryList>
-        std::map<std::string, RestFactoryList> mRestFactoryTable;
+        // <URI, RestReactorFactory>
+        typedef std::map<std::string, RestReactorFactory> FactoryMap;
+        // <METHOD, RestReactorFactoryMap>
+        typedef std::map<std::string, FactoryMap> MethodMap;
+
+        MethodMap mRestReactorFactoryTable;
     };
 }}
 

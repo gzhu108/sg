@@ -1,3 +1,7 @@
+#ifdef _MSC_VER
+#pragma warning(disable : 4503)
+#endif
+
 #include "RestMessageDecoder.h"
 #include "Connection.h"
 #include "TaskManagerSingleton.h"
@@ -26,29 +30,30 @@ void RestMessageDecoder::Dispatch(Connection& connection)
     }
 }
 
-void RestMessageDecoder::RegisterRestFactory(std::shared_ptr<RestFactory> restFactory)
+void RestMessageDecoder::RegisterRestReactorFactory(const std::string& method, const std::string& uri, RestReactorFactory factory)
 {
-    if (restFactory == nullptr)
+    if (factory == nullptr)
     {
         return;
     }
 
-    auto methodFound = mRestFactoryTable.find(restFactory->mMethod);
-    if (methodFound == mRestFactoryTable.end())
+    auto methodFound = mRestReactorFactoryTable.find(method);
+    if (methodFound == mRestReactorFactoryTable.end())
     {
-        RestFactoryList restFactoryList;
-        restFactoryList[restFactory->mPath] = restFactory;
-        mRestFactoryTable[restFactory->mMethod] = restFactoryList;
+        FactoryMap restReactorFactoryMap;
+        restReactorFactoryMap[uri] = factory;
+        mRestReactorFactoryTable[method] = restReactorFactoryMap;
     }
     else
     {
-        auto apiFound = methodFound->second.find(restFactory->mPath);
+        auto apiFound = methodFound->second.find(uri);
         if (apiFound != methodFound->second.end())
         {
-            LOG("Duplicate API found [Method=%s] [Path=%s]", restFactory->mMethod.c_str(), restFactory->mPath.c_str());
+            LOG("Multiple factory found [Method=%s] [URI=%s]", method.c_str(), uri.c_str());
         }
 
-        methodFound->second[restFactory->mPath] = restFactory;
+        // Overwrite the factory
+        methodFound->second[uri] = factory;
     }
 }
 
@@ -106,8 +111,8 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
     // Handle chunked data before Getting the API object.
     if (restRequest->mChunks.empty() || restRequest->mChunkCompleted)
     {
-        auto restFactory = GetRestFactory(restRequest);
-        if (restFactory == nullptr)
+        auto restReactorFactory = GetRestReactorFactory(restRequest);
+        if (restReactorFactory == nullptr)
         {
             RestResponse errorResponse;
             errorResponse.mVersion = "HTTP/1.1";
@@ -121,7 +126,7 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
             return nullptr;
         }
 
-        auto reactor = restFactory->CreateReactor(restRequest, connection);
+        auto reactor = restReactorFactory(restRequest, connection);
         if (reactor == nullptr)
         {
             RestResponse errorResponse;
@@ -142,15 +147,15 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
     return nullptr;
 }
 
-std::shared_ptr<RestFactory> RestMessageDecoder::GetRestFactory(std::shared_ptr<RestRequest> restRequest)
+RestReactorFactory RestMessageDecoder::GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest)
 {
-    if (restRequest == nullptr || restRequest->mUri.empty() || mRestFactoryTable.empty())
+    if (restRequest == nullptr || restRequest->mUri.empty() || mRestReactorFactoryTable.empty())
     {
         return nullptr;
     }
 
-    auto methodFound = mRestFactoryTable.find(restRequest->mMethod);
-    if (methodFound == mRestFactoryTable.end())
+    auto methodFound = mRestReactorFactoryTable.find(restRequest->mMethod);
+    if (methodFound == mRestReactorFactoryTable.end())
     {
         return nullptr;
     }

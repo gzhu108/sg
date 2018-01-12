@@ -37,7 +37,7 @@ RestService::~RestService()
 {
 }
 
-void RestService::RegisterRestFactory(std::shared_ptr<RestFactory> restFactory)
-{ 
-    return mRestMessageDecoder->RegisterRestFactory(restFactory);
+bool RestService::Initialize()
+{
+    return Microservice::Initialize();
 }
