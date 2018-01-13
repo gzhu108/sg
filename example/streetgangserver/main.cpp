@@ -188,6 +188,9 @@ int32_t main(int32_t argc, const char* argv[])
 
             // Stop StreetGangService
             streetGangService.Stop();
+
+            // Stop StreetGangRestService
+            streetGangRestService->Stop();
         }
         else
         {
