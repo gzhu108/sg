@@ -6,6 +6,7 @@
 #include "Connection.h"
 #include "TaskManagerSingleton.h"
 #include "RestResponse.h"
+#include "StringUtility.h"
 
 #define DEFAULT_HTTP_BUFFER_SIZE 10240
 
@@ -37,19 +38,22 @@ void RestMessageDecoder::RegisterRestReactorFactory(const std::string& method, c
         return;
     }
 
-    auto methodFound = mRestReactorFactoryTable.find(method);
+    std::string upperMethod = method;
+    StringUtility::ToUpper(upperMethod);
+
+    auto methodFound = mRestReactorFactoryTable.find(upperMethod);
     if (methodFound == mRestReactorFactoryTable.end())
     {
         FactoryMap restReactorFactoryMap;
         restReactorFactoryMap[uri] = factory;
-        mRestReactorFactoryTable[method] = restReactorFactoryMap;
+        mRestReactorFactoryTable[upperMethod] = restReactorFactoryMap;
     }
     else
     {
         auto apiFound = methodFound->second.find(uri);
         if (apiFound != methodFound->second.end())
         {
-            LOG("Multiple factory found [Method=%s] [URI=%s]", method.c_str(), uri.c_str());
+            LOG("Multiple factory found [Method=%s] [URI=%s]", upperMethod.c_str(), uri.c_str());
         }
 
         // Overwrite the factory
@@ -154,7 +158,10 @@ RestReactorFactory RestMessageDecoder::GetRestReactorFactory(std::shared_ptr<Res
         return nullptr;
     }
 
-    auto methodFound = mRestReactorFactoryTable.find(restRequest->mMethod);
+    std::string upperMethod = restRequest->mMethod;
+    StringUtility::ToUpper(upperMethod);
+
+    auto methodFound = mRestReactorFactoryTable.find(upperMethod);
     if (methodFound == mRestReactorFactoryTable.end())
     {
         return nullptr;

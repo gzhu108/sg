@@ -21,37 +21,39 @@ namespace sg { namespace microreactor
         };
 
         template <typename String>
-        void ToUpper(String& original)
+        String& ToUpper(String& original)
         {
             std::transform(original.begin(), original.end(), original.begin(), [](typename String::value_type c)->typename String::value_type
             {
                 return (typename String::value_type)::toupper((int)c);
             });
+
+            return original;
         }
 
         template <typename String>
         String GetUpper(const String& original)
         {
             String destination(original);
-            ToUpper(destination);
-            return destination;
+            return ToUpper(destination);
         }
 
         template <typename String>
-        void ToLower(String& original)
+        String& ToLower(String& original)
         {
             std::transform(original.begin(), original.end(), original.begin(), [](typename String::value_type c)->typename String::value_type
             {
                 return (typename String::value_type)::tolower((int)c);
             });
+
+            return original;
         }
 
         template <typename String>
         String GetLower(const String& original)
         {
             String destination(original);
-            ToLower(destination);
-            return destination;
+            return ToLower(destination);
         }
 
         template<typename String>
