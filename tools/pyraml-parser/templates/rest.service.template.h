@@ -18,7 +18,7 @@ namespace $namespace
 
     protected:
         @decl_creator_begin
-        virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$pathReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$funcReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
         @decl_creator_end
     };
 }
