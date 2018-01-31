@@ -28,9 +28,6 @@ std::shared_ptr<Reactor> SimpleWebService::CreateGetFileReactor(std::shared_ptr<
         return nullptr;
     }
 
-    // No need to parse JSON
-    auto input = std::make_shared<Message>();
-
-    auto reactor = std::make_shared<GetFileReactor>(connection, request, input);
+    auto reactor = std::make_shared<GetFileReactor>(connection, request);
     return reactor;
 }

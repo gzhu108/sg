@@ -4,7 +4,7 @@
 
 #include "Reactor.h"
 #include "Connection.h"
-#include "RestRequest.h"
+#include "RestMessage.h"
 #include "Uuid.h"
 
 
@@ -16,11 +16,10 @@ namespace sg { namespace microreactor
     public:
         typedef T MessageType;
 
-        RestReactor(Connection& connection, std::shared_ptr<RestRequest> request, std::shared_ptr<MessageType> input)
+        RestReactor(Connection& connection, std::shared_ptr<RestRequest> request)
             : Reactor(connection)
-            , mRestRequest(request)
         {
-            mInput = std::static_pointer_cast<Message>(input);
+            mInput = std::make_shared<MessageType>(request);
             mInput->TrackId.set(Uuid::GenerateUuid().ToString());
         }
 
@@ -29,16 +28,13 @@ namespace sg { namespace microreactor
     public:
         virtual std::shared_ptr<RestRequest> Request()
         {
-            return mRestRequest;
+            return InputMessage()->Request();
         }
 
         virtual std::shared_ptr<MessageType> InputMessage()
         {
             return std::static_pointer_cast<MessageType>(mInput);
         }
-
-    protected:
-        std::shared_ptr<RestRequest> mRestRequest;
     };
 }}
 

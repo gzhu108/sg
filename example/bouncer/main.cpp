@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <thread>
 #include <functional>
+#include "Microreactor.h"
 #include "BouncerRestService.h"
 #include "BouncerProfile.h"
 #include "BouncerDecoder.h"

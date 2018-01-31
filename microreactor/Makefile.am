@@ -66,8 +66,8 @@ nobase_include_HEADERS = \
     src/UdpSocket.h \
     src/Uuid.h \
     src/HttpHeader.h \
-    src/RestFactory.h \
     src/RestFileResponse.h \
+    src/RestMessage.h \
     src/RestMessageDecoder.h \
 	src/RestReactor.h \
     src/RestRequest.h \

@@ -2,8 +2,8 @@
 
 #include <signal.h>
 #include <stdlib.h>
+#include "Microreactor.h"
 #include "SimpleWebService.h"
-#include "StringUtility.h"
 
 using namespace sg::microreactor;
 using namespace simplewebserver;

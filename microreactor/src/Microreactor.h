@@ -26,6 +26,7 @@
 #include "Reactor.h"
 #include "RestFileResponse.h"
 #include "RestMessageDecoder.h"
+#include "RestMessage.h"
 #include "RestReactor.h"
 #include "RestRequest.h"
 #include "RestResponse.h"

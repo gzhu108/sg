@@ -2,13 +2,8 @@
 #ifndef sg_microreactor_RestService
 #define sg_microreactor_RestService
 
-#include "Microreactor.h"
-#include "HttpHeader.h"
-#include "RestFileResponse.h"
+#include "Microservice.h"
 #include "RestMessageDecoder.h"
-#include "RestRequest.h"
-#include "RestResponse.h"
-#include "UriCodec.h"
 
 
 namespace sg { namespace microreactor

@@ -33,11 +33,7 @@ std::shared_ptr<Reactor> $serviceclassService::Create$method$funcReactor(std::sh
         return nullptr;
     }
 
-    // No need to parse JSON
-    auto input = std::make_shared<Message>();
-
-    auto reactor = std::make_shared<$method$funcReactor>(connection, request, input);
-    return reactor;
+    return std::make_shared<$method$funcReactor>(connection, request);
 }
 
 @impl_creator_end
