@@ -17,6 +17,7 @@ def create_service_header(namespace, serviceclass, paths):
 	rest_service_h_template_file.close()
 
 	out_name = serviceclass + "Service.h"
+	print("Generating", out_name)
 	out_file = open(out_name, "w+")
 	out_file.write(rest_service_h)
 	out_file.close()
@@ -27,7 +28,6 @@ def create_service_cpp(namespace, serviceclass, paths):
 	rest_service_cpp = ""
 	line = rest_service_cpp_template_file.readline()
 	while line:
-		print("create_service_cpp line: ", line)
 		if line.find("@incl_creator_begin") >= 0:
 			rest_service_cpp += create_func(rest_service_cpp_template_file, "@incl_creator_end", serviceclass, paths)
 		elif line.find("@init_creator_begin") >= 0:
@@ -38,11 +38,11 @@ def create_service_cpp(namespace, serviceclass, paths):
 			rest_service_cpp += line.replace("$namespace", namespace) \
 				.replace("$serviceclass", serviceclass)
 		line = rest_service_cpp_template_file.readline()
-		print("create_service_cpp out: ", rest_service_cpp)
 
 	rest_service_cpp_template_file.close()
 
 	out_name = serviceclass + "Service.cpp"
+	print("Generating", out_name)
 	out_file = open(out_name, "w+")
 	out_file.write(rest_service_cpp)
 	out_file.close()
