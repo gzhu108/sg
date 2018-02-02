@@ -19,7 +19,6 @@ namespace bouncer
     protected:
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateBouncerReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateSettingsReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
-        virtual void RespondWithError(sg::microreactor::Connection& connection, uint32_t statusCode, const std::string& statusText);
     };
 }
 

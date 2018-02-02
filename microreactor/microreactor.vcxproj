@@ -223,9 +223,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\tools\http-parser\http_parser.h" />
     <ClInclude Include="src\Api.h" />
-    <ClInclude Include="src\Shareable.h" />
     <ClInclude Include="src\BinarySerializer.h" />
     <ClInclude Include="src\Cancelable.h" />
     <ClInclude Include="src\Client.h" />
@@ -237,8 +235,8 @@
     <ClInclude Include="src\Dispatcher.h" />
     <ClInclude Include="src\Emittable.h" />
     <ClInclude Include="src\Endianness.h" />
-    <ClInclude Include="src\Exception.h" />
     <ClInclude Include="src\Endpoint.h" />
+    <ClInclude Include="src\Exception.h" />
     <ClInclude Include="src\HttpHeader.h" />
     <ClInclude Include="src\Listener.h" />
     <ClInclude Include="src\LoggerSingleton.h" />
@@ -253,6 +251,7 @@
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\Reactor.h" />
     <ClInclude Include="src\RestFileResponse.h" />
+    <ClInclude Include="src\RestMessage.h" />
     <ClInclude Include="src\RestMessageDecoder.h" />
     <ClInclude Include="src\RestReactor.h" />
     <ClInclude Include="src\RestRequest.h" />
@@ -263,6 +262,7 @@
     <ClInclude Include="src\Serializable.h" />
     <ClInclude Include="src\Serializer.h" />
     <ClInclude Include="src\Service.h" />
+    <ClInclude Include="src\Shareable.h" />
     <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\StringSerializer.h" />
     <ClInclude Include="src\StringUtility.h" />

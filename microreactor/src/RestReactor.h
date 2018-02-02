@@ -25,7 +25,7 @@ namespace sg { namespace microreactor
 
         virtual ~RestReactor() {}
 
-    public:
+    protected:
         virtual std::shared_ptr<RestRequest> Request()
         {
             return InputMessage()->Request();
