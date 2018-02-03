@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([simplewebserver], [1.0], [BUG-REPORT-ADDRESS])
+AC_INIT([myserver], [1.0], [BUG-REPORT-ADDRESS])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE
 AM_INIT_AUTOMAKE([subdir-objects])

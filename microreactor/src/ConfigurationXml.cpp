@@ -22,6 +22,12 @@ ConfigurationXml::~ConfigurationXml()
 
 void ConfigurationXml::Refresh()
 {
+    if (mConfigFilePath.empty())
+    {
+        LOG("Configuration file not specified");
+        return;
+    }
+
     std::ifstream xmlFile;
     xmlFile.open(mConfigFilePath, std::ios::binary);
     if (!xmlFile.is_open())

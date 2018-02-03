@@ -5,7 +5,7 @@
 #include "MyServerService.h"
 
 using namespace sg::microreactor;
-using namespace myservice;
+using namespace myserver;
 
 
 volatile bool terminateSignal = false;
@@ -42,8 +42,7 @@ int32_t main(int32_t argc, const char* argv[])
     const char* configArgs[] = {"--config", "-c"};
     const char* hostArgs[] = {"--host", "-h"};
     const char* portArgs[] = {"--port", "-p"};
-    const char* securePortArgs[] = {"--secure-port", "-s"};
-
+    
     for (int32_t i = 1; i < argc; i++)
     {
         if (FIND_CMD(configArgs, argv[i]))
@@ -60,11 +59,6 @@ int32_t main(int32_t argc, const char* argv[])
         {
             LOG("Command line argument: %s %s", argv[i], argv[i + 1]);
             hostPort = std::atoi(argv[++i]);
-        }
-        else if (FIND_CMD(securePortArgs, argv[i]))
-        {
-            LOG("Command line argument: %s %s", argv[i], argv[i + 1]);
-            securePort = std::atoi(argv[++i]);
         }
         else
         {
