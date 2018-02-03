@@ -8,7 +8,7 @@
 
 namespace $namespace
 {
-    class $method$funcReactor : public sg::microreactor::RestReactor<sg::microreactor::$method$funcMessage>
+    class $method$funcReactor : public sg::microreactor::RestReactor<$method$funcMessage>
     {
     public:
         $method$funcReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);

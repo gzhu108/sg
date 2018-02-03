@@ -1,60 +1,106 @@
-import sys
-from create_funcs import *
+#!/usr/bin/python
+import os, sys, getopt, pathlib
+from create_from_template import *
 
 
-def create_service_header(namespace, serviceclass, paths):
-	rest_service_h_template_file = open("rest.service.template.h")
-	rest_service_h = ""
-	line = rest_service_h_template_file.readline()
-	while line:
-		if line.find("@decl_creator_begin") >= 0:
-			rest_service_h += create_func(rest_service_h_template_file, "@decl_creator_end", serviceclass, paths)
-		else:
-			rest_service_h += line.replace("$namespace", namespace) \
-				.replace("$serviceclass", serviceclass)
-		line = rest_service_h_template_file.readline()
-
-	rest_service_h_template_file.close()
-
-	out_name = serviceclass + "Service.h"
-	print("Generating", out_name)
-	out_file = open(out_name, "w+")
-	out_file.write(rest_service_h)
+def create_service(infile, outfile, namespace, serviceclass, paths):
+	rest_service = create_item_from_template(infile, namespace, serviceclass, paths)
+	print("Generating", outfile)
+	out_file = open(outfile, "w+")
+	out_file.write(rest_service)
 	out_file.close()
 
 
-def create_service_cpp(namespace, serviceclass, paths):
-	rest_service_cpp_template_file = open("rest.service.template.cpp")
-	rest_service_cpp = ""
-	line = rest_service_cpp_template_file.readline()
-	while line:
-		if line.find("@incl_creator_begin") >= 0:
-			rest_service_cpp += create_func(rest_service_cpp_template_file, "@incl_creator_end", serviceclass, paths)
-		elif line.find("@init_creator_begin") >= 0:
-			rest_service_cpp += create_func(rest_service_cpp_template_file, "@init_creator_end", serviceclass, paths)
-		elif line.find("@impl_creator_begin") >= 0:
-			rest_service_cpp += create_func(rest_service_cpp_template_file, "@impl_creator_end", serviceclass, paths)
-		else:
-			rest_service_cpp += line.replace("$namespace", namespace) \
-				.replace("$serviceclass", serviceclass)
-		line = rest_service_cpp_template_file.readline()
+def create_service_header(tempdir, outdir, namespace, serviceclass, paths):
+	infile = tempdir + "/rest.service.template.h"
+	outfile = outdir + "/" + serviceclass + "Service.h"
+	create_service(infile, outfile, namespace, serviceclass, paths)
 
-	rest_service_cpp_template_file.close()
 
-	out_name = serviceclass + "Service.cpp"
-	print("Generating", out_name)
-	out_file = open(out_name, "w+")
-	out_file.write(rest_service_cpp)
+def create_service_cpp(tempdir, outdir, namespace, serviceclass, paths):
+	infile = tempdir + "/rest.service.template.cpp"
+	outfile = outdir + "/" + serviceclass + "Service.cpp"
+	create_service(infile, outfile, namespace, serviceclass, paths)
+
+
+def create_reactor(infile, outfile, namespace, method, func):
+	rest_reactor = create_group_from_template(infile, namespace, method, func)
+	print("Generating", outfile)
+	out_file = open(outfile, "w+")
+	out_file.write(rest_reactor)
 	out_file.close()
+
+
+def create_reactor_header(tempdir, outdir, namespace, paths):
+	infile = tempdir + "/rest.reactor.template.h"
+	for method, path in paths:
+		func = create_func_from_path(path)
+		outfile = outdir + "/" + method + func + "Reactor.h"
+		create_reactor(infile, outfile, namespace, method, func)
+
+
+def create_reactor_cpp(tempdir, outdir, namespace, paths):
+	infile = tempdir + "/rest.reactor.template.cpp"
+	for method, path in paths:
+		func = create_func_from_path(path)
+		outfile = outdir + "/" + method + func + "Reactor.cpp"
+		create_reactor(infile, outfile, namespace, method, func)
+
+
+def create_message(infile, outfile, namespace, method, func):
+	rest_reactor = create_group_from_template(infile, namespace, method, func)
+	print("Generating", outfile)
+	out_file = open(outfile, "w+")
+	out_file.write(rest_reactor)
+	out_file.close()
+
+
+def create_message_header(tempdir, outdir, namespace, paths):
+	infile = tempdir + "/rest.message.template.h"
+	for method, path in paths:
+		func = create_func_from_path(path)
+		outfile = outdir + "/" + method + func + "Message.h"
+		create_message(infile, outfile, namespace, method, func)
+
+
+def create_message_cpp(tempdir, outdir, namespace, paths):
+	infile = tempdir + "/rest.message.template.cpp"
+	for method, path in paths:
+		func = create_func_from_path(path)
+		outfile = outdir + "/" + method + func + "Message.cpp"
+		create_message(infile, outfile, namespace, method, func)
 
 
 def main(argv):
-	print("Starting", __file__)
-	namespace = "mytest";
-	serviceclass = "MyTest"
+	namespace = "myserver";
+	serviceclass = "MyServer"
 	paths = [("GET", "/v1/version"), ("POST", "/v1/update")]
-	create_service_header(namespace, serviceclass, paths)
-	create_service_cpp(namespace, serviceclass, paths)
+
+	tempdir = os.getcwd()
+	outdir = os.getcwd()
+	infile = ""
+
+	try:
+		opts, args = getopt.getopt(argv[1:], "ht:o:i:", ["tempdir=", "outdir="])
+	except getopt.GetoptError:
+		print(__file__, "-t <tempdir> -o <outdir>")
+		sys.exit(2)
+
+	for opt, arg in opts:
+		if opt in ("-t", "--tempdir"):
+			tempdir = arg
+		elif opt in ("-o", "--outdir"):
+			outdir = arg
+		elif opt in ("-i", "--infile"):
+			infile = arg
+
+	pathlib.Path(outdir).mkdir(parents=True, exist_ok=True) 
+	create_service_header(tempdir, outdir, namespace, serviceclass, paths)
+	create_service_cpp(tempdir, outdir, namespace, serviceclass, paths)
+	create_reactor_header(tempdir, outdir, namespace, paths)
+	create_reactor_cpp(tempdir, outdir, namespace, paths)
+	create_message_header(tempdir, outdir, namespace, paths)
+	create_message_cpp(tempdir, outdir, namespace, paths)
 
 
 if __name__ == "__main__":

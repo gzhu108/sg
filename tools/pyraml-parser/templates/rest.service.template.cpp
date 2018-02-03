@@ -1,7 +1,7 @@
 #include "$serviceclassService.h"
-@incl_creator_begin
+@group_begin
 #include "$method$funcReactor.h"
-@incl_creator_end
+@group_end
 
 using namespace sg::microreactor;
 using namespace $namespace;
@@ -18,14 +18,14 @@ $serviceclassService::~$serviceclassService()
 
 bool $serviceclassService::Initialize()
 {
-    @init_creator_begin
+    @group_begin
     mRestMessageDecoder->RegisterRestReactorFactory("$method", "$path", std::bind(&$serviceclassService::Create$method$funcReactor, this, std::placeholders::_1, std::placeholders::_2));
-    @init_creator_end
+    @group_end
     
     return RestService::Initialize();
 }
 
-@impl_creator_begin
+@group_begin
 std::shared_ptr<Reactor> $serviceclassService::Create$method$funcReactor(std::shared_ptr<RestRequest> request, Connection& connection)
 {
     if (request->mUri.length() < std::string("$path").length())
@@ -36,4 +36,4 @@ std::shared_ptr<Reactor> $serviceclassService::Create$method$funcReactor(std::sh
     return std::make_shared<$method$funcReactor>(connection, request);
 }
 
-@impl_creator_end
+@group_end

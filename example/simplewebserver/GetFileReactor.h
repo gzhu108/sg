@@ -3,11 +3,12 @@
 #define simplewebserver_GetFileReactor
 
 #include "Microreactor.h"
+#include "GetFileMessage.h"
 
 
 namespace simplewebserver
 {
-    class GetFileReactor : public sg::microreactor::RestReactor<sg::microreactor::RestMessage>
+    class GetFileReactor : public sg::microreactor::RestReactor<GetFileMessage>
     {
     public:
         GetFileReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);

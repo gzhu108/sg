@@ -17,9 +17,9 @@ namespace $namespace
         virtual bool Initialize() override;
 
     protected:
-        @decl_creator_begin
+        @group_begin
         virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$funcReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
-        @decl_creator_end
+        @group_end
     };
 }
 
