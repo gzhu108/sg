@@ -7,26 +7,21 @@ using namespace sg::microreactor;
 class RestMessageDecoderMock : public RestMessageDecoder
 {
 public:
-    void GetRegisteredRestFactorys(std::map<std::string, RestMessageDecoder::RestFactoryList>& registeredRestFactorys)
+    void GetRestReactorFactoryTable(MethodMap& restReactorFactoryTable)
     {
-        registeredRestFactorys = mRestFactoryTable;
+        restReactorFactoryTable = mRestReactorFactoryTable;
     }
 
-    virtual std::shared_ptr<RestFactory> GetRestFactory(std::shared_ptr<RestRequest> restRequest) override
+    virtual RestReactorFactory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest) override
     {
-        return RestMessageDecoder::GetRestFactory(restRequest);
+        return RestMessageDecoder::GetRestReactorFactory(restRequest);
     }
 };
 
-class RestFactoryMock : public RestFactory
+class ReactorFactoryMock
 {
 public:
-    RestFactoryMock(const std::string& method, const std::string& path, const std::string& contentType)
-        : RestFactory(method, path, contentType)
-    {
-    }
-
-    virtual std::shared_ptr<sg::microreactor::Reactor> CreateReactor(std::shared_ptr<RestRequest> request, sg::microreactor::Connection& connection) override
+    std::shared_ptr<Reactor> CreateReactor(std::shared_ptr<RestRequest>, Connection&)
     {
         return nullptr;
     }
@@ -35,31 +30,31 @@ public:
 
 TEST(RestMessageDecoderTest, RegisterRestFactoryNormal)
 {
-    auto api_1 = std::make_shared<RestFactoryMock>("GET", "/api_1/data", "ContentType: text/plain");
-    auto api_2 = std::make_shared<RestFactoryMock>("POST", "/api_2/save", "ContentType: application/json");
-    
+    ReactorFactoryMock factory;   
     RestMessageDecoderMock decoder;
-    decoder.RegisterRestFactory(api_1);
-    decoder.RegisterRestFactory(api_2);
+    decoder.RegisterRestReactorFactory("GET", "/api_1/data", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
+    decoder.RegisterRestReactorFactory("POST", "/api_2/save", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
 
     auto restRequest_1 = std::make_shared<RestRequest>();
     restRequest_1->mMethod = "GET";
     restRequest_1->mUri = "/api_1/data";
 
-    auto found_api_1 = decoder.GetRestFactory(restRequest_1);
+    auto found_api_1 = decoder.GetRestReactorFactory(restRequest_1);
     EXPECT_NE(nullptr, found_api_1);
-    EXPECT_EQ("/api_1/data", found_api_1->mPath);
-    EXPECT_EQ("GET", found_api_1->mMethod);
 
     auto restRequest_2 = std::make_shared<RestRequest>();
     restRequest_2->mMethod = "POST";
     restRequest_2->mUri = "/api_2/save";
 
-    auto found_api_2 = decoder.GetRestFactory(restRequest_2);
+    auto found_api_2 = decoder.GetRestReactorFactory(restRequest_2);
     EXPECT_NE(nullptr, found_api_2);
-    EXPECT_EQ("/api_2/save", found_api_2->mPath);
-    EXPECT_EQ("POST", found_api_2->mMethod);
 
+    auto restRequest_3 = std::make_shared<RestRequest>();
+    restRequest_3->mMethod = "POST";
+    restRequest_3->mUri = "/api_3/save";
+
+    auto found_api_3 = decoder.GetRestReactorFactory(restRequest_3);
+    EXPECT_EQ(nullptr, found_api_3);
 
 #if 0
     std::map<std::string, RestMessageDecoder::RestFactoryList> registeredRestFactorys;
