@@ -2,7 +2,7 @@
 
 #include <signal.h>
 #include <stdlib.h>
-#include "MyServerService.h"
+#include "MyService.h"
 
 using namespace sg::microreactor;
 using namespace myserver;
@@ -93,7 +93,7 @@ int32_t main(int32_t argc, const char* argv[])
     auto simpleEndpoint = std::make_shared<TcpEndpoint>(simpleSocket, simpleProfile);
     simpleSocket = nullptr;
 
-    MyServerService service(simpleEndpoint, simpleProfile);
+    MyService service(simpleEndpoint, simpleProfile);
     simpleEndpoint = nullptr;
 
     // Start the REST services
