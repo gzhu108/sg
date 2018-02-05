@@ -21,15 +21,24 @@ bool RestResponse::Send(Connection& connection)
 bool RestResponse::FlushToBuffer(std::string& buffer)
 {
     buffer = mVersion + " " + std::to_string(mStatusCode) + " " + mStatusText + "\r\n";
+
+    bool chunked = false;
     for (const auto& header : mHeaders)
     {
         buffer += header.mName + ": " + header.mValue + "\r\n";
+        if (header.mName == "Transfer-Encoding" && header.mValue == "chunked")
+        {
+            chunked = true;
+        }
     }
 
-    if (mBody.length() > 0)
+    if (!chunked)
     {
         buffer += "Content-Length: " + std::to_string(mBody.length()) + "\r\n";
-        buffer += "\r\n" + mBody;
+        if (!mBody.empty())
+        {
+            buffer += "\r\n" + mBody;
+        }
     }
 
     buffer += "\r\n";
