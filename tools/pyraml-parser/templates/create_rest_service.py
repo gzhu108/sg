@@ -3,7 +3,7 @@ import os, sys, getopt, pathlib
 from create_from_template import *
 
 
-def create_service(infile, outfile, namespace, serviceclass, paths):
+def create_item(infile, outfile, namespace, serviceclass, paths):
 	rest_service = create_item_from_template(infile, namespace, serviceclass, paths)
 	print("Generating", outfile)
 	out_file = open(outfile, "w+")
@@ -11,24 +11,24 @@ def create_service(infile, outfile, namespace, serviceclass, paths):
 	out_file.close()
 
 
-def create_service_header(tempdir, outdir, namespace, serviceclass, paths):
-	infile = tempdir + "/rest.service.template.h"
-	outfile = outdir + "/" + serviceclass + "Service.h"
-	create_service(infile, outfile, namespace, serviceclass, paths)
-
-
-def create_service_cpp(tempdir, outdir, namespace, serviceclass, paths):
-	infile = tempdir + "/rest.service.template.cpp"
-	outfile = outdir + "/" + serviceclass + "Service.cpp"
-	create_service(infile, outfile, namespace, serviceclass, paths)
-
-
-def create_reactor(infile, outfile, namespace, method, func):
+def create_group(infile, outfile, namespace, method, func):
 	rest_reactor = create_group_from_template(infile, namespace, method, func)
 	print("Generating", outfile)
 	out_file = open(outfile, "w+")
 	out_file.write(rest_reactor)
 	out_file.close()
+
+
+def create_service_header(tempdir, outdir, namespace, serviceclass, paths):
+	infile = tempdir + "/rest.service.template.h"
+	outfile = outdir + "/" + serviceclass + "Service.h"
+	create_item(infile, outfile, namespace, serviceclass, paths)
+
+
+def create_service_cpp(tempdir, outdir, namespace, serviceclass, paths):
+	infile = tempdir + "/rest.service.template.cpp"
+	outfile = outdir + "/" + serviceclass + "Service.cpp"
+	create_item(infile, outfile, namespace, serviceclass, paths)
 
 
 def create_reactor_header(tempdir, outdir, namespace, paths):
@@ -36,7 +36,7 @@ def create_reactor_header(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Reactor.h"
-		create_reactor(infile, outfile, namespace, method, func)
+		create_group(infile, outfile, namespace, method, func)
 
 
 def create_reactor_cpp(tempdir, outdir, namespace, paths):
@@ -44,15 +44,7 @@ def create_reactor_cpp(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Reactor.cpp"
-		create_reactor(infile, outfile, namespace, method, func)
-
-
-def create_message(infile, outfile, namespace, method, func):
-	rest_reactor = create_group_from_template(infile, namespace, method, func)
-	print("Generating", outfile)
-	out_file = open(outfile, "w+")
-	out_file.write(rest_reactor)
-	out_file.close()
+		create_group(infile, outfile, namespace, method, func)
 
 
 def create_message_header(tempdir, outdir, namespace, paths):
@@ -60,7 +52,7 @@ def create_message_header(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Message.h"
-		create_message(infile, outfile, namespace, method, func)
+		create_group(infile, outfile, namespace, method, func)
 
 
 def create_message_cpp(tempdir, outdir, namespace, paths):
@@ -68,7 +60,23 @@ def create_message_cpp(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Message.cpp"
-		create_message(infile, outfile, namespace, method, func)
+		create_group(infile, outfile, namespace, method, func)
+
+
+def create_response_header(tempdir, outdir, namespace, paths):
+	infile = tempdir + "/rest.response.template.h"
+	for method, path in paths:
+		func = create_func_from_path(path)
+		outfile = outdir + "/" + method + func + "Response.h"
+		create_group(infile, outfile, namespace, method, func)
+
+
+def create_response_cpp(tempdir, outdir, namespace, paths):
+	infile = tempdir + "/rest.response.template.cpp"
+	for method, path in paths:
+		func = create_func_from_path(path)
+		outfile = outdir + "/" + method + func + "Response.cpp"
+		create_group(infile, outfile, namespace, method, func)
 
 
 def main(argv):
@@ -101,6 +109,8 @@ def main(argv):
 	create_reactor_cpp(tempdir, outdir, namespace, paths)
 	create_message_header(tempdir, outdir, namespace, paths)
 	create_message_cpp(tempdir, outdir, namespace, paths)
+	create_response_header(tempdir, outdir, namespace, paths)
+	create_response_cpp(tempdir, outdir, namespace, paths)
 
 
 if __name__ == "__main__":

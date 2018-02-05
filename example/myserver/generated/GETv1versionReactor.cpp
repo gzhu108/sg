@@ -1,4 +1,5 @@
 #include "GETv1versionReactor.h"
+#include "GETv1versionResponse.h"
 
 using namespace sg::microreactor;
 using namespace myserver;

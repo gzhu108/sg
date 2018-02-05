@@ -1,4 +1,5 @@
 #include "$method$funcReactor.h"
+#include "$method$funcResponse.h"
 
 using namespace sg::microreactor;
 using namespace $namespace;
