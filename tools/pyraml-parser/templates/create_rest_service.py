@@ -84,7 +84,7 @@ def main(argv):
 	serviceclass = "MyServer"
 	paths = [("GET", "/v1/version"), ("POST", "/v1/update")]
 
-	tempdir = os.getcwd()
+	tempdir = os.path.dirname(__file__)
 	outdir = os.getcwd()
 	infile = ""
 
