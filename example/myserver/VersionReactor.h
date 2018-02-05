@@ -2,13 +2,12 @@
 #ifndef myserver_VersionReactor
 #define myserver_VersionReactor
 
-#include "Microreactor.h"
-#include "GETv1versionReactor.h"
+#include "GETv1versionReactorBase.h"
 
 
 namespace myserver
 {
-    class VersionReactor : public GETv1versionReactor
+    class VersionReactor : public GETv1versionReactorBase
     {
     public:
         VersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);

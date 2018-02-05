@@ -1,19 +1,19 @@
-#include "$method$funcReactor.h"
+#include "$method$funcReactorBase.h"
 
 using namespace sg::microreactor;
 using namespace $namespace;
 
 
-$method$funcReactor::$method$funcReactor(Connection& connection, std::shared_ptr<RestRequest> request)
+$method$funcReactorBase::$method$funcReactorBase(Connection& connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }
 
-$method$funcReactor::~$method$funcReactor()
+$method$funcReactorBase::~$method$funcReactorBase()
 {
 }
 
-bool $method$funcReactor::Process()
+bool $method$funcReactorBase::Process()
 {
     if (Request() == nullptr)
     {
@@ -22,5 +22,5 @@ bool $method$funcReactor::Process()
     }
 
     // Send $method$funcResponse or error response
-    return RestResponse::SendErrorWith(mConnection, 501, "Not Implemented");
+    return RestResponse::SendErrorWith(mConnection, 501, "$method [$path] not Implemented");
 }

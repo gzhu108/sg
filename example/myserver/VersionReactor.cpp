@@ -6,7 +6,7 @@ using namespace myserver;
 
 
 VersionReactor::VersionReactor(Connection& connection, std::shared_ptr<RestRequest> request)
-    : GETv1versionReactor(connection, request)
+    : GETv1versionReactorBase(connection, request)
 {
 }
 

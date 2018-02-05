@@ -2,7 +2,7 @@ def create_func_from_path(path):
 	return path.replace("/", "")
 
 
-def create_group(infile, serviceclass, paths):
+def create_item_group(infile, serviceclass, paths):
 	outtext = ""
 	text = ""
 	line = infile.readline()
@@ -28,7 +28,7 @@ def create_item_from_template(templatefilename, namespace, serviceclass, paths):
 	line = infile.readline()
 	while line:
 		if line.find("@group_begin") >= 0:
-			outtext += create_group(infile, serviceclass, paths)
+			outtext += create_item_group(infile, serviceclass, paths)
 		else:
 			outtext += line \
 				.replace("$namespace", namespace) \
@@ -38,7 +38,7 @@ def create_item_from_template(templatefilename, namespace, serviceclass, paths):
 	return outtext
 
 
-def create_group_from_template(templatefilename, namespace, method, func):
+def create_group_from_template(templatefilename, namespace, method, path, func):
 	infile = open(templatefilename)
 	outtext = ""
 	line = infile.readline()
@@ -46,6 +46,7 @@ def create_group_from_template(templatefilename, namespace, method, func):
 		outtext += line \
 			.replace("$namespace", namespace) \
 			.replace("$method", method) \
+			.replace("$path", path) \
 			.replace("$func", func)
 		line = infile.readline()
 	infile.close()

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef $namespace_$method$funcReactor
-#define $namespace_$method$funcReactor
+#ifndef $namespace_$method$funcReactorBase
+#define $namespace_$method$funcReactorBase
 
 #include "Microreactor.h"
 #include "$method$funcMessage.h"
@@ -8,16 +8,17 @@
 
 namespace $namespace
 {
-    class $method$funcReactor : public sg::microreactor::RestReactor<$method$funcMessage>
+    class $method$funcReactorBase : public sg::microreactor::RestReactor<$method$funcMessage>
     {
     public:
-        $method$funcReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
-        virtual ~$method$funcReactor();
+        $method$funcReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        virtual ~$method$funcReactorBase();
 
     public:
+        // Override Process() in the derived class
         virtual bool Process() override;
     };
 }
 
 
-#endif // $namespace_$method$funcReactor
+#endif // $namespace_$method$funcReactorBase

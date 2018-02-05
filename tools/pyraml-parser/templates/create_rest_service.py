@@ -4,30 +4,30 @@ from create_from_template import *
 
 
 def create_item(infile, outfile, namespace, serviceclass, paths):
-	rest_service = create_item_from_template(infile, namespace, serviceclass, paths)
+	rest_item = create_item_from_template(infile, namespace, serviceclass, paths)
 	print("Generating", outfile)
 	out_file = open(outfile, "w+")
-	out_file.write(rest_service)
+	out_file.write(rest_item)
 	out_file.close()
 
 
-def create_group(infile, outfile, namespace, method, func):
-	rest_reactor = create_group_from_template(infile, namespace, method, func)
+def create_group(infile, outfile, namespace, method, path, func):
+	rest_group = create_group_from_template(infile, namespace, method, path, func)
 	print("Generating", outfile)
 	out_file = open(outfile, "w+")
-	out_file.write(rest_reactor)
+	out_file.write(rest_group)
 	out_file.close()
 
 
 def create_service_header(tempdir, outdir, namespace, serviceclass, paths):
 	infile = tempdir + "/rest.service.template.h"
-	outfile = outdir + "/" + serviceclass + "Service.h"
+	outfile = outdir + "/" + serviceclass + "ServiceBase.h"
 	create_item(infile, outfile, namespace, serviceclass, paths)
 
 
 def create_service_cpp(tempdir, outdir, namespace, serviceclass, paths):
 	infile = tempdir + "/rest.service.template.cpp"
-	outfile = outdir + "/" + serviceclass + "Service.cpp"
+	outfile = outdir + "/" + serviceclass + "ServiceBase.cpp"
 	create_item(infile, outfile, namespace, serviceclass, paths)
 
 
@@ -35,16 +35,16 @@ def create_reactor_header(tempdir, outdir, namespace, paths):
 	infile = tempdir + "/rest.reactor.template.h"
 	for method, path in paths:
 		func = create_func_from_path(path)
-		outfile = outdir + "/" + method + func + "Reactor.h"
-		create_group(infile, outfile, namespace, method, func)
+		outfile = outdir + "/" + method + func + "ReactorBase.h"
+		create_group(infile, outfile, namespace, method, path, func)
 
 
 def create_reactor_cpp(tempdir, outdir, namespace, paths):
 	infile = tempdir + "/rest.reactor.template.cpp"
 	for method, path in paths:
 		func = create_func_from_path(path)
-		outfile = outdir + "/" + method + func + "Reactor.cpp"
-		create_group(infile, outfile, namespace, method, func)
+		outfile = outdir + "/" + method + func + "ReactorBase.cpp"
+		create_group(infile, outfile, namespace, method, path, func)
 
 
 def create_message_header(tempdir, outdir, namespace, paths):
@@ -52,7 +52,7 @@ def create_message_header(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Message.h"
-		create_group(infile, outfile, namespace, method, func)
+		create_group(infile, outfile, namespace, method, path, func)
 
 
 def create_message_cpp(tempdir, outdir, namespace, paths):
@@ -60,7 +60,7 @@ def create_message_cpp(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Message.cpp"
-		create_group(infile, outfile, namespace, method, func)
+		create_group(infile, outfile, namespace, method, path, func)
 
 
 def create_response_header(tempdir, outdir, namespace, paths):
@@ -68,7 +68,7 @@ def create_response_header(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Response.h"
-		create_group(infile, outfile, namespace, method, func)
+		create_group(infile, outfile, namespace, method, path, func)
 
 
 def create_response_cpp(tempdir, outdir, namespace, paths):
@@ -76,7 +76,7 @@ def create_response_cpp(tempdir, outdir, namespace, paths):
 	for method, path in paths:
 		func = create_func_from_path(path)
 		outfile = outdir + "/" + method + func + "Response.cpp"
-		create_group(infile, outfile, namespace, method, func)
+		create_group(infile, outfile, namespace, method, path, func)
 
 
 def main(argv):

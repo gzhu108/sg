@@ -1,17 +1,17 @@
 #pragma once
-#ifndef myserver_MyServerService
-#define myserver_MyServerService
+#ifndef myserver_MyServerServiceBase
+#define myserver_MyServerServiceBase
 
 #include "Microreactor.h"
 
 
 namespace myserver
 {
-    class MyServerService : public sg::microreactor::RestService
+    class MyServerServiceBase : public sg::microreactor::RestService
     {
     public:
-        MyServerService(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
-        virtual ~MyServerService();
+        MyServerServiceBase(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
+        virtual ~MyServerServiceBase();
 
     public:
         virtual bool Initialize() override;
@@ -23,4 +23,4 @@ namespace myserver
 }
 
 
-#endif // myserver_MyServerService
+#endif // myserver_MyServerServiceBase

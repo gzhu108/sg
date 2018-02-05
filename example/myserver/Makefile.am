@@ -18,11 +18,14 @@ bin_PROGRAMS = \
 __top_builddir__bin_myserver_SOURCES = \
 	generated/GETv1versionMessage.cpp \
     generated/GETv1versionResponse.cpp \
-    generated/GETv1versionReactor.cpp \
+    generated/GETv1versionReactorBase.cpp \
     generated/POSTv1updateMessage.cpp \
     generated/POSTv1updateResponse.cpp \
-    generated/POSTv1updateReactor.cpp \
-    generated/MyServerService.cpp \
+    generated/POSTv1updateReactorBase.cpp \
+    generated/MyServerServiceBase.cpp \
+    MyService.cpp \
+    VersionReactor.cpp \
+    UpdateReactor.cpp \
     main.cpp
 
 __top_builddir__bin_myserver_LDADD = \

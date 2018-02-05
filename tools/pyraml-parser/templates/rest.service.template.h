@@ -1,17 +1,17 @@
 #pragma once
-#ifndef $namespace_$serviceclassService
-#define $namespace_$serviceclassService
+#ifndef $namespace_$serviceclassServiceBase
+#define $namespace_$serviceclassServiceBase
 
 #include "Microreactor.h"
 
 
 namespace $namespace
 {
-    class $serviceclassService : public sg::microreactor::RestService
+    class $serviceclassServiceBase : public sg::microreactor::RestService
     {
     public:
-        $serviceclassService(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
-        virtual ~$serviceclassService();
+        $serviceclassServiceBase(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
+        virtual ~$serviceclassServiceBase();
 
     public:
         virtual bool Initialize() override;
@@ -24,4 +24,4 @@ namespace $namespace
 }
 
 
-#endif // $namespace_$serviceclassService
+#endif // $namespace_$serviceclassServiceBase
