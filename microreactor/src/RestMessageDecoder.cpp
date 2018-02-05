@@ -100,7 +100,7 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
     }
     else
     {
-        RestResponse::SendResponse(connection, 500, "Internal Server Error", "500 Internal Server Error", true);
+        RestResponse::SendErrorWith(connection, 500, "Internal Server Error");
         return nullptr;
     }
 
@@ -110,14 +110,14 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
         auto restReactorFactory = GetRestReactorFactory(restRequest);
         if (restReactorFactory == nullptr)
         {
-            RestResponse::SendResponse(connection, 404, "Not Found", "404 Not Found", true);
+            RestResponse::SendErrorWith(connection, 404, "Not Found");
             return nullptr;
         }
 
         auto reactor = restReactorFactory(restRequest, connection);
         if (reactor == nullptr)
         {
-            RestResponse::SendResponse(connection, 400, "Bad Request", "400 Bad Request", true);
+            RestResponse::SendErrorWith(connection, 400, "Bad Request");
         }
 
         return reactor;

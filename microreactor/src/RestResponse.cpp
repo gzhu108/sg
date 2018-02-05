@@ -48,16 +48,16 @@ bool RestResponse::FlushToStream(std::ostream& stream)
     return false;
 }
 
-bool RestResponse::SendResponse(Connection& connection, uint32_t statusCode, const std::string& statusText, const std::string& plainText, bool connectionClosed)
+bool RestResponse::SendWith(Connection& connection, uint32_t statusCode, const std::string& statusText, const std::vector<HttpHeader>& headers, const std::string& body, bool connectionClosed)
 {
     RestResponse response;
     response.mStatusCode = statusCode;
     response.mStatusText = statusText;
-    response.mHeaders.emplace_back(HttpHeader("Content-Type", "text/plain"));
+    response.mHeaders.insert(response.mHeaders.end(), headers.begin(), headers.end());
     if (connectionClosed)
     {
         response.mHeaders.emplace_back(HttpHeader("Connection", "Closed"));
     }
-    response.mBody = plainText;
+    response.mBody = body;
     return response.Send(connection);
 }

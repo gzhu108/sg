@@ -1,5 +1,4 @@
 #include "$method$funcReactor.h"
-#include "$method$funcResponse.h"
 
 using namespace sg::microreactor;
 using namespace $namespace;
@@ -22,5 +21,6 @@ bool $method$funcReactor::Process()
         return false;
     }
 
-    return RestResponse::SendResponse(mConnection, 501, "Not Implemented", "501 Not Implemented", true);
+    // Send $method$funcResponse or error response
+    return RestResponse::SendErrorWith(mConnection, 501, "Not Implemented");
 }

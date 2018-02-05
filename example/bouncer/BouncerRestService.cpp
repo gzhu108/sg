@@ -35,7 +35,7 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
 {
     if (request->mUri.length() < std::string("/").length())
     {
-        RestResponse::SendResponse(connection, 404, "Not found", "404 Not found", true);
+        RestResponse::SendErrorWith(connection, 404, "Not found");
         return nullptr;
     }
 
@@ -121,7 +121,7 @@ std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_p
     catch (...)
     {
         LOG("Failed to parse JSON: %.*s", (int)request->mBody.mLength, request->mBody.mOffset);
-        RestResponse::SendResponse(connection, 405, "Method Not Allowed", "405 Method Not Allowed", true);
+        RestResponse::SendErrorWith(connection, 405, "Method Not Allowed");
     }
 
     return nullptr;

@@ -1,5 +1,4 @@
 #include "POSTv1updateReactor.h"
-#include "POSTv1updateResponse.h"
 
 using namespace sg::microreactor;
 using namespace myserver;
@@ -22,5 +21,6 @@ bool POSTv1updateReactor::Process()
         return false;
     }
 
-    return RestResponse::SendResponse(mConnection, 501, "Not Implemented", "501 Not Implemented", true);
+    // Send POSTv1updateResponse or error response
+    return RestResponse::SendErrorWith(mConnection, 501, "Not Implemented");
 }

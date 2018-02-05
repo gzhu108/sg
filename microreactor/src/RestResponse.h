@@ -22,7 +22,12 @@ namespace sg { namespace microreactor
         virtual bool FlushToBuffer(std::string& buffer);
         virtual bool FlushToStream(std::ostream& stream);
 
-        static bool SendResponse(Connection& connection, uint32_t statusCode, const std::string& statusText, const std::string& plainText = {}, bool connectionClosed = false);
+        static bool SendWith(Connection& connection, uint32_t statusCode, const std::string& statusText, const std::vector<HttpHeader>& headers = {}, const std::string& body = {}, bool connectionClosed = false);
+        
+        inline static bool SendErrorWith(Connection& connection, uint32_t statusCode, const std::string& statusText, const std::vector<HttpHeader>& headers = {}, const std::string& body = {})
+        {
+            return SendWith(connection, statusCode, statusText, headers, body, true);
+        }
     };
 }}
 

@@ -1,5 +1,4 @@
 #include "GETv1versionReactor.h"
-#include "GETv1versionResponse.h"
 
 using namespace sg::microreactor;
 using namespace myserver;
@@ -22,5 +21,6 @@ bool GETv1versionReactor::Process()
         return false;
     }
 
-    return RestResponse::SendResponse(mConnection, 501, "Not Implemented", "501 Not Implemented", true);
+    // Send GETv1versionResponse or error response
+    return RestResponse::SendErrorWith(mConnection, 501, "Not Implemented");
 }
