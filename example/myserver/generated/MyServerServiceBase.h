@@ -2,7 +2,7 @@
 #ifndef myserver_MyServerServiceBase
 #define myserver_MyServerServiceBase
 
-#include "Microreactor.h"
+#include "RestService.h"
 
 
 namespace myserver
@@ -17,8 +17,8 @@ namespace myserver
         virtual bool Initialize() override;
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGETv1versionReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreatePOSTv1updateReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGETv1versionReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection) = 0;
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreatePOSTv1updateReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection) = 0;
     };
 }
 

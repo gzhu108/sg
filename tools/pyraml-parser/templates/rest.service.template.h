@@ -2,7 +2,7 @@
 #ifndef $namespace_$serviceclassServiceBase
 #define $namespace_$serviceclassServiceBase
 
-#include "Microreactor.h"
+#include "RestService.h"
 
 
 namespace $namespace
@@ -18,7 +18,7 @@ namespace $namespace
 
     protected:
         @group_begin
-        virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$funcReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$funcReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection) = 0;
         @group_end
     };
 }

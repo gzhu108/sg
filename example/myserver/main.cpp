@@ -2,6 +2,7 @@
 
 #include <signal.h>
 #include <stdlib.h>
+#include "Microreactor.h"
 #include "MyService.h"
 
 using namespace sg::microreactor;

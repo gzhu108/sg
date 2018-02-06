@@ -25,12 +25,13 @@ std::shared_ptr<Reactor> MyService::CreateGETv1versionReactor(std::shared_ptr<Re
     return std::make_shared<VersionReactor>(connection, request);
 }
 
-//std::shared_ptr<Reactor> MyService::CreatePOSTv1updateReactor(std::shared_ptr<RestRequest> request, Connection& connection)
-//{
-//    if (request->mUri.length() < std::string("/v1/update").length())
-//    {
-//        return nullptr;
-//    }
-//
-//    return std::make_shared<UpdateReactor>(connection, request);
-//}
+std::shared_ptr<Reactor> MyService::CreatePOSTv1updateReactor(std::shared_ptr<RestRequest> request, Connection& connection)
+{
+    if (request->mUri.length() < std::string("/v1/update").length())
+    {
+        return nullptr;
+    }
+
+    return std::make_shared<POSTv1updateReactorBase>(connection, request);
+    //return std::make_shared<UpdateReactor>(connection, request);
+}

@@ -2,7 +2,7 @@
 #ifndef $namespace_$method$funcMessage
 #define $namespace_$method$funcMessage
 
-#include "Microreactor.h"
+#include "RestMessage.h"
 
 
 namespace $namespace

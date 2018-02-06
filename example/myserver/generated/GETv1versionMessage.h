@@ -2,7 +2,7 @@
 #ifndef myserver_GETv1versionMessage
 #define myserver_GETv1versionMessage
 
-#include "Microreactor.h"
+#include "RestMessage.h"
 
 
 namespace myserver

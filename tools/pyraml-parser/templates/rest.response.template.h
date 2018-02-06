@@ -2,7 +2,7 @@
 #ifndef $namespace_$method$funcResponse
 #define $namespace_$method$funcResponse
 
-#include "Microreactor.h"
+#include "RestResponse.h"
 
 
 namespace $namespace

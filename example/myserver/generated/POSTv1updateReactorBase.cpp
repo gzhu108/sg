@@ -1,4 +1,5 @@
 #include "POSTv1updateReactorBase.h"
+#include "RestResponse.h"
 
 using namespace sg::microreactor;
 using namespace myserver;

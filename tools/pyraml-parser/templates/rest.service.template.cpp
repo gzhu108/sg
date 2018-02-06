@@ -24,12 +24,3 @@ bool $serviceclassServiceBase::Initialize()
     
     return RestService::Initialize();
 }
-
-@group_begin
-// Override Create$method$funcReactor() in the derived class
-std::shared_ptr<Reactor> $serviceclassServiceBase::Create$method$funcReactor(std::shared_ptr<RestRequest> request, Connection& connection)
-{
-    return std::make_shared<$method$funcReactorBase>(connection, request);
-}
-
-@group_end

@@ -22,16 +22,3 @@ bool MyServerServiceBase::Initialize()
     
     return RestService::Initialize();
 }
-
-// Override CreateGETv1versionReactor() in the derived class
-std::shared_ptr<Reactor> MyServerServiceBase::CreateGETv1versionReactor(std::shared_ptr<RestRequest> request, Connection& connection)
-{
-    return std::make_shared<GETv1versionReactorBase>(connection, request);
-}
-
-// Override CreatePOSTv1updateReactor() in the derived class
-std::shared_ptr<Reactor> MyServerServiceBase::CreatePOSTv1updateReactor(std::shared_ptr<RestRequest> request, Connection& connection)
-{
-    return std::make_shared<POSTv1updateReactorBase>(connection, request);
-}
-
