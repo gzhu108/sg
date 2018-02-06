@@ -13,7 +13,6 @@ namespace myserver
         GETv1versionMessage(std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~GETv1versionMessage();
 
-        // TODO: Add message properties here
     };
 }
 

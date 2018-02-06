@@ -13,7 +13,10 @@ namespace myserver
         GETv1versionResponse();
         virtual ~GETv1versionResponse();
 
-        // TODO: Add Response properties here
+        PROPERTY(Version, std::string, "1.0.0.0");
+        
+    public:
+        virtual bool FlushToBuffer(std::string& buffer) override;
     };
 }
 

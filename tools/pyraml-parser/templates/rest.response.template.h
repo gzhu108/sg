@@ -13,7 +13,12 @@ namespace $namespace
         $method$funcResponse();
         virtual ~$method$funcResponse();
 
-        // TODO: Add Response properties here
+        @property_begin
+        PROPERTY($propname, $proptype, $propvalue);
+        @property_end
+        
+    public:
+        virtual bool FlushToBuffer(std::string& buffer) override;
     };
 }
 

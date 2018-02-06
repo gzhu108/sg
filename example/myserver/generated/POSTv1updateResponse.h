@@ -13,7 +13,9 @@ namespace myserver
         POSTv1updateResponse();
         virtual ~POSTv1updateResponse();
 
-        // TODO: Add Response properties here
+        
+    public:
+        virtual bool FlushToBuffer(std::string& buffer) override;
     };
 }
 

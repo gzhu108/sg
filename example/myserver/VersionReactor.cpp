@@ -23,8 +23,6 @@ bool VersionReactor::Process()
     }
 
     GETv1versionResponse response;
-    response.mHeaders.emplace_back(HttpHeader("Content-Type", "text/plain"));
-    response.mBody = "v1";
-    
+    response.Version.set("v1");
     return response.Send(mConnection);
 }

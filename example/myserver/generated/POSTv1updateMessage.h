@@ -13,7 +13,8 @@ namespace myserver
         POSTv1updateMessage(std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~POSTv1updateMessage();
 
-        // TODO: Add message properties here
+        PROPERTY(Name, std::string, "");
+        PROPERTY(Age, std::string, "18");
     };
 }
 

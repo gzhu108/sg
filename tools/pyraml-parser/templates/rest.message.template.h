@@ -13,7 +13,9 @@ namespace $namespace
         $method$funcMessage(std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~$method$funcMessage();
 
-        // TODO: Add message properties here
+        @property_begin
+        PROPERTY($propname, $proptype, $propvalue);
+        @property_end
     };
 }
 
