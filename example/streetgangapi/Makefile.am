@@ -40,4 +40,5 @@ __top_builddir__lib_libstreetgangapi_a_SOURCES = \
     StreetGangPBRequestEncoder.cpp \
     StreetGangPBResponseEncoder.cpp \
     StreetGangRestResponseTextEncoder.cpp \
-    StreetGangRestResponseJsonEncoder.cpp
+    StreetGangRestResponseJsonEncoder.cpp \
+    BinaryRequestCreateWorld.cpp

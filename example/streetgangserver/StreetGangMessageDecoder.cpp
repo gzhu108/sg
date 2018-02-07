@@ -8,6 +8,8 @@
 #include "RequestCreateWorldReactor.h"
 #include "RequestGetSceneReactor.h"
 
+#include "BinaryRequestCreateWorld.h"
+
 #define CREATE_REQUEST_REACTOR(_id, _message, _reactor) \
     case (int32_t)(_id): \
     { \
@@ -87,9 +89,21 @@ std::shared_ptr<Reactor> StreetGangMessageDecoder::Decode(std::istream& stream, 
     {
         CREATE_REQUEST_REACTOR(streetgangapi::ID::Byebye, RequestByebye, RequestByebyeReactor);
         CREATE_REQUEST_REACTOR(streetgangapi::ID::GetVersionRequest, RequestGetVersion, RequestGetVersionReactor);
-        CREATE_REQUEST_REACTOR(streetgangapi::ID::CreateWorldRequest, RequestCreateWorld, RequestCreateWorldReactor);
+        //CREATE_REQUEST_REACTOR(streetgangapi::ID::CreateWorldRequest, RequestCreateWorld, RequestCreateWorldReactor);
         CREATE_SESSION_REQUEST_REACTOR(streetgangapi::ID::GetSceneRequest, RequestGetScene, RequestGetSceneReactor);
         
+        case (int32_t)(streetgangapi::ID::CreateWorldRequest):
+        {
+            auto message = std::make_shared<BinaryRequestCreateWorld>();
+            if (message->Deserialize(stream))
+            {
+                auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message);
+                reactor->SetMessageEncoder(mStreetGangMessageResponseEncoder);
+                return reactor;
+            }
+            break;
+        }
+
         default:
         {
             auto message = std::make_shared<ResponseError>();
