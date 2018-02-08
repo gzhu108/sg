@@ -7,9 +7,11 @@
 #include <stdlib.h>
 #include "Microreactor.h"
 #include "StreetGangApi.h"
-#include "StreetGangClient.h"
+#include "StreetGangBinaryClient.h"
+#include "StreetGangPBClient.h"
 #include "ConfigurationXml.h"
 #include "ResponseGetSceneReactor.h"
+#include "BinaryStreetGangRequester.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -105,13 +107,25 @@ int32_t main(int32_t argc, const char* argv[])
         configuration->GetValue("ServerPort", serverPort);
     }
     
-    LOG("server address: %s, server port: %d", serverAddress.c_str(), serverPort);    
-    auto streetGangClient = std::make_shared<StreetGangClient>(protocol, serverAddress, serverPort);
+    LOG("server address: %s, server port: %d", serverAddress.c_str(), serverPort);
 
-    auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*streetGangClient->GetConnection(), nullptr, streetGangClient->GetStreetGangRequester());
-    responseGetSceneReactor->SetMessageEncoder(streetGangClient->GetStreetGangRequestEncoder());
-    SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, "ResponseGetSceneReactor::SendNextRequest");
-    responseGetSceneReactor = nullptr;
+    std::shared_ptr<Client> client;
+    if (serverPort == 7390)
+    {
+        auto pbClient = std::make_shared<StreetGangPBClient>(protocol, serverAddress, serverPort);
+        client = pbClient;
+
+        auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*client->GetConnection(), nullptr, nullptr);
+        responseGetSceneReactor->SetMessageEncoder(pbClient->GetStreetGangRequestEncoder());
+        SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, "ResponseGetSceneReactor::SendNextRequest");
+    }
+    else
+    {
+        client = std::make_shared<StreetGangBinaryClient>(protocol, serverAddress, serverPort);
+
+        auto requester = std::make_shared<BinaryStreetGangRequester>();
+        requester->GetVersion(*client->GetConnection());
+    }
 
     START_BLOCKING_TASK_LOOP();
 

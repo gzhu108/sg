@@ -20,7 +20,8 @@ __top_builddir__bin_streetgangclient_SOURCES = \
     ResponseErrorReactor.cpp \
     ResponseGetSceneReactor.cpp \
     ResponseGetVersionReactor.cpp \
-    StreetGangClient.cpp \
+    StreetGangBinaryClient.cpp \
+    StreetGangPBClient.cpp \
     StreetGangClientMessageDecoder.cpp \
     StreetGangClientPBDecoder.cpp
     
