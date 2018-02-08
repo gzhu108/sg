@@ -3,6 +3,7 @@
 #define streetgangclient_StreetGangClientMessageDecoder
 
 #include "MessageDecoder.h"
+#include "BinaryStreetGangRequester.h"
 
 
 namespace streetgangclient
@@ -15,6 +16,9 @@ namespace streetgangclient
 
     public:
         virtual std::shared_ptr<sg::microreactor::Reactor> Decode(std::istream& stream, sg::microreactor::Connection& connection) override;
+
+    protected:
+        std::shared_ptr<streetgangapi::BinaryStreetGangRequester> mRequester;
     };
 }
 

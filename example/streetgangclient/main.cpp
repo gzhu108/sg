@@ -108,7 +108,7 @@ int32_t main(int32_t argc, const char* argv[])
     LOG("server address: %s, server port: %d", serverAddress.c_str(), serverPort);    
     auto streetGangClient = std::make_shared<StreetGangClient>(protocol, serverAddress, serverPort);
 
-    auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*streetGangClient->GetConnection(), nullptr);
+    auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*streetGangClient->GetConnection(), nullptr, streetGangClient->GetStreetGangRequester());
     responseGetSceneReactor->SetMessageEncoder(streetGangClient->GetStreetGangRequestEncoder());
     SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, "ResponseGetSceneReactor::SendNextRequest");
     responseGetSceneReactor = nullptr;

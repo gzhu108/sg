@@ -2,15 +2,15 @@
 #include <thread>
 #include "Microreactor.h"
 #include "ResponseGetScene.h"
-#include "StreetGangApi.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-ResponseGetSceneReactor::ResponseGetSceneReactor(Connection& connection, std::shared_ptr<ResponseGetScene> message)
+ResponseGetSceneReactor::ResponseGetSceneReactor(Connection& connection, std::shared_ptr<ResponseGetScene> message, std::shared_ptr<StreetGangRequester> requester)
     : MessageReactor(connection, message)
+    , mRequester(requester)
 {
 }
 
@@ -39,8 +39,7 @@ bool ResponseGetSceneReactor::Process()
 
 void ResponseGetSceneReactor::SendNextRequest()
 {
-    StreetGangApi api(mConnection, mMessageEncoder);
-    if (!api.GetVersion())
+    if (!mRequester->GetVersion(mConnection))
     {
         LOG("Failed to get the server version");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

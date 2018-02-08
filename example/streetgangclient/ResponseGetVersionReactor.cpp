@@ -2,15 +2,15 @@
 #include <thread>
 #include "Microreactor.h"
 #include "ResponseGetVersion.h"
-#include "StreetGangApi.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-ResponseGetVersionReactor::ResponseGetVersionReactor(Connection& connection, std::shared_ptr<ResponseGetVersion> message)
+ResponseGetVersionReactor::ResponseGetVersionReactor(Connection& connection, std::shared_ptr<ResponseGetVersion> message, std::shared_ptr<StreetGangRequester> requester)
     : MessageReactor(connection, message)
+    , mRequester(requester)
 {
 }
 
@@ -40,8 +40,7 @@ void ResponseGetVersionReactor::SendNextRequest()
     ss << "World(" << worldNumber << ")";
     worldNumber++;
 
-    StreetGangApi api(mConnection, mMessageEncoder);
-    if (!api.CreateWorld(ss.str()))
+    if (!mRequester->CreateWorld(mConnection, ss.str()))
     {
         LOG("%s Failed to create a new world", ss.str().c_str());
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

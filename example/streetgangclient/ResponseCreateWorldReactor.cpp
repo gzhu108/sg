@@ -4,15 +4,15 @@
 #include "ResponseCreateWorld.h"
 #include "RequestGetScene.h"
 #include "Rectangle.h"
-#include "StreetGangApi.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-ResponseCreateWorldReactor::ResponseCreateWorldReactor(Connection& connection, std::shared_ptr<ResponseCreateWorld> message)
+ResponseCreateWorldReactor::ResponseCreateWorldReactor(Connection& connection, std::shared_ptr<ResponseCreateWorld> message, std::shared_ptr<StreetGangRequester> requester)
     : MessageReactor(connection, message)
+    , mRequester(requester)
 {
 }
 
@@ -42,8 +42,7 @@ void ResponseCreateWorldReactor::SendNextRequest()
     // Get the scene from the world that just created
     streetgangapi::Rectangle<float> rect(0.4f, 0.4f, 0.2f, 0.2f);
 
-    StreetGangApi api(mConnection, mMessageEncoder);
-    if (!api.GetScene(InputMessage()->WorldId.cref(), rect))
+    if (!mRequester->GetScene(mConnection, InputMessage()->WorldId.cref(), rect))
     {
         LOG("Failed to get scenen");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

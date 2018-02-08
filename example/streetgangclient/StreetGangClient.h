@@ -4,6 +4,7 @@
 
 #include "Client.h"
 #include "StreetGangRequestEncoder.h"
+#include "StreetGangRequester.h"
 
 
 namespace streetgangclient
@@ -15,9 +16,11 @@ namespace streetgangclient
         virtual ~StreetGangClient();
 
         std::shared_ptr<streetgangapi::StreetGangRequestEncoder> GetStreetGangRequestEncoder() { return mStreetGangRequestEncoder; }
+        std::shared_ptr<streetgangapi::StreetGangRequester> GetStreetGangRequester() { return mStreetGangRequester; }
 
     protected:
         std::shared_ptr<streetgangapi::StreetGangRequestEncoder> mStreetGangRequestEncoder;
+        std::shared_ptr<streetgangapi::StreetGangRequester> mStreetGangRequester;
    };
 }
 

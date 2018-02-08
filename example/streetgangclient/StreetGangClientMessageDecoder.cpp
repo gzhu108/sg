@@ -18,7 +18,7 @@
         auto message = std::make_shared<_message>(); \
         if (message->Decode(stream)) \
         { \
-            auto reactor = std::make_shared<_reactor>(connection, message); \
+            auto reactor = std::make_shared<_reactor>(connection, message, mRequester); \
             return reactor; \
         } \
     } \
@@ -31,6 +31,7 @@ using namespace streetgangclient;
 
 StreetGangClientMessageDecoder::StreetGangClientMessageDecoder()
 {
+    mRequester = std::make_shared<streetgangapi::BinaryStreetGangRequester>();
 }
 
 StreetGangClientMessageDecoder::~StreetGangClientMessageDecoder()

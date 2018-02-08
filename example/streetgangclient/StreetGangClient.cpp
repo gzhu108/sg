@@ -2,6 +2,7 @@
 #include "NetworkUtility.h"
 #include "TaskManager.h"
 #include "StreetGangApi.h"
+#include "BinaryStreetGangRequester.h"
 #include "StreetGangPBRequestEncoder.h"
 #include "StreetGangClientMessageDecoder.h"
 #include "StreetGangClientPBDecoder.h"
@@ -23,6 +24,7 @@ StreetGangClient::StreetGangClient(const std::string& protocol, const std::strin
     else
     {
         messageDecoder = std::make_shared<StreetGangClientMessageDecoder>();
+        mStreetGangRequester = std::make_shared<BinaryStreetGangRequester>();
     }
 
     // Create client profile
@@ -38,7 +40,7 @@ StreetGangClient::StreetGangClient(const std::string& protocol, const std::strin
         responseError->Result.set((int32_t)ResultCode::ErrorTimeout);
         responseError->RequestId.set(std::static_pointer_cast<MessageBase>(timedOutMessage.mMessage)->Id.cref());
 
-        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(timedOutMessage.mConnection, responseError);
+        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(timedOutMessage.mConnection, responseError, nullptr);
         responseErrorReactor->SetParent(timedOutMessage.mMessage);
         
         responseErrorReactor->Process();

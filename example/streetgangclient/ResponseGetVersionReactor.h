@@ -4,6 +4,7 @@
 
 #include "MessageReactor.h"
 #include "StreetGangRequestEncoder.h"
+#include "StreetGangRequester.h"
 #include "ResponseGetVersion.h"
 
 
@@ -12,7 +13,7 @@ namespace streetgangclient
     class ResponseGetVersionReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseGetVersion, streetgangapi::StreetGangRequestEncoder>
     {
     public:
-        ResponseGetVersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseGetVersion> message);
+        ResponseGetVersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseGetVersion> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
         virtual ~ResponseGetVersionReactor();
 
     public:
@@ -20,6 +21,9 @@ namespace streetgangclient
 
     protected:
         void SendNextRequest();
+
+    protected:
+        std::shared_ptr<streetgangapi::StreetGangRequester> mRequester;
     };
 }
 

@@ -47,6 +47,7 @@
     <ClCompile Include="BinaryResponseError.cpp" />
     <ClCompile Include="BinaryResponseGetScene.cpp" />
     <ClCompile Include="BinaryResponseGetVersion.cpp" />
+    <ClCompile Include="BinaryStreetGangRequester.cpp" />
     <ClCompile Include="BinaryStreetGangResponder.cpp" />
     <ClCompile Include="MessageBase.cpp" />
     <ClCompile Include="protobuf\cpp\CreateWorldRequest.pb.cc" />
@@ -81,6 +82,7 @@
     <ClInclude Include="BinaryResponseError.h" />
     <ClInclude Include="BinaryResponseGetScene.h" />
     <ClInclude Include="BinaryResponseGetVersion.h" />
+    <ClInclude Include="BinaryStreetGangRequester.h" />
     <ClInclude Include="BinaryStreetGangResponder.h" />
     <ClInclude Include="MessageBase.h" />
     <ClInclude Include="Point.h" />
@@ -108,6 +110,7 @@
     <ClInclude Include="StreetGangPBRequestEncoder.h" />
     <ClInclude Include="StreetGangPBResponseEncoder.h" />
     <ClInclude Include="StreetGangRequestEncoder.h" />
+    <ClInclude Include="StreetGangRequester.h" />
     <ClInclude Include="StreetGangResponder.h" />
     <ClInclude Include="StreetGangResponseEncoder.h" />
     <ClInclude Include="StreetGangRestResponseJsonEncoder.h" />

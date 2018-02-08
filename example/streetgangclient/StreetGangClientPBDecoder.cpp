@@ -18,7 +18,7 @@
 #include "ResponseGetSceneReactor.h"
 
 #define CREATE_RESPONSE_REACTOR(_reactor) \
-    auto reactor = std::make_shared<_reactor>(connection, message); \
+    auto reactor = std::make_shared<_reactor>(connection, message, nullptr); \
     reactor->SetMessageEncoder(mStreetGangPBRequestEncoder); \
     return reactor
 
