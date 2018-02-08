@@ -6,8 +6,9 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestGetVersionReactor::RequestGetVersionReactor(Connection& connection, std::shared_ptr<RequestGetVersion> message)
+RequestGetVersionReactor::RequestGetVersionReactor(Connection& connection, std::shared_ptr<RequestGetVersion> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
+    , mResponder(responder)
 {
 }
 
@@ -17,6 +18,12 @@ RequestGetVersionReactor::~RequestGetVersionReactor()
 
 bool RequestGetVersionReactor::Process()
 {
+    if (mResponder == nullptr)
+    {
+        LOG("Invalid responder");
+        return false;
+    }
+
     if (mConnection.GetProfile() == nullptr || mConnection.GetProfile()->Configuration.cref() == nullptr)
     {
         return false;
@@ -25,11 +32,5 @@ bool RequestGetVersionReactor::Process()
     std::string version;
     mConnection.GetProfile()->Configuration.cref()->GetValue("Version", version);
 
-    auto response = std::make_shared<ResponseGetVersion>();
-    response->TrackId.set(InputMessage()->TrackId.cref());
-    response->Result.set(static_cast<int32_t>(ResultCode::Success));
-    response->Version.set(version);
-
-    return SendMessage(response);
-    //return SubmitTask(std::bind(&RequestGetVersionReactor::SendMessage, this, response), "RequestGetVersionReactor::SendMessage");
+    return mResponder->SendGetVersionResponse(mConnection, InputMessage()->TrackId.cref(), ResultCode::Success, version);
 }

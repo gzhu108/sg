@@ -14,6 +14,7 @@ namespace sg { namespace microreactor
         virtual ~BinarySerializer();
         
     public:
+        virtual bool Read(std::istream& stream, std::ostream& val) override;
         virtual bool Read(std::istream& stream, bool& val) override;
         virtual bool Read(std::istream& stream, char& val) override;
         virtual bool Read(std::istream& stream, uint8_t& val) override;
@@ -26,7 +27,9 @@ namespace sg { namespace microreactor
         virtual bool Read(std::istream& stream, float& val) override;
         virtual bool Read(std::istream& stream, double& val) override;
         virtual bool Read(std::istream& stream, std::string& val) override;
-        
+        virtual bool Read(std::istream& stream, Serializable& val) override;
+
+        virtual bool Write(std::istream& val, std::ostream& stream) override;
         virtual bool Write(bool val, std::ostream& stream) override;
         virtual bool Write(char val, std::ostream& stream) override;
         virtual bool Write(uint8_t val, std::ostream& stream) override;
@@ -39,6 +42,7 @@ namespace sg { namespace microreactor
         virtual bool Write(float val, std::ostream& stream) override;
         virtual bool Write(double val, std::ostream& stream) override;
         virtual bool Write(const std::string& val, std::ostream& stream) override;
+        virtual bool Write(const Serializable& val, std::ostream& stream) override;
     };
 }}
 

@@ -7,8 +7,9 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestCreateWorldReactor::RequestCreateWorldReactor(Connection& connection, std::shared_ptr<RequestCreateWorld> message)
+RequestCreateWorldReactor::RequestCreateWorldReactor(Connection& connection, std::shared_ptr<RequestCreateWorld> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
+    , mResponder(responder)
 {
 }
 

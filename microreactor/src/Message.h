@@ -24,6 +24,9 @@ namespace sg { namespace microreactor
 
         bool HasTimedOut();
 
+        virtual bool Encode(std::ostream& stream) const { return false; }
+        virtual bool Decode(std::istream& stream) { return false; }
+
     protected:
         std::chrono::time_point<std::chrono::high_resolution_clock> mCreationTime{ std::chrono::high_resolution_clock::now() };
         std::chrono::time_point<std::chrono::high_resolution_clock> mRequestTime{ std::chrono::high_resolution_clock::now() };

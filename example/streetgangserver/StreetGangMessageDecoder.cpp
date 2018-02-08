@@ -1,6 +1,7 @@
 #include "StreetGangMessageDecoder.h"
 #include "StreetGangIds.h"
 #include "StreetGangSessionManager.h"
+#include "BinarySerializer.h"
 
 #include "RequestErrorReactor.h"
 #include "RequestGetVersionReactor.h"
@@ -8,35 +9,10 @@
 #include "RequestCreateWorldReactor.h"
 #include "RequestGetSceneReactor.h"
 
+#include "BinaryRequestByebye.h"
+#include "BinaryRequestGetVersion.h"
 #include "BinaryRequestCreateWorld.h"
-
-#define CREATE_REQUEST_REACTOR(_id, _message, _reactor) \
-    case (int32_t)(_id): \
-    { \
-        auto message = std::make_shared<_message>(); \
-        if (DecodeMessage(stream, *message)) \
-        { \
-            auto reactor = std::make_shared<_reactor>(connection, message); \
-            reactor->SetMessageEncoder(mStreetGangMessageResponseEncoder); \
-            return reactor; \
-        } \
-    } \
-    break
-
-#define CREATE_SESSION_REQUEST_REACTOR(_id, _message, _reactor) \
-    case (int32_t)(_id): \
-    { \
-        auto message = std::make_shared<_message>(); \
-        if (DecodeMessage(stream, *message)) \
-        { \
-            auto reactor = std::make_shared<_reactor>(connection, message); \
-            reactor->SetMessageEncoder(mStreetGangMessageResponseEncoder); \
-            auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref()); \
-            reactor->SetSession(session); \
-            return reactor; \
-        } \
-    } \
-    break
+#include "BinaryRequestGetScene.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -45,7 +21,7 @@ using namespace streetgangserver;
 
 StreetGangMessageDecoder::StreetGangMessageDecoder()
 {
-    mStreetGangMessageResponseEncoder = std::make_shared<StreetGangMessageResponseEncoder>();
+    mResponder = std::make_shared<BinaryStreetGangResponder>();
 }
 
 StreetGangMessageDecoder::~StreetGangMessageDecoder()
@@ -54,7 +30,7 @@ StreetGangMessageDecoder::~StreetGangMessageDecoder()
 
 std::shared_ptr<Reactor> StreetGangMessageDecoder::Decode(std::istream& stream, Connection& connection)
 {
-    Serializer& serializer = static_cast<Serializer&>(mSerializer);
+    BinarySerializer serializer;
     
     //stream->clear();
     //stream->ignore(std::numeric_limits<std::streamsize>::max(), MARKER);
@@ -87,18 +63,47 @@ std::shared_ptr<Reactor> StreetGangMessageDecoder::Decode(std::istream& stream, 
 
     switch (id)
     {
-        CREATE_REQUEST_REACTOR(streetgangapi::ID::Byebye, RequestByebye, RequestByebyeReactor);
-        CREATE_REQUEST_REACTOR(streetgangapi::ID::GetVersionRequest, RequestGetVersion, RequestGetVersionReactor);
-        //CREATE_REQUEST_REACTOR(streetgangapi::ID::CreateWorldRequest, RequestCreateWorld, RequestCreateWorldReactor);
-        CREATE_SESSION_REQUEST_REACTOR(streetgangapi::ID::GetSceneRequest, RequestGetScene, RequestGetSceneReactor);
-        
+        case (int32_t)(streetgangapi::ID::Byebye):
+        {
+            auto message = std::make_shared<BinaryRequestByebye>();
+            if (message->Decode(stream))
+            {
+                auto reactor = std::make_shared<RequestByebyeReactor>(connection, message, mResponder);
+                return reactor;
+            }
+            break;
+        }
+
+        case (int32_t)(streetgangapi::ID::GetVersionRequest) :
+        {
+            auto message = std::make_shared<BinaryRequestGetVersion>();
+            if (message->Decode(stream))
+            {
+                auto reactor = std::make_shared<RequestGetVersionReactor>(connection, message, mResponder);
+                return reactor;
+            }
+            break;
+        }
+
         case (int32_t)(streetgangapi::ID::CreateWorldRequest):
         {
             auto message = std::make_shared<BinaryRequestCreateWorld>();
-            if (message->Deserialize(stream))
+            if (message->Decode(stream))
             {
-                auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message);
-                reactor->SetMessageEncoder(mStreetGangMessageResponseEncoder);
+                auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message, mResponder);
+                return reactor;
+            }
+            break;
+        }
+
+        case (int32_t)(streetgangapi::ID::GetSceneRequest) :
+        {
+            auto message = std::make_shared<BinaryRequestGetScene>();
+            if (message->Decode(stream))
+            {
+                auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, mResponder);
+                auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref());
+                reactor->SetSession(session);
                 return reactor;
             }
             break;
@@ -106,158 +111,11 @@ std::shared_ptr<Reactor> StreetGangMessageDecoder::Decode(std::istream& stream, 
 
         default:
         {
-            auto message = std::make_shared<ResponseError>();
-            message->Result.set((int32_t)ResultCode::ErrorNotImplemented);
-            message->RequestId.set(id);
-            message->ErrorMessage.set("Unknown Request");
-            auto reactor = std::make_shared<RequestErrorReactor>(connection, message);
-            reactor->SetMessageEncoder(mStreetGangMessageResponseEncoder);
-            return reactor;
+            mResponder->SendErrorResponse(connection, "Unknown track ID", ResultCode::ErrorNotImplemented, id, "Unknown request");
+            return nullptr;
         }
     }
 
+    mResponder->SendErrorResponse(connection, "Unknown track ID", ResultCode::ErrorBadRequest, id, "Invalid request");
     return nullptr;
-}
-
-bool StreetGangMessageDecoder::DecodeMessage(std::istream& stream, sg::microreactor::Message& message)
-{
-    Serializer& serializer = static_cast<Serializer&>(mSerializer);
-
-    std::string trackId;
-    if (serializer.Read(stream, trackId))
-    {
-        message.TrackId.set(trackId);
-    }
-    else
-    {
-        return false;
-    }
-
-    uint64_t responseTimeout = 0;
-    if (serializer.Read(stream, responseTimeout))
-    {
-        message.ResponseTimeout.set(responseTimeout);
-    }
-    else
-    {
-        return false;
-    }
-
-    return true;
-}
-
-bool StreetGangMessageDecoder::DecodeMessage(std::istream& stream, MessageBase& message)
-{
-    Serializer& serializer = static_cast<Serializer&>(mSerializer);
-
-    // Do not read the ID, it should be read by the receiver.
-
-    if (!DecodeMessage(stream, static_cast<Message&>(message)))
-    {
-        return false;
-    }
-
-    int32_t result = static_cast<int32_t>(ResultCode::Unknown);
-    if (serializer.Read(stream, result))
-    {
-        message.Result.set(result);
-    }
-    else
-    {
-        return false;
-    }
-
-    SessionId sessionId;
-    if (serializer.Read(stream, sessionId))
-    {
-        message.MessageSessionId.set(sessionId);
-    }
-    else
-    {
-        return false;
-    }
-
-    return true;
-}
-
-bool StreetGangMessageDecoder::DecodeMessage(std::istream& stream, RequestByebye& message)
-{
-    return DecodeMessage(stream, static_cast<MessageBase&>(message));
-}
-
-bool StreetGangMessageDecoder::DecodeMessage(std::istream& stream, RequestGetVersion& message)
-{
-    return DecodeMessage(stream, static_cast<MessageBase&>(message));
-}
-
-bool StreetGangMessageDecoder::DecodeMessage(std::istream& stream, RequestCreateWorld& message)
-{
-    Serializer& serializer = static_cast<Serializer&>(mSerializer);
-
-    if (!DecodeMessage(stream, static_cast<MessageBase&>(message)))
-    {
-        return false;
-    }
-
-    std::string worldName;
-    if (serializer.Read(stream, worldName))
-    {
-        message.WorldName.set(worldName);
-    }
-    else
-    {
-        return false;
-    }
-
-    return true;
-}
-
-bool StreetGangMessageDecoder::DecodeMessage(std::istream& stream, RequestGetScene& message)
-{
-    Serializer& serializer = static_cast<Serializer&>(mSerializer);
-
-    if (!DecodeMessage(stream, static_cast<MessageBase&>(message)))
-    {
-        return false;
-    }
-
-    SessionId worldId = DefaultSessionId;
-    if (serializer.Read(stream, worldId))
-    {
-        message.WorldId.set(worldId);
-    }
-    else
-    {
-        return false;
-    }
-
-    auto rect = message.Rect.cref();
-    if (serializer.Read(stream, rect))
-    {
-        if (rect.mX < 0.0 || rect.mX > 1.0)
-        {
-            LOG("Invalid Rect(%f, %f, %f, %f)",
-                rect.mX,
-                rect.mY,
-                rect.mW,
-                rect.mH);
-        }
-
-        message.Rect.set(rect);
-
-        if (message.Rect->mX < 0.0 || message.Rect->mX > 1.0)
-        {
-            LOG("Invalid Message Rect(%f, %f, %f, %f)",
-                message.Rect->mX,
-                message.Rect->mY,
-                message.Rect->mW,
-                message.Rect->mH);
-        }
-    }
-    else
-    {
-        return false;
-    }
-
-    return true;
 }

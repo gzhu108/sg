@@ -34,9 +34,15 @@ __top_builddir__lib_libstreetgangapi_a_SOURCES = \
     ResponseCreateWorld.cpp \
     ResponseGetScene.cpp \
     ResponseGetVersion.cpp \
+	BinaryRequestByebye.cpp \
+    BinaryRequestCreateWorld.cpp \
+    BinaryRequestGetScene.cpp \
+    BinaryRequestGetVersion.cpp \
+    BinaryResponseError.cpp \
+    BinaryResponseCreateWorld.cpp \
+    BinaryResponseGetScene.cpp \
+    BinaryResponseGetVersion.cpp \
     StreetGangApi.cpp \
-    StreetGangMessageRequestEncoder.cpp \
-    StreetGangMessageResponseEncoder.cpp \
     StreetGangPBRequestEncoder.cpp \
     StreetGangPBResponseEncoder.cpp \
     StreetGangRestResponseTextEncoder.cpp \

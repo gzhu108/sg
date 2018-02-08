@@ -139,6 +139,18 @@ namespace sg { namespace microreactor
             val = std::make_shared<ValueType>();
             return Read(stream, *val);
         }
+
+        template <typename T>
+        bool ReadProperty(std::istream& stream, T& property)
+        {
+            T::ValueType value;
+            if (Read(stream, value))
+            {
+                property.set(value);
+                return true;
+            }
+            return false;
+        }
         
         virtual bool Write(std::istream& val, std::ostream& stream);
         virtual bool Write(bool val, std::ostream& stream);

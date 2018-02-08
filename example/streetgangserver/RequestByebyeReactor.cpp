@@ -5,8 +5,9 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestByebyeReactor::RequestByebyeReactor(Connection& connection, std::shared_ptr<RequestByebye> message)
+RequestByebyeReactor::RequestByebyeReactor(Connection& connection, std::shared_ptr<RequestByebye> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
+    , mResponder(responder)
 {
 }
 

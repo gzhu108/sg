@@ -4,6 +4,7 @@
 
 #include "MessageReactor.h"
 #include "StreetGangResponseEncoder.h"
+#include "StreetGangResponder.h"
 #include "RequestGetScene.h"
 #include "WorldServiceProvider.h"
 
@@ -13,7 +14,7 @@ namespace streetgangserver
     class RequestGetSceneReactor : public sg::microreactor::MessageReactor<streetgangapi::RequestGetScene, streetgangapi::StreetGangResponseEncoder>
     {
     public:
-        RequestGetSceneReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestGetScene> message);
+        RequestGetSceneReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
         virtual ~RequestGetSceneReactor();
         
     public:
@@ -21,6 +22,7 @@ namespace streetgangserver
         virtual void SetSession(std::shared_ptr<WorldServiceProvider> session) { mSession = session; }
 
     protected:
+        std::shared_ptr<streetgangapi::StreetGangResponder> mResponder;
         std::shared_ptr<WorldServiceProvider> mSession;
     };
 }

@@ -62,7 +62,7 @@ std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateGetVersi
         streetGangResponseEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
     }
 
-    auto reactor = std::make_shared<RequestGetVersionReactor>(connection, message);
+    auto reactor = std::make_shared<RequestGetVersionReactor>(connection, message, nullptr);
     reactor->SetMessageEncoder(streetGangResponseEncoder);
     return reactor;
 }
@@ -99,7 +99,7 @@ std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateCreateWo
         streetGangResponseEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
     }
 
-    auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message);
+    auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message, nullptr);
     reactor->SetMessageEncoder(streetGangResponseEncoder);
 
     return reactor;
@@ -232,12 +232,12 @@ std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateGetScene
         errorResponse->Result.set((int32_t)ResultCode::ErrorBadRequest);
         errorResponse->RequestId.set(message->Id.cref());
         errorResponse->ErrorMessage.set("Failed to parse JSON");
-        auto reactor = std::make_shared<RequestErrorReactor>(connection, errorResponse);
+        auto reactor = std::make_shared<RequestErrorReactor>(connection, errorResponse, nullptr);
         reactor->SetMessageEncoder(streetGangResponseEncoder);
         return reactor;
     }
 
-    auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message);
+    auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, nullptr);
 
     auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref());
     reactor->SetSession(session);

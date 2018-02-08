@@ -12,6 +12,11 @@ BinarySerializer::~BinarySerializer()
 {
 }
 
+bool BinarySerializer::Read(std::istream& stream, std::ostream& val)
+{
+    return Serializer::Read(stream, val);
+}
+
 bool BinarySerializer::Read(std::istream& stream, bool& val)
 {
     char buffer = 0;
@@ -93,6 +98,16 @@ bool BinarySerializer::Read(std::istream& stream, double& val)
 bool BinarySerializer::Read(std::istream& stream, std::string& val)
 {
     return SerializerRead(*this, stream, val);
+}
+
+bool BinarySerializer::Read(std::istream& stream, Serializable& val)
+{
+    return Serializer::Read(stream, val);
+}
+
+bool BinarySerializer::Write(std::istream& val, std::ostream& stream)
+{
+    return Serializer::Write(val, stream);
 }
 
 bool BinarySerializer::Write(bool val, std::ostream& stream)
@@ -177,3 +192,7 @@ bool BinarySerializer::Write(const std::string& val, std::ostream& stream)
     return SerializerWrite(*this, val, stream);
 }
 
+bool BinarySerializer::Write(const Serializable& val, std::ostream& stream)
+{
+    return Serializer::Write(val, stream);
+}

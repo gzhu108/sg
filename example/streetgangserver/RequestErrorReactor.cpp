@@ -5,8 +5,9 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestErrorReactor::RequestErrorReactor(Connection& connection, std::shared_ptr<ResponseError> message)
+RequestErrorReactor::RequestErrorReactor(Connection& connection, std::shared_ptr<ResponseError> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
+    , mResponder(responder)
 {
 }
 

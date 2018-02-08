@@ -1,13 +1,6 @@
 #include "BinaryRequestCreateWorld.h"
 #include "BinarySerializer.h"
 
-#define READ_PROPERTY(_property) \
-    PROPERTY_TYPE(_property) _property##Value; \
-    if (serializer.Read(stream, _property##Value)) \
-        _property.set(_property##Value); \
-    else \
-        return false
-
 using namespace sg::microreactor;
 using namespace streetgangapi;
 
@@ -20,7 +13,7 @@ BinaryRequestCreateWorld::~BinaryRequestCreateWorld()
 {
 }
 
-bool BinaryRequestCreateWorld::Serialize(std::ostream& stream) const
+bool BinaryRequestCreateWorld::Encode(std::ostream& stream) const
 {
     BinarySerializer serializer;
 
@@ -44,15 +37,15 @@ bool BinaryRequestCreateWorld::Serialize(std::ostream& stream) const
     */
 }
 
-bool BinaryRequestCreateWorld::Deserialize(std::istream& stream)
+bool BinaryRequestCreateWorld::Decode(std::istream& stream)
 {
     BinarySerializer serializer;
 
-    READ_PROPERTY(TrackId);
-    READ_PROPERTY(ResponseTimeout);
-    READ_PROPERTY(Result);
-    READ_PROPERTY(MessageSessionId);
-    READ_PROPERTY(WorldName);
+    serializer.ReadProperty(stream, TrackId);
+    serializer.ReadProperty(stream, ResponseTimeout);
+    serializer.ReadProperty(stream, Result);
+    serializer.ReadProperty(stream, MessageSessionId);
+    serializer.ReadProperty(stream, WorldName);
 
     return true;
 }

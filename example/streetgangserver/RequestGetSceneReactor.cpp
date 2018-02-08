@@ -7,8 +7,9 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestGetSceneReactor::RequestGetSceneReactor(Connection& connection, std::shared_ptr<RequestGetScene> message)
+RequestGetSceneReactor::RequestGetSceneReactor(Connection& connection, std::shared_ptr<RequestGetScene> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
+    , mResponder(responder)
 {
 }
 
@@ -18,6 +19,12 @@ RequestGetSceneReactor::~RequestGetSceneReactor()
 
 bool RequestGetSceneReactor::Process()
 {
+    if (mResponder == nullptr)
+    {
+        LOG("Invalid responder");
+        return false;
+    }
+
     if (mSession == nullptr)
     {
         auto errorResponse = std::make_shared<ResponseError>();
@@ -41,13 +48,5 @@ bool RequestGetSceneReactor::Process()
             InputMessage()->Rect->mH);
     }
 
-    auto response = std::make_shared<ResponseGetScene>();
-    response->TrackId.set(InputMessage()->TrackId.cref());
-    response->Result.set(static_cast<int32_t>(ResultCode::Success));
-    response->WorldId.set(mSession->Id.cref());
-    response->Rect.set(InputMessage()->Rect.cref());
-    response->Items.set(items);
-
-    return SendMessage(response);
-    //return SubmitTask(std::bind(&RequestGetSceneReactor::SendMessage, this, response), "RequestGetVersionReactor::SendMessage");
+    return mResponder->SendGetSceneResponse(mConnection, InputMessage()->TrackId.cref(), ResultCode::Success, mSession->Id.cref(), InputMessage()->Rect.cref(), items);
 }

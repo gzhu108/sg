@@ -14,8 +14,8 @@ namespace streetgangapi
         virtual ~BinaryRequestCreateWorld();
         
     public:
-        virtual bool Serialize(std::ostream& stream) const;
-        virtual bool Deserialize(std::istream& stream);
+        virtual bool Encode(std::ostream& stream) const override;
+        virtual bool Decode(std::istream& stream) override;
     };
 }
 

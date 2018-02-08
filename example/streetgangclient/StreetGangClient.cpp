@@ -2,7 +2,6 @@
 #include "NetworkUtility.h"
 #include "TaskManager.h"
 #include "StreetGangApi.h"
-#include "StreetGangMessageRequestEncoder.h"
 #include "StreetGangPBRequestEncoder.h"
 #include "StreetGangClientMessageDecoder.h"
 #include "StreetGangClientPBDecoder.h"
@@ -24,7 +23,6 @@ StreetGangClient::StreetGangClient(const std::string& protocol, const std::strin
     else
     {
         messageDecoder = std::make_shared<StreetGangClientMessageDecoder>();
-        mStreetGangRequestEncoder = std::make_shared<StreetGangMessageRequestEncoder>();
     }
 
     // Create client profile

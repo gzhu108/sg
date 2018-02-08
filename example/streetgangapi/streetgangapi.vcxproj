@@ -39,6 +39,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryRequestByebye.cpp" />
+    <ClCompile Include="BinaryRequestCreateWorld.cpp" />
+    <ClCompile Include="BinaryRequestGetScene.cpp" />
+    <ClCompile Include="BinaryRequestGetVersion.cpp" />
+    <ClCompile Include="BinaryResponseCreateWorld.cpp" />
+    <ClCompile Include="BinaryResponseError.cpp" />
+    <ClCompile Include="BinaryResponseGetScene.cpp" />
+    <ClCompile Include="BinaryResponseGetVersion.cpp" />
+    <ClCompile Include="BinaryStreetGangResponder.cpp" />
     <ClCompile Include="MessageBase.cpp" />
     <ClCompile Include="protobuf\cpp\CreateWorldRequest.pb.cc" />
     <ClCompile Include="protobuf\cpp\CreateWorldResponse.pb.cc" />
@@ -58,14 +67,21 @@
     <ClCompile Include="ResponseGetScene.cpp" />
     <ClCompile Include="ResponseGetVersion.cpp" />
     <ClCompile Include="StreetGangApi.cpp" />
-    <ClCompile Include="StreetGangMessageRequestEncoder.cpp" />
-    <ClCompile Include="StreetGangMessageResponseEncoder.cpp" />
     <ClCompile Include="StreetGangPBRequestEncoder.cpp" />
     <ClCompile Include="StreetGangPBResponseEncoder.cpp" />
     <ClCompile Include="StreetGangRestResponseJsonEncoder.cpp" />
     <ClCompile Include="StreetGangRestResponseTextEncoder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryRequestByebye.h" />
+    <ClInclude Include="BinaryRequestCreateWorld.h" />
+    <ClInclude Include="BinaryRequestGetScene.h" />
+    <ClInclude Include="BinaryRequestGetVersion.h" />
+    <ClInclude Include="BinaryResponseCreateWorld.h" />
+    <ClInclude Include="BinaryResponseError.h" />
+    <ClInclude Include="BinaryResponseGetScene.h" />
+    <ClInclude Include="BinaryResponseGetVersion.h" />
+    <ClInclude Include="BinaryStreetGangResponder.h" />
     <ClInclude Include="MessageBase.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="protobuf\cpp\CreateWorldRequest.pb.h" />
@@ -89,11 +105,10 @@
     <ClInclude Include="SessionId.h" />
     <ClInclude Include="StreetGangApi.h" />
     <ClInclude Include="StreetGangIds.h" />
-    <ClInclude Include="StreetGangMessageRequestEncoder.h" />
-    <ClInclude Include="StreetGangMessageResponseEncoder.h" />
     <ClInclude Include="StreetGangPBRequestEncoder.h" />
     <ClInclude Include="StreetGangPBResponseEncoder.h" />
     <ClInclude Include="StreetGangRequestEncoder.h" />
+    <ClInclude Include="StreetGangResponder.h" />
     <ClInclude Include="StreetGangResponseEncoder.h" />
     <ClInclude Include="StreetGangRestResponseJsonEncoder.h" />
     <ClInclude Include="StreetGangRestResponseTextEncoder.h" />

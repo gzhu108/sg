@@ -20,12 +20,12 @@
 #include "RequestGetSceneReactor.h"
 
 #define CREATE_REQUEST_REACTOR(_reactor) \
-    auto reactor = std::make_shared<_reactor>(connection, message); \
+    auto reactor = std::make_shared<_reactor>(connection, message, nullptr); \
     reactor->SetMessageEncoder(mStreetGangPBResponseEncoder); \
     return reactor
 
 #define CREATE_SESSION_REQUEST_REACTOR(_reactor) \
-    auto reactor = std::make_shared<_reactor>(connection, message); \
+    auto reactor = std::make_shared<_reactor>(connection, message, nullptr); \
     reactor->SetMessageEncoder(mStreetGangPBResponseEncoder); \
     auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref()); \
     reactor->SetSession(session); \
@@ -119,7 +119,7 @@ std::shared_ptr<Reactor> StreetGangPBDecoder::Decode(std::istream& stream, Conne
         auto message = std::make_shared<ResponseError>();
         message->Result.set((int32_t)ResultCode::ErrorNotImplemented);
         message->ErrorMessage.set("Unknown Request: " + pbMessageHeader.message_id());
-        auto reactor = std::make_shared<RequestErrorReactor>(connection, message);
+        auto reactor = std::make_shared<RequestErrorReactor>(connection, message, nullptr);
         reactor->SetMessageEncoder(mStreetGangPBResponseEncoder);
         return reactor;
     }

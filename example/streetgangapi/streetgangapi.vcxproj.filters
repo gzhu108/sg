@@ -78,13 +78,7 @@
     <ClCompile Include="protobuf\cpp\Rectangle.pb.cc">
       <Filter>protobuf\cpp</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangMessageResponseEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StreetGangPBResponseEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StreetGangMessageRequestEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StreetGangPBRequestEncoder.cpp">
@@ -94,6 +88,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StreetGangRestResponseTextEncoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryRequestCreateWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryRequestGetScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryRequestGetVersion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryRequestByebye.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryStreetGangResponder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryResponseCreateWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryResponseError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryResponseGetScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryResponseGetVersion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,13 +194,7 @@
     <ClInclude Include="StreetGangResponseEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangMessageResponseEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StreetGangPBResponseEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StreetGangMessageRequestEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreetGangPBRequestEncoder.h">
@@ -189,6 +204,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreetGangRestResponseTextEncoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryRequestCreateWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryRequestGetScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryRequestGetVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryRequestByebye.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetGangResponder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryStreetGangResponder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryResponseCreateWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryResponseError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryResponseGetScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryResponseGetVersion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
