@@ -1,8 +1,8 @@
 #include "StreetGangService.h"
 #include "NetworkUtility.h"
 #include "ConfigurationXml.h"
-#include "StreetGangMessageDecoder.h"
-#include "StreetGangPBDecoder.h"
+#include "StreetGangBinaryDispatcher.h"
+#include "StreetGangPBDispatcher.h"
 #include "DiscoveryApi.h"
 
 using namespace sg::microreactor;
@@ -145,7 +145,7 @@ bool StreetGangService::CreateBinaryListener()
     mConfiguration->GetValue("ServicePort", port);
     profile->Port.set(port);
 
-    profile->Dispatcher.set(std::make_shared<StreetGangMessageDecoder>());
+    profile->Dispatcher.set(std::make_shared<StreetGangBinaryDispatcher>());
 
     std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
     endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
@@ -192,7 +192,7 @@ bool StreetGangService::CreatePBListener()
     mConfiguration->GetValue("PBPort", port);
     profile->Port.set(port);
 
-    profile->Dispatcher.set(std::make_shared<StreetGangPBDecoder>());
+    profile->Dispatcher.set(std::make_shared<StreetGangPBDispatcher>());
 
     std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
     endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));

@@ -1,4 +1,4 @@
-#include "StreetGangClientMessageDecoder.h"
+#include "StreetGangBinaryClientDispatcher.h"
 #include "BinarySerializer.h"
 #include "StreetGangIds.h"
 
@@ -29,16 +29,16 @@ using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-StreetGangClientMessageDecoder::StreetGangClientMessageDecoder()
+StreetGangBinaryClientDispatcher::StreetGangBinaryClientDispatcher()
 {
     mRequester = std::make_shared<streetgangapi::BinaryStreetGangRequester>();
 }
 
-StreetGangClientMessageDecoder::~StreetGangClientMessageDecoder()
+StreetGangBinaryClientDispatcher::~StreetGangBinaryClientDispatcher()
 {
 }
 
-std::shared_ptr<Reactor> StreetGangClientMessageDecoder::Decode(std::istream& stream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::Decode(std::istream& stream, Connection& connection)
 {
     BinarySerializer serializer;
 
@@ -105,7 +105,7 @@ std::shared_ptr<Reactor> StreetGangClientMessageDecoder::Decode(std::istream& st
         }
     }
 
-    LOG("[" FMT_INT64 "] StreetGangClientMessageDecoder::Decode() [ID=%d] [Error=Failed to decode message]",
+    LOG("[" FMT_INT64 "] StreetGangBinaryClientDispatcher::Decode() [ID=%d] [Error=Failed to decode message]",
         std::chrono::high_resolution_clock::now().time_since_epoch().count(),
         id);
 

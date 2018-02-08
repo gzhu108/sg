@@ -1,6 +1,6 @@
 #include "StreetGangBinaryClient.h"
 #include "NetworkUtility.h"
-#include "StreetGangClientMessageDecoder.h"
+#include "StreetGangBinaryClientDispatcher.h"
 #include "BinaryResponseError.h"
 #include "ResponseErrorReactor.h"
 
@@ -11,7 +11,7 @@ using namespace streetgangclient;
 
 StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, const std::string& hostName, uint16_t port)
 {
-    auto dispatcher = std::make_shared<StreetGangClientMessageDecoder>();
+    auto dispatcher = std::make_shared<StreetGangBinaryClientDispatcher>();
 
     // Create client profile
     auto profile = std::make_shared<Profile>();

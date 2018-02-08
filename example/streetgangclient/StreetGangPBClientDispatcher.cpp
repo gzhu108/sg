@@ -9,7 +9,7 @@
 #include "protobuf/cpp/GetSceneResponse.pb.h"
 #include "protobuf/cpp/GetVersionResponse.pb.h"
 
-#include "StreetGangClientPBDecoder.h"
+#include "StreetGangPBClientDispatcher.h"
 #include "StreetGangIds.h"
 
 #include "ResponseErrorReactor.h"
@@ -28,16 +28,16 @@ using namespace streetgangpb;
 using namespace streetgangclient;
 
 
-StreetGangClientPBDecoder::StreetGangClientPBDecoder()
+StreetGangPBClientDispatcher::StreetGangPBClientDispatcher()
 {
     mStreetGangPBRequestEncoder = std::make_shared<StreetGangPBRequestEncoder>();
 }
 
-StreetGangClientPBDecoder::~StreetGangClientPBDecoder()
+StreetGangPBClientDispatcher::~StreetGangPBClientDispatcher()
 {
 }
 
-std::shared_ptr<Reactor> StreetGangClientPBDecoder::Decode(std::istream& stream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::Decode(std::istream& stream, Connection& connection)
 {
     google::protobuf::io::IstreamInputStream istreamInputStream(&stream);
     google::protobuf::io::CodedInputStream codedInputStream(&istreamInputStream);

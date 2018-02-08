@@ -1,4 +1,4 @@
-#include "StreetGangMessageDecoder.h"
+#include "StreetGangBinaryDispatcher.h"
 #include "StreetGangIds.h"
 #include "StreetGangSessionManager.h"
 #include "BinarySerializer.h"
@@ -19,16 +19,16 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-StreetGangMessageDecoder::StreetGangMessageDecoder()
+StreetGangBinaryDispatcher::StreetGangBinaryDispatcher()
 {
     mResponder = std::make_shared<BinaryStreetGangResponder>();
 }
 
-StreetGangMessageDecoder::~StreetGangMessageDecoder()
+StreetGangBinaryDispatcher::~StreetGangBinaryDispatcher()
 {
 }
 
-std::shared_ptr<Reactor> StreetGangMessageDecoder::Decode(std::istream& stream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::Decode(std::istream& stream, Connection& connection)
 {
     BinarySerializer serializer;
     

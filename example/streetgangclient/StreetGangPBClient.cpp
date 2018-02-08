@@ -3,7 +3,7 @@
 #include "TaskManager.h"
 #include "StreetGangApi.h"
 #include "StreetGangPBRequestEncoder.h"
-#include "StreetGangClientPBDecoder.h"
+#include "StreetGangPBClientDispatcher.h"
 #include "ResponseErrorReactor.h"
 
 using namespace sg::microreactor;
@@ -13,7 +13,7 @@ using namespace streetgangclient;
 
 StreetGangPBClient::StreetGangPBClient(const std::string& protocol, const std::string& hostName, uint16_t port)
 {
-    auto dispatcher = std::make_shared<StreetGangClientPBDecoder>();
+    auto dispatcher = std::make_shared<StreetGangPBClientDispatcher>();
     mStreetGangRequestEncoder = std::make_shared<StreetGangPBRequestEncoder>();
 
     // Create client profile

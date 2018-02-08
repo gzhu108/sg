@@ -24,8 +24,8 @@ __top_builddir__bin_streetgangserver_SOURCES = \
     RequestErrorReactor.cpp \
     RequestGetSceneReactor.cpp \
     RequestGetVersionReactor.cpp \
-    StreetGangMessageDecoder.cpp \
-    StreetGangPBDecoder.cpp \
+    StreetGangBinaryDispatcher.cpp \
+    StreetGangPBDispatcher.cpp \
     StreetGangService.cpp \
     StreetGangSessionManager.cpp \
     WorldServiceProvider.cpp \

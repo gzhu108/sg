@@ -21,9 +21,9 @@ __top_builddir__bin_streetgangclient_SOURCES = \
     ResponseGetSceneReactor.cpp \
     ResponseGetVersionReactor.cpp \
     StreetGangBinaryClient.cpp \
+    StreetGangBinaryClientDispatcher.cpp \
     StreetGangPBClient.cpp \
-    StreetGangClientMessageDecoder.cpp \
-    StreetGangClientPBDecoder.cpp
+    StreetGangPBClientDispatcher.cpp
     
 __top_builddir__bin_streetgangclient_LDADD = \
     ../streetgangapi/lib/libstreetgangapi.a \

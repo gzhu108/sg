@@ -1,6 +1,6 @@
 #pragma once
-#ifndef streetgangserver_StreetGangPBDecoder
-#define streetgangserver_StreetGangPBDecoder
+#ifndef streetgangserver_StreetGangPBDispatcher
+#define streetgangserver_StreetGangPBDispatcher
 
 #include "MessageDecoder.h"
 #include "StreetGangPBResponseEncoder.h"
@@ -12,11 +12,11 @@
 
 namespace streetgangserver
 {
-    class StreetGangPBDecoder : public sg::microreactor::MessageDecoder
+    class StreetGangPBDispatcher : public sg::microreactor::MessageDecoder
     {
     public:
-        StreetGangPBDecoder();
-        virtual ~StreetGangPBDecoder();
+        StreetGangPBDispatcher();
+        virtual ~StreetGangPBDispatcher();
 
     public:
         virtual std::shared_ptr<sg::microreactor::Reactor> Decode(std::istream& stream, sg::microreactor::Connection& connection) override;
@@ -26,4 +26,4 @@ namespace streetgangserver
     };
 }
 
-#endif // streetgangserver_StreetGangPBDecoder
+#endif // streetgangserver_StreetGangPBDispatcher
