@@ -44,18 +44,20 @@
     <ClCompile Include="ResponseErrorReactor.cpp" />
     <ClCompile Include="ResponseGetSceneReactor.cpp" />
     <ClCompile Include="ResponseGetVersionReactor.cpp" />
-    <ClCompile Include="StreetGangClient.cpp" />
-    <ClCompile Include="StreetGangClientMessageDecoder.cpp" />
-    <ClCompile Include="StreetGangClientPBDecoder.cpp" />
+    <ClCompile Include="StreetGangBinaryClient.cpp" />
+    <ClCompile Include="StreetGangBinaryClientDispatcher.cpp" />
+    <ClCompile Include="StreetGangPBClient.cpp" />
+    <ClCompile Include="StreetGangPBClientDispatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ResponseCreateWorldReactor.h" />
     <ClInclude Include="ResponseErrorReactor.h" />
     <ClInclude Include="ResponseGetSceneReactor.h" />
     <ClInclude Include="ResponseGetVersionReactor.h" />
-    <ClInclude Include="StreetGangClient.h" />
-    <ClInclude Include="StreetGangClientMessageDecoder.h" />
-    <ClInclude Include="StreetGangClientPBDecoder.h" />
+    <ClInclude Include="StreetGangBinaryClient.h" />
+    <ClInclude Include="StreetGangBinaryClientDispatcher.h" />
+    <ClInclude Include="StreetGangPBClient.h" />
+    <ClInclude Include="StreetGangPBClientDispatcher.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ED091D45-4D22-420D-A0DA-C8CCD97AFB33}</ProjectGuid>

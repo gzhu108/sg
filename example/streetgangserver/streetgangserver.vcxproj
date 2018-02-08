@@ -39,14 +39,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="RequestByebyeReactor.cpp" />
     <ClCompile Include="RequestCreateWorldReactor.cpp" />
     <ClCompile Include="RequestErrorReactor.cpp" />
     <ClCompile Include="RequestGetSceneReactor.cpp" />
     <ClCompile Include="RequestGetVersionReactor.cpp" />
-    <ClCompile Include="StreetGangMessageDecoder.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="StreetGangPBDecoder.cpp" />
+    <ClCompile Include="StreetGangBinaryDispatcher.cpp" />
+    <ClCompile Include="StreetGangPBDispatcher.cpp" />
     <ClCompile Include="StreetGangRestService.cpp" />
     <ClCompile Include="StreetGangService.cpp" />
     <ClCompile Include="StreetGangSessionManager.cpp" />
@@ -58,8 +58,8 @@
     <ClInclude Include="RequestErrorReactor.h" />
     <ClInclude Include="RequestGetSceneReactor.h" />
     <ClInclude Include="RequestGetVersionReactor.h" />
-    <ClInclude Include="StreetGangMessageDecoder.h" />
-    <ClInclude Include="StreetGangPBDecoder.h" />
+    <ClInclude Include="StreetGangBinaryDispatcher.h" />
+    <ClInclude Include="StreetGangPBDispatcher.h" />
     <ClInclude Include="StreetGangRestService.h" />
     <ClInclude Include="StreetGangService.h" />
     <ClInclude Include="StreetGangSessionManager.h" />

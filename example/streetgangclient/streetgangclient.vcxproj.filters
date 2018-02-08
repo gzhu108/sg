@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ResponseCreateWorldReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,17 +30,20 @@
     <ClCompile Include="ResponseGetVersionReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangClientPBDecoder.cpp">
+    <ClCompile Include="StreetGangBinaryClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangClientMessageDecoder.cpp">
+    <ClCompile Include="StreetGangBinaryClientDispatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetGangPBClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetGangPBClientDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StreetGangClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ResponseCreateWorldReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,10 +56,16 @@
     <ClInclude Include="ResponseGetVersionReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangClientPBDecoder.h">
+    <ClInclude Include="StreetGangBinaryClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangClientMessageDecoder.h">
+    <ClInclude Include="StreetGangBinaryClientDispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetGangPBClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetGangPBClientDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
