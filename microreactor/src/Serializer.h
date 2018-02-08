@@ -143,7 +143,7 @@ namespace sg { namespace microreactor
         template <typename T>
         bool ReadProperty(std::istream& stream, T& property)
         {
-            T::ValueType value;
+            typename T::ValueType value;
             if (Read(stream, value))
             {
                 property.set(value);
