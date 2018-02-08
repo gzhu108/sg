@@ -42,6 +42,7 @@ __top_builddir__lib_libstreetgangapi_a_SOURCES = \
     BinaryResponseCreateWorld.cpp \
     BinaryResponseGetScene.cpp \
     BinaryResponseGetVersion.cpp \
+    BinaryStreetGangRequester.cpp \
     BinaryStreetGangResponder.cpp \
     StreetGangApi.cpp \
     StreetGangPBRequestEncoder.cpp \
