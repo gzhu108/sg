@@ -8,7 +8,7 @@
 
 namespace streetgangclient
 {
-    class StreetGangBinaryClientDispatcher : public sg::microreactor::MessageDecoder
+    class StreetGangBinaryClientDispatcher : public sg::microreactor::MessageDecoder<int32_t>
     {
     public:
         StreetGangBinaryClientDispatcher();

@@ -6,7 +6,6 @@
 #include <signal.h>
 #include <stdlib.h>
 #include "Microreactor.h"
-#include "StreetGangApi.h"
 #include "StreetGangBinaryClient.h"
 #include "StreetGangPBClient.h"
 #include "ConfigurationXml.h"
@@ -112,11 +111,9 @@ int32_t main(int32_t argc, const char* argv[])
     std::shared_ptr<Client> client;
     if (serverPort == 7390)
     {
-        auto pbClient = std::make_shared<StreetGangPBClient>(protocol, serverAddress, serverPort);
-        client = pbClient;
+        client = std::make_shared<StreetGangPBClient>(protocol, serverAddress, serverPort);
 
         auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*client->GetConnection(), nullptr, nullptr);
-        responseGetSceneReactor->SetMessageEncoder(pbClient->GetStreetGangRequestEncoder());
         SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, "ResponseGetSceneReactor::SendNextRequest");
     }
     else

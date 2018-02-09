@@ -105,20 +105,47 @@
     <ClCompile Include="ResponseGetVersion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangApi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StreetGangPBRequestEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StreetGangPBResponseEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StreetGangRestResponseJsonEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StreetGangRestResponseTextEncoder.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBRequestByebye.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBRequestCreateWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBRequestGetScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBRequestGetVersion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBResponseCreateWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBResponseError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBResponseGetScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBResponseGetVersion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBStreetGangRequester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PBStreetGangResponder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\cpp\ByebyeRequest.pb.cc">
+      <Filter>protobuf\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\cpp\GetVersionRequest.pb.cc">
+      <Filter>protobuf\cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,19 +242,10 @@
     <ClInclude Include="SessionId.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangApi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StreetGangIds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangPBRequestEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StreetGangPBResponseEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StreetGangRequestEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreetGangRequester.h">
@@ -236,14 +254,47 @@
     <ClInclude Include="StreetGangResponder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangResponseEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StreetGangRestResponseJsonEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreetGangRestResponseTextEncoder.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRequestByebye.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRequestCreateWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRequestGetScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBRequestGetVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBResponseCreateWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBResponseError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBResponseGetScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBResponseGetVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBStreetGangRequester.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PBStreetGangResponder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\cpp\ByebyeRequest.pb.h">
+      <Filter>protobuf\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\cpp\GetVersionRequest.pb.h">
+      <Filter>protobuf\cpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,5 +325,16 @@
     <CustomBuild Include="protobuf\Rectangle.proto">
       <Filter>protobuf</Filter>
     </CustomBuild>
+    <CustomBuild Include="protobuf\ByebyeRequest.proto">
+      <Filter>protobuf</Filter>
+    </CustomBuild>
+    <CustomBuild Include="protobuf\GetVersionRequest.proto">
+      <Filter>protobuf</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="protobuf\StreetGangPBService.proto">
+      <Filter>protobuf</Filter>
+    </None>
   </ItemGroup>
 </Project>

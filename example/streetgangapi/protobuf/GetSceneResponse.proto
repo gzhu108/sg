@@ -6,7 +6,9 @@ package streetgangpb;
 
 message GetSceneResponse
 {
-	uint64 world_id = 1;
-	Rectangle rect = 2;
-	repeated Point items = 3;
+	string track_id = 1;
+	int32 result = 2;
+	uint64 world_id = 3;
+	Rectangle rect = 4;
+	repeated Point items = 5;
 }

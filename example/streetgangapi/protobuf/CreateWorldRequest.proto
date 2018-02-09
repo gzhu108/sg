@@ -4,5 +4,6 @@ package streetgangpb;
 
 message CreateWorldRequest
 {
-	string world_name = 1;
+	string track_id = 1;
+	string world_name = 2;
 }

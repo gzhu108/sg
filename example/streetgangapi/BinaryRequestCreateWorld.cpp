@@ -22,19 +22,6 @@ bool BinaryRequestCreateWorld::Encode(std::ostream& stream) const
         && serializer.Write(Result.cref(), stream)
         && serializer.Write(MessageSessionId.cref(), stream)
         && serializer.Write(WorldName.cref(), stream);
-
-    /*
-    if (!result)
-    {
-        return false;
-    }
-
-    uint64_t length = GetStreamSize(messageStream);
-
-    return serializer.Write(Id.cref(), stream)
-        && serializer.Write(length, stream)
-        && serializer.Write(messageStream, stream);
-    */
 }
 
 bool BinaryRequestCreateWorld::Decode(std::istream& stream)

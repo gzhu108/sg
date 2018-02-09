@@ -3,12 +3,12 @@
 #define streetgangclient_StreetGangPBClientDispatcher
 
 #include "MessageDecoder.h"
-#include "StreetGangPBRequestEncoder.h"
+#include "PBStreetGangRequester.h"
 
 
 namespace streetgangclient
 {
-    class StreetGangPBClientDispatcher : public sg::microreactor::MessageDecoder
+    class StreetGangPBClientDispatcher : public sg::microreactor::MessageDecoder<std::string>
     {
     public:
         StreetGangPBClientDispatcher();
@@ -18,7 +18,7 @@ namespace streetgangclient
         virtual std::shared_ptr<sg::microreactor::Reactor> Decode(std::istream& stream, sg::microreactor::Connection& connection) override;
 
     protected:
-        std::shared_ptr<streetgangapi::StreetGangPBRequestEncoder> mStreetGangPBRequestEncoder;
+        std::shared_ptr<streetgangapi::PBStreetGangRequester> mRequester;
     };
 }
 

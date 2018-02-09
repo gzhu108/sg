@@ -48,9 +48,6 @@
     <ClCompile Include="src\Message.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MessageDecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Microservice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

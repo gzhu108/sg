@@ -3,7 +3,6 @@
 #define streetgangclient_StreetGangBinaryClient
 
 #include "Client.h"
-#include "StreetGangRequestEncoder.h"
 
 
 namespace streetgangclient

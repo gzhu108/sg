@@ -181,7 +181,6 @@
     <ClCompile Include="src\Listener.cpp" />
     <ClCompile Include="src\LoggerSingleton.cpp" />
     <ClCompile Include="src\Message.cpp" />
-    <ClCompile Include="src\MessageDecoder.cpp" />
     <ClCompile Include="src\Microservice.cpp" />
     <ClCompile Include="src\NetworkUtility.cpp" />
     <ClCompile Include="src\Profile.cpp" />

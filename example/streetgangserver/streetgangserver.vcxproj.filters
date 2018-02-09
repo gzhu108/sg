@@ -24,9 +24,6 @@
     <ClCompile Include="RequestCreateWorldReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RequestErrorReactor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RequestGetSceneReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RequestCreateWorldReactor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RequestErrorReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RequestGetSceneReactor.h">

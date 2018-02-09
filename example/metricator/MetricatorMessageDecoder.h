@@ -8,7 +8,7 @@
 
 namespace metricator
 {
-    class MetricatorMessageDecoder : public sg::microreactor::MessageDecoder
+    class MetricatorMessageDecoder : public sg::microreactor::MessageDecoder<>
     {
     public:
         MetricatorMessageDecoder();

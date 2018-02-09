@@ -27,11 +27,7 @@ bool RequestGetSceneReactor::Process()
 
     if (mSession == nullptr)
     {
-        auto errorResponse = std::make_shared<ResponseError>();
-        errorResponse->Result.set((int32_t)ResultCode::ErrorBadRequest);
-        errorResponse->RequestId.set(InputMessage()->Id.cref());
-        errorResponse->ErrorMessage.set("Scene not found");
-        return SendMessage(errorResponse);
+        return mResponder->SendErrorResponse(mConnection, InputMessage()->TrackId.cref(), ResultCode::ErrorBadRequest, InputMessage()->Id.cref(), "Scene not found");
     }
 
     auto session = std::static_pointer_cast<WorldServiceProvider>(mSession);

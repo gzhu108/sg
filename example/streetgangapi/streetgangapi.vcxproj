@@ -50,11 +50,23 @@
     <ClCompile Include="BinaryStreetGangRequester.cpp" />
     <ClCompile Include="BinaryStreetGangResponder.cpp" />
     <ClCompile Include="MessageBase.cpp" />
+    <ClCompile Include="PBRequestByebye.cpp" />
+    <ClCompile Include="PBRequestCreateWorld.cpp" />
+    <ClCompile Include="PBRequestGetScene.cpp" />
+    <ClCompile Include="PBRequestGetVersion.cpp" />
+    <ClCompile Include="PBResponseCreateWorld.cpp" />
+    <ClCompile Include="PBResponseError.cpp" />
+    <ClCompile Include="PBResponseGetScene.cpp" />
+    <ClCompile Include="PBResponseGetVersion.cpp" />
+    <ClCompile Include="PBStreetGangRequester.cpp" />
+    <ClCompile Include="PBStreetGangResponder.cpp" />
+    <ClCompile Include="protobuf\cpp\ByebyeRequest.pb.cc" />
     <ClCompile Include="protobuf\cpp\CreateWorldRequest.pb.cc" />
     <ClCompile Include="protobuf\cpp\CreateWorldResponse.pb.cc" />
     <ClCompile Include="protobuf\cpp\ErrorResponse.pb.cc" />
     <ClCompile Include="protobuf\cpp\GetSceneRequest.pb.cc" />
     <ClCompile Include="protobuf\cpp\GetSceneResponse.pb.cc" />
+    <ClCompile Include="protobuf\cpp\GetVersionRequest.pb.cc" />
     <ClCompile Include="protobuf\cpp\GetVersionResponse.pb.cc" />
     <ClCompile Include="protobuf\cpp\MessageHeader.pb.cc" />
     <ClCompile Include="protobuf\cpp\Point.pb.cc" />
@@ -67,9 +79,6 @@
     <ClCompile Include="ResponseError.cpp" />
     <ClCompile Include="ResponseGetScene.cpp" />
     <ClCompile Include="ResponseGetVersion.cpp" />
-    <ClCompile Include="StreetGangApi.cpp" />
-    <ClCompile Include="StreetGangPBRequestEncoder.cpp" />
-    <ClCompile Include="StreetGangPBResponseEncoder.cpp" />
     <ClCompile Include="StreetGangRestResponseJsonEncoder.cpp" />
     <ClCompile Include="StreetGangRestResponseTextEncoder.cpp" />
   </ItemGroup>
@@ -85,12 +94,24 @@
     <ClInclude Include="BinaryStreetGangRequester.h" />
     <ClInclude Include="BinaryStreetGangResponder.h" />
     <ClInclude Include="MessageBase.h" />
+    <ClInclude Include="PBRequestByebye.h" />
+    <ClInclude Include="PBRequestCreateWorld.h" />
+    <ClInclude Include="PBRequestGetScene.h" />
+    <ClInclude Include="PBRequestGetVersion.h" />
+    <ClInclude Include="PBResponseCreateWorld.h" />
+    <ClInclude Include="PBResponseError.h" />
+    <ClInclude Include="PBResponseGetScene.h" />
+    <ClInclude Include="PBResponseGetVersion.h" />
+    <ClInclude Include="PBStreetGangRequester.h" />
+    <ClInclude Include="PBStreetGangResponder.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="protobuf\cpp\ByebyeRequest.pb.h" />
     <ClInclude Include="protobuf\cpp\CreateWorldRequest.pb.h" />
     <ClInclude Include="protobuf\cpp\CreateWorldResponse.pb.h" />
     <ClInclude Include="protobuf\cpp\ErrorResponse.pb.h" />
     <ClInclude Include="protobuf\cpp\GetSceneRequest.pb.h" />
     <ClInclude Include="protobuf\cpp\GetSceneResponse.pb.h" />
+    <ClInclude Include="protobuf\cpp\GetVersionRequest.pb.h" />
     <ClInclude Include="protobuf\cpp\GetVersionResponse.pb.h" />
     <ClInclude Include="protobuf\cpp\MessageHeader.pb.h" />
     <ClInclude Include="protobuf\cpp\Point.pb.h" />
@@ -105,14 +126,10 @@
     <ClInclude Include="ResponseGetScene.h" />
     <ClInclude Include="ResponseGetVersion.h" />
     <ClInclude Include="SessionId.h" />
-    <ClInclude Include="StreetGangApi.h" />
     <ClInclude Include="StreetGangIds.h" />
-    <ClInclude Include="StreetGangPBRequestEncoder.h" />
     <ClInclude Include="StreetGangPBResponseEncoder.h" />
-    <ClInclude Include="StreetGangRequestEncoder.h" />
     <ClInclude Include="StreetGangRequester.h" />
     <ClInclude Include="StreetGangResponder.h" />
-    <ClInclude Include="StreetGangResponseEncoder.h" />
     <ClInclude Include="StreetGangRestResponseJsonEncoder.h" />
     <ClInclude Include="StreetGangRestResponseTextEncoder.h" />
   </ItemGroup>
@@ -144,6 +161,15 @@
     <CustomBuild Include="protobuf\Rectangle.proto">
       <FileType>Document</FileType>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="protobuf\ByebyeRequest.proto">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <CustomBuild Include="protobuf\GetVersionRequest.proto">
+      <FileType>Document</FileType>
+    </CustomBuild>
+    <None Include="protobuf\StreetGangPBService.proto" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4759B4AB-DCD8-443E-91BA-BE9E5E15A106}</ProjectGuid>

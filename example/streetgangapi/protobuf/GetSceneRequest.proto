@@ -5,6 +5,7 @@ package streetgangpb;
 
 message GetSceneRequest
 {
-	uint64 world_id = 1;
-	Rectangle rect = 2;
+	string track_id = 1;
+	uint64 world_id = 2;
+	Rectangle rect = 3;
 }

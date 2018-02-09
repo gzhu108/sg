@@ -1,6 +1,5 @@
 #include "StreetGangBinaryClientDispatcher.h"
 #include "BinarySerializer.h"
-#include "StreetGangIds.h"
 
 #include "ResponseErrorReactor.h"
 #include "ResponseGetVersionReactor.h"

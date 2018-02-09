@@ -3,14 +3,13 @@
 #define streetgangclient_ResponseGetVersionReactor
 
 #include "MessageReactor.h"
-#include "StreetGangRequestEncoder.h"
 #include "StreetGangRequester.h"
 #include "ResponseGetVersion.h"
 
 
 namespace streetgangclient
 {
-    class ResponseGetVersionReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseGetVersion, streetgangapi::StreetGangRequestEncoder>
+    class ResponseGetVersionReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseGetVersion>
     {
     public:
         ResponseGetVersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseGetVersion> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);

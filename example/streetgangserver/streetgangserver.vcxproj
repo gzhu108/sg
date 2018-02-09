@@ -42,7 +42,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequestByebyeReactor.cpp" />
     <ClCompile Include="RequestCreateWorldReactor.cpp" />
-    <ClCompile Include="RequestErrorReactor.cpp" />
     <ClCompile Include="RequestGetSceneReactor.cpp" />
     <ClCompile Include="RequestGetVersionReactor.cpp" />
     <ClCompile Include="StreetGangBinaryDispatcher.cpp" />
@@ -55,7 +54,6 @@
   <ItemGroup>
     <ClInclude Include="RequestByebyeReactor.h" />
     <ClInclude Include="RequestCreateWorldReactor.h" />
-    <ClInclude Include="RequestErrorReactor.h" />
     <ClInclude Include="RequestGetSceneReactor.h" />
     <ClInclude Include="RequestGetVersionReactor.h" />
     <ClInclude Include="StreetGangBinaryDispatcher.h" />

@@ -3,14 +3,13 @@
 #define streetgangserver_RequestCreateWorldReactor
 
 #include "MessageReactor.h"
-#include "StreetGangResponseEncoder.h"
 #include "StreetGangResponder.h"
 #include "RequestCreateWorld.h"
 
 
 namespace streetgangserver
 {
-    class RequestCreateWorldReactor : public sg::microreactor::MessageReactor<streetgangapi::RequestCreateWorld, streetgangapi::StreetGangResponseEncoder>
+    class RequestCreateWorldReactor : public sg::microreactor::MessageReactor<streetgangapi::RequestCreateWorld>
     {
     public:
         RequestCreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestCreateWorld> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);

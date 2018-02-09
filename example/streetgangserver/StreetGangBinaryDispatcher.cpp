@@ -1,5 +1,4 @@
 #include "StreetGangBinaryDispatcher.h"
-#include "StreetGangIds.h"
 #include "StreetGangSessionManager.h"
 #include "BinarySerializer.h"
 
@@ -22,6 +21,11 @@ using namespace streetgangserver;
 StreetGangBinaryDispatcher::StreetGangBinaryDispatcher()
 {
     mResponder = std::make_shared<BinaryStreetGangResponder>();
+
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::Byebye), std::bind(&StreetGangBinaryDispatcher::CreateByebyeReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionRequest), std::bind(&StreetGangBinaryDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldRequest), std::bind(&StreetGangBinaryDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneRequest), std::bind(&StreetGangBinaryDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangBinaryDispatcher::~StreetGangBinaryDispatcher()
@@ -61,61 +65,58 @@ std::shared_ptr<Reactor> StreetGangBinaryDispatcher::Decode(std::istream& stream
         return nullptr;
     }
 
-    switch (id)
+    auto factory = GetMessageReactorFactory(id);
+    if (factory == nullptr)
     {
-        case (int32_t)(streetgangapi::ID::Byebye):
-        {
-            auto message = std::make_shared<BinaryRequestByebye>();
-            if (message->Decode(stream))
-            {
-                auto reactor = std::make_shared<RequestByebyeReactor>(connection, message, mResponder);
-                return reactor;
-            }
-            break;
-        }
-
-        case (int32_t)(streetgangapi::ID::GetVersionRequest) :
-        {
-            auto message = std::make_shared<BinaryRequestGetVersion>();
-            if (message->Decode(stream))
-            {
-                auto reactor = std::make_shared<RequestGetVersionReactor>(connection, message, mResponder);
-                return reactor;
-            }
-            break;
-        }
-
-        case (int32_t)(streetgangapi::ID::CreateWorldRequest):
-        {
-            auto message = std::make_shared<BinaryRequestCreateWorld>();
-            if (message->Decode(stream))
-            {
-                auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message, mResponder);
-                return reactor;
-            }
-            break;
-        }
-
-        case (int32_t)(streetgangapi::ID::GetSceneRequest) :
-        {
-            auto message = std::make_shared<BinaryRequestGetScene>();
-            if (message->Decode(stream))
-            {
-                auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, mResponder);
-                auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref());
-                reactor->SetSession(session);
-                return reactor;
-            }
-            break;
-        }
-
-        default:
-        {
-            mResponder->SendErrorResponse(connection, "Unknown track ID", ResultCode::ErrorNotImplemented, id, "Unknown request");
-            return nullptr;
-        }
+        mResponder->SendErrorResponse(connection, "Unknown", ResultCode::ErrorNotImplemented, id, "Unknown request");
+        return nullptr;
     }
 
-    mResponder->SendErrorResponse(connection, "Unknown track ID", ResultCode::ErrorBadRequest, id, "Invalid request");
+    return factory(stream, connection);
+}
+
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateByebyeReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<BinaryRequestByebye>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<RequestByebyeReactor>(connection, message, mResponder);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetVersionReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<BinaryRequestGetVersion>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<RequestGetVersionReactor>(connection, message, mResponder);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateCreateWorldReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<BinaryRequestCreateWorld>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<RequestCreateWorldReactor>(connection, message, mResponder);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetSceneReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<BinaryRequestGetScene>();
+    if (message->Decode(stream))
+    {
+        auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, mResponder);
+        reactor->SetSession(StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref()));
+        return reactor;
+    }
+    
     return nullptr;
 }

@@ -3,14 +3,13 @@
 #define streetgangclient_ResponseErrorReactor
 
 #include "MessageReactor.h"
-#include "StreetGangRequestEncoder.h"
 #include "StreetGangRequester.h"
 #include "ResponseError.h"
 
 
 namespace streetgangclient
 {
-    class ResponseErrorReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseError, streetgangapi::StreetGangRequestEncoder>
+    class ResponseErrorReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseError>
     {
     public:
         ResponseErrorReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseError> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);

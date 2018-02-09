@@ -3,7 +3,6 @@
 #include "RequestCreateWorldReactor.h"
 #include "RequestGetSceneReactor.h"
 #include "StreetGangSessionManager.h"
-#include "RequestErrorReactor.h"
 #include "StreetGangRestResponseTextEncoder.h"
 #include "StreetGangRestResponseJsonEncoder.h"
 
@@ -45,25 +44,26 @@ std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateGetVersi
     }
 
     auto message = std::make_shared<RequestGetVersion>();
-    std::shared_ptr<StreetGangResponseEncoder> streetGangResponseEncoder;
+    std::shared_ptr<StreetGangRestResponseJsonEncoder> streetGangRestResponseJsonEncoder;
+    std::shared_ptr<StreetGangRestResponseTextEncoder> streetGangRestResponseTextEncoder;
 
     for (const auto& header : request->mHeaders)
     {
         if (header.mName == "Accept" && header.mValue == "application/json")
         {
-            streetGangResponseEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
+            streetGangRestResponseJsonEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
             break;
         }
     }
 
-    if (streetGangResponseEncoder == nullptr)
+    if (streetGangRestResponseJsonEncoder == nullptr)
     {
         // default content type is plain text
-        streetGangResponseEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
+        streetGangRestResponseTextEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
     }
 
     auto reactor = std::make_shared<RequestGetVersionReactor>(connection, message, nullptr);
-    reactor->SetMessageEncoder(streetGangResponseEncoder);
+    //reactor->SetMessageEncoder(streetGangResponseEncoder);
     return reactor;
 }
 
@@ -83,24 +83,26 @@ std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateCreateWo
         message->WorldName.set(worldName);
     }
 
-    std::shared_ptr<StreetGangResponseEncoder> streetGangResponseEncoder;
+    std::shared_ptr<StreetGangRestResponseJsonEncoder> streetGangRestResponseJsonEncoder;
+    std::shared_ptr<StreetGangRestResponseTextEncoder> streetGangRestResponseTextEncoder;
+
     for (const auto& header : request->mHeaders)
     {
         if (header.mName == "Accept" && header.mValue == "application/json")
         {
-            streetGangResponseEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
+            streetGangRestResponseJsonEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
             break;
         }
     }
 
-    if (streetGangResponseEncoder == nullptr)
+    if (streetGangRestResponseJsonEncoder == nullptr)
     {
         // default content type is plain text
-        streetGangResponseEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
+        streetGangRestResponseTextEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
     }
 
     auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message, nullptr);
-    reactor->SetMessageEncoder(streetGangResponseEncoder);
+    //reactor->SetMessageEncoder(streetGangResponseEncoder);
 
     return reactor;
 }
@@ -113,21 +115,22 @@ std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateGetScene
     }
 
     auto message = std::make_shared<RequestGetScene>();
-    std::shared_ptr<StreetGangResponseEncoder> streetGangResponseEncoder;
+    std::shared_ptr<StreetGangRestResponseJsonEncoder> streetGangRestResponseJsonEncoder;
+    std::shared_ptr<StreetGangRestResponseTextEncoder> streetGangRestResponseTextEncoder;
 
     for (const auto& header : request->mHeaders)
     {
         if (header.mName == "Accept" && header.mValue == "application/json")
         {
-            streetGangResponseEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
+            streetGangRestResponseJsonEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
             break;
         }
     }
 
-    if (streetGangResponseEncoder == nullptr)
+    if (streetGangRestResponseJsonEncoder == nullptr)
     {
         // default content type is plain text
-        streetGangResponseEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
+        streetGangRestResponseTextEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
     }
 
     // Parse the json
@@ -232,16 +235,17 @@ std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateGetScene
         errorResponse->Result.set((int32_t)ResultCode::ErrorBadRequest);
         errorResponse->RequestId.set(message->Id.cref());
         errorResponse->ErrorMessage.set("Failed to parse JSON");
-        auto reactor = std::make_shared<RequestErrorReactor>(connection, errorResponse, nullptr);
-        reactor->SetMessageEncoder(streetGangResponseEncoder);
-        return reactor;
+        //auto reactor = std::make_shared<RequestErrorReactor>(connection, errorResponse, nullptr);
+        //reactor->SetMessageEncoder(streetGangResponseEncoder);
+        //return reactor;
+        return nullptr;
     }
 
     auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, nullptr);
 
     auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref());
     reactor->SetSession(session);
-    reactor->SetMessageEncoder(streetGangResponseEncoder);
+    //reactor->SetMessageEncoder(streetGangResponseEncoder);
 
     return reactor;
 }

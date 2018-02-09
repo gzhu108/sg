@@ -3,14 +3,8 @@
 #include "google/protobuf/io/zero_copy_stream_impl.h"
 #include "protobuf/cpp/MessageHeader.pb.h"
 #include "protobuf/cpp/ErrorResponse.pb.h"
-#include "protobuf/cpp/CreateWorldRequest.pb.h"
-#include "protobuf/cpp/CreateWorldResponse.pb.h"
-#include "protobuf/cpp/GetSceneRequest.pb.h"
-#include "protobuf/cpp/GetSceneResponse.pb.h"
-#include "protobuf/cpp/GetVersionResponse.pb.h"
 
 #include "StreetGangPBDispatcher.h"
-#include "StreetGangIds.h"
 #include "StreetGangSessionManager.h"
 
 #include "RequestErrorReactor.h"
@@ -19,17 +13,10 @@
 #include "RequestCreateWorldReactor.h"
 #include "RequestGetSceneReactor.h"
 
-#define CREATE_REQUEST_REACTOR(_reactor) \
-    auto reactor = std::make_shared<_reactor>(connection, message, nullptr); \
-    reactor->SetMessageEncoder(mStreetGangPBResponseEncoder); \
-    return reactor
-
-#define CREATE_SESSION_REQUEST_REACTOR(_reactor) \
-    auto reactor = std::make_shared<_reactor>(connection, message, nullptr); \
-    reactor->SetMessageEncoder(mStreetGangPBResponseEncoder); \
-    auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref()); \
-    reactor->SetSession(session); \
-    return reactor
+#include "PBRequestByebye.h"
+#include "PBRequestGetVersion.h"
+#include "PBRequestCreateWorld.h"
+#include "PBRequestGetScene.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -39,7 +26,12 @@ using namespace streetgangserver;
 
 StreetGangPBDispatcher::StreetGangPBDispatcher()
 {
-    mStreetGangPBResponseEncoder = std::make_shared<StreetGangPBResponseEncoder>();
+    mResponder = std::make_shared<PBStreetGangResponder>();
+
+    RegisterMessageReactorFactory("ByebyeRequest", std::bind(&StreetGangPBDispatcher::CreateByebyeReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("GetVersionRequest", std::bind(&StreetGangPBDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("CreateWorldRequest", std::bind(&StreetGangPBDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("GetSceneRequest", std::bind(&StreetGangPBDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangPBDispatcher::~StreetGangPBDispatcher()
@@ -52,75 +44,65 @@ std::shared_ptr<Reactor> StreetGangPBDispatcher::Decode(std::istream& stream, Co
     google::protobuf::io::CodedInputStream codedInputStream(&istreamInputStream);
 
     google::protobuf::io::CodedInputStream::Limit previous = codedInputStream.ReadLengthAndPushLimit();
-    streetgangpb::MessageHeader pbMessageHeader;
-    bool result = pbMessageHeader.ParseFromCodedStream(&codedInputStream);
+    streetgangpb::MessageHeader header;
+    bool result = header.ParseFromCodedStream(&codedInputStream);
     codedInputStream.PopLimit(previous);
     if (!result)
     {
         return nullptr;
     }
 
-    if (pbMessageHeader.message_id() == "ByebyeRequest")
+    auto factory = GetMessageReactorFactory(header.message_id());
+    if (factory == nullptr)
     {
-        auto message = std::make_shared<RequestByebye>();
-        message->TrackId.set(pbMessageHeader.track_id());
-        message->Result.set(pbMessageHeader.result());
-        CREATE_REQUEST_REACTOR(RequestByebyeReactor);
+        LOG("Unknown request: [Request=%s]", header.message_id().c_str());
+        mResponder->SendErrorResponse(connection, "Unknown", ResultCode::ErrorNotImplemented, static_cast<int32_t>(streetgangapi::ID::Unknown), header.message_id() + " Unknown request");
+        return nullptr;
     }
-    else if (pbMessageHeader.message_id() == "GetVersionRequest")
-    {
-        auto message = std::make_shared<RequestGetVersion>();
-        message->TrackId.set(pbMessageHeader.track_id());
-        message->Result.set(pbMessageHeader.result());
-        CREATE_REQUEST_REACTOR(RequestGetVersionReactor);
-    }
-    else if (pbMessageHeader.message_id() == "CreateWorldRequest")
-    {
-        google::protobuf::io::CodedInputStream::Limit previousSize = codedInputStream.ReadLengthAndPushLimit();
-        CreateWorldRequest pbCresateWorldRequest;
-        bool result = pbCresateWorldRequest.ParseFromCodedStream(&codedInputStream);
-        codedInputStream.PopLimit(previousSize);
-        if (!result)
-        {
-            return nullptr;
-        }
 
-        auto message = std::make_shared<RequestCreateWorld>();
-        message->TrackId.set(pbMessageHeader.track_id());
-        message->Result.set(pbMessageHeader.result());
-        message->WorldName.set(pbCresateWorldRequest.world_name());
-        CREATE_REQUEST_REACTOR(RequestCreateWorldReactor);
-    }
-    else if (pbMessageHeader.message_id() == "GetSceneRequest")
-    {
-        google::protobuf::io::CodedInputStream::Limit previousSize = codedInputStream.ReadLengthAndPushLimit();
-        GetSceneRequest pbGetSceneRequest;
-        bool result = pbGetSceneRequest.ParseFromCodedStream(&codedInputStream);
-        codedInputStream.PopLimit(previousSize);
-        if (!result)
-        {
-            return nullptr;
-        }
+    return factory(stream, connection);
+}
 
-        auto message = std::make_shared<RequestGetScene>();
-        message->TrackId.set(pbMessageHeader.track_id());
-        message->Result.set(pbMessageHeader.result());
-
-        message->WorldId.set(pbGetSceneRequest.world_id());
-        message->Rect->mX = pbGetSceneRequest.rect().x();
-        message->Rect->mY = pbGetSceneRequest.rect().y();
-        message->Rect->mW = pbGetSceneRequest.rect().w();
-        message->Rect->mH = pbGetSceneRequest.rect().h();
-        CREATE_SESSION_REQUEST_REACTOR(RequestGetSceneReactor);
-    }
-    else
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateByebyeReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBRequestByebye>();
+    if (message->Decode(stream))
     {
-        LOG("Unknown request: [TrackId=%s] [Request=%s]", pbMessageHeader.track_id().c_str(), pbMessageHeader.message_id().c_str());
-        auto message = std::make_shared<ResponseError>();
-        message->Result.set((int32_t)ResultCode::ErrorNotImplemented);
-        message->ErrorMessage.set("Unknown Request: " + pbMessageHeader.message_id());
-        auto reactor = std::make_shared<RequestErrorReactor>(connection, message, nullptr);
-        reactor->SetMessageEncoder(mStreetGangPBResponseEncoder);
+        return std::make_shared<RequestByebyeReactor>(connection, message, mResponder);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetVersionReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBRequestGetVersion>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<RequestGetVersionReactor>(connection, message, mResponder);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateCreateWorldReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBRequestCreateWorld>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<RequestCreateWorldReactor>(connection, message, mResponder);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetSceneReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBRequestGetScene>();
+    if (message->Decode(stream))
+    {
+        auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, mResponder);
+        reactor->SetSession(StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref()));
         return reactor;
     }
 

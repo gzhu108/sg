@@ -2,7 +2,6 @@
 #ifndef sg_microreactor_RestMessageDecoder
 #define sg_microreactor_RestMessageDecoder
 
-#include <map>
 #include "Dispatcher.h"
 #include "Reactor.h"
 #include "RestRequest.h"
@@ -25,6 +24,7 @@ namespace sg { namespace microreactor
     protected:
         virtual std::shared_ptr<Reactor> Decode(Connection& connection);
         virtual RestReactorFactory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest);
+
         virtual void PushChunkedRequest(Connection& connection, std::shared_ptr<RestRequest> restRequest);
         virtual std::shared_ptr<RestRequest> PopChunkedRequest(Connection& connection);
 

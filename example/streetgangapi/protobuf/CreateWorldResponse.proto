@@ -4,6 +4,8 @@ package streetgangpb;
 
 message CreateWorldResponse
 {
-    uint64 world_id = 1;
-	string world_name = 2;
+	string track_id = 1;
+	int32 result = 2;
+    uint64 world_id = 3;
+	string world_name = 4;
 }
