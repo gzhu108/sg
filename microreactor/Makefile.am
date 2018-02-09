@@ -85,7 +85,6 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/Listener.cpp \
     src/LoggerSingleton.cpp \
     src/Message.cpp \
-    src/MessageDecoder.cpp \
     src/Microservice.cpp \
     src/NetworkUtility.cpp \
     src/Profile.cpp \

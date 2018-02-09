@@ -41,6 +41,11 @@ using namespace streetgangclient;
 StreetGangPBClientDispatcher::StreetGangPBClientDispatcher()
 {
     mRequester = std::make_shared<streetgangapi::PBStreetGangRequester>();
+
+    RegisterMessageReactorFactory("ErrorResponse", std::bind(&StreetGangPBClientDispatcher::CreateErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("GetVersionResponse", std::bind(&StreetGangPBClientDispatcher::CreateGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("CreateWorldResponse", std::bind(&StreetGangPBClientDispatcher::CreateCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("GetSceneResponse", std::bind(&StreetGangPBClientDispatcher::CreateGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangPBClientDispatcher::~StreetGangPBClientDispatcher()
@@ -63,14 +68,56 @@ std::shared_ptr<Reactor> StreetGangPBClientDispatcher::Decode(std::istream& stre
         return nullptr;
     }
 
-    CREATE_RESPONSE_REACTOR("ErrorResponse", streetgangapi::PBResponseError, ResponseErrorReactor)
-    else CREATE_RESPONSE_REACTOR("GetVersionResponse", streetgangapi::PBResponseGetVersion, ResponseGetVersionReactor)
-    else CREATE_RESPONSE_REACTOR("CreateWorldResponse", streetgangapi::PBResponseCreateWorld, ResponseCreateWorldReactor)
-    else CREATE_RESPONSE_REACTOR("GetSceneResponse", streetgangapi::PBResponseGetScene, ResponseGetSceneReactor)
-    else
+    auto factory = GetMessageReactorFactory(header.message_id());
+    if (factory == nullptr)
     {
         LOG("Unknown response: [Request=%s]", header.message_id().c_str());
+        return nullptr;
     }
 
+    return factory(stream, connection);
+}
+
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateErrorResponseReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBResponseError>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<ResponseErrorReactor>(connection, message, mRequester);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateGetVersionResponseReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBResponseGetVersion>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<ResponseGetVersionReactor>(connection, message, mRequester);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateCreateWorldResponseReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBResponseCreateWorld>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<ResponseCreateWorldReactor>(connection, message, mRequester);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateGetSceneResponseReactor(std::istream& stream, Connection& connection)
+{
+    auto message = std::make_shared<PBResponseGetScene>();
+    if (message->Decode(stream))
+    {
+        return std::make_shared<ResponseGetSceneReactor>(connection, message, mRequester);
+    }
+    
     return nullptr;
 }

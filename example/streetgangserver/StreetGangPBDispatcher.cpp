@@ -7,7 +7,6 @@
 #include "StreetGangPBDispatcher.h"
 #include "StreetGangSessionManager.h"
 
-#include "RequestErrorReactor.h"
 #include "RequestGetVersionReactor.h"
 #include "RequestByebyeReactor.h"
 #include "RequestCreateWorldReactor.h"

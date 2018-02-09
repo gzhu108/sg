@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "GetVersionRequest.proto";
 import "GetVersionResponse.proto";
 
 option cc_generic_services = true;
@@ -11,8 +12,4 @@ package streetgangpb;
 service StreetGangPBService
 {
     rpc GetVersion (GetVersionRequest) returns (GetVersionResponse);
-}
-
-message GetVersionRequest
-{
 }

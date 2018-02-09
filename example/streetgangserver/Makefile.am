@@ -21,15 +21,15 @@ __top_builddir__bin_streetgangserver_SOURCES = \
     main.cpp \
     RequestByebyeReactor.cpp \
     RequestCreateWorldReactor.cpp \
-    RequestErrorReactor.cpp \
     RequestGetSceneReactor.cpp \
     RequestGetVersionReactor.cpp \
     StreetGangBinaryDispatcher.cpp \
     StreetGangPBDispatcher.cpp \
+    StreetGangRestService.cpp \
     StreetGangService.cpp \
     StreetGangSessionManager.cpp \
-    WorldServiceProvider.cpp \
-    StreetGangRestService.cpp
+    WorldServiceProvider.cpp
+
 
 __top_builddir__bin_streetgangserver_LDADD = \
     ../metricatorapi/lib/libmetricatorapi.a \

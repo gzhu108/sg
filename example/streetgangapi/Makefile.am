@@ -15,38 +15,45 @@ lib_LIBRARIES = \
     $(top_builddir)/lib/libstreetgangapi.a
 
 __top_builddir__lib_libstreetgangapi_a_SOURCES = \
-    protobuf/cpp/GetVersionResponse.pb.cc \
+    protobuf/cpp/ByebyeRequest.pb.cc \
     protobuf/cpp/CreateWorldRequest.pb.cc \
     protobuf/cpp/CreateWorldResponse.pb.cc \
+    protobuf/cpp/ErrorResponse.pb.cc \
     protobuf/cpp/GetSceneRequest.pb.cc \
     protobuf/cpp/GetSceneResponse.pb.cc \
-    protobuf/cpp/ErrorResponse.pb.cc \
+    protobuf/cpp/GetVersionRequest.pb.cc \
+    protobuf/cpp/GetVersionResponse.pb.cc \
     protobuf/cpp/MessageHeader.pb.cc \
-    protobuf/cpp/Rectangle.pb.cc \
     protobuf/cpp/Point.pb.cc \
-    protobuf/cpp/StreetGangPBService.pb.cc \
-    MessageBase.cpp \
-    RequestByebye.cpp \
-    RequestCreateWorld.cpp \
-    RequestGetScene.cpp \
-    RequestGetVersion.cpp \
-    ResponseError.cpp \
-    ResponseCreateWorld.cpp \
-    ResponseGetScene.cpp \
-    ResponseGetVersion.cpp \
+    protobuf/cpp/Rectangle.pb.cc \
     BinaryRequestByebye.cpp \
     BinaryRequestCreateWorld.cpp \
     BinaryRequestGetScene.cpp \
     BinaryRequestGetVersion.cpp \
-    BinaryResponseError.cpp \
     BinaryResponseCreateWorld.cpp \
+    BinaryResponseError.cpp \
     BinaryResponseGetScene.cpp \
     BinaryResponseGetVersion.cpp \
     BinaryStreetGangRequester.cpp \
     BinaryStreetGangResponder.cpp \
-    StreetGangApi.cpp \
-    StreetGangPBRequestEncoder.cpp \
-    StreetGangPBResponseEncoder.cpp \
-    StreetGangRestResponseTextEncoder.cpp \
+    MessageBase.cpp \
+    PBRequestByebye.cpp \
+    PBRequestCreateWorld.cpp \
+    PBRequestGetScene.cpp \
+    PBRequestGetVersion.cpp \
+    PBResponseCreateWorld.cpp \
+    PBResponseError.cpp \
+    PBResponseGetScene.cpp \
+    PBResponseGetVersion.cpp \
+    PBStreetGangRequester.cpp \
+    PBStreetGangResponder.cpp \
+    RequestByebye.cpp \
+    RequestCreateWorld.cpp \
+    RequestGetScene.cpp \
+    RequestGetVersion.cpp \
+    ResponseCreateWorld.cpp \
+    ResponseError.cpp \
+    ResponseGetScene.cpp \
+    ResponseGetVersion.cpp \
     StreetGangRestResponseJsonEncoder.cpp \
-    BinaryRequestCreateWorld.cpp
+    StreetGangRestResponseTextEncoder.cpp

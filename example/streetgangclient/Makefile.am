@@ -24,7 +24,7 @@ __top_builddir__bin_streetgangclient_SOURCES = \
     StreetGangBinaryClientDispatcher.cpp \
     StreetGangPBClient.cpp \
     StreetGangPBClientDispatcher.cpp
-    
+
 __top_builddir__bin_streetgangclient_LDADD = \
     ../streetgangapi/lib/libstreetgangapi.a \
     ../../microreactor/lib/libmicroreactor.a \

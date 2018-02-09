@@ -50,7 +50,7 @@ bool PBRequestByebye::Decode(std::istream& stream)
     codedInputStream.PopLimit(previousSize);
     if (!result)
     {
-        return nullptr;
+        return false;
     }
 
     TrackId.set(request.track_id());

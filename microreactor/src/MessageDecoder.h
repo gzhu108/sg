@@ -5,6 +5,7 @@
 #include "TaskManagerSingleton.h"
 #include "Dispatcher.h"
 #include "Reactor.h"
+#include "Serializer.h"
 
 
 namespace sg { namespace microreactor

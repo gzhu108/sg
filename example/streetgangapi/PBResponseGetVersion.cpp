@@ -50,7 +50,7 @@ bool PBResponseGetVersion::Decode(std::istream& stream)
     codedInputStream.PopLimit(previousSize);
     if (!result)
     {
-        return nullptr;
+        return false;
     }
 
     TrackId.set(response.track_id());
