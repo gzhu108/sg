@@ -42,7 +42,7 @@ void ResponseCreateWorldReactor::SendNextRequest()
     // Get the scene from the world that just created
     streetgangapi::Rectangle<float> rect(0.4f, 0.4f, 0.2f, 0.2f);
 
-    if (!mRequester->GetScene(mConnection, InputMessage()->WorldId.cref(), rect))
+    if (!mRequester->GetScene(InputMessage()->WorldId.cref(), rect))
     {
         LOG("Failed to get scenen");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

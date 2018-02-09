@@ -32,5 +32,5 @@ bool RequestGetVersionReactor::Process()
     std::string version;
     mConnection.GetProfile()->Configuration.cref()->GetValue("Version", version);
 
-    return mResponder->SendGetVersionResponse(mConnection, InputMessage()->TrackId.cref(), ResultCode::Success, version);
+    return mResponder->SendGetVersionResponse(InputMessage()->TrackId.cref(), ResultCode::Success, version);
 }

@@ -22,9 +22,6 @@ namespace streetgangserver
         std::shared_ptr<sg::microreactor::Reactor> CreateGetVersionReactor(std::istream& stream, sg::microreactor::Connection& connection);
         std::shared_ptr<sg::microreactor::Reactor> CreateCreateWorldReactor(std::istream& stream, sg::microreactor::Connection& connection);
         std::shared_ptr<sg::microreactor::Reactor> CreateGetSceneReactor(std::istream& stream, sg::microreactor::Connection& connection);
-
-    protected:
-        std::shared_ptr<streetgangapi::BinaryStreetGangResponder> mResponder;
     };
 }
 

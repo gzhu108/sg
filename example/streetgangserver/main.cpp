@@ -8,7 +8,8 @@
 #include <vector>
 #include "Microreactor.h"
 #include "NetworkUtility.h"
-#include "StreetGangService.h"
+#include "StreetGangBinaryService.h"
+#include "StreetGangPBService.h"
 #include "StreetGangRestService.h"
 #include "ConfigurationXml.h"
 #include "MetricatorLogger.h"
@@ -177,25 +178,29 @@ int32_t main(int32_t argc, const char* argv[])
     //profile->Port.set(8390);
     //Microservice streetGangService(profile);
 
+    StreetGangBinaryService streetGangBinaryService(configuration);
+    StreetGangPBService streetGangPBService(configuration);
     std::shared_ptr<StreetGangRestService> streetGangRestService = CreateRestService(configuration);
-    if (streetGangRestService->Start())
+
+    if (streetGangBinaryService.Start() &&
+        streetGangPBService.Start() &&
+        streetGangRestService->Start())
     {
         // Create StreetGangService
-        StreetGangService streetGangService(configuration);
-        if (streetGangService.Start())
-        {
-            START_BLOCKING_TASK_LOOP();
+        START_BLOCKING_TASK_LOOP();
 
-            // Stop StreetGangService
-            streetGangService.Stop();
+        // Stop StreetGangBinaryService
+        streetGangBinaryService.Stop();
 
-            // Stop StreetGangRestService
-            streetGangRestService->Stop();
-        }
-        else
-        {
-            LOG("Failed to start the streetgangserver");
-        }
+        // Stop StreetGangPBService
+        streetGangPBService.Stop();
+
+        // Stop StreetGangRestService
+        streetGangRestService->Stop();
+    }
+    else
+    {
+        LOG("Failed to start the streetgangserver");
     }
 
     // Optional: Delete all global objects allocated by libprotobuf.

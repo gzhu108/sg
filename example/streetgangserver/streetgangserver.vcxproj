@@ -45,9 +45,10 @@
     <ClCompile Include="RequestGetSceneReactor.cpp" />
     <ClCompile Include="RequestGetVersionReactor.cpp" />
     <ClCompile Include="StreetGangBinaryDispatcher.cpp" />
+    <ClCompile Include="StreetGangBinaryService.cpp" />
     <ClCompile Include="StreetGangPBDispatcher.cpp" />
+    <ClCompile Include="StreetGangPBService.cpp" />
     <ClCompile Include="StreetGangRestService.cpp" />
-    <ClCompile Include="StreetGangService.cpp" />
     <ClCompile Include="StreetGangSessionManager.cpp" />
     <ClCompile Include="WorldServiceProvider.cpp" />
   </ItemGroup>
@@ -57,9 +58,10 @@
     <ClInclude Include="RequestGetSceneReactor.h" />
     <ClInclude Include="RequestGetVersionReactor.h" />
     <ClInclude Include="StreetGangBinaryDispatcher.h" />
+    <ClInclude Include="StreetGangBinaryService.h" />
     <ClInclude Include="StreetGangPBDispatcher.h" />
+    <ClInclude Include="StreetGangPBService.h" />
     <ClInclude Include="StreetGangRestService.h" />
-    <ClInclude Include="StreetGangService.h" />
     <ClInclude Include="StreetGangSessionManager.h" />
     <ClInclude Include="WorldServiceProvider.h" />
   </ItemGroup>

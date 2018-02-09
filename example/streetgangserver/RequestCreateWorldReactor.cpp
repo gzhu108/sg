@@ -20,5 +20,5 @@ RequestCreateWorldReactor::~RequestCreateWorldReactor()
 bool RequestCreateWorldReactor::Process()
 {
     SessionId sessionId = StreetGangSessionManager::GetInstance().CreateWorld(InputMessage()->WorldName.cref());
-    return mResponder->SendCreateWorldResponse(mConnection, InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->WorldName.cref());
+    return mResponder->SendCreateWorldResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->WorldName.cref());
 }

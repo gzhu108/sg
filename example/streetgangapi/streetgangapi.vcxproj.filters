@@ -245,9 +245,6 @@
     <ClInclude Include="StreetGangIds.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangPBResponseEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StreetGangRequester.h">
       <Filter>Header Files</Filter>
     </ClInclude>

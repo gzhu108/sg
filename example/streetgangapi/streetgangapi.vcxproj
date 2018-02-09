@@ -127,7 +127,6 @@
     <ClInclude Include="ResponseGetVersion.h" />
     <ClInclude Include="SessionId.h" />
     <ClInclude Include="StreetGangIds.h" />
-    <ClInclude Include="StreetGangPBResponseEncoder.h" />
     <ClInclude Include="StreetGangRequester.h" />
     <ClInclude Include="StreetGangResponder.h" />
     <ClInclude Include="StreetGangRestResponseJsonEncoder.h" />

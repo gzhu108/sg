@@ -18,8 +18,6 @@ using namespace streetgangclient;
 
 StreetGangBinaryClientDispatcher::StreetGangBinaryClientDispatcher()
 {
-    mRequester = std::make_shared<streetgangapi::BinaryStreetGangRequester>();
-
     RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::Error), std::bind(&StreetGangBinaryClientDispatcher::CreateErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
     RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionResponse), std::bind(&StreetGangBinaryClientDispatcher::CreateGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
     RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldResponse), std::bind(&StreetGangBinaryClientDispatcher::CreateCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
@@ -96,7 +94,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateErrorResponseRe
     auto message = std::make_shared<BinaryResponseError>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseErrorReactor>(connection, message, mRequester);
+        return std::make_shared<ResponseErrorReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
     }
 
     return nullptr;
@@ -107,7 +105,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetVersionRespo
     auto message = std::make_shared<BinaryResponseGetVersion>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseGetVersionReactor>(connection, message, mRequester);
+        return std::make_shared<ResponseGetVersionReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
     }
 
     return nullptr;
@@ -118,7 +116,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateCreateWorldResp
     auto message = std::make_shared<BinaryResponseCreateWorld>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseCreateWorldReactor>(connection, message, mRequester);
+        return std::make_shared<ResponseCreateWorldReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
     }
 
     return nullptr;
@@ -129,7 +127,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetSceneRespons
     auto message = std::make_shared<BinaryResponseGetScene>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseGetSceneReactor>(connection, message, mRequester);
+        return std::make_shared<ResponseGetSceneReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
     }
     
     return nullptr;

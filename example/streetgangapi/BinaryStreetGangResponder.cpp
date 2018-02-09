@@ -9,7 +9,8 @@ using namespace sg::microreactor;
 using namespace streetgangapi;
 
 
-BinaryStreetGangResponder::BinaryStreetGangResponder()
+BinaryStreetGangResponder::BinaryStreetGangResponder(Connection& connection)
+    : StreetGangResponder(connection)
 {
 }
 
@@ -17,36 +18,36 @@ BinaryStreetGangResponder::~BinaryStreetGangResponder()
 {
 }
 
-bool BinaryStreetGangResponder::SendErrorResponse(Connection& connection, const std::string& trackId, ResultCode result, const int32_t& requestId, const std::string& errorMessage)
+bool BinaryStreetGangResponder::SendErrorResponse(const std::string& trackId, ResultCode result, const int32_t& requestId, const std::string& errorMessage)
 {
     auto message = std::make_shared<BinaryResponseError>();
     message->TrackId.set(trackId);
     message->Result.set(static_cast<int32_t>(result));
     message->RequestId.set(requestId);
     message->ErrorMessage.set(errorMessage);
-    return SendMessage(connection, message);
+    return SendMessage(message);
 }
 
-bool BinaryStreetGangResponder::SendGetVersionResponse(Connection& connection, const std::string& trackId, ResultCode result, const std::string& version)
+bool BinaryStreetGangResponder::SendGetVersionResponse(const std::string& trackId, ResultCode result, const std::string& version)
 {
     auto message = std::make_shared<BinaryResponseGetVersion>();
     message->TrackId.set(trackId);
     message->Result.set(static_cast<int32_t>(result));
     message->Version.set(version);
-    return SendMessage(connection, message);
+    return SendMessage(message);
 }
 
-bool BinaryStreetGangResponder::SendCreateWorldResponse(Connection& connection, const std::string& trackId, ResultCode result, const streetgangapi::SessionId& worldId, const std::string& worldName)
+bool BinaryStreetGangResponder::SendCreateWorldResponse(const std::string& trackId, ResultCode result, const streetgangapi::SessionId& worldId, const std::string& worldName)
 {
     auto message = std::make_shared<BinaryResponseCreateWorld>();
     message->TrackId.set(trackId);
     message->Result.set(static_cast<int32_t>(result));
     message->WorldId.set(worldId);
     message->WorldName.set(worldName);
-    return SendMessage(connection, message);
+    return SendMessage(message);
 }
 
-bool BinaryStreetGangResponder::SendGetSceneResponse(Connection& connection, const std::string& trackId, ResultCode result, const streetgangapi::SessionId& worldId, const streetgangapi::Rectangle<float>& rect, const std::vector<streetgangapi::Point<float>>& items)
+bool BinaryStreetGangResponder::SendGetSceneResponse(const std::string& trackId, ResultCode result, const streetgangapi::SessionId& worldId, const streetgangapi::Rectangle<float>& rect, const std::vector<streetgangapi::Point<float>>& items)
 {
     auto message = std::make_shared<BinaryResponseGetScene>();
     message->TrackId.set(trackId);
@@ -54,15 +55,15 @@ bool BinaryStreetGangResponder::SendGetSceneResponse(Connection& connection, con
     message->WorldId.set(worldId);
     message->Rect.set(rect);
     message->Items.set(items);
-    return SendMessage(connection, message);
+    return SendMessage(message);
 }
 
-bool BinaryStreetGangResponder::SendMessage(Connection& connection, std::shared_ptr<MessageBase> message)
+bool BinaryStreetGangResponder::SendMessage(std::shared_ptr<MessageBase> message)
 {
-    if (message == nullptr || connection.IsClosed())
+    if (message == nullptr || mConnection.IsClosed())
     {
-        auto peerName = connection.GetPeerName();
-        auto peerPort = connection.GetPeerPort();
+        auto peerName = mConnection.GetPeerName();
+        auto peerPort = mConnection.GetPeerPort();
         LOG("Fail to send response [Connection=%s:%u]", peerName.c_str(), peerPort);
         return false;
     }
@@ -78,7 +79,7 @@ bool BinaryStreetGangResponder::SendMessage(Connection& connection, std::shared_
             serializer.Write(messageStream, stream))
         {
             // Send message
-            uint64_t sent = connection.Send(stream);
+            uint64_t sent = mConnection.Send(stream);
             if (sent > 0)
             {
                 return true;
@@ -86,8 +87,8 @@ bool BinaryStreetGangResponder::SendMessage(Connection& connection, std::shared_
         }
     }
 
-    auto peerName = connection.GetPeerName();
-    auto peerPort = connection.GetPeerPort();
+    auto peerName = mConnection.GetPeerName();
+    auto peerPort = mConnection.GetPeerPort();
     LOG("[Message=%d] [TrackId=%s] Fail to send response [Connection=%s:%u]", message->Id.cref(), message->TrackId->c_str(), peerName.c_str(), peerPort);
     return false;
 }

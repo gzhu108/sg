@@ -181,6 +181,8 @@
     <ClCompile Include="src\Listener.cpp" />
     <ClCompile Include="src\LoggerSingleton.cpp" />
     <ClCompile Include="src\Message.cpp" />
+    <ClCompile Include="src\MessageRequester.cpp" />
+    <ClCompile Include="src\MessageResponder.cpp" />
     <ClCompile Include="src\Microservice.cpp" />
     <ClCompile Include="src\NetworkUtility.cpp" />
     <ClCompile Include="src\Profile.cpp" />
@@ -243,6 +245,8 @@
     <ClInclude Include="src\Message.h" />
     <ClInclude Include="src\MessageDecoder.h" />
     <ClInclude Include="src\MessageReactor.h" />
+    <ClInclude Include="src\MessageRequester.h" />
+    <ClInclude Include="src\MessageResponder.h" />
     <ClInclude Include="src\Microreactor.h" />
     <ClInclude Include="src\Microservice.h" />
     <ClInclude Include="src\NetworkUtility.h" />

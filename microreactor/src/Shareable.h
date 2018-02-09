@@ -12,6 +12,12 @@ namespace sg { namespace microreactor
     public:
         Shareable() {}
         virtual ~Shareable() {}
+
+        template <typename T>
+        std::shared_ptr<T> SharedFromThis()
+        {
+            return std::static_pointer_cast<T>(shared_from_this());
+        }
     };
 }}
 

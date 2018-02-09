@@ -39,13 +39,16 @@
     <ClCompile Include="StreetGangRestService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangService.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StreetGangSessionManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WorldServiceProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetGangBinaryService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StreetGangPBService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,13 +74,16 @@
     <ClInclude Include="StreetGangRestService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StreetGangSessionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WorldServiceProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetGangBinaryService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StreetGangPBService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

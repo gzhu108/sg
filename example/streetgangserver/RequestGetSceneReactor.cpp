@@ -27,7 +27,7 @@ bool RequestGetSceneReactor::Process()
 
     if (mSession == nullptr)
     {
-        return mResponder->SendErrorResponse(mConnection, InputMessage()->TrackId.cref(), ResultCode::ErrorBadRequest, InputMessage()->Id.cref(), "Scene not found");
+        return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), ResultCode::ErrorBadRequest, InputMessage()->Id.cref(), "Scene not found");
     }
 
     auto session = std::static_pointer_cast<WorldServiceProvider>(mSession);
@@ -44,5 +44,5 @@ bool RequestGetSceneReactor::Process()
             InputMessage()->Rect->mH);
     }
 
-    return mResponder->SendGetSceneResponse(mConnection, InputMessage()->TrackId.cref(), ResultCode::Success, mSession->Id.cref(), InputMessage()->Rect.cref(), items);
+    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, mSession->Id.cref(), InputMessage()->Rect.cref(), items);
 }

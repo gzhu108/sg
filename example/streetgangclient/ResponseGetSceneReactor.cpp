@@ -39,7 +39,7 @@ bool ResponseGetSceneReactor::Process()
 
 void ResponseGetSceneReactor::SendNextRequest()
 {
-    if (!mRequester->GetVersion(mConnection))
+    if (!mRequester->GetVersion())
     {
         LOG("Failed to get the server version");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

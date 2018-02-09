@@ -40,7 +40,7 @@ void ResponseGetVersionReactor::SendNextRequest()
     ss << "World(" << worldNumber << ")";
     worldNumber++;
 
-    if (!mRequester->CreateWorld(mConnection, ss.str()))
+    if (!mRequester->CreateWorld(ss.str()))
     {
         LOG("%s Failed to create a new world", ss.str().c_str());
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));

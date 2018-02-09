@@ -11,17 +11,17 @@ namespace streetgangapi
     class BinaryStreetGangRequester : public StreetGangRequester
     {
     public:
-        BinaryStreetGangRequester();
+        BinaryStreetGangRequester(sg::microreactor::Connection& connection);
         virtual ~BinaryStreetGangRequester();
 
     public:
-        virtual bool Byebye(sg::microreactor::Connection& connection) override;
-        virtual bool GetVersion(sg::microreactor::Connection& connection) override;
-        virtual bool CreateWorld(sg::microreactor::Connection& connection, const std::string& worldName) override;
-        virtual bool GetScene(sg::microreactor::Connection& connection, const SessionId& worldId, const streetgangapi::Rectangle<float>& rect) override;
+        virtual bool Byebye() override;
+        virtual bool GetVersion() override;
+        virtual bool CreateWorld(const std::string& worldName) override;
+        virtual bool GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect) override;
 
     protected:
-        bool SendMessage(sg::microreactor::Connection& connection, std::shared_ptr<MessageBase> message);
+        virtual bool SendMessage(std::shared_ptr<MessageBase> message);
    };
 }
 
