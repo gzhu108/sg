@@ -19,7 +19,7 @@ $serviceclassServiceBase::~$serviceclassServiceBase()
 bool $serviceclassServiceBase::Initialize()
 {
     @group_begin
-    mRestMessageDecoder->RegisterRestReactorFactory("$method", "$path", std::bind(&$serviceclassServiceBase::Create$method$funcReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mRestDispatcher->RegisterRestReactorFactory("$method", "$path", std::bind(&$serviceclassServiceBase::Create$method$funcReactor, this, std::placeholders::_1, std::placeholders::_2));
     @group_end
     
     return RestService::Initialize();

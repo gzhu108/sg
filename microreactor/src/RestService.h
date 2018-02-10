@@ -3,7 +3,7 @@
 #define sg_microreactor_RestService
 
 #include "Microservice.h"
-#include "RestMessageDecoder.h"
+#include "RestDispatcher.h"
 
 
 namespace sg { namespace microreactor
@@ -20,7 +20,7 @@ namespace sg { namespace microreactor
         virtual bool Initialize() override;
 
     protected:
-        std::shared_ptr<RestMessageDecoder> mRestMessageDecoder;
+        std::shared_ptr<RestDispatcher> mRestDispatcher;
     };
 }}
 

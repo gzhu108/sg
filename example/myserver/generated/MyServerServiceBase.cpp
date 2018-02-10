@@ -17,8 +17,8 @@ MyServerServiceBase::~MyServerServiceBase()
 
 bool MyServerServiceBase::Initialize()
 {
-    mRestMessageDecoder->RegisterRestReactorFactory("GET", "/v1/version", std::bind(&MyServerServiceBase::CreateGETv1versionReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mRestMessageDecoder->RegisterRestReactorFactory("POST", "/v1/update", std::bind(&MyServerServiceBase::CreatePOSTv1updateReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mRestDispatcher->RegisterRestReactorFactory("GET", "/v1/version", std::bind(&MyServerServiceBase::CreateGETv1versionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mRestDispatcher->RegisterRestReactorFactory("POST", "/v1/update", std::bind(&MyServerServiceBase::CreatePOSTv1updateReactor, this, std::placeholders::_1, std::placeholders::_2));
     
     return RestService::Initialize();
 }

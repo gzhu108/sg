@@ -21,7 +21,7 @@
     <ClCompile Include="MetricatorRequestReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MetricatorMessageDecoder.cpp">
+    <ClCompile Include="MetricatorMessageDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="MetricatorRequestReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MetricatorMessageDecoder.h">
+    <ClInclude Include="MetricatorMessageDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_RestMessageDecoder
-#define sg_microreactor_RestMessageDecoder
+#ifndef sg_microreactor_RestDispatcher
+#define sg_microreactor_RestDispatcher
 
 #include "Dispatcher.h"
 #include "Reactor.h"
@@ -11,11 +11,11 @@ namespace sg { namespace microreactor
 {
     typedef std::function<std::shared_ptr<Reactor> (std::shared_ptr<RestRequest>, Connection&)> RestReactorFactory;
 
-    class RestMessageDecoder : public Dispatcher
+    class RestDispatcher : public Dispatcher
     {
     public:
-        RestMessageDecoder();
-        virtual ~RestMessageDecoder();
+        RestDispatcher();
+        virtual ~RestDispatcher();
 
     public:
         virtual void Dispatch(Connection& connection) override;
@@ -42,4 +42,4 @@ namespace sg { namespace microreactor
 }}
 
 
-#endif // sg_microreactor_RestMessageDecoder
+#endif // sg_microreactor_RestDispatcher

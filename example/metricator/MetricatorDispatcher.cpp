@@ -1,4 +1,4 @@
-#include "MetricatorMessageDecoder.h"
+#include "MetricatorMessageDispatcher.h"
 #include "MetricatorRequest.h"
 #include "MetricatorRequestReactor.h"
 
@@ -7,15 +7,15 @@ using namespace metricatorapi;
 using namespace metricator;
 
 
-MetricatorMessageDecoder::MetricatorMessageDecoder()
+MetricatorMessageDispatcher::MetricatorMessageDispatcher()
 {
 }
 
-MetricatorMessageDecoder::~MetricatorMessageDecoder()
+MetricatorMessageDispatcher::~MetricatorMessageDispatcher()
 {
 }
 
-std::shared_ptr<sg::microreactor::Reactor> MetricatorMessageDecoder::Decode(std::istream& stream, Connection& connection)
+std::shared_ptr<sg::microreactor::Reactor> MetricatorMessageDispatcher::Decode(std::istream& stream, Connection& connection)
 {
     if (GetStreamSize(stream) == 0)
     {

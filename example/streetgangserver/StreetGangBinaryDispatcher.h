@@ -2,13 +2,13 @@
 #ifndef streetgangserver_StreetGangBinaryDispatcher
 #define streetgangserver_StreetGangBinaryDispatcher
 
-#include "MessageDecoder.h"
+#include "MessageDispatcher.h"
 #include "BinaryStreetGangResponder.h"
 
 
 namespace streetgangserver
 {
-    class StreetGangBinaryDispatcher : public sg::microreactor::MessageDecoder<int32_t>
+    class StreetGangBinaryDispatcher : public sg::microreactor::MessageDispatcher<int32_t>
     {
     public:
         StreetGangBinaryDispatcher();

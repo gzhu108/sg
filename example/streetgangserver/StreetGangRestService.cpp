@@ -25,9 +25,9 @@ StreetGangRestService::~StreetGangRestService()
 
 bool StreetGangRestService::Initialize()
 {
-    mRestMessageDecoder->RegisterRestReactorFactory("GET", "/version", std::bind(&StreetGangRestService::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mRestMessageDecoder->RegisterRestReactorFactory("POST", "/createworld", std::bind(&StreetGangRestService::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mRestMessageDecoder->RegisterRestReactorFactory("POST", "/getscene", std::bind(&StreetGangRestService::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mRestDispatcher->RegisterRestReactorFactory("GET", "/version", std::bind(&StreetGangRestService::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mRestDispatcher->RegisterRestReactorFactory("POST", "/createworld", std::bind(&StreetGangRestService::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mRestDispatcher->RegisterRestReactorFactory("POST", "/getscene", std::bind(&StreetGangRestService::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
     
     return RestService::Initialize();
 }

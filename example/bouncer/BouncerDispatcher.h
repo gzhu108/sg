@@ -2,12 +2,12 @@
 #ifndef bouncer_BouncerDecoder
 #define bouncer_BouncerDecoder
 
-#include "MessageDecoder.h"
+#include "MessageDispatcher.h"
 
 
 namespace bouncer
 {
-    class BouncerDecoder : public sg::microreactor::MessageDecoder<>
+    class BouncerDecoder : public sg::microreactor::MessageDispatcher<>
     {
     public:
         BouncerDecoder();

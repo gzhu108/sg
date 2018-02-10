@@ -9,7 +9,7 @@
 #include "UdpSocket.h"
 #include "ConfigurationXml.h"
 #include "Microservice.h"
-#include "MetricatorMessageDecoder.h"
+#include "MetricatorMessageDispatcher.h"
 #include "DiscoveryService.h"
 
 using namespace sg::microreactor;
@@ -112,7 +112,7 @@ int32_t main(int32_t argc, const char* argv[])
     DiscoveryService discoveryService(socket);
     discoveryService.Start();
 
-    auto messageDecoder = std::make_shared<MetricatorMessageDecoder>();
+    auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set(protocol);
     profile->Address.set(hostName);

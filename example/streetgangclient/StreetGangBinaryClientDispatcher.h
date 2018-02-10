@@ -2,13 +2,13 @@
 #ifndef streetgangclient_StreetGangBinaryClientDispatcher
 #define streetgangclient_StreetGangBinaryClientDispatcher
 
-#include "MessageDecoder.h"
+#include "MessageDispatcher.h"
 #include "BinaryStreetGangRequester.h"
 
 
 namespace streetgangclient
 {
-    class StreetGangBinaryClientDispatcher : public sg::microreactor::MessageDecoder<int32_t>
+    class StreetGangBinaryClientDispatcher : public sg::microreactor::MessageDispatcher<int32_t>
     {
     public:
         StreetGangBinaryClientDispatcher();

@@ -63,7 +63,7 @@
     <ClCompile Include="src\RestFileResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\RestMessageDecoder.cpp">
+    <ClCompile Include="src\RestDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\RestRequest.cpp">
@@ -197,7 +197,7 @@
     <ClInclude Include="src\Message.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MessageDecoder.h">
+    <ClInclude Include="src\MessageDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\MessageReactor.h">
@@ -227,7 +227,7 @@
     <ClInclude Include="src\RestMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\RestMessageDecoder.h">
+    <ClInclude Include="src\RestDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\RestReactor.h">

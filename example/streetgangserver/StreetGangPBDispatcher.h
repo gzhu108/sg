@@ -2,13 +2,13 @@
 #ifndef streetgangserver_StreetGangPBDispatcher
 #define streetgangserver_StreetGangPBDispatcher
 
-#include "MessageDecoder.h"
+#include "MessageDispatcher.h"
 #include "PBStreetGangResponder.h"
 
 
 namespace streetgangserver
 {
-    class StreetGangPBDispatcher : public sg::microreactor::MessageDecoder<std::string>
+    class StreetGangPBDispatcher : public sg::microreactor::MessageDispatcher<std::string>
     {
     public:
         StreetGangPBDispatcher();

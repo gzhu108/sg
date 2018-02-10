@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_MessageDecoder
-#define sg_microreactor_MessageDecoder
+#ifndef sg_microreactor_MessageDispatcher
+#define sg_microreactor_MessageDispatcher
 
 #include "TaskManagerSingleton.h"
 #include "Dispatcher.h"
@@ -13,11 +13,11 @@ namespace sg { namespace microreactor
     typedef std::function<std::shared_ptr<Reactor>(std::istream&, Connection&)> MessageReactorFactory;
 
     template <typename Key = int32_t>
-    class MessageDecoder : public Dispatcher
+    class MessageDispatcher : public Dispatcher
     {
     public:
-        MessageDecoder() {}
-        virtual ~MessageDecoder() {}
+        MessageDispatcher() {}
+        virtual ~MessageDispatcher() {}
 
     public:
         virtual void Dispatch(Connection& connection) override
@@ -93,4 +93,4 @@ namespace sg { namespace microreactor
 }}
 
 
-#endif // sg_microreactor_MessageDecoder
+#endif // sg_microreactor_MessageDispatcher

@@ -2,7 +2,7 @@
 #pragma warning(disable : 4503)
 #endif
 
-#include "RestMessageDecoder.h"
+#include "RestDispatcher.h"
 #include "Connection.h"
 #include "TaskManagerSingleton.h"
 #include "RestResponse.h"
@@ -13,15 +13,15 @@
 using namespace sg::microreactor;
 
 
-RestMessageDecoder::RestMessageDecoder()
+RestDispatcher::RestDispatcher()
 {
 }
 
-RestMessageDecoder::~RestMessageDecoder()
+RestDispatcher::~RestDispatcher()
 {
 }
 
-void RestMessageDecoder::Dispatch(Connection& connection)
+void RestDispatcher::Dispatch(Connection& connection)
 {
     auto reactor = Decode(connection);
     if (reactor != nullptr && InitializeReactor(*reactor))
@@ -31,7 +31,7 @@ void RestMessageDecoder::Dispatch(Connection& connection)
     }
 }
 
-void RestMessageDecoder::RegisterRestReactorFactory(const std::string& method, const std::string& uri, RestReactorFactory factory)
+void RestDispatcher::RegisterRestReactorFactory(const std::string& method, const std::string& uri, RestReactorFactory factory)
 {
     if (factory == nullptr)
     {
@@ -61,7 +61,7 @@ void RestMessageDecoder::RegisterRestReactorFactory(const std::string& method, c
     }
 }
 
-std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
+std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
 {
     auto message = std::make_shared<std::string>();
     message->resize(DEFAULT_HTTP_BUFFER_SIZE);
@@ -127,7 +127,7 @@ std::shared_ptr<Reactor> RestMessageDecoder::Decode(Connection& connection)
     return nullptr;
 }
 
-RestReactorFactory RestMessageDecoder::GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest)
+RestReactorFactory RestDispatcher::GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest)
 {
     if (restRequest == nullptr || restRequest->mUri.empty() || mRestReactorFactoryTable.empty())
     {
@@ -173,13 +173,13 @@ RestReactorFactory RestMessageDecoder::GetRestReactorFactory(std::shared_ptr<Res
     return nullptr;
 }
 
-void RestMessageDecoder::PushChunkedRequest(sg::microreactor::Connection& connection, std::shared_ptr<RestRequest> restRequest)
+void RestDispatcher::PushChunkedRequest(sg::microreactor::Connection& connection, std::shared_ptr<RestRequest> restRequest)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     mChunkedRequestStore[reinterpret_cast<uintptr_t>(&connection)] = restRequest;
 }
 
-std::shared_ptr<RestRequest> RestMessageDecoder::PopChunkedRequest(sg::microreactor::Connection& connection)
+std::shared_ptr<RestRequest> RestDispatcher::PopChunkedRequest(sg::microreactor::Connection& connection)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     std::shared_ptr<RestRequest> restRequest;

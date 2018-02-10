@@ -188,7 +188,7 @@
     <ClCompile Include="src\Profile.cpp" />
     <ClCompile Include="src\Reactor.cpp" />
     <ClCompile Include="src\RestFileResponse.cpp" />
-    <ClCompile Include="src\RestMessageDecoder.cpp" />
+    <ClCompile Include="src\RestDispatcher.cpp" />
     <ClCompile Include="src\RestRequest.cpp" />
     <ClCompile Include="src\RestResponse.cpp" />
     <ClCompile Include="src\RestService.cpp" />
@@ -242,7 +242,7 @@
     <ClInclude Include="src\LoggerSingleton.h" />
     <ClInclude Include="src\MemoryTrack.h" />
     <ClInclude Include="src\Message.h" />
-    <ClInclude Include="src\MessageDecoder.h" />
+    <ClInclude Include="src\MessageDispatcher.h" />
     <ClInclude Include="src\MessageReactor.h" />
     <ClInclude Include="src\MessageRequester.h" />
     <ClInclude Include="src\MessageResponder.h" />
@@ -254,7 +254,7 @@
     <ClInclude Include="src\Reactor.h" />
     <ClInclude Include="src\RestFileResponse.h" />
     <ClInclude Include="src\RestMessage.h" />
-    <ClInclude Include="src\RestMessageDecoder.h" />
+    <ClInclude Include="src\RestDispatcher.h" />
     <ClInclude Include="src\RestReactor.h" />
     <ClInclude Include="src\RestRequest.h" />
     <ClInclude Include="src\RestResponse.h" />

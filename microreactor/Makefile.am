@@ -33,7 +33,7 @@ nobase_include_HEADERS = \
     src/Listener.h \
     src/LoggerSingleton.h \
     src/MemoryTrack.h \
-    src/MessageDecoder.h \
+    src/MessageDispatcher.h \
     src/Message.h \
     src/MessageReactor.h \
 	src/MessageRequester.h \
@@ -70,7 +70,7 @@ nobase_include_HEADERS = \
     src/HttpHeader.h \
     src/RestFileResponse.h \
     src/RestMessage.h \
-    src/RestMessageDecoder.h \
+    src/RestDispatcher.h \
 	src/RestReactor.h \
     src/RestRequest.h \
     src/RestResponse.h \
@@ -114,7 +114,7 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/RestRequest.cpp \
     src/RestResponse.cpp \
     src/RestFileResponse.cpp \
-    src/RestMessageDecoder.cpp \
+    src/RestDispatcher.cpp \
     src/RestService.cpp \
     ../tools/http-parser/http_parser.c
 
@@ -123,7 +123,7 @@ check_PROGRAMS = $(top_builddir)/test/bin/microreactor_test
 __top_builddir__test_bin_microreactor_test_SOURCES = \
     test/test_main.cpp \
     test/UuidTest.cpp \
-    test/RestMessageDecoderTest.cpp
+    test/RestDispatcherTest.cpp
     
 __top_builddir__test_bin_microreactor_test_LDADD = \
     lib/libmicroreactor.a \

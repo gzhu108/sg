@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
-#include "RestMessageDecoder.h"
+#include "RestDispatcher.h"
 
 using namespace sg::microreactor;
 
 
-class RestMessageDecoderMock : public RestMessageDecoder
+class RestDispatcherMock : public RestDispatcher
 {
 public:
     void GetRestReactorFactoryTable(MethodMap& restReactorFactoryTable)
@@ -14,7 +14,7 @@ public:
 
     virtual RestReactorFactory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest) override
     {
-        return RestMessageDecoder::GetRestReactorFactory(restRequest);
+        return RestDispatcher::GetRestReactorFactory(restRequest);
     }
 };
 
@@ -28,10 +28,10 @@ public:
 };
 
 
-TEST(RestMessageDecoderTest, RegisterRestFactoryNormal)
+TEST(RestDispatcherTest, RegisterRestFactoryNormal)
 {
     ReactorFactoryMock factory;   
-    RestMessageDecoderMock decoder;
+    RestDispatcherMock decoder;
     decoder.RegisterRestReactorFactory("GET", "/api_1/data", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
     decoder.RegisterRestReactorFactory("POST", "/api_2/save", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
 
@@ -57,7 +57,7 @@ TEST(RestMessageDecoderTest, RegisterRestFactoryNormal)
     EXPECT_EQ(nullptr, found_api_3);
 
 #if 0
-    std::map<std::string, RestMessageDecoder::RestFactoryList> registeredRestFactorys;
+    std::map<std::string, RestDispatcher::RestFactoryList> registeredRestFactorys;
     codec.GetRegisteredRestFactorys(registeredRestFactorys);
     
     auto found_1 = registeredRestFactorys.find("/api_1/data");
