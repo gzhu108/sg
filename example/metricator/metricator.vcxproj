@@ -40,11 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MetricatorMessageDispatcher.cpp" />
+    <ClCompile Include="MetricatorDispatcher.cpp" />
     <ClCompile Include="MetricatorRequestReactor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MetricatorMessageDispatcher.h" />
+    <ClInclude Include="MetricatorDispatcher.h" />
     <ClInclude Include="MetricatorRequestReactor.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

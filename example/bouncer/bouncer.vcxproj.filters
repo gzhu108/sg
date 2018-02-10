@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BouncerDecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BouncerReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,11 +27,11 @@
     <ClCompile Include="BouncerRestService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BouncerDispatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BouncerDecoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BouncerReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BouncerRestService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BouncerDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

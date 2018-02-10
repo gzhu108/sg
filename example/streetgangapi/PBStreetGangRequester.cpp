@@ -38,7 +38,7 @@ bool PBStreetGangRequester::GetVersion()
 
 bool PBStreetGangRequester::CreateWorld(const std::string& worldName)
 {
-    auto message = std::make_shared<RequestCreateWorld>();
+    auto message = std::make_shared<PBRequestCreateWorld>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
     message->WorldName.set(worldName);
     return SendMessage(message);
@@ -46,7 +46,7 @@ bool PBStreetGangRequester::CreateWorld(const std::string& worldName)
 
 bool PBStreetGangRequester::GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect)
 {
-    auto message = std::make_shared<RequestGetScene>();
+    auto message = std::make_shared<PBRequestGetScene>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
     message->WorldId.set(worldId);
     message->Rect.set(rect);

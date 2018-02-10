@@ -38,7 +38,7 @@ bool BinaryStreetGangRequester::GetVersion()
 
 bool BinaryStreetGangRequester::CreateWorld(const std::string& worldName)
 {
-    auto message = std::make_shared<RequestCreateWorld>();
+    auto message = std::make_shared<BinaryRequestCreateWorld>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
     message->WorldName.set(worldName);
     return SendMessage(message);
@@ -46,7 +46,7 @@ bool BinaryStreetGangRequester::CreateWorld(const std::string& worldName)
 
 bool BinaryStreetGangRequester::GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect)
 {
-    auto message = std::make_shared<RequestGetScene>();
+    auto message = std::make_shared<BinaryRequestGetScene>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
     message->WorldId.set(worldId);
     message->Rect.set(rect);
