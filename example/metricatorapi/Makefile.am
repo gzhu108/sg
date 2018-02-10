@@ -15,5 +15,4 @@ lib_LIBRARIES = \
 __top_builddir__lib_libmetricatorapi_a_SOURCES = \
     MetricatorRequester.cpp \
     MetricatorRequest.cpp \
-    MetricatorRequestEncoder.cpp \
     MetricatorLogger.cpp

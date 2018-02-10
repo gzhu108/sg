@@ -1,4 +1,4 @@
-#include "MetricatorMessageDispatcher.h"
+#include "MetricatorDispatcher.h"
 #include "MetricatorRequest.h"
 #include "MetricatorRequestReactor.h"
 

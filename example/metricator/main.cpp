@@ -9,7 +9,7 @@
 #include "UdpSocket.h"
 #include "ConfigurationXml.h"
 #include "Microservice.h"
-#include "MetricatorMessageDispatcher.h"
+#include "MetricatorDispatcher.h"
 #include "DiscoveryService.h"
 
 using namespace sg::microreactor;

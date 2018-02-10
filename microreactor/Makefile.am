@@ -16,7 +16,6 @@ AM_LDFLAGS = -static-libstdc++
 lib_LIBRARIES = $(top_builddir)/lib/libmicroreactor.a
 
 nobase_include_HEADERS = \
-    src/Api.h \
     src/BinarySerializer.h \
     src/Cancelable.h \
     src/Client.h \

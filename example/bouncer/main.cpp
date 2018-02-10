@@ -8,7 +8,7 @@
 #include "Microreactor.h"
 #include "BouncerRestService.h"
 #include "BouncerProfile.h"
-#include "BouncerDecoder.h"
+#include "BouncerDispatcher.h"
 
 using namespace sg::microreactor;
 using namespace bouncer;

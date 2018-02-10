@@ -16,7 +16,7 @@ bin_PROGRAMS = \
 
 __top_builddir__bin_metricator_SOURCES = \
     main.cpp \
-    MetricatorMessageDispatcher.cpp \
+    MetricatorDispatcher.cpp \
     MetricatorRequestReactor.cpp
     
 __top_builddir__bin_metricator_LDADD = \
