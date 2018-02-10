@@ -48,7 +48,7 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
         doc.Parse(request->mBody.mOffset, request->mBody.mLength);
         if (doc.IsNull())
         {
-            return nullptr;
+            return false;
         }
 
         rapidjson::StringBuffer buffer;
@@ -59,14 +59,14 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
         rapidjson::Value& jsonGetScene = doc["GetScene"];
         if (jsonGetScene.IsNull())
         {
-            return nullptr;
+            return false;
         }
         else
         {
             rapidjson::Value& jsonWorldId = jsonGetScene["WorldId"];
             if (jsonWorldId.IsNull())
             {
-                return nullptr;
+                return false;
             }
             else
             {
@@ -76,14 +76,14 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
             rapidjson::Value& jsonRect = jsonGetScene["Rect"];
             if (jsonRect.IsNull())
             {
-                return nullptr;
+                return false;
             }
             else
             {
                 rapidjson::Value& jsonX = jsonRect["x"];
                 if (jsonX.IsNull())
                 {
-                    return nullptr;
+                    return false;
                 }
                 else
                 {
@@ -93,7 +93,7 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
                 rapidjson::Value& jsonY = jsonRect["y"];
                 if (jsonY.IsNull())
                 {
-                    return nullptr;
+                    return false;
                 }
                 else
                 {
@@ -103,7 +103,7 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
                 rapidjson::Value& jsonW = jsonRect["w"];
                 if (jsonW.IsNull())
                 {
-                    return nullptr;
+                    return false;
                 }
                 else
                 {
@@ -113,7 +113,7 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
                 rapidjson::Value& jsonH = jsonRect["h"];
                 if (jsonH.IsNull())
                 {
-                    return nullptr;
+                    return false;
                 }
                 else
                 {
