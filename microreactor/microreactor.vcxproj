@@ -224,7 +224,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Api.h" />
     <ClInclude Include="src\BinarySerializer.h" />
     <ClInclude Include="src\Cancelable.h" />
     <ClInclude Include="src\Client.h" />

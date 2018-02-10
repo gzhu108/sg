@@ -39,16 +39,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MetricatorApi.cpp" />
+    <ClCompile Include="MetricatorRequester.cpp" />
     <ClCompile Include="MetricatorLogger.cpp" />
-    <ClCompile Include="MetricatorRequestEncoder.cpp" />
     <ClCompile Include="MetricatorRequest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MetricatorApi.h" />
+    <ClInclude Include="MetricatorRequester.h" />
     <ClInclude Include="Metric.h" />
     <ClInclude Include="MetricatorLogger.h" />
-    <ClInclude Include="MetricatorRequestEncoder.h" />
     <ClInclude Include="MetricatorRequest.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

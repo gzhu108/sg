@@ -1,4 +1,4 @@
-#include "DiscoveryApi.h"
+#include "DiscoveryRequester.h"
 #include "StringSerializer.h"
 #include "RequestSearch.h"
 
@@ -6,16 +6,16 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-DiscoveryApi::DiscoveryApi(Connection& connection)
-    : Api(connection, nullptr)
+DiscoveryRequester::DiscoveryRequester(Connection& connection)
+    : MessageRequester(connection)
 {
 }
 
-DiscoveryApi::~DiscoveryApi()
+DiscoveryRequester::~DiscoveryRequester()
 {
 }
 
-void DiscoveryApi::MulticastSearch(const std::string& serviceType, const std::string& multicastAddress, uint16_t port)
+void DiscoveryRequester::MulticastSearch(const std::string& serviceType, const std::string& multicastAddress, uint16_t port)
 {
     std::shared_ptr<RequestSearch> request = std::make_shared<RequestSearch>();
     request->Endpoint.set(multicastAddress + ":" + std::to_string(port));
@@ -30,7 +30,7 @@ void DiscoveryApi::MulticastSearch(const std::string& serviceType, const std::st
     }
 }
 
-void DiscoveryApi::UnicastSearch(const std::string& serviceType, const std::string& unicastAddress, uint16_t port)
+void DiscoveryRequester::UnicastSearch(const std::string& serviceType, const std::string& unicastAddress, uint16_t port)
 {
     std::shared_ptr<RequestSearch> request = std::make_shared<RequestSearch>();
     request->Endpoint.set(unicastAddress + ":" + std::to_string(port));

@@ -165,8 +165,8 @@ int32_t main(int32_t argc, const char* argv[])
 
     mDiscoveryClient = std::make_shared<Client>();
     mDiscoveryClient->Initialize(profile, discoveryConnection, std::chrono::milliseconds(1000));
-    DiscoveryApi discoveryApi(*mDiscoveryClient);
-    discoveryApi.MulticastSearch(metricatorServiceType, multicastAddress, multicastPort);
+    DiscoveryRequester discoveryApi(*mDiscoveryClient);
+    DiscoveryRequester.MulticastSearch(metricatorServiceType, multicastAddress, multicastPort);
 
     // Stop DiscoveryService
     discoveryService.Stop();

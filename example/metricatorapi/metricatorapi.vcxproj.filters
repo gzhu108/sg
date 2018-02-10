@@ -15,33 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MetricatorApi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MetricatorRequest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MetricatorRequestEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MetricatorLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MetricatorRequester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MetricatorApi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MetricatorRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Metric.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MetricatorRequestEncoder.h">
+    <ClInclude Include="MetricatorLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MetricatorLogger.h">
+    <ClInclude Include="MetricatorRequester.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

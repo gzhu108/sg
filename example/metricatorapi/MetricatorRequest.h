@@ -10,9 +10,7 @@
 
 namespace metricatorapi
 {
-    class MetricatorRequest
-        : public sg::microreactor::Serializable
-        , public sg::microreactor::Message
+    class MetricatorRequest : public sg::microreactor::Message
     {
     public:
         MetricatorRequest();
@@ -22,8 +20,8 @@ namespace metricatorapi
         const std::vector<Metric>& GetMetrics();
         void SetMetrics(const std::vector<Metric>& metrics);
         
-        virtual bool Serialize(sg::microreactor::Serializer& serializer, std::ostream& stream) const override;
-        virtual bool Deserialize(std::istream& stream, sg::microreactor::Serializer& serializer) override;
+        virtual bool Encode( std::ostream& stream) const override;
+        virtual bool Decode(std::istream& stream) override;
         
     private:
         std::vector<Metric> mMetrics;

@@ -13,7 +13,7 @@ lib_LIBRARIES = \
     $(top_builddir)/lib/libmetricatorapi.a
 
 __top_builddir__lib_libmetricatorapi_a_SOURCES = \
-    MetricatorApi.cpp \
+    MetricatorRequester.cpp \
     MetricatorRequest.cpp \
     MetricatorRequestEncoder.cpp \
     MetricatorLogger.cpp

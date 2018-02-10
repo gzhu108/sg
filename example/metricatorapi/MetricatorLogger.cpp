@@ -1,7 +1,6 @@
 #include "MetricatorLogger.h"
 #include "NetworkUtility.h"
-#include "MetricatorApi.h"
-#include "MetricatorRequestEncoder.h"
+#include "MetricatorRequester.h"
 
 using namespace sg::microreactor;
 using namespace metricatorapi;
@@ -35,6 +34,6 @@ void MetricatorLogger::Log(const std::string& text)
     log.mValue = text;
     metrics.emplace_back(log);
 
-    MetricatorApi metricatorApi(*mConnection, std::make_shared<MetricatorRequestEncoder>());
-    metricatorApi.WriteMetrics(metrics);
+    MetricatorRequester requester(*mConnection);
+    requester.WriteMetrics(metrics);
 }

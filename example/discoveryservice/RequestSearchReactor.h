@@ -8,9 +8,6 @@
 
 namespace sg { namespace service
 {
-    // API class
-    class DiscoveryApiEncoder;
-
     class RequestSearchReactor : public sg::microreactor::MessageReactor<RequestSearch>
     {
     public:

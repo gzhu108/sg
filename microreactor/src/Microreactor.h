@@ -3,7 +3,6 @@
 #define sg_microreactor_Microreactor
 
 #include "Common.h"
-#include "Api.h"
 #include "BinarySerializer.h"
 #include "Cancelable.h"
 #include "Client.h"

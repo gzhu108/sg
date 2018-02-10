@@ -13,7 +13,7 @@ lib_LIBRARIES = \
     $(top_builddir)/lib/libdiscoveryservice.a
 
 __top_builddir__lib_libdiscoveryservice_a_SOURCES = \
-    DiscoveryApi.cpp \
+    DiscoveryRequester.cpp \
     DiscoveryDispatcher.cpp \
     DiscoveryService.cpp \
     RequestSearch.cpp \

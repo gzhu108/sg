@@ -23,7 +23,7 @@ std::shared_ptr<sg::microreactor::Reactor> MetricatorMessageDecoder::Decode(std:
     }
 
     auto message = std::make_shared<MetricatorRequest>();
-    if (!message->Deserialize(stream, mSerializer))
+    if (!message->Decode(stream))
     {
         return nullptr;
     }

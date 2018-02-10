@@ -39,14 +39,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DiscoveryApi.cpp" />
+    <ClCompile Include="DiscoveryRequester.cpp" />
     <ClCompile Include="RequestSearchReactor.cpp" />
     <ClCompile Include="DiscoveryService.cpp" />
     <ClCompile Include="DiscoveryDispatcher.cpp" />
     <ClCompile Include="RequestSearch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DiscoveryApi.h" />
+    <ClInclude Include="DiscoveryRequester.h" />
     <ClInclude Include="RequestSearchReactor.h" />
     <ClInclude Include="DiscoveryService.h" />
     <ClInclude Include="DiscoveryDispatcher.h" />

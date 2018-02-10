@@ -143,9 +143,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Api.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\BinarySerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -1,7 +1,6 @@
 #include "DiscoveryService.h"
 #include "Exception.h"
 #include "DiscoveryDispatcher.h"
-#include "DiscoveryApi.h"
 #include "TaskManager.h"
 #include "Connection.h"
 #include "Listener.h"
