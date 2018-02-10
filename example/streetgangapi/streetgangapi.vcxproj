@@ -79,8 +79,15 @@
     <ClCompile Include="ResponseError.cpp" />
     <ClCompile Include="ResponseGetScene.cpp" />
     <ClCompile Include="ResponseGetVersion.cpp" />
-    <ClCompile Include="StreetGangRestResponseJsonEncoder.cpp" />
-    <ClCompile Include="StreetGangRestResponseTextEncoder.cpp" />
+    <ClCompile Include="RestRequestByebye.cpp" />
+    <ClCompile Include="RestRequestCreateWorld.cpp" />
+    <ClCompile Include="RestRequestGetScene.cpp" />
+    <ClCompile Include="RestRequestGetVersion.cpp" />
+    <ClCompile Include="RestResponseCreateWorld.cpp" />
+    <ClCompile Include="RestResponseError.cpp" />
+    <ClCompile Include="RestResponseGetScene.cpp" />
+    <ClCompile Include="RestResponseGetVersion.cpp" />
+    <ClCompile Include="RestStreetGangResponder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryRequestByebye.h" />
@@ -125,12 +132,19 @@
     <ClInclude Include="ResponseError.h" />
     <ClInclude Include="ResponseGetScene.h" />
     <ClInclude Include="ResponseGetVersion.h" />
+    <ClInclude Include="RestRequestByebye.h" />
+    <ClInclude Include="RestRequestCreateWorld.h" />
+    <ClInclude Include="RestRequestGetScene.h" />
+    <ClInclude Include="RestRequestGetVersion.h" />
+    <ClInclude Include="RestResponseCreateWorld.h" />
+    <ClInclude Include="RestResponseError.h" />
+    <ClInclude Include="RestResponseGetScene.h" />
+    <ClInclude Include="RestResponseGetVersion.h" />
+    <ClInclude Include="RestStreetGangResponder.h" />
     <ClInclude Include="SessionId.h" />
     <ClInclude Include="StreetGangIds.h" />
     <ClInclude Include="StreetGangRequester.h" />
     <ClInclude Include="StreetGangResponder.h" />
-    <ClInclude Include="StreetGangRestResponseJsonEncoder.h" />
-    <ClInclude Include="StreetGangRestResponseTextEncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="protobuf\CreateWorldRequest.proto">

@@ -105,12 +105,6 @@
     <ClCompile Include="ResponseGetVersion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangRestResponseJsonEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StreetGangRestResponseTextEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PBRequestByebye.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -146,6 +140,33 @@
     </ClCompile>
     <ClCompile Include="protobuf\cpp\GetVersionRequest.pb.cc">
       <Filter>protobuf\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="RestResponseCreateWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestResponseError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestResponseGetScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestResponseGetVersion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestStreetGangResponder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestRequestByebye.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestRequestCreateWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestRequestGetScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestRequestGetVersion.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,12 +272,6 @@
     <ClInclude Include="StreetGangResponder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StreetGangRestResponseJsonEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StreetGangRestResponseTextEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PBRequestByebye.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -292,6 +307,33 @@
     </ClInclude>
     <ClInclude Include="protobuf\cpp\GetVersionRequest.pb.h">
       <Filter>protobuf\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="RestResponseCreateWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestResponseError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestResponseGetScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestResponseGetVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestStreetGangResponder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestRequestByebye.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestRequestCreateWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestRequestGetScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestRequestGetVersion.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

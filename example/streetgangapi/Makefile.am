@@ -55,5 +55,12 @@ __top_builddir__lib_libstreetgangapi_a_SOURCES = \
     ResponseError.cpp \
     ResponseGetScene.cpp \
     ResponseGetVersion.cpp \
-    StreetGangRestResponseJsonEncoder.cpp \
-    StreetGangRestResponseTextEncoder.cpp
+	RestRequestByebye.cpp \
+	RestRequestCreateWorld.cpp \
+	RestRequestGetScene.cpp \
+	RestRequestGetVersion.cpp \
+	RestResponseCreateWorld.cpp \
+	RestResponseError.cpp \
+	RestResponseGetScene.cpp \
+	RestResponseGetVersion.cpp \
+	RestStreetGangResponder.cpp

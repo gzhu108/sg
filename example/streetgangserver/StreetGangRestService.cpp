@@ -2,16 +2,12 @@
 #include "RequestGetVersionReactor.h"
 #include "RequestCreateWorldReactor.h"
 #include "RequestGetSceneReactor.h"
+#include "RestStreetGangResponder.h"
+#include "RestRequestByebye.h"
+#include "RestRequestGetVersion.h"
+#include "RestRequestCreateWorld.h"
+#include "RestRequestGetScene.h"
 #include "StreetGangSessionManager.h"
-#include "StreetGangRestResponseTextEncoder.h"
-#include "StreetGangRestResponseJsonEncoder.h"
-
-#ifdef new
-#undef new
-#endif
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -36,216 +32,95 @@ bool StreetGangRestService::Initialize()
     return RestService::Initialize();
 }
 
-std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateGetVersionReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection)
+std::shared_ptr<Reactor> StreetGangRestService::CreateGetVersionReactor(std::shared_ptr<RestRequest> request, Connection& connection)
 {
-    if (request->mUri.length() != std::string("/version").length())
+    if (request == nullptr || request->mUri.length() != std::string("/version").length())
     {
+        auto responder = std::make_shared<RestStreetGangResponder>(connection);
+        responder->SendErrorResponse("Unknown", ResultCode::ErrorBadRequest, static_cast<int32_t>(streetgangapi::ID::Unknown), "Invalid request");
         return nullptr;
     }
 
-    auto message = std::make_shared<RequestGetVersion>();
-    std::shared_ptr<StreetGangRestResponseJsonEncoder> streetGangRestResponseJsonEncoder;
-    std::shared_ptr<StreetGangRestResponseTextEncoder> streetGangRestResponseTextEncoder;
-
-    for (const auto& header : request->mHeaders)
+    auto message = std::make_shared<RestRequestGetVersion>();
+    if (message->Decode(request))
     {
-        if (header.mName == "Accept" && header.mValue == "application/json")
-        {
-            streetGangRestResponseJsonEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
-            break;
-        }
+        return std::make_shared<RequestGetVersionReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
+    }
+    else
+    {
+        auto responder = std::make_shared<RestStreetGangResponder>(connection);
+        responder->SendErrorResponse("Unknown", ResultCode::ErrorBadRequest, static_cast<int32_t>(streetgangapi::ID::Unknown), "Invalid JSON");
+        return nullptr;
     }
 
-    if (streetGangRestResponseJsonEncoder == nullptr)
-    {
-        // default content type is plain text
-        streetGangRestResponseTextEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
-    }
-
-    auto reactor = std::make_shared<RequestGetVersionReactor>(connection, message, nullptr);
-    //reactor->SetMessageEncoder(streetGangResponseEncoder);
-    return reactor;
+    return nullptr;
 }
 
-std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateCreateWorldReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection)
+std::shared_ptr<Reactor> StreetGangRestService::CreateCreateWorldReactor(std::shared_ptr<RestRequest> request, Connection& connection)
 {
     std::string path = "/createworld";
-    if (request->mUri.length() < path.length())
+    if (request == nullptr || request->mUri.length() < path.length())
     {
+        auto responder = std::make_shared<RestStreetGangResponder>(connection);
+        responder->SendErrorResponse("Unknown", ResultCode::ErrorBadRequest, static_cast<int32_t>(streetgangapi::ID::Unknown), "Invalid request");
         return nullptr;
     }
 
-    auto message = std::make_shared<RequestCreateWorld>();
-    if (request->mUri.length() > path.length())
+    auto message = std::make_shared<RestRequestCreateWorld>();
+    if (message->Decode(request))
     {
-        std::string worldName = request->mUri.substr(path.length() + 1, std::string::npos);
-        LOG("RestCreateWorld::CreateReactor() [WorldName=%s]", worldName.c_str());
-        message->WorldName.set(worldName);
+        return std::make_shared<RequestCreateWorldReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
+    }
+    else
+    {
+        auto responder = std::make_shared<RestStreetGangResponder>(connection);
+        responder->SendErrorResponse("Unknown", ResultCode::ErrorBadRequest, static_cast<int32_t>(streetgangapi::ID::Unknown), "Invalid JSON");
+        return nullptr;
     }
 
-    std::shared_ptr<StreetGangRestResponseJsonEncoder> streetGangRestResponseJsonEncoder;
-    std::shared_ptr<StreetGangRestResponseTextEncoder> streetGangRestResponseTextEncoder;
-
-    for (const auto& header : request->mHeaders)
-    {
-        if (header.mName == "Accept" && header.mValue == "application/json")
-        {
-            streetGangRestResponseJsonEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
-            break;
-        }
-    }
-
-    if (streetGangRestResponseJsonEncoder == nullptr)
-    {
-        // default content type is plain text
-        streetGangRestResponseTextEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
-    }
-
-    auto reactor = std::make_shared<RequestCreateWorldReactor>(connection, message, nullptr);
-    //reactor->SetMessageEncoder(streetGangResponseEncoder);
-
-    return reactor;
+    return nullptr;
 }
 
-std::shared_ptr<sg::microreactor::Reactor> StreetGangRestService::CreateGetSceneReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection)
+std::shared_ptr<Reactor> StreetGangRestService::CreateGetSceneReactor(std::shared_ptr<RestRequest> request, Connection& connection)
 {
-    if (request->mUri.length() < std::string("/getscene").length() || request->mBody.mLength == 0)
+    if (request == nullptr || request->mUri.length() < std::string("/getscene").length())
     {
+        auto responder = std::make_shared<RestStreetGangResponder>(connection);
+        responder->SendErrorResponse("Unknown", ResultCode::ErrorBadRequest, static_cast<int32_t>(streetgangapi::ID::Unknown), "Invalid request");
         return nullptr;
     }
 
-    auto message = std::make_shared<RequestGetScene>();
-    std::shared_ptr<StreetGangRestResponseJsonEncoder> streetGangRestResponseJsonEncoder;
-    std::shared_ptr<StreetGangRestResponseTextEncoder> streetGangRestResponseTextEncoder;
-
+    bool correctContentType = false;
     for (const auto& header : request->mHeaders)
     {
-        if (header.mName == "Accept" && header.mValue == "application/json")
+        if (header.mName == "Content-Type" && header.mValue == "application/json")
         {
-            streetGangRestResponseJsonEncoder = std::make_shared<StreetGangRestResponseJsonEncoder>();
+            correctContentType = true;
             break;
         }
     }
 
-    if (streetGangRestResponseJsonEncoder == nullptr)
+    if (!correctContentType)
     {
-        // default content type is plain text
-        streetGangRestResponseTextEncoder = std::make_shared<StreetGangRestResponseTextEncoder>();
-    }
-
-    // Parse the json
-    //{
-    //    "GetScene":
-    //    {
-    //        "WorldId":1234
-    //        "Rect":
-    //        {
-    //            "x":0.4
-    //            "y":0.4
-    //            "w":0.2
-    //            "z":0.2
-    //        }
-    //    }
-    //}
-
-    try
-    {
-        rapidjson::Document doc;
-        doc.Parse(request->mBody.mOffset, request->mBody.mLength);
-        if (doc.IsNull())
-        {
-            return nullptr;
-        }
-
-        rapidjson::StringBuffer buffer;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-        doc.Accept(writer);
-        LOG("RestGetScene() JSON = %s", buffer.GetString());
-
-        rapidjson::Value& jsonGetScene = doc["GetScene"];
-        if (jsonGetScene.IsNull())
-        {
-            return nullptr;
-        }
-        else
-        {
-            rapidjson::Value& jsonWorldId = jsonGetScene["WorldId"];
-            if (jsonWorldId.IsNull())
-            {
-                return nullptr;
-            }
-            else
-            {
-                message->WorldId.set(jsonWorldId.Get<streetgangapi::SessionId>());
-            }
-
-            rapidjson::Value& jsonRect = jsonGetScene["Rect"];
-            if (jsonRect.IsNull())
-            {
-                return nullptr;
-            }
-            else
-            {
-                rapidjson::Value& jsonX = jsonRect["x"];
-                if (jsonX.IsNull())
-                {
-                    return nullptr;
-                }
-                else
-                {
-                    message->Rect->mX = jsonX.Get<float>();
-                }
-
-                rapidjson::Value& jsonY = jsonRect["y"];
-                if (jsonY.IsNull())
-                {
-                    return nullptr;
-                }
-                else
-                {
-                    message->Rect->mY = jsonY.Get<float>();
-                }
-
-                rapidjson::Value& jsonW = jsonRect["w"];
-                if (jsonW.IsNull())
-                {
-                    return nullptr;
-                }
-                else
-                {
-                    message->Rect->mW = jsonW.Get<float>();
-                }
-
-                rapidjson::Value& jsonH = jsonRect["h"];
-                if (jsonH.IsNull())
-                {
-                    return nullptr;
-                }
-                else
-                {
-                    message->Rect->mH = jsonH.Get<float>();
-                }
-            }
-        }
-    }
-    catch (...)
-    {
-        LOG("Failed to parse JSON: %.*s", (int)request->mBody.mLength, request->mBody.mOffset);
-        auto errorResponse = std::make_shared<ResponseError>();
-        errorResponse->Result.set((int32_t)ResultCode::ErrorBadRequest);
-        errorResponse->RequestId.set(message->Id.cref());
-        errorResponse->ErrorMessage.set("Failed to parse JSON");
-        //auto reactor = std::make_shared<RequestErrorReactor>(connection, errorResponse, nullptr);
-        //reactor->SetMessageEncoder(streetGangResponseEncoder);
-        //return reactor;
+        auto responder = std::make_shared<RestStreetGangResponder>(connection);
+        responder->SendErrorResponse("Unknown", ResultCode::ErrorBadRequest, static_cast<int32_t>(streetgangapi::ID::Unknown), "Invalid content type");
         return nullptr;
     }
 
-    auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, nullptr);
+    auto message = std::make_shared<RestRequestGetScene>();
+    if (message->Decode(request))
+    {
+        auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
+        auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref());
+        reactor->SetSession(session);
+        return reactor;
+    }
+    else
+    {
+        auto responder = std::make_shared<RestStreetGangResponder>(connection);
+        responder->SendErrorResponse("Unknown", ResultCode::ErrorBadRequest, static_cast<int32_t>(streetgangapi::ID::Unknown), "Invalid JSON");
+        return nullptr;
+    }
 
-    auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref());
-    reactor->SetSession(session);
-    //reactor->SetMessageEncoder(streetGangResponseEncoder);
-
-    return reactor;
+    return nullptr;
 }
