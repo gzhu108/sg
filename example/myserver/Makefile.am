@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 
 # what flags you want to pass to the C compiler & linker
-AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -O2 -pthread -pipe
+AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -g -pthread -pipe
 AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++11 \
     -I../../tools/json \
     -I../../tools/openssl/linux/include \
@@ -16,7 +16,7 @@ bin_PROGRAMS = \
     $(top_builddir)/bin/myserver
 
 __top_builddir__bin_myserver_SOURCES = \
-	generated/GETv1versionMessage.cpp \
+    generated/GETv1versionMessage.cpp \
     generated/GETv1versionResponse.cpp \
     generated/GETv1versionReactorBase.cpp \
     generated/POSTv1updateMessage.cpp \
