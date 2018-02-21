@@ -36,3 +36,14 @@ std::shared_ptr<TaskManager> TaskManagerSingleton::GetTaskManager()
     
     return gTaskManagerInstance;
 }
+
+void TaskManagerSingleton::DestroyTaskManager()
+{
+    std::lock_guard<decltype(gTaskManagerLock)> scopeLock(gTaskManagerLock);
+
+    if (gTaskManagerInstance != nullptr)
+    {
+        gTaskManagerInstance->Stop();
+        gTaskManagerInstance = nullptr;
+    }
+}

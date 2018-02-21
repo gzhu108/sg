@@ -13,7 +13,7 @@ volatile bool terminateSignal = false;
 void SingalHandler(int type)
 {
     terminateSignal = true;
-    STOP_TASK_MANAGER();
+    DESTROY_TASK_MANAGER();
 }
 
 int32_t main(int32_t argc, const char* argv[])
