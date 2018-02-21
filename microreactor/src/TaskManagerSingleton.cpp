@@ -8,7 +8,7 @@ static std::shared_ptr<TaskManager> gTaskManagerInstance;
 
 uint64_t TaskManagerSingleton::GetThreadPoolSize()
 {
-	return GetTaskManager()->GetThreadPoolSize();
+    return GetTaskManager()->GetThreadPoolSize();
 }
 
 void TaskManagerSingleton::SetThreadPoolSize(const uint64_t& threadPoolSize)
