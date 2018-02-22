@@ -50,6 +50,7 @@ nobase_include_HEADERS = \
     src/Service.h \
     src/Shareable.h \
     src/Socket.h \
+    src/SocketBuffer.h \
     src/StringSerializer.h \
     src/StringUtility.h \
     src/TaskFuture.h \
@@ -95,6 +96,7 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/Serializer.cpp \
     src/Service.cpp \
     src/Socket.cpp \
+    src/SocketBuffer.cpp \
     src/StringSerializer.cpp \
     src/StringUtility.cpp \
     src/Task.cpp \

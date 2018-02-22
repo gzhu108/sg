@@ -60,6 +60,7 @@ bool Connection::Receive(std::iostream& stream)
     {
         stream.clear();
         stream.write(&mReceiveBuffer[0], received);
+        //stream.rdbuf()->pubsetbuf(&mReceiveBuffer[0], received);
 
         if (!stream.eof() && !stream.fail() && !stream.bad())
         {
