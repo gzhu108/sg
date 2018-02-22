@@ -60,7 +60,6 @@ bool Connection::Receive(std::iostream& stream)
     {
         stream.clear();
         stream.write(&mReceiveBuffer[0], received);
-        //stream.rdbuf()->pubsetbuf(&mReceiveBuffer[0], received);
 
         if (!stream.eof() && !stream.fail() && !stream.bad())
         {
@@ -71,7 +70,7 @@ bool Connection::Receive(std::iostream& stream)
     return false;
 }
 
-bool Connection::Send(std::istream& stream)
+bool Connection::Send(std::iostream& stream)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     int32_t length = (int32_t)GetStreamSize(stream);

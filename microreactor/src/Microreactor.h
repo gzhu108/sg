@@ -36,7 +36,6 @@
 #include "Serializer.h"
 #include "Service.h"
 #include "Socket.h"
-#include "SocketBuffer.h"
 #include "StringSerializer.h"
 #include "StringUtility.h"
 #include "TaskFuture.h"

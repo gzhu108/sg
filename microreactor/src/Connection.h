@@ -32,7 +32,7 @@ namespace sg { namespace microreactor
         virtual uint16_t GetPeerPort() const = 0;
 
         virtual bool Receive(std::iostream& stream);
-        virtual bool Send(std::istream& stream);
+        virtual bool Send(std::iostream& stream);
 
         virtual bool DataReady() = 0;
         virtual uint64_t Receive(char* buffer, int32_t length) = 0;
