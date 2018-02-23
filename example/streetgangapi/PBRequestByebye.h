@@ -3,11 +3,12 @@
 #define streetgangapi_PBRequestByebye
 
 #include "RequestByebye.h"
+#include "PBMessage.h"
 
 
 namespace streetgangapi
 {
-    class PBRequestByebye : public RequestByebye
+    class PBRequestByebye : public PBMessage<RequestByebye>
     {
     public:
         PBRequestByebye();

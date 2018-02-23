@@ -1,7 +1,3 @@
-#include "google/protobuf/stubs/common.h"
-#include "google/protobuf/io/coded_stream.h"
-#include "google/protobuf/io/zero_copy_stream_impl.h"
-#include "protobuf/cpp/MessageHeader.pb.h"
 #include "protobuf/cpp/ErrorResponse.pb.h"
 #include "PBResponseError.h"
 
@@ -19,39 +15,19 @@ PBResponseError::~PBResponseError()
 
 bool PBResponseError::Encode(std::ostream& stream) const
 {
-    streetgangpb::MessageHeader header;
-    header.set_message_id("ErrorResponse");
-
     streetgangpb::ErrorResponse response;
     response.set_track_id(TrackId.cref());
     response.set_result(Result.cref());
     response.set_request_id(RequestId.cref());
     response.set_error_message(ErrorMessage.cref());
 
-    google::protobuf::io::OstreamOutputStream ostreamOutputStream(&stream);
-    google::protobuf::io::CodedOutputStream codedOutputStream(&ostreamOutputStream);
-
-    uint32_t size = (uint32_t)header.ByteSize();
-    codedOutputStream.WriteVarint32(size);
-    header.SerializeWithCachedSizes(&codedOutputStream);
-
-    size = (uint32_t)response.ByteSize();
-    codedOutputStream.WriteVarint32(size);
-    response.SerializeWithCachedSizes(&codedOutputStream);
-
-    return true;
+    return Serialize("ErrorResponse", response, stream);
 }
 
 bool PBResponseError::Decode(std::istream& stream)
 {
-    google::protobuf::io::IstreamInputStream istreamInputStream(&stream);
-    google::protobuf::io::CodedInputStream codedInputStream(&istreamInputStream);
-
-    google::protobuf::io::CodedInputStream::Limit previousSize = codedInputStream.ReadLengthAndPushLimit();
     streetgangpb::ErrorResponse response;
-    bool result = response.ParseFromCodedStream(&codedInputStream);
-    codedInputStream.PopLimit(previousSize);
-    if (!result)
+    if (!Deserialize(stream, response))
     {
         return false;
     }

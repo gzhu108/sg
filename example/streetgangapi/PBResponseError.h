@@ -3,11 +3,12 @@
 #define streetgangapi_PBResponseError
 
 #include "ResponseError.h"
+#include "PBMessage.h"
 
 
 namespace streetgangapi
 {
-    class PBResponseError : public ResponseError
+    class PBResponseError : public PBMessage<ResponseError>
     {
     public:
         PBResponseError();

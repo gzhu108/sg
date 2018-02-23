@@ -3,11 +3,12 @@
 #define streetgangapi_PBRequestCreateWorld
 
 #include "RequestCreateWorld.h"
+#include "PBMessage.h"
 
 
 namespace streetgangapi
 {
-    class PBRequestCreateWorld : public RequestCreateWorld
+    class PBRequestCreateWorld : public PBMessage<RequestCreateWorld>
     {
     public:
         PBRequestCreateWorld();

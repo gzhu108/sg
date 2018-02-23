@@ -3,11 +3,12 @@
 #define streetgangapi_PBResponseGetScene
 
 #include "ResponseGetScene.h"
+#include "PBMessage.h"
 
 
 namespace streetgangapi
 {
-    class PBResponseGetScene : public ResponseGetScene
+    class PBResponseGetScene : public PBMessage<ResponseGetScene>
     {
     public:
         PBResponseGetScene();

@@ -3,11 +3,12 @@
 #define streetgangapi_PBResponseGetVersion
 
 #include "ResponseGetVersion.h"
+#include "PBMessage.h"
 
 
 namespace streetgangapi
 {
-    class PBResponseGetVersion : public ResponseGetVersion
+    class PBResponseGetVersion : public PBMessage<ResponseGetVersion>
     {
     public:
         PBResponseGetVersion();

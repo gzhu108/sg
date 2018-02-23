@@ -3,11 +3,12 @@
 #define streetgangapi_PBRequestGetVersion
 
 #include "RequestGetVersion.h"
+#include "PBMessage.h"
 
 
 namespace streetgangapi
 {
-    class PBRequestGetVersion : public RequestGetVersion
+    class PBRequestGetVersion : public PBMessage<RequestGetVersion>
     {
     public:
         PBRequestGetVersion();

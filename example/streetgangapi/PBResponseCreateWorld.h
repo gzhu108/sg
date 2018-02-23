@@ -3,11 +3,12 @@
 #define streetgangapi_PBResponseCreateWorld
 
 #include "ResponseCreateWorld.h"
+#include "PBMessage.h"
 
 
 namespace streetgangapi
 {
-    class PBResponseCreateWorld : public ResponseCreateWorld
+    class PBResponseCreateWorld : public PBMessage<ResponseCreateWorld>
     {
     public:
         PBResponseCreateWorld();
