@@ -30,13 +30,15 @@ bool PBRequestByebye::Encode(std::ostream& stream) const
     google::protobuf::io::OstreamOutputStream ostreamOutputStream(&stream);
     google::protobuf::io::CodedOutputStream codedOutputStream(&ostreamOutputStream);
 
-    uint32_t size = (uint32_t)header.ByteSizeLong();
+    uint32_t size = (uint32_t)header.ByteSize();
     codedOutputStream.WriteVarint32(size);
-    header.SerializeToCodedStream(&codedOutputStream);
+    header.SerializeWithCachedSizes(&codedOutputStream);
 
-    size = (uint32_t)request.ByteSizeLong();
+    size = (uint32_t)request.ByteSize();
     codedOutputStream.WriteVarint32(size);
-    return request.SerializeToCodedStream(&codedOutputStream);
+    request.SerializeWithCachedSizes(&codedOutputStream);
+    
+    return true;
 }
 
 bool PBRequestByebye::Decode(std::istream& stream)
