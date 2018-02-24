@@ -12,7 +12,7 @@ public:
         restReactorFactoryTable = mRestReactorFactoryTable;
     }
 
-    virtual RestReactorFactory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest) override
+    virtual Factory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest) override
     {
         return RestDispatcher::GetRestReactorFactory(restRequest);
     }
