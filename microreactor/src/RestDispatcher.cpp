@@ -31,7 +31,7 @@ void RestDispatcher::Dispatch(Connection& connection)
     }
 }
 
-void RestDispatcher::RegisterRestReactorFactory(const std::string& method, const std::string& uri, RestReactorFactory factory)
+void RestDispatcher::RegisterRestReactorFactory(const std::string& method, const std::string& uri, Factory factory)
 {
     if (factory == nullptr)
     {
@@ -127,7 +127,7 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
     return nullptr;
 }
 
-RestReactorFactory RestDispatcher::GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest)
+RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest)
 {
     if (restRequest == nullptr || restRequest->mUri.empty() || mRestReactorFactoryTable.empty())
     {

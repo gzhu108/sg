@@ -22,10 +22,10 @@ bool PBRequestCreateWorld::Encode(std::ostream& stream) const
     return Serialize("CreateWorldRequest", request, stream);
 }
 
-bool PBRequestCreateWorld::Decode(std::istream& stream)
+bool PBRequestCreateWorld::Decode(google::protobuf::io::CodedInputStream& codedInputStream)
 {
     streetgangpb::CreateWorldRequest request;
-    if (!Deserialize(stream, request))
+    if (!Deserialize(codedInputStream, request))
     {
         return false;
     }

@@ -1,13 +1,11 @@
-#include "PBStreetGangRequester.h"
-#include "BinarySerializer.h"
-#include "Uuid.h"
-#include "StreetGangIds.h"
-
 #include "PBRequestByebye.h"
 #include "PBRequestGetVersion.h"
 #include "PBRequestCreateWorld.h"
 #include "PBRequestGetScene.h"
 #include "PBResponseError.h"
+#include "PBStreetGangRequester.h"
+#include "BinarySerializer.h"
+#include "Uuid.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;

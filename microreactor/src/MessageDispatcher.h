@@ -10,14 +10,14 @@
 
 namespace sg { namespace microreactor
 {
-    typedef std::function<std::shared_ptr<Reactor>(std::istream&, Connection&)> MessageReactorFactory;
-
-    template <typename Key = int32_t>
+    template <typename Key = int32_t, typename InputStream = std::istream>
     class MessageDispatcher : public Dispatcher
     {
     public:
         MessageDispatcher() {}
         virtual ~MessageDispatcher() {}
+
+        typedef std::function<std::shared_ptr<Reactor>(InputStream&, Connection&)> Factory;
 
     public:
         virtual void Dispatch(Connection& connection) override
@@ -51,7 +51,7 @@ namespace sg { namespace microreactor
             }
         }
 
-        virtual void RegisterMessageReactorFactory(const Key& key, MessageReactorFactory factory)
+        virtual void RegisterMessageReactorFactory(const Key& key, Factory factory)
         {
             if (factory == nullptr)
             {
@@ -75,7 +75,7 @@ namespace sg { namespace microreactor
     protected:
         virtual std::shared_ptr<Reactor> Decode(std::istream& stream, Connection& connection) = 0;
 
-        virtual MessageReactorFactory GetMessageReactorFactory(const Key& key)
+        virtual Factory GetMessageReactorFactory(const Key& key)
         {
             auto found = mMessageReactorFactoryTable.find(key);
             if (found == mMessageReactorFactoryTable.end())
@@ -87,7 +87,7 @@ namespace sg { namespace microreactor
         }
 
     protected:
-        std::map<Key, MessageReactorFactory> mMessageReactorFactoryTable;
+        std::map<Key, Factory> mMessageReactorFactoryTable;
         std::stringstream mReceiveStream;
     };
 }}

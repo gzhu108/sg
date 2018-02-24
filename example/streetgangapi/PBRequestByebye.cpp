@@ -21,10 +21,10 @@ bool PBRequestByebye::Encode(std::ostream& stream) const
     return Serialize("ByebyeRequest", request, stream);
 }
 
-bool PBRequestByebye::Decode(std::istream& stream)
+bool PBRequestByebye::Decode(google::protobuf::io::CodedInputStream& codedInputStream)
 {
     streetgangpb::ByebyeRequest request;
-    if (!Deserialize(stream, request))
+    if (!Deserialize(codedInputStream, request))
     {
         return false;
     }

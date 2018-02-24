@@ -24,10 +24,10 @@ bool PBResponseError::Encode(std::ostream& stream) const
     return Serialize("ErrorResponse", response, stream);
 }
 
-bool PBResponseError::Decode(std::istream& stream)
+bool PBResponseError::Decode(google::protobuf::io::CodedInputStream& codedInputStream)
 {
     streetgangpb::ErrorResponse response;
-    if (!Deserialize(stream, response))
+    if (!Deserialize(codedInputStream, response))
     {
         return false;
     }

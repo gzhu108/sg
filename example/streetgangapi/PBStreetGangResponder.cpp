@@ -1,9 +1,9 @@
-#include "PBStreetGangResponder.h"
-#include "BinarySerializer.h"
 #include "PBResponseError.h"
 #include "PBResponseGetVersion.h"
 #include "PBResponseCreateWorld.h"
 #include "PBResponseGetScene.h"
+#include "PBStreetGangResponder.h"
+#include "BinarySerializer.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;

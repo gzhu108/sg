@@ -35,11 +35,8 @@ namespace streetgangapi
         }
 
         template <typename ProtoMessage>
-        bool Deserialize(std::istream& stream, ProtoMessage& message)
+        bool Deserialize(google::protobuf::io::CodedInputStream& codedInputStream, ProtoMessage& message)
         {
-            google::protobuf::io::IstreamInputStream istreamInputStream(&stream);
-            google::protobuf::io::CodedInputStream codedInputStream(&istreamInputStream);
-
             google::protobuf::io::CodedInputStream::Limit previousSize = codedInputStream.ReadLengthAndPushLimit();
             bool result = message.ParseFromCodedStream(&codedInputStream);
             codedInputStream.PopLimit(previousSize);

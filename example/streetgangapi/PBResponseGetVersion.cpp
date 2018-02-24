@@ -23,10 +23,10 @@ bool PBResponseGetVersion::Encode(std::ostream& stream) const
     return Serialize("GetVersionResponse", response, stream);
 }
 
-bool PBResponseGetVersion::Decode(std::istream& stream)
+bool PBResponseGetVersion::Decode(google::protobuf::io::CodedInputStream& codedInputStream)
 {
     streetgangpb::GetVersionResponse response;
-    if (!Deserialize(stream, response))
+    if (!Deserialize(codedInputStream, response))
     {
         return false;
     }

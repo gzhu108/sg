@@ -2,8 +2,8 @@
 #ifndef streetgangapi_PBRequestGetVersion
 #define streetgangapi_PBRequestGetVersion
 
-#include "RequestGetVersion.h"
 #include "PBMessage.h"
+#include "RequestGetVersion.h"
 
 
 namespace streetgangapi
@@ -16,7 +16,7 @@ namespace streetgangapi
         
     public:
         virtual bool Encode(std::ostream& stream) const override;
-        virtual bool Decode(std::istream& stream) override;
+        bool Decode(google::protobuf::io::CodedInputStream& codedInputStream);
     };
 }
 

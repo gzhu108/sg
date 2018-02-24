@@ -24,10 +24,10 @@ bool PBResponseCreateWorld::Encode(std::ostream& stream) const
     return Serialize("CreateWorldResponse", response, stream);
 }
 
-bool PBResponseCreateWorld::Decode(std::istream& stream)
+bool PBResponseCreateWorld::Decode(google::protobuf::io::CodedInputStream& codedInputStream)
 {
     streetgangpb::CreateWorldResponse response;
-    if (!Deserialize(stream, response))
+    if (!Deserialize(codedInputStream, response))
     {
         return false;
     }

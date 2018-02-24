@@ -27,10 +27,10 @@ bool PBResponseGetScene::Encode(std::ostream& stream) const
     return Serialize("GetSceneResponse", response, stream);
 }
 
-bool PBResponseGetScene::Decode(std::istream& stream)
+bool PBResponseGetScene::Decode(google::protobuf::io::CodedInputStream& codedInputStream)
 {
     streetgangpb::GetSceneResponse response;
-    if (!Deserialize(stream, response))
+    if (!Deserialize(codedInputStream, response))
     {
         return false;
     }

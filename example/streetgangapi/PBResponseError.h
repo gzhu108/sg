@@ -2,8 +2,8 @@
 #ifndef streetgangapi_PBResponseError
 #define streetgangapi_PBResponseError
 
-#include "ResponseError.h"
 #include "PBMessage.h"
+#include "ResponseError.h"
 
 
 namespace streetgangapi
@@ -16,7 +16,7 @@ namespace streetgangapi
         
     public:
         virtual bool Encode(std::ostream& stream) const override;
-        virtual bool Decode(std::istream& stream) override;
+        bool Decode(google::protobuf::io::CodedInputStream& codedInputStream);
     };
 }
 

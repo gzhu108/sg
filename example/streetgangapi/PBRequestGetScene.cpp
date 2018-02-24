@@ -26,10 +26,10 @@ bool PBRequestGetScene::Encode(std::ostream& stream) const
     return Serialize("GetSceneRequest", request, stream);
 }
 
-bool PBRequestGetScene::Decode(std::istream& stream)
+bool PBRequestGetScene::Decode(google::protobuf::io::CodedInputStream& codedInputStream)
 {
     streetgangpb::GetSceneRequest request;
-    if (!Deserialize(stream, request))
+    if (!Deserialize(codedInputStream, request))
     {
         return false;
     }

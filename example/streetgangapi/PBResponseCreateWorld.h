@@ -2,8 +2,8 @@
 #ifndef streetgangapi_PBResponseCreateWorld
 #define streetgangapi_PBResponseCreateWorld
 
-#include "ResponseCreateWorld.h"
 #include "PBMessage.h"
+#include "ResponseCreateWorld.h"
 
 
 namespace streetgangapi
@@ -16,7 +16,7 @@ namespace streetgangapi
         
     public:
         virtual bool Encode(std::ostream& stream) const override;
-        virtual bool Decode(std::istream& stream) override;
+        bool Decode(google::protobuf::io::CodedInputStream& codedInputStream);
     };
 }
 

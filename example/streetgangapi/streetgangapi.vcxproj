@@ -101,6 +101,7 @@
     <ClInclude Include="BinaryStreetGangRequester.h" />
     <ClInclude Include="BinaryStreetGangResponder.h" />
     <ClInclude Include="MessageBase.h" />
+    <ClInclude Include="PBMessage.h" />
     <ClInclude Include="PBRequestByebye.h" />
     <ClInclude Include="PBRequestCreateWorld.h" />
     <ClInclude Include="PBRequestGetScene.h" />
