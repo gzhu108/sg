@@ -38,27 +38,11 @@ void RestDispatcher::RegisterRestReactorFactory(const std::string& method, const
         return;
     }
 
-    std::string upperMethod = method;
-    StringUtility::ToUpper(upperMethod);
+    std::string key = method;
+    StringUtility::ToUpper(key);
+    key += uri;
 
-    auto methodFound = mRestReactorFactoryTable.find(upperMethod);
-    if (methodFound == mRestReactorFactoryTable.end())
-    {
-        FactoryMap restReactorFactoryMap;
-        restReactorFactoryMap[uri] = factory;
-        mRestReactorFactoryTable[upperMethod] = restReactorFactoryMap;
-    }
-    else
-    {
-        auto apiFound = methodFound->second.find(uri);
-        if (apiFound != methodFound->second.end())
-        {
-            LOG("Multiple factory found [Method=%s] [URI=%s]", upperMethod.c_str(), uri.c_str());
-        }
-
-        // Overwrite the factory
-        methodFound->second[uri] = factory;
-    }
+    RegisterMessageReactorFactory(key, factory);
 }
 
 std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
@@ -129,27 +113,22 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
 
 RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest)
 {
-    if (restRequest == nullptr || restRequest->mUri.empty() || mRestReactorFactoryTable.empty())
+    if (restRequest == nullptr || restRequest->mUri.empty() || mMessageReactorFactoryTable.empty())
     {
         return nullptr;
     }
 
-    std::string upperMethod = restRequest->mMethod;
-    StringUtility::ToUpper(upperMethod);
+    std::string key = restRequest->mMethod;
+    StringUtility::ToUpper(key);
+    key += restRequest->mUri;
 
-    auto methodFound = mRestReactorFactoryTable.find(upperMethod);
-    if (methodFound == mRestReactorFactoryTable.end())
-    {
-        return nullptr;
-    }
-
-    auto low = methodFound->second.lower_bound(restRequest->mUri);
-    auto high = methodFound->second.upper_bound(restRequest->mUri);
+    auto low = mMessageReactorFactoryTable.lower_bound(key);
+    auto high = mMessageReactorFactoryTable.upper_bound(key);
 
     if (low == high)
     {
         // No exact match found
-        if (high == methodFound->second.begin())
+        if (high == mMessageReactorFactoryTable.begin())
         {
             // the URI is not within the range in the API table.
             return nullptr;
@@ -159,7 +138,7 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
         low--;
 
         // Check if the lower bound key is a substring of the URL
-        if (restRequest->mUri.find(low->first) == 0 && (low->first.back() == '/' || restRequest->mUri[low->first.length()] == '/'))
+        if (key.find(low->first) == 0 && (low->first.back() == '/' || key[low->first.length()] == '/'))
         {
             return low->second;
         }
