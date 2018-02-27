@@ -20,7 +20,7 @@ namespace sg { namespace microreactor
         virtual void RegisterRestReactorFactory(const std::string& method, const std::string& uri, Factory factory);
 
     protected:
-        virtual std::shared_ptr<Reactor> Decode(std::istream& stream, Connection& connection) override { return Decode(connection); }
+        virtual std::shared_ptr<Reactor> Decode(std::istream& stream, Connection& connection) override { return nullptr; }
         virtual std::shared_ptr<Reactor> Decode(Connection& connection);
         virtual Factory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest);
 

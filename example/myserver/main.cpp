@@ -84,17 +84,18 @@ int32_t main(int32_t argc, const char* argv[])
         configuration->GetValue("SecurePort", securePort);
     }
 
+    ConfigurationSingleton::InitializeConfiguration(configuration);
+
     // Create the simple REST service
     auto simpleProfile = std::make_shared<Profile>();
     simpleProfile->Address.set(hostName);
     simpleProfile->Port.set(hostPort);
-    simpleProfile->Configuration.set(configuration);
 
     auto simpleSocket = std::make_shared<TcpSocket>();
     auto simpleEndpoint = std::make_shared<TcpEndpoint>(simpleSocket, simpleProfile);
     simpleSocket = nullptr;
 
-    MyService service(simpleEndpoint, simpleProfile);
+    MyService service(simpleEndpoint);
     simpleEndpoint = nullptr;
 
     // Start the REST services

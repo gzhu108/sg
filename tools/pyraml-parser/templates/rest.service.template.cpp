@@ -7,8 +7,8 @@ using namespace sg::microreactor;
 using namespace $namespace;
 
 
-$serviceclassServiceBase::$serviceclassServiceBase(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
-    : RestService(endpoint, profile)
+$serviceclassServiceBase::$serviceclassServiceBase(std::shared_ptr<Endpoint> endpoint)
+    : RestService(endpoint)
 {
 }
 

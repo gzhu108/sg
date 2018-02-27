@@ -6,8 +6,8 @@ using namespace sg::microreactor;
 using namespace myserver;
 
 
-MyServerServiceBase::MyServerServiceBase(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
-    : RestService(endpoint, profile)
+MyServerServiceBase::MyServerServiceBase(std::shared_ptr<Endpoint> endpoint)
+    : RestService(endpoint)
 {
 }
 

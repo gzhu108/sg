@@ -10,7 +10,7 @@ namespace myserver
     class MyServerServiceBase : public sg::microreactor::RestService
     {
     public:
-        MyServerServiceBase(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
+        MyServerServiceBase(std::shared_ptr<sg::microreactor::Endpoint> endpoint);
         virtual ~MyServerServiceBase();
 
     public:

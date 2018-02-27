@@ -6,8 +6,8 @@ using namespace sg::microreactor;
 using namespace myserver;
 
 
-MyService::MyService(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
-    : MyServerServiceBase(endpoint, profile)
+MyService::MyService(std::shared_ptr<Endpoint> endpoint)
+    : MyServerServiceBase(endpoint)
 {
 }
 
@@ -33,5 +33,4 @@ std::shared_ptr<Reactor> MyService::CreatePOSTv1updateReactor(std::shared_ptr<Re
     }
 
     return std::make_shared<POSTv1updateReactorBase>(connection, request);
-    //return std::make_shared<UpdateReactor>(connection, request);
 }

@@ -10,7 +10,7 @@ namespace $namespace
     class $serviceclassServiceBase : public sg::microreactor::RestService
     {
     public:
-        $serviceclassServiceBase(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
+        $serviceclassServiceBase(std::shared_ptr<sg::microreactor::Endpoint> endpoint);
         virtual ~$serviceclassServiceBase();
 
     public:
