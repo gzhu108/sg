@@ -23,8 +23,8 @@ RestService::RestService(std::shared_ptr<Profile> profile)
     }
 }
 
-RestService::RestService(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
-    : Microservice(endpoint, profile)
+RestService::RestService(std::shared_ptr<Endpoint> endpoint)
+    : Microservice(endpoint)
     , mRestDispatcher(std::make_shared<RestDispatcher>())
 {
     if (mProfile != nullptr)

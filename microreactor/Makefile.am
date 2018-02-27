@@ -29,7 +29,7 @@ nobase_include_HEADERS = \
     src/Endianness.h \
     src/Exception.h \
     src/Endpoint.h \
-    src/Listener.h \
+    src/ConfigurationSingleton.h \
     src/LoggerSingleton.h \
     src/MemoryTrack.h \
     src/MessageDispatcher.h \
@@ -83,7 +83,7 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/Connection.cpp \
     src/Dispatcher.cpp \
     src/Endpoint.cpp \
-    src/Listener.cpp \
+    src/ConfigurationSingleton.cpp \
     src/LoggerSingleton.cpp \
     src/Message.cpp \
     src/MessageRequester.cpp \

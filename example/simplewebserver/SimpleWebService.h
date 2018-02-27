@@ -10,7 +10,7 @@ namespace simplewebserver
     class SimpleWebService : public sg::microreactor::RestService
     {
     public:
-        SimpleWebService(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
+        explicit SimpleWebService(std::shared_ptr<sg::microreactor::Endpoint> endpoint);
         virtual ~SimpleWebService();
 
     public:

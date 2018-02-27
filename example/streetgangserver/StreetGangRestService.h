@@ -10,7 +10,7 @@ namespace streetgangserver
     class StreetGangRestService : public sg::microreactor::RestService
     {
     public:
-        StreetGangRestService(std::shared_ptr<sg::microreactor::Endpoint> endpoint, std::shared_ptr<sg::microreactor::Profile> profile);
+        explicit StreetGangRestService(std::shared_ptr<sg::microreactor::Endpoint> endpoint);
         virtual ~StreetGangRestService();
 
     public:

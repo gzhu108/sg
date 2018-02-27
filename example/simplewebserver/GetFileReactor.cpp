@@ -1,4 +1,5 @@
 #include "GetFileReactor.h"
+#include "ConfigurationSingleton.h"
 
 using namespace sg::microreactor;
 using namespace simplewebserver;
@@ -32,7 +33,7 @@ bool GetFileReactor::Process()
     if (!uri.empty())
     {
         std::string root = "webroot";
-        auto configuration = mConnection.GetProfile()->Configuration.cref();
+        auto configuration = ConfigurationSingleton::GetConfiguration();
         path = configuration->GetValue("WebRoot", root) + uri;
     }
 

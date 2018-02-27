@@ -1,5 +1,6 @@
 #include "RequestGetVersionReactor.h"
 #include "ResponseGetVersion.h"
+#include "ConfigurationSingleton.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -24,13 +25,13 @@ bool RequestGetVersionReactor::Process()
         return false;
     }
 
-    if (mConnection.GetProfile() == nullptr || mConnection.GetProfile()->Configuration.cref() == nullptr)
+    if (ConfigurationSingleton::GetConfiguration() == nullptr)
     {
         return false;
     }
 
     std::string version;
-    mConnection.GetProfile()->Configuration.cref()->GetValue("Version", version);
+    ConfigurationSingleton::GetConfiguration()->GetValue("Version", version);
 
     return mResponder->SendGetVersionResponse(InputMessage()->TrackId.cref(), ResultCode::Success, version);
 }

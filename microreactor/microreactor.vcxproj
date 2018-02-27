@@ -174,11 +174,11 @@
     <ClCompile Include="..\tools\http-parser\http_parser.c" />
     <ClCompile Include="src\BinarySerializer.cpp" />
     <ClCompile Include="src\Client.cpp" />
+    <ClCompile Include="src\ConfigurationSingleton.cpp" />
     <ClCompile Include="src\ConfigurationXml.cpp" />
     <ClCompile Include="src\Connection.cpp" />
     <ClCompile Include="src\Dispatcher.cpp" />
     <ClCompile Include="src\Endpoint.cpp" />
-    <ClCompile Include="src\Listener.cpp" />
     <ClCompile Include="src\LoggerSingleton.cpp" />
     <ClCompile Include="src\Message.cpp" />
     <ClCompile Include="src\MessageRequester.cpp" />
@@ -230,6 +230,7 @@
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\Comparable.h" />
     <ClInclude Include="src\Configuration.h" />
+    <ClInclude Include="src\ConfigurationSingleton.h" />
     <ClInclude Include="src\ConfigurationXml.h" />
     <ClInclude Include="src\Connection.h" />
     <ClInclude Include="src\Dispatcher.h" />
@@ -238,7 +239,6 @@
     <ClInclude Include="src\Endpoint.h" />
     <ClInclude Include="src\Exception.h" />
     <ClInclude Include="src\HttpHeader.h" />
-    <ClInclude Include="src\Listener.h" />
     <ClInclude Include="src\LoggerSingleton.h" />
     <ClInclude Include="src\MemoryTrack.h" />
     <ClInclude Include="src\Message.h" />

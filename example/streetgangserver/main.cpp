@@ -6,7 +6,6 @@
 #include <thread>
 #include <functional>
 #include <vector>
-#include "Microreactor.h"
 #include "NetworkUtility.h"
 #include "StreetGangBinaryService.h"
 #include "StreetGangPBService.h"
@@ -41,8 +40,9 @@ void SingalHandler(int type)
     STOP_TASK_MANAGER();
 }
 
-static std::shared_ptr<StreetGangRestService> CreateRestService(std::shared_ptr<Configuration> configuration)
+static std::shared_ptr<StreetGangRestService> CreateRestService()
 {
+    auto configuration = ConfigurationSingleton::GetConfiguration();
     if (configuration == nullptr)
     {
         return false;
@@ -62,7 +62,6 @@ static std::shared_ptr<StreetGangRestService> CreateRestService(std::shared_ptr<
     configuration->GetValue("RestPort", restPort);
 
     auto profile = std::make_shared<Profile>();
-    profile->Configuration.set(configuration);
     profile->Protocol.set("tcp");
     profile->Address.set(serviceAddress);
     profile->Port.set(restPort);
@@ -72,7 +71,7 @@ static std::shared_ptr<StreetGangRestService> CreateRestService(std::shared_ptr<
     endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
     endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
-    return std::make_shared<StreetGangRestService>(endpoint, profile);
+    return std::make_shared<StreetGangRestService>(endpoint);
 }
 
 int32_t main(int32_t argc, const char* argv[])
@@ -120,6 +119,7 @@ int32_t main(int32_t argc, const char* argv[])
     
     LOG("Configuration file: %s", configFilePath.c_str());
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Service");
+    ConfigurationSingleton::InitializeConfiguration(configuration);
 
     // Create the metricator client for logging
     std::string metricatorProtocol = "udp";
@@ -178,9 +178,9 @@ int32_t main(int32_t argc, const char* argv[])
     //profile->Port.set(8390);
     //Microservice streetGangService(profile);
 
-    StreetGangBinaryService streetGangBinaryService(configuration);
-    StreetGangPBService streetGangPBService(configuration);
-    std::shared_ptr<StreetGangRestService> streetGangRestService = CreateRestService(configuration);
+    StreetGangBinaryService streetGangBinaryService;
+    StreetGangPBService streetGangPBService;
+    std::shared_ptr<StreetGangRestService> streetGangRestService = CreateRestService();
 
     if (streetGangBinaryService.Start() &&
         streetGangPBService.Start() &&

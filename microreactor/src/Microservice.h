@@ -4,6 +4,7 @@
 
 #include "Service.h"
 #include "Profile.h"
+#include "Endpoint.h"
 
 
 namespace sg { namespace microreactor
@@ -13,14 +14,12 @@ namespace sg { namespace microreactor
     public:
         Microservice();
         explicit Microservice(std::shared_ptr<Profile> profile);
-        Microservice(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile);
+        explicit Microservice(std::shared_ptr<Endpoint> endpoint);
         virtual ~Microservice();
 
     public:
         virtual bool Start() override;
         virtual bool Stop() override;
-        
-        std::shared_ptr<Profile> GetProfile() { return mProfile; }
 
     protected:
         virtual bool Initialize();
@@ -28,7 +27,7 @@ namespace sg { namespace microreactor
 
     protected:
         std::shared_ptr<Profile> mProfile;
-        std::shared_ptr<Listener> mListener;
+        std::shared_ptr<Endpoint> mEndpoint;
     };
 }}
 

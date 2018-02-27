@@ -2,18 +2,18 @@
 #ifndef streetgangserver_StreetGangPBService
 #define streetgangserver_StreetGangPBService
 
-#include "Microreactor.h"
-#include "Service.h"
+#include "TaskManagerSingleton.h"
+#include "Microservice.h"
 #include "Client.h"
 #include "MessageBase.h"
 
 
 namespace streetgangserver
 {
-    class StreetGangPBService : public sg::microreactor::Service
+    class StreetGangPBService : public sg::microreactor::Microservice
     {
     public:
-        explicit StreetGangPBService(std::shared_ptr<sg::microreactor::Configuration> configuration);
+        StreetGangPBService();
         virtual ~StreetGangPBService();
         
     public:
@@ -21,7 +21,6 @@ namespace streetgangserver
         virtual bool Stop() override;
 
     protected:
-        bool CreateListeners();
         bool CreatePBListener();
         
         void OnConnectionMade(const std::shared_ptr<const sg::microreactor::Connection>& connection);
@@ -31,9 +30,7 @@ namespace streetgangserver
         void OnTaskPostprocess(const sg::microreactor::TaskPtr& task);
         
     protected:
-        std::shared_ptr<sg::microreactor::Configuration> mConfiguration;
         sg::microreactor::Signal<void>::SignalId mConfigurationConnectionId;
-        std::vector<std::shared_ptr<sg::microreactor::Listener>> mListenerCollection;
 
         std::map<void*, std::chrono::time_point<std::chrono::high_resolution_clock>> mTaskProcessTime;
         std::shared_ptr<sg::microreactor::Client> mDiscoveryClient;

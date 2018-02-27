@@ -1,6 +1,6 @@
 #include "StreetGangBinaryService.h"
 #include "NetworkUtility.h"
-#include "ConfigurationXml.h"
+#include "ConfigurationSingleton.h"
 #include "StreetGangBinaryDispatcher.h"
 #include "DiscoveryRequester.h"
 
@@ -14,16 +14,19 @@ using namespace sg::service;
 #define TASK_LATENCY_THRESHOLD ((double)0.01)
 
 
-StreetGangBinaryService::StreetGangBinaryService(std::shared_ptr<Configuration> configuration)
-    : mConfiguration(configuration)
-    , mTaskLatencyThreshold(TASK_LATENCY_THRESHOLD)
+StreetGangBinaryService::StreetGangBinaryService()
+    : mTaskLatencyThreshold(TASK_LATENCY_THRESHOLD)
 {
-    // Get the thread pool size from the configuration file
-    uint64_t threadPoolSize = 0;
-    mConfiguration->GetValue("ThreadPoolSize", threadPoolSize);
-    TaskManagerSingleton::SetThreadPoolSize(threadPoolSize);
+    auto configuration = ConfigurationSingleton::GetConfiguration();
+    if (configuration != nullptr)
+    {
+        // Get the thread pool size from the configuration file
+        uint64_t threadPoolSize = 0;
+        configuration->GetValue("ThreadPoolSize", threadPoolSize);
+        TaskManagerSingleton::SetThreadPoolSize(threadPoolSize);
 
-    mConfiguration->GetValue("TaskLatencyThreshold", mTaskLatencyThreshold);
+        configuration->GetValue("TaskLatencyThreshold", mTaskLatencyThreshold);
+    }
 
     // Hook to task process
     //auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
@@ -36,42 +39,34 @@ StreetGangBinaryService::~StreetGangBinaryService()
     Stop();
 
     // Disable hot-config
-    if (mConfiguration != nullptr)
+    auto configuration = ConfigurationSingleton::GetConfiguration();
+    if (configuration != nullptr)
     {
-        mConfiguration->ValueUpdated.Disconnect(mConfigurationConnectionId);
+        configuration->ValueUpdated.Disconnect(mConfigurationConnectionId);
     }
 
     // Disconnect to task process
     auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
     taskProcessHook.Preprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
     taskProcessHook.Postprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
-
-    mListenerCollection.clear();
 }
 
 bool StreetGangBinaryService::Start()
 {
-    if (CreateListeners())
+    if (CreateBinaryListener())
     {
-        bool result = true;
-
-        // Start all listeners
-        for (auto& listener : mListenerCollection)
+        // Start the endpoint
+        if (mEndpoint != nullptr)
         {
-            if (!listener->Start())
+            if (!mEndpoint->Start())
             {
-                result = false;
+                return false;
             }
 
             // Connection to the ConnectonMade signal
-            auto endpoint = listener->GetEndpoint();
-            if (endpoint != nullptr)
-            {
-                endpoint->ConnectionMade.Connect(std::bind(&StreetGangBinaryService::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
-            }
+            mEndpoint->ConnectionMade.Connect(std::bind(&StreetGangBinaryService::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
+            return true;
         }
-
-        return result;
     }
 
     return false;
@@ -79,85 +74,63 @@ bool StreetGangBinaryService::Start()
 
 bool StreetGangBinaryService::Stop()
 {
-    bool result = true;
-
     // Stop all listeners
-    for (auto& listener : mListenerCollection)
+    if (mEndpoint != nullptr)
     {
-        if (!listener->Stop())
+        if (!mEndpoint->Stop())
         {
-            result = false;
+            return false;
         }
 
         // Disconnect the ConnectonMade signal
-        auto endpoint = listener->GetEndpoint();
-        if (endpoint != nullptr)
-        {
-            endpoint->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
-        }
+        mEndpoint->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
+        mEndpoint = nullptr;
+        return true;
     }
 
-    return result;
-}
-
-bool StreetGangBinaryService::CreateListeners()
-{
-    if (mConfiguration == nullptr)
-    {
-        return false;
-    }
-
-    CreateBinaryListener();
-    
-    mConfigurationConnectionId = mConfiguration->ValueUpdated.Connect(std::bind(&StreetGangBinaryService::Restart, this));
-    return !mListenerCollection.empty();
+    return false;
 }
 
 bool StreetGangBinaryService::CreateBinaryListener()
 {
-    if (mConfiguration == nullptr)
+    auto configuration = ConfigurationSingleton::GetConfiguration();
+    if (configuration == nullptr)
     {
         return false;
     }
+
+    mConfigurationConnectionId = configuration->ValueUpdated.Connect(std::bind(&StreetGangBinaryService::Restart, this));
 
     uint32_t listenTimeout = 30;
     uint32_t receiveTimeout = 30;
     uint32_t sendTimeout = 100;
 
-    mConfiguration->GetValue("ListenTimeout", listenTimeout);
-    mConfiguration->GetValue("ReceiveTimeout", receiveTimeout);
-    mConfiguration->GetValue("SendTimeout", sendTimeout);
+    configuration->GetValue("ListenTimeout", listenTimeout);
+    configuration->GetValue("ReceiveTimeout", receiveTimeout);
+    configuration->GetValue("SendTimeout", sendTimeout);
 
     auto profile = std::make_shared<Profile>();
-    profile->Configuration.set(mConfiguration);
 
     std::string protocol = "tcp";
-    mConfiguration->GetValue("Protocol", protocol);
+    configuration->GetValue("Protocol", protocol);
     profile->Protocol.set(protocol);
 
     std::string address = "0.0.0.0";
-    mConfiguration->GetValue("ServiceAddress", address);
+    configuration->GetValue("ServiceAddress", address);
     profile->Address.set(address);
 
     uint16_t port = 8390;
-    mConfiguration->GetValue("ServicePort", port);
+    configuration->GetValue("ServicePort", port);
     profile->Port.set(port);
 
     profile->Dispatcher.set(std::make_shared<StreetGangBinaryDispatcher>());
 
-    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
-    endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+    mEndpoint = NetworkUtility::CreateEndpoint(profile);
+    mEndpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
-    auto listener = std::make_shared<Listener>();
-    if (listener->Initialize(endpoint))
-    {
-        mListenerCollection.emplace_back(listener);
-        return true;
-    }
-
-    return false;
+    return true;
 }
 
 void StreetGangBinaryService::OnConnectionMade(const std::shared_ptr<const Connection>& connection)

@@ -123,9 +123,10 @@ int32_t main(int32_t argc, const char* argv[])
         configuration->GetValue("TargetPort", targetPort);
     }
 
+    ConfigurationSingleton::InitializeConfiguration(configuration);
+
     auto bouncerDecoder = std::make_shared<BouncerDecoder>();
     auto profile = std::make_shared<BouncerProfile>();
-    profile->Configuration.set(configuration);
     profile->Protocol.set(protocol);
     profile->Address.set("0.0.0.0");
     profile->Port.set(443);

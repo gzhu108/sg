@@ -13,11 +13,13 @@ Microservice::Microservice(std::shared_ptr<Profile> profile)
 {
 }
 
-Microservice::Microservice(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
-    : mProfile(profile)
-    , mListener(std::make_shared<Listener>())
+Microservice::Microservice(std::shared_ptr<Endpoint> endpoint)
+    : mEndpoint(endpoint)
 {
-    mListener->Initialize(endpoint);
+    if (mEndpoint != nullptr)
+    {
+        mProfile = endpoint->GetProfile();
+    }
 }
 
 Microservice::~Microservice()
@@ -27,17 +29,13 @@ Microservice::~Microservice()
 
 bool Microservice::Start()
 {
-    if (Initialize() && mListener != nullptr)
+    if (Initialize() && mEndpoint != nullptr)
     {
-        if (mListener->Start())
+        if (mEndpoint->Start())
         {
             // Connection to the ConnectonMade signal
-            auto endpoint = mListener->GetEndpoint();
-            if (endpoint != nullptr)
-            {
-                endpoint->ConnectionMade.Connect(std::bind(&Microservice::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
-                return true;
-            }
+            mEndpoint->ConnectionMade.Connect(std::bind(&Microservice::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
+            return true;
         }
     }
 
@@ -46,30 +44,25 @@ bool Microservice::Start()
 
 bool Microservice::Stop()
 {
-    bool result = true;
-
-    if (mListener != nullptr)
+    if (mEndpoint != nullptr)
     {
-        if (!mListener->Stop())
+        if (!mEndpoint->Stop())
         {
-            result = false;
+            return false;
         }
 
         // Disconnect the ConnectonMade signal
-        if (mListener->GetEndpoint() != nullptr)
-        {
-            mListener->GetEndpoint()->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
-        }
-
-        mListener = nullptr;
+        mEndpoint->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
+        mEndpoint = nullptr;
+        return true;
     }
 
-    return result;
+    return false;
 }
 
 bool Microservice::Initialize()
 {
-    if (mListener != nullptr)
+    if (mEndpoint != nullptr)
     {
         // Already initialized
         return true;
@@ -81,8 +74,7 @@ bool Microservice::Initialize()
         return false;
     }
 
-    mListener = std::make_shared<Listener>();
-    return mListener->Initialize(endpoint);
+    return true;
 }
 
 void Microservice::OnConnectionMade(const std::shared_ptr<Connection>& connection)

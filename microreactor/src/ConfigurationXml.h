@@ -3,6 +3,7 @@
 #define sg_microreactor_ConfigurationXml
 
 #include "Configuration.h"
+#include "ConfigurationSingleton.h"
 
 
 namespace rapidxml

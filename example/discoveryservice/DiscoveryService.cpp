@@ -3,7 +3,6 @@
 #include "DiscoveryDispatcher.h"
 #include "TaskManager.h"
 #include "Connection.h"
-#include "Listener.h"
 #include "UdpEndpoint.h"
 #include "UdpConnection.h"
 
@@ -41,13 +40,12 @@ bool DiscoveryService::Initialize()
         // Initialize multicasting
         if (mSocket->JoinMulticastGoup(mMulticastAddress, 0))
         {
-            std::shared_ptr<Endpoint> endpoint = std::make_shared<UdpEndpoint>(mSocket, mProfile);
-            endpoint->ListenTimeout.set(std::chrono::milliseconds(30));
-            endpoint->ReceiveTimeout.set(std::chrono::milliseconds(30));
-            endpoint->SendTimeout.set(std::chrono::milliseconds(1000));
+            mEndpoint = std::make_shared<UdpEndpoint>(mSocket, mProfile);
+            mEndpoint->ListenTimeout.set(std::chrono::milliseconds(30));
+            mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(30));
+            mEndpoint->SendTimeout.set(std::chrono::milliseconds(1000));
 
-            mListener = std::make_shared<Listener>();
-            return mListener->Initialize(endpoint);
+            return true;
         }
     }
     catch (SocketException& e)

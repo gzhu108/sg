@@ -14,8 +14,8 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-StreetGangRestService::StreetGangRestService(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
-    : RestService(endpoint, profile)
+StreetGangRestService::StreetGangRestService(std::shared_ptr<Endpoint> endpoint)
+    : RestService(endpoint)
 {
 }
 

@@ -1,5 +1,4 @@
 #include "Endpoint.h"
-#include "Dispatcher.h"
 #include "TaskManagerSingleton.h"
 
 using namespace sg::microreactor;

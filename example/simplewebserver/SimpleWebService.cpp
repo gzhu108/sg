@@ -5,8 +5,8 @@ using namespace sg::microreactor;
 using namespace simplewebserver;
 
 
-SimpleWebService::SimpleWebService(std::shared_ptr<Endpoint> endpoint, std::shared_ptr<Profile> profile)
-    : RestService(endpoint, profile)
+SimpleWebService::SimpleWebService(std::shared_ptr<Endpoint> endpoint)
+    : RestService(endpoint)
 {
 }
 
