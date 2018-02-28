@@ -40,13 +40,10 @@ namespace sg { namespace microreactor
                 {
                     // Submit shared_ptr reactor process to task queue so it's reference counted.
                     SUBMIT(std::bind(&Reactor::Process, reactor), reactor, &connection, "Reactor::Process");
-
-                    // Call reactor process directly for better response time.
-                    //reactor->Process();
                 }
 
                 // If no more data CAN be read (currentSize == previousSize), 
-                // break out to prevant stucking in the infinite loop.
+                // break out to prevent stuck in the infinite loop.
                 currentSize = GetStreamSize(mReceiveStream);
             }
         }
