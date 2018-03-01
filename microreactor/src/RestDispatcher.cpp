@@ -84,7 +84,7 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
     }
     else
     {
-        RestResponse::SendErrorWith(connection, 500, "Internal Server Error");
+        RestResponse::SendErrorWith(connection, 400, "Bad Request");
         return nullptr;
     }
 

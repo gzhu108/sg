@@ -145,5 +145,15 @@ bool RestRequest::Parse(std::shared_ptr<std::string> message)
     http_parser_init(&parser, HTTP_REQUEST);
     size_t parsed = http_parser_execute(&parser, &gRestRequestSettings, mRawMessage->c_str(), mRawMessage->length());
 
-    return parsed == mRawMessage->length();
+    if (parsed != mRawMessage->length())
+    {
+        return false;
+    }
+
+    if (mUri[0] != '/' || mUri.find("..") != std::string::npos)
+    {
+        return false;
+    }
+
+    return true;
 }
