@@ -1,0 +1,53 @@
+#%RAML 0.8
+---
+title: My Server
+baseUri: https://ruleplayer.api.playstation.com
+version: v1
+
+schemas:
+    - distribution: !include schema/distribution.json
+    - paymentInfo: !include schema/paymentInfo.json
+    - rule: !include schema/rule.json
+    - message: !include schema/message.json
+
+/v1:
+    displayName: My Server Service API
+    description: My Server Service API version 1
+
+    /ruleVersion:
+        description: Get the version of the rule.
+        get:
+            description: Get the version of the rule.
+            responses:
+                200:
+                    description: Successful response.
+                    body:
+                        application/json:
+                            schema: message
+                            example: |
+                                { "message": "1.0.0.0" }
+
+    /findRule:
+        description: Find matching rule for given payment info.
+        post:
+            description: Find matching rule for given payment info.
+            body:
+                application/json:
+                    schema: paymentInfo
+                    example: !include example/paymentInfo.json
+
+            responses:
+                200:
+                    description: Successful response.
+                    body:
+                        application/json:
+                            schema: rule
+                            example: !include example/rule.json
+
+                404:
+                    description: No rule found with payment info.
+                    body:
+                        application/json:
+                            schema: message
+                            example: |
+                                { "message": "rule not found" }

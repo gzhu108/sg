@@ -1,0 +1,18 @@
+{
+    "countryCode": "US",
+    "ruleId": "123e4567-e89b-12d3-a456-426655440000",
+    "paymentType": "CC",
+    "paymentMethod": "VISA",
+    "binStart": "123456",
+    "binEnd": "123456",
+    "distributions": [
+        {
+            "vendorId": 1,
+            "percentage": 60
+        },
+        {
+            "vendorId": 2,
+            "percentage": 40
+        }
+    ]
+}

@@ -108,8 +108,11 @@ def main(argv):
 			infile = arg
 
 	# load the raml file.
-	#p = pyraml.parser.load(infile)
-	#print(p)
+	raml = pyraml.parser.load(infile)
+	print(raml)
+
+	namespace = ''.join(raml.title.lower().split())
+	serviceclass = ''.join(raml.title.title().split())
 
 	pathlib.Path(outdir).mkdir(parents=True, exist_ok=True) 
 	create_service_header(tempdir, outdir, namespace, serviceclass, paths)

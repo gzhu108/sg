@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "properties": {
+        "vendorId": {
+            "type": "integer",
+            "required": true,
+            "minimum": 0
+        },
+        "percentage": {
+            "type": "integer",
+            "required": true,
+            "minimum": 0,
+            "maximum": 100
+        }
+    }
+}

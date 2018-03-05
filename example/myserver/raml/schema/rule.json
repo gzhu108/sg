@@ -1,0 +1,39 @@
+{
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "required": false,
+    "properties": {
+        "countryCode": {
+            "type": "string",
+            "final": true
+        },
+        "ruleId": {
+            "type": "string",
+            "required": true
+        },
+        "paymentType": {
+            "type": "string",
+            "required": false
+        },
+        "paymentMethod": {
+            "type": "string",
+            "required": false
+        },
+        "binStart": {
+            "type": "string",
+            "required": false
+        },
+        "binEnd": {
+            "type": "string",
+            "required": false
+        },
+        "distributions": {
+            "type": "array",
+            "required": false,
+            "maxItems": 10,
+            "items": {
+                "$ref": "distribution#"
+            }
+        }
+    }
+}
