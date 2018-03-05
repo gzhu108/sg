@@ -7,11 +7,6 @@ using namespace sg::microreactor;
 class RestDispatcherMock : public RestDispatcher
 {
 public:
-    void GetRestReactorFactoryTable(MethodMap& restReactorFactoryTable)
-    {
-        restReactorFactoryTable = mRestReactorFactoryTable;
-    }
-
     virtual Factory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest) override
     {
         return RestDispatcher::GetRestReactorFactory(restRequest);
