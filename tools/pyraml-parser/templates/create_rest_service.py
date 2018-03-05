@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os, sys, getopt, pathlib
 from create_from_template import *
+import pyraml.parser
 
 
 def create_item(infile, outfile, namespace, serviceclass, paths):
@@ -90,7 +91,7 @@ def main(argv):
 
 	tempdir = os.path.dirname(__file__)
 	outdir = os.getcwd()
-	infile = ""
+	infile = 'schema.raml'
 
 	try:
 		opts, args = getopt.getopt(argv[1:], "ht:o:i:", ["tempdir=", "outdir="])
@@ -105,6 +106,10 @@ def main(argv):
 			outdir = arg
 		elif opt in ("-i", "--infile"):
 			infile = arg
+
+	# load the raml file.
+	#p = pyraml.parser.load(infile)
+	#print(p)
 
 	pathlib.Path(outdir).mkdir(parents=True, exist_ok=True) 
 	create_service_header(tempdir, outdir, namespace, serviceclass, paths)
