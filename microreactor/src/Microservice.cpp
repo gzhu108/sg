@@ -68,8 +68,8 @@ bool Microservice::Initialize()
         return true;
     }
 
-    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(mProfile);
-    if (endpoint == nullptr)
+    mEndpoint = NetworkUtility::CreateEndpoint(mProfile);
+    if (mEndpoint == nullptr)
     {
         return false;
     }
