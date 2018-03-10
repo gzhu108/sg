@@ -91,6 +91,20 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
     // Handle chunked data before Getting the API object.
     if (restRequest->mChunks.empty() || restRequest->mChunkCompleted)
     {
+        for (auto& header : restRequest->mHeaders)
+        {
+            if (header.mName == "Content-Length")
+            {
+                size_t contentLength = std::strtoul(header.mValue.c_str(), nullptr, 10);
+                if (restRequest->mBody.mLength > contentLength)
+                {
+                    restRequest->mBody.mLength = contentLength;
+                }
+
+                break;
+            }
+        };
+
         auto restReactorFactory = GetRestReactorFactory(restRequest);
         if (restReactorFactory == nullptr)
         {

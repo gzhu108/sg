@@ -41,7 +41,6 @@ bool RestResponse::FlushToBuffer(std::string& buffer)
         }
     }
 
-    buffer += "\r\n";
     return buffer.length() > 0;
 }
 
