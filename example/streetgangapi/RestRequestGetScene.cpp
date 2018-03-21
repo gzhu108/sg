@@ -3,6 +3,7 @@
 #ifdef new
 #undef new
 #endif
+#define RAPIDJSON_ASSERT(x) ((void)0)
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -28,19 +29,17 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
     }
 
     // Parse the json
-    //{
-    //    "GetScene":
+    //
     //    {
-    //        "WorldId":1234
+    //        "WorldId":1234,
     //        "Rect":
     //        {
-    //            "x":0.4
-    //            "y":0.4
-    //            "w":0.2
-    //            "z":0.2
+    //            "x":0.4,
+    //            "y":0.4,
+    //            "w":0.2,
+    //            "h":0.2
     //        }
     //    }
-    //}
 
     try
     {
@@ -56,69 +55,61 @@ bool RestRequestGetScene::Decode(std::shared_ptr<sg::microreactor::RestRequest> 
         doc.Accept(writer);
         LOG("RestGetScene() JSON = %s", buffer.GetString());
 
-        rapidjson::Value& jsonGetScene = doc["GetScene"];
-        if (jsonGetScene.IsNull())
+        rapidjson::Value& jsonWorldId = doc["WorldId"];
+        if (jsonWorldId.IsNull())
         {
             return false;
         }
         else
         {
-            rapidjson::Value& jsonWorldId = jsonGetScene["WorldId"];
-            if (jsonWorldId.IsNull())
+            WorldId.set(jsonWorldId.Get<streetgangapi::SessionId>());
+        }
+
+        rapidjson::Value& jsonRect = doc["Rect"];
+        if (jsonRect.IsNull())
+        {
+            return false;
+        }
+        else
+        {
+            rapidjson::Value& jsonX = jsonRect["x"];
+            if (jsonX.IsNull())
             {
                 return false;
             }
             else
             {
-                WorldId.set(jsonWorldId.Get<streetgangapi::SessionId>());
+                Rect->mX = jsonX.Get<float>();
             }
 
-            rapidjson::Value& jsonRect = jsonGetScene["Rect"];
-            if (jsonRect.IsNull())
+            rapidjson::Value& jsonY = jsonRect["y"];
+            if (jsonY.IsNull())
             {
                 return false;
             }
             else
             {
-                rapidjson::Value& jsonX = jsonRect["x"];
-                if (jsonX.IsNull())
-                {
-                    return false;
-                }
-                else
-                {
-                    Rect->mX = jsonX.Get<float>();
-                }
+                Rect->mY = jsonY.Get<float>();
+            }
 
-                rapidjson::Value& jsonY = jsonRect["y"];
-                if (jsonY.IsNull())
-                {
-                    return false;
-                }
-                else
-                {
-                    Rect->mY = jsonY.Get<float>();
-                }
+            rapidjson::Value& jsonW = jsonRect["w"];
+            if (jsonW.IsNull())
+            {
+                return false;
+            }
+            else
+            {
+                Rect->mW = jsonW.Get<float>();
+            }
 
-                rapidjson::Value& jsonW = jsonRect["w"];
-                if (jsonW.IsNull())
-                {
-                    return false;
-                }
-                else
-                {
-                    Rect->mW = jsonW.Get<float>();
-                }
-
-                rapidjson::Value& jsonH = jsonRect["h"];
-                if (jsonH.IsNull())
-                {
-                    return false;
-                }
-                else
-                {
-                    Rect->mH = jsonH.Get<float>();
-                }
+            rapidjson::Value& jsonH = jsonRect["h"];
+            if (jsonH.IsNull())
+            {
+                return false;
+            }
+            else
+            {
+                Rect->mH = jsonH.Get<float>();
             }
         }
     }
