@@ -28,6 +28,8 @@ StreetGangSessionManager::~StreetGangSessionManager()
 
 const SessionId& StreetGangSessionManager::CreateWorld(const std::string& worldName)
 {
+    sg::microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
+
     auto sessionItr = mNamedSessions.find(worldName);
     if (sessionItr != mNamedSessions.end())
     {
