@@ -1,4 +1,8 @@
 #!/bin/bash
 
-../metricator/bin/metricator --config ../metricator/config/conf.xml
+BASEDIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+if [ ! -z "$1" ] ; then
+    BASEDIR=$1
+fi
 
+$BASEDIR/metricator/bin/metricator --config $BASEDIR/metricator/config/conf.xml

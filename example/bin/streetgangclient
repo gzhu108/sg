@@ -1,4 +1,8 @@
 #!/bin/bash
 
-../streetgangclient/bin/streetgangclient --config ../streetgangclient/config/conf.xml
+BASEDIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+if [ ! -z "$1" ] ; then
+    BASEDIR=$1
+fi
 
+$BASEDIR/streetgangclient/bin/streetgangclient --config $BASEDIR/streetgangclient/config/conf.xml

@@ -1,36 +1,41 @@
 #!/bin/sh
 
-export DISTDIR=dist
+set -x
 
+SRCDIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+if [ ! -z "$1" ] ; then
+    SRCDIR=$1
+fi
+
+DISTDIR=dist
 if [ ! -z "$2" ] ; then
-    export DISTDIR=$2
+    DISTDIR=$2
 fi
 
 rm -rf $DISTDIR
-mkdir $DISTDIR
 
-mkdir $DISTDIR/metricator
-cp $1 example/metricator/bin/metricator $DISTDIR/metricator
-cp $1 -r example/metricator/config/ $DISTDIR/metricator
+mkdir -p $DISTDIR/metricator/bin
+cp $SRCDIR/metricator/bin/metricator $DISTDIR/metricator/bin
+cp -r $SRCDIR/metricator/config/ $DISTDIR/metricator
 
-mkdir $DISTDIR/streetgangserver
-cp $1 example/streetgangserver/bin/streetgangserver $DISTDIR/streetgangserver
-cp $1 -r example/streetgangserver/config/ $DISTDIR/streetgangserver
+mkdir -p $DISTDIR/streetgangserver/bin
+cp $SRCDIR/streetgangserver/bin/streetgangserver $DISTDIR/streetgangserver/bin
+cp -r $SRCDIR/streetgangserver/config/ $DISTDIR/streetgangserver
 
-mkdir $DISTDIR/streetgangclient
-cp $1 example/streetgangclient/bin/streetgangclient $DISTDIR/streetgangclient
-cp $1 -r example/streetgangclient/config/ $DISTDIR/streetgangclient
+mkdir -p $DISTDIR/streetgangclient/bin
+cp $SRCDIR/streetgangclient/bin/streetgangclient $DISTDIR/streetgangclient/bin
+cp -r $SRCDIR/streetgangclient/config/ $DISTDIR/streetgangclient
 
-mkdir $DISTDIR/simplewebserver
-cp $1 example/simplewebserver/bin/simplewebserver $DISTDIR/simplewebserver
-cp $1 -r example/simplewebserver/config/ $DISTDIR/simplewebserver
-cp $1 -r example/simplewebserver/webroot/ $DISTDIR/simplewebserver
-cp $1 example/simplewebserver/*.key $DISTDIR/simplewebserver
-cp $1 example/simplewebserver/*.pem $DISTDIR/simplewebserver
+mkdir -p $DISTDIR/simplewebserver/bin
+cp $SRCDIR/simplewebserver/bin/simplewebserver $DISTDIR/simplewebserver/bin
+cp -r $SRCDIR/simplewebserver/config/ $DISTDIR/simplewebserver
+cp -r $SRCDIR/simplewebserver/webroot/ $DISTDIR/simplewebserver
+cp $SRCDIR/simplewebserver/*.key $DISTDIR/simplewebserver
+cp $SRCDIR/simplewebserver/*.pem $DISTDIR/simplewebserver
 
-mkdir $DISTDIR/bouncer
-cp $1 example/bouncer/bin/bouncer $DISTDIR/bouncer
-cp $1 -r example/bouncer/config/ $DISTDIR/bouncer
+mkdir -p $DISTDIR/bouncer/bin
+cp $SRCDIR/bouncer/bin/bouncer $DISTDIR/bouncer/bin
+cp -r $SRCDIR/bouncer/config/ $DISTDIR/bouncer
 
 # copy the bash files
-cp $1 -r example/bin/ $DISTDIR/bin
+cp -r $SRCDIR/bin/ $DISTDIR/bin

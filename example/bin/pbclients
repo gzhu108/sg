@@ -1,9 +1,13 @@
 #!/bin/bash
 
-mkdir out
+BASEDIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+if [ ! -z "$1" ] ; then
+    BASEDIR=$1
+fi
+
+mkdir -p $BASEDIR/out
 
 for i in {1..100}
 do
-    nohup ../streetgangclient/bin/streetgangclient --config ../streetgangclient/config/conf-7390.xml > out/sgpbc-$i.out &
+    nohup $BASEDIR/streetgangclient/bin/streetgangclient --config $BASEDIR/streetgangclient/config/conf-7390.xml > $BASEDIR/out/sgpbc-$i.out &
 done
-

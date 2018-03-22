@@ -1,6 +1,10 @@
 #!/bin/bash
 
-mkdir out
+BASEDIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+if [ ! -z "$1" ] ; then
+    BASEDIR=$1
+fi
 
-nohup ../streetgangserver/bin/streetgangserver --config ../streetgangserver/config/conf.xml > out/sgs.out &
+mkdir -p $BASEDIR/out
 
+nohup $BASEDIR/streetgangserver/bin/streetgangserver --config $BASEDIR/streetgangserver/config/conf.xml > $BASEDIR/out/sgs.out &

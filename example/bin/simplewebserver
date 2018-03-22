@@ -5,4 +5,4 @@ if [ ! -z "$1" ] ; then
     BASEDIR=$1
 fi
 
-$BASEDIR/streetgangserver/bin/streetgangserver --config $BASEDIR/streetgangserver/config/conf.xml
+$BASEDIR/simplewebserver/bin/simplewebserver --config $BASEDIR/simplewebserver/config/conf.xml
