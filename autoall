@@ -106,6 +106,14 @@ mkdir java
 popd
 popd
 
+pushd example/streetgangworldapi
+echo Configuring: $PWD
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
 pushd example/streetgangserver
 echo Configuring: $PWD
 aclocal
