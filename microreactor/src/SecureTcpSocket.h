@@ -22,8 +22,8 @@ namespace sg { namespace microreactor
         virtual bool Receive(char* buffer, int32_t length, int32_t& bytesReceived) override;
         virtual bool Send(const char* buffer, int32_t length, int32_t& bytesSent) override;
 
-        virtual bool ConfigureServerContext(const std::string& privateKey, const std::string& certificate);
-        virtual bool ConfigureClientContext();
+        virtual bool ConfigureSslContext(const std::string& privateKey, const std::string& certificate, SSL_verify_cb verifyPeer);
+        static int VerifyPeer(int preverifyOk, X509_STORE_CTX* context);
 
     protected:
         virtual void ShowCerts();

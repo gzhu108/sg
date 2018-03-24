@@ -112,7 +112,7 @@ bool SecureTcpSocket::Send(const char* buffer, int32_t length, int32_t& bytesSen
     return bytesSent > 0;
 }
 
-bool SecureTcpSocket::ConfigureServerContext(const std::string& privateKey, const std::string& certificate)
+bool SecureTcpSocket::ConfigureSslContext(const std::string& privateKey, const std::string& certificate, SSL_verify_cb verifyPeer)
 {
     OpenSSL_add_all_algorithms();
     SSL_load_error_strings();
@@ -127,36 +127,106 @@ bool SecureTcpSocket::ConfigureServerContext(const std::string& privateKey, cons
     SSL_CTX_set_ecdh_auto(mContext, 1);
 
     // Set the key and cert
-    if (SSL_CTX_use_certificate_file(mContext, certificate.c_str(), SSL_FILETYPE_PEM) <= 0)
+    if (!certificate.empty() && SSL_CTX_use_certificate_file(mContext, certificate.c_str(), SSL_FILETYPE_PEM) <= 0)
     {
         SSL_CTX_free(mContext);
         mContext = nullptr;
         return false;
     }
 
-    if (SSL_CTX_use_PrivateKey_file(mContext, privateKey.c_str(), SSL_FILETYPE_PEM) <= 0 )
+    if (!privateKey.empty() && SSL_CTX_use_PrivateKey_file(mContext, privateKey.c_str(), SSL_FILETYPE_PEM) <= 0 )
     {
         SSL_CTX_free(mContext);
         mContext = nullptr;
         return false;
+    }
+
+    if (verifyPeer != nullptr)
+    {
+        SSL_CTX_set_verify(mContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, verifyPeer);
     }
 
     return true;
 }
 
-bool SecureTcpSocket::ConfigureClientContext()
+int SecureTcpSocket::VerifyPeer(int preverifyOk, X509_STORE_CTX* context)
 {
-    OpenSSL_add_all_algorithms(); // Load cryptos, et.al.
-    SSL_load_error_strings(); //Bring in and register error messages
+#if 1
 
-    const SSL_METHOD* method = SSLv23_client_method(); // Create new client-method instance
-    mContext = SSL_CTX_new(method);	//Create new context
-    if (mContext == NULL)
+    return 1;
+
+#else
+
+    struct mydata_t
     {
-        return false;
+        int verbose_mode;
+        int verify_depth;
+        int always_continue;
+    };
+    int mydata_index;
+
+    char    buf[256];
+    X509   *err_cert;
+    int     err, depth;
+    SSL    *ssl;
+    mydata_t *mydata;
+
+    err_cert = X509_STORE_CTX_get_current_cert(context);
+    err = X509_STORE_CTX_get_error(context);
+    depth = X509_STORE_CTX_get_error_depth(context);
+
+    /*
+    * Retrieve the pointer to the SSL of the connection currently treated
+    * and the application specific data stored into the SSL object.
+    */
+    ssl = (SSL*)X509_STORE_CTX_get_ex_data(context, SSL_get_ex_data_X509_STORE_CTX_idx());
+    mydata = (mydata_t*)SSL_get_ex_data(ssl, mydata_index);
+
+    X509_NAME_oneline(X509_get_subject_name(err_cert), buf, 256);
+
+    /*
+    * Catch a too long certificate chain. The depth limit set using
+    * SSL_CTX_set_verify_depth() is by purpose set to "limit+1" so
+    * that whenever the "depth>verify_depth" condition is met, we
+    * have violated the limit and want to log this error condition.
+    * We must do it here, because the CHAIN_TOO_LONG error would not
+    * be found explicitly; only errors introduced by cutting off the
+    * additional certificates would be logged.
+    */
+    if (depth > mydata->verify_depth)
+    {
+        preverifyOk = 0;
+        err = X509_V_ERR_CERT_CHAIN_TOO_LONG;
+        X509_STORE_CTX_set_error(context, err);
     }
 
-    return true;
+    if (!preverifyOk)
+    {
+        printf("verify error:num=%d:%s:depth=%d:%s\n", err,
+            X509_verify_cert_error_string(err), depth, buf);
+    }
+    else if (mydata->verbose_mode)
+    {
+        printf("depth=%d:%s\n", depth, buf);
+    }
+
+    /*
+    * At this point, err contains the last verification error. We can use
+    * it for something special
+    */
+    if (!preverifyOk && (err == X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT))
+    {
+        X509_NAME_oneline(X509_get_issuer_name(context->current_cert), buf, 256);
+        printf("issuer= %s\n", buf);
+    }
+
+    if (mydata->always_continue)
+    {
+        return 1;
+    }
+        
+    return preverifyOk;
+#endif
 }
 
 void SecureTcpSocket::ShowCerts()
