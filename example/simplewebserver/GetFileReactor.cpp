@@ -38,5 +38,6 @@ bool GetFileReactor::Process()
     }
 
     RestFileResponse response(path);
+    response.mHeaders.emplace_back(HttpHeader("Content-Type", "image/jpg"));
     return response.Send(mConnection);
 }

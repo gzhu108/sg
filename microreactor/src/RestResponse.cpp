@@ -32,7 +32,11 @@ bool RestResponse::FlushToBuffer(std::string& buffer)
         }
     }
 
-    if (!chunked)
+    if (chunked)
+    {
+        buffer += "\r\n";
+    }
+    else
     {
         buffer += "Content-Length: " + std::to_string(mBody.length()) + "\r\n";
         if (!mBody.empty())
