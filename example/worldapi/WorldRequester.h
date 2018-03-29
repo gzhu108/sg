@@ -16,8 +16,8 @@ namespace worldapi
         virtual ~WorldRequester();
 
     public:
-        virtual bool CreateWorld(const std::string& worldName);
-        virtual bool GetWorld(const WorldId& worldId);
+        virtual bool CreateWorld(const std::string& worldName, uintptr_t userData = 0);
+        virtual bool GetWorld(const WorldId& worldId, uintptr_t userData = 0);
 
     protected:
         virtual bool SendMessage(std::shared_ptr<WorldMessage> message);

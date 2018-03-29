@@ -6,9 +6,8 @@ using namespace worldapi;
 using namespace streetgangserver;
 
 
-ResponseGetWorldReactor::ResponseGetWorldReactor(Connection& connection, std::shared_ptr<ResponseGetWorld> message, std::shared_ptr<RequestGetSceneReactor> reactor)
+ResponseGetWorldReactor::ResponseGetWorldReactor(Connection& connection, std::shared_ptr<ResponseGetWorld> message)
     : MessageReactor(connection, message)
-    , mReactor(reactor)
 {
 }
 
@@ -37,5 +36,6 @@ bool ResponseGetWorldReactor::Process()
         items.emplace_back(streetgangapi::Point<float>(worldItem.mX, worldItem.mY, worldItem.mZ));
     }
 
-    return SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, mReactor, worldId, items), mReactor, this, "RequestGetSceneReactor::SendResponse");
+    auto reactor = reinterpret_cast<RequestGetSceneReactor*>(mParentMessage->UserData.get());
+    return SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, items), reactor->shared_from_this(), this, "RequestGetSceneReactor::SendResponse");
 }

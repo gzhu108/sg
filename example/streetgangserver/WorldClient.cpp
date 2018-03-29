@@ -9,8 +9,7 @@ using namespace worldapi;
 using namespace streetgangserver;
 
 
-WorldClient::WorldClient(const std::string& protocol, const std::string& hostName, uint16_t port, std::shared_ptr<StreetGangReactor> reactor)
-    : mReactor(reactor)
+WorldClient::WorldClient(const std::string& protocol, const std::string& hostName, uint16_t port)
 {
     auto dispatcher = std::make_shared<WorldClientDispatcher>();
 
@@ -29,7 +28,7 @@ WorldClient::WorldClient(const std::string& protocol, const std::string& hostNam
         responseError->RequestId.set(std::static_pointer_cast<WorldMessage>(timedOutMessage.mMessage)->Id.cref());
         responseError->ErrorMessage.set("WorldServer timeout");
 
-        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(timedOutMessage.mConnection, responseError, mReactor);
+        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(timedOutMessage.mConnection, responseError);
         responseErrorReactor->SetParent(timedOutMessage.mMessage);
         
         responseErrorReactor->Process();

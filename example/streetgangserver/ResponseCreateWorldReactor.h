@@ -12,14 +12,11 @@ namespace streetgangserver
     class ResponseCreateWorldReactor : public sg::microreactor::MessageReactor<worldapi::ResponseCreateWorld>
     {
     public:
-        ResponseCreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<worldapi::ResponseCreateWorld> message, std::shared_ptr<RequestCreateWorldReactor> reactor);
+        ResponseCreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<worldapi::ResponseCreateWorld> message);
         virtual ~ResponseCreateWorldReactor();
         
     public:
         virtual bool Process() override;
-
-    protected:
-        std::shared_ptr<RequestCreateWorldReactor> mReactor;
     };
 }
 

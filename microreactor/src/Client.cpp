@@ -1,5 +1,6 @@
 #include "Client.h"
 #include "Connection.h"
+#include "NetworkUtility.h"
 #include "Reactor.h"
 
 using namespace sg::microreactor;
@@ -38,4 +39,18 @@ void Client::Initialize(std::shared_ptr<Connection> connection, const std::chron
             LOG("Client receive message from [%s]:%u", connection->GetPeerName().c_str(), connection->GetPeerPort());
         }
     }
+}
+
+std::shared_ptr<Connection> Client::GetConnection()
+{
+    if (mConnection == nullptr)
+    {
+        return nullptr;
+    }
+    else if (mConnection->IsClosed())
+    {
+        mConnection = NetworkUtility::CreateConnection(mConnection->GetProfile());
+    }
+
+    return mConnection;
 }

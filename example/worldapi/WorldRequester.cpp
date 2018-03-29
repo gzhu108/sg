@@ -19,19 +19,22 @@ WorldRequester::~WorldRequester()
 {
 }
 
-bool WorldRequester::CreateWorld(const std::string& worldName)
+bool WorldRequester::CreateWorld(const std::string& worldName, uintptr_t userData)
 {
     auto message = std::make_shared<RequestCreateWorld>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
+    message->UserData.set(userData);
     message->WorldName.set(worldName);
     return SendMessage(message);
 }
 
-bool WorldRequester::GetWorld(const WorldId& worldId)
+bool WorldRequester::GetWorld(const WorldId& worldId, uintptr_t userData)
 {
     auto message = std::make_shared<RequestGetWorld>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
+    message->UserData.set(userData);
     message->WorldId.set(worldId);
+
     return SendMessage(message);
 }
 

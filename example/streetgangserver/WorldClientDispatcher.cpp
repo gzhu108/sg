@@ -84,7 +84,7 @@ std::shared_ptr<Reactor> WorldClientDispatcher::CreateErrorResponseReactor(std::
     auto message = std::make_shared<ResponseError>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseErrorReactor>(connection, message, nullptr);
+        return std::make_shared<ResponseErrorReactor>(connection, message);
     }
 
     return nullptr;
@@ -95,7 +95,7 @@ std::shared_ptr<Reactor> WorldClientDispatcher::CreateCreateWorldResponseReactor
     auto message = std::make_shared<ResponseCreateWorld>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseCreateWorldReactor>(connection, message, nullptr);
+        return std::make_shared<ResponseCreateWorldReactor>(connection, message);
     }
 
     return nullptr;
@@ -106,7 +106,7 @@ std::shared_ptr<Reactor> WorldClientDispatcher::CreateGetWorldResponseReactor(st
     auto message = std::make_shared<ResponseGetWorld>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseGetWorldReactor>(connection, message, nullptr);
+        return std::make_shared<ResponseGetWorldReactor>(connection, message);
     }
     
     return nullptr;

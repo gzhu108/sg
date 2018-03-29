@@ -44,13 +44,20 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "streetgangserver", "example\streetgangserver\streetgangserver.vcxproj", "{9BB77B5E-1F94-49F9-8307-D8696B8310A1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A1CF5343-D95A-4247-A634-897BD8DB454E} = {A1CF5343-D95A-4247-A634-897BD8DB454E}
+		{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA} = {AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}
 		{413C7965-2700-4619-A353-681891E20AF2} = {413C7965-2700-4619-A353-681891E20AF2}
 		{4759B4AB-DCD8-443E-91BA-BE9E5E15A106} = {4759B4AB-DCD8-443E-91BA-BE9E5E15A106}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "worldapi", "example\worldapi\worldapi.vcxproj", "{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A9A1B3AB-570F-46A3-BE5B-4B5551E90E6B} = {A9A1B3AB-570F-46A3-BE5B-4B5551E90E6B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "worldserver", "example\worldserver\worldserver.vcxproj", "{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA} = {AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -16,6 +16,7 @@ namespace sg { namespace microreactor
 
         PROPERTY(TrackId, std::string);
         PROPERTY(ResponseTimeout, int64_t, 0);
+        PROPERTY(UserData, uintptr_t, 0);
 
     public:
         const std::chrono::time_point<std::chrono::high_resolution_clock>& GetCreationTime() { return mCreationTime; }

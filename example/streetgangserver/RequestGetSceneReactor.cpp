@@ -1,7 +1,7 @@
 #include "RequestGetSceneReactor.h"
 #include "StreetGangSessionManager.h"
 #include "WorldRequester.h"
-#include "Client.h"
+#include "WorldClient.h"
 #include "ConfigurationSingleton.h"
 #include "ResponseGetScene.h"
 
@@ -37,9 +37,9 @@ bool RequestGetSceneReactor::Process()
     configuration->GetValue("WorldHost", worldHost);
     configuration->GetValue("WorldPort", worldPort);
 
-    //std::shared_ptr<Client> client = std::make_shared<WorldClient>(protocol, worldHost, worldPort);
-    //auto requester = std::make_shared<worldapi::WorldRequester>(*client->GetConnection());
-    //requester->GetWorld(InputMessage()->WorldId.cref());
+    std::shared_ptr<Client> client = std::make_shared<WorldClient>(protocol, worldHost, worldPort);
+    auto requester = std::make_shared<worldapi::WorldRequester>(*client->GetConnection());
+    requester->GetWorld(InputMessage()->WorldId.cref(), reinterpret_cast<uintptr_t>(this));
 
     auto session = StreetGangSessionManager::GetInstance().GetSession(InputMessage()->WorldId.cref());
     if (session == nullptr)

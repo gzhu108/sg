@@ -10,7 +10,6 @@
 #include "ConfigurationXml.h"
 
 using namespace sg::microreactor;
-using namespace worldapi;
 using namespace worldserver;
 
 

@@ -6,9 +6,8 @@ using namespace worldapi;
 using namespace streetgangserver;
 
 
-ResponseCreateWorldReactor::ResponseCreateWorldReactor(Connection& connection, std::shared_ptr<ResponseCreateWorld> message, std::shared_ptr<RequestCreateWorldReactor> reactor)
+ResponseCreateWorldReactor::ResponseCreateWorldReactor(Connection& connection, std::shared_ptr<ResponseCreateWorld> message)
     : MessageReactor(connection, message)
-    , mReactor(reactor)
 {
 }
 
@@ -29,5 +28,6 @@ bool ResponseCreateWorldReactor::Process()
         worldId,
         worldName.c_str());
 
-    return SUBMIT(std::bind(&RequestCreateWorldReactor::SendResponse, mReactor, worldId, worldName), mReactor, this, "RequestCreateWorldReactor::SendResponse");
+    auto reactor = reinterpret_cast<RequestCreateWorldReactor*>(mParentMessage->UserData.get());
+    return SUBMIT(std::bind(&RequestCreateWorldReactor::SendResponse, reactor, worldId, worldName), reactor->shared_from_this(), this, "RequestCreateWorldReactor::SendResponse");
 }

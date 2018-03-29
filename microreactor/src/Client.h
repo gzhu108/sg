@@ -18,7 +18,7 @@ namespace sg { namespace microreactor
 
     public:
         virtual void Initialize(std::shared_ptr<Connection> connection, const std::chrono::milliseconds& timeout);
-        virtual std::shared_ptr<Connection> GetConnection() { return mConnection; }
+        virtual std::shared_ptr<Connection> GetConnection();
 
 	protected:
 		std::shared_ptr<Connection> mConnection;
