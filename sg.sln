@@ -48,7 +48,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "streetgangserver", "example
 		{4759B4AB-DCD8-443E-91BA-BE9E5E15A106} = {4759B4AB-DCD8-443E-91BA-BE9E5E15A106}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "streetgangworldapi", "example\streetgangworldapi\streetgangworldapi.vcxproj", "{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "worldapi", "example\worldapi\worldapi.vcxproj", "{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "worldserver", "example\worldserver\worldserver.vcxproj", "{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -238,6 +240,24 @@ Global
 		{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}.Release|x64.Build.0 = Release|x64
 		{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}.Release|x86.ActiveCfg = Release|Win32
 		{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}.Release|x86.Build.0 = Release|Win32
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Check|ARM.ActiveCfg = Check|ARM
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Check|ARM.Build.0 = Check|ARM
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Check|x64.ActiveCfg = Check|x64
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Check|x64.Build.0 = Check|x64
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Check|x86.ActiveCfg = Check|Win32
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Check|x86.Build.0 = Check|Win32
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Debug|ARM.ActiveCfg = Debug|ARM
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Debug|ARM.Build.0 = Debug|ARM
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Debug|x64.ActiveCfg = Debug|x64
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Debug|x64.Build.0 = Debug|x64
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Debug|x86.ActiveCfg = Debug|Win32
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Debug|x86.Build.0 = Debug|Win32
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|ARM.ActiveCfg = Release|ARM
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|ARM.Build.0 = Release|ARM
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|x64.ActiveCfg = Release|x64
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|x64.Build.0 = Release|x64
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|x86.ActiveCfg = Release|Win32
+		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

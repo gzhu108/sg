@@ -15,4 +15,6 @@
     <MetricatorPort>8490</MetricatorPort>
     <MetricatorProtocol>udp</MetricatorProtocol>
     <TaskLatencyThreshold>2.03</TaskLatencyThreshold>
+    <WorldServerHost>127.0.0.1</WorldServerHost>
+    <WorldServerPort>6390</WorldServerPort>
 </Service>

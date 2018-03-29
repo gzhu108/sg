@@ -100,9 +100,7 @@ std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetSceneReactor(google::p
     auto message = std::make_shared<PBRequestGetScene>();
     if (message->Decode(codedInputStream))
     {
-        auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<PBStreetGangResponder>(connection));
-        reactor->SetSession(StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref()));
-        return reactor;
+        return std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<PBStreetGangResponder>(connection));
     }
 
     return nullptr;

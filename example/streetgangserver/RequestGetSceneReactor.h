@@ -18,11 +18,9 @@ namespace streetgangserver
         
     public:
         virtual bool Process() override;
-        virtual void SetSession(std::shared_ptr<WorldServiceProvider> session) { mSession = session; }
 
     protected:
         std::shared_ptr<streetgangapi::StreetGangResponder> mResponder;
-        std::shared_ptr<WorldServiceProvider> mSession;
     };
 }
 

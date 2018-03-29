@@ -110,10 +110,7 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateGetSceneReactor(std::share
     auto message = std::make_shared<RestRequestGetScene>();
     if (message->Decode(request))
     {
-        auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
-        auto session = StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref());
-        reactor->SetSession(session);
-        return reactor;
+        return std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
     }
     else
     {

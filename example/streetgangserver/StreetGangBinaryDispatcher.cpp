@@ -111,9 +111,7 @@ std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetSceneReactor(std::
     auto message = std::make_shared<BinaryRequestGetScene>();
     if (message->Decode(stream))
     {
-        auto reactor = std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<BinaryStreetGangResponder>(connection));
-        reactor->SetSession(StreetGangSessionManager::GetInstance().GetSession(message->WorldId.cref()));
-        return reactor;
+        return std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<BinaryStreetGangResponder>(connection));
     }
     
     return nullptr;

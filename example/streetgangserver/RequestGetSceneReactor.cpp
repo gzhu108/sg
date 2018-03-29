@@ -1,5 +1,8 @@
 #include "RequestGetSceneReactor.h"
-#include "WorldServiceProvider.h"
+#include "StreetGangSessionManager.h"
+#include "WorldRequester.h"
+#include "Client.h"
+#include "ConfigurationSingleton.h"
 #include "ResponseGetScene.h"
 
 using namespace sg::microreactor;
@@ -25,12 +28,24 @@ bool RequestGetSceneReactor::Process()
         return false;
     }
 
-    if (mSession == nullptr)
+    auto configuration = ConfigurationSingleton::GetConfiguration();
+
+    std::string protocol;
+    std::string worldHost;
+    uint16_t worldPort = 0;
+    configuration->GetValue("Protocol", protocol);
+    configuration->GetValue("WorldHost", worldHost);
+    configuration->GetValue("WorldPort", worldPort);
+
+    //std::shared_ptr<Client> client = std::make_shared<WorldClient>(protocol, worldHost, worldPort);
+    //auto requester = std::make_shared<worldapi::WorldRequester>(*client->GetConnection());
+    //requester->GetWorld(InputMessage()->WorldId.cref());
+
+    auto session = StreetGangSessionManager::GetInstance().GetSession(InputMessage()->WorldId.cref());
+    if (session == nullptr)
     {
         return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), ResultCode::ErrorBadRequest, InputMessage()->Id.cref(), "Scene not found");
     }
-
-    auto session = std::static_pointer_cast<WorldServiceProvider>(mSession);
 
     std::vector<Point<float>> items;
     session->GetItemsInRect(InputMessage()->Rect.cref(), items);
@@ -44,5 +59,5 @@ bool RequestGetSceneReactor::Process()
             InputMessage()->Rect->mH);
     }
 
-    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, mSession->Id.cref(), InputMessage()->Rect.cref(), items);
+    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, session->Id.cref(), InputMessage()->Rect.cref(), items);
 }
