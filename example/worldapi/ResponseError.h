@@ -2,12 +2,12 @@
 #ifndef worldapi_RequestError
 #define worldapi_RequestError
 
-#include "MessageBase.h"
+#include "WorldMessage.h"
 
 
 namespace worldapi
 {
-    class ResponseError : public MessageBase
+    class ResponseError : public WorldMessage
     {
     public:
         ResponseError();

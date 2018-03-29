@@ -48,7 +48,7 @@ bool WorldResponder::SendGetWorldResponse(const std::string& trackId, ResultCode
     return SendMessage(message);
 }
 
-bool WorldResponder::SendMessage(std::shared_ptr<MessageBase> message)
+bool WorldResponder::SendMessage(std::shared_ptr<WorldMessage> message)
 {
     if (message == nullptr || mConnection.IsClosed())
     {

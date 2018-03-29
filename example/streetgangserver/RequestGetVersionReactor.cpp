@@ -9,7 +9,7 @@ using namespace streetgangserver;
 
 RequestGetVersionReactor::RequestGetVersionReactor(Connection& connection, std::shared_ptr<RequestGetVersion> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
-    , mResponder(responder)
+    , StreetGangReactor(responder)
 {
 }
 

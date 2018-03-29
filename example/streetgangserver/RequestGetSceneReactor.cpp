@@ -12,7 +12,7 @@ using namespace streetgangserver;
 
 RequestGetSceneReactor::RequestGetSceneReactor(Connection& connection, std::shared_ptr<RequestGetScene> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
-    , mResponder(responder)
+    , StreetGangReactor(responder)
 {
 }
 
@@ -60,4 +60,9 @@ bool RequestGetSceneReactor::Process()
     }
 
     return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, session->Id.cref(), InputMessage()->Rect.cref(), items);
+}
+
+bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<Point<float>>& items)
+{
+    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->Rect.cref(), items);
 }

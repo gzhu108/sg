@@ -4,12 +4,15 @@
 
 #include "MessageReactor.h"
 #include "StreetGangResponder.h"
-#include "RequestCreateWorld.h"
+#include "streetgangapi/RequestCreateWorld.h"
+#include "StreetGangReactor.h"
 
 
 namespace streetgangserver
 {
-    class RequestCreateWorldReactor : public sg::microreactor::MessageReactor<streetgangapi::RequestCreateWorld>
+    class RequestCreateWorldReactor
+        : public sg::microreactor::MessageReactor<streetgangapi::RequestCreateWorld>
+        , public StreetGangReactor
     {
     public:
         RequestCreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestCreateWorld> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
@@ -17,9 +20,7 @@ namespace streetgangserver
         
     public:
         virtual bool Process() override;
-
-    protected:
-        std::shared_ptr<streetgangapi::StreetGangResponder> mResponder;
+        virtual bool SendResponse(const streetgangapi::SessionId& sessionId, const std::string& worldName);
     };
 }
 

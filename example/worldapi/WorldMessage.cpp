@@ -1,14 +1,14 @@
-#include "MessageBase.h"
+#include "WorldMessage.h"
 
 using namespace sg::microreactor;
 using namespace worldapi;
 
 
-MessageBase::MessageBase()
+WorldMessage::WorldMessage()
 {
     ResponseTimeout.set(30000);
 }
 
-MessageBase::~MessageBase()
+WorldMessage::~WorldMessage()
 {
 }

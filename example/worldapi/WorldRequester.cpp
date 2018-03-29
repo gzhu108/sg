@@ -35,7 +35,7 @@ bool WorldRequester::GetWorld(const WorldId& worldId)
     return SendMessage(message);
 }
 
-bool WorldRequester::SendMessage(std::shared_ptr<MessageBase> message)
+bool WorldRequester::SendMessage(std::shared_ptr<WorldMessage> message)
 {
     if (message == nullptr || mConnection.IsClosed())
     {

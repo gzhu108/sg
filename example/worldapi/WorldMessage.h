@@ -1,6 +1,6 @@
 #pragma once
-#ifndef worldapi_MessageBase
-#define worldapi_MessageBase
+#ifndef worldapi_WorldMessage
+#define worldapi_WorldMessage
 
 #include "Message.h"
 #include "WorldId.h"
@@ -8,11 +8,11 @@
 
 namespace worldapi
 {
-    class MessageBase : public sg::microreactor::Message
+    class WorldMessage : public sg::microreactor::Message
     {
     public:
-        MessageBase();
-        virtual ~MessageBase();
+        WorldMessage();
+        virtual ~WorldMessage();
 
         PROPERTY(Id, int32_t, (int32_t)ID::Unknown);
         PROPERTY(Result, int32_t, (int32_t)ResultCode::Unknown);
@@ -20,4 +20,4 @@ namespace worldapi
 }
 
 
-#endif // worldapi_MessageBase
+#endif // worldapi_WorldMessage

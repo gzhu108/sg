@@ -4,8 +4,8 @@
 
 #include <vector>
 #include "SessionId.h"
-#include "Point.h"
-#include "Rectangle.h"
+#include "streetgangapi/Point.h"
+#include "streetgangapi/Rectangle.h"
 
 
 namespace streetgangserver

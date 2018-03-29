@@ -4,7 +4,7 @@
 
 #include "MessageRequester.h"
 #include "WorldId.h"
-#include "MessageBase.h"
+#include "WorldMessage.h"
 
 
 namespace worldapi
@@ -20,7 +20,7 @@ namespace worldapi
         virtual bool GetWorld(const WorldId& worldId);
 
     protected:
-        virtual bool SendMessage(std::shared_ptr<MessageBase> message);
+        virtual bool SendMessage(std::shared_ptr<WorldMessage> message);
    };
 }
 

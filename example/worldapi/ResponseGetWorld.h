@@ -3,7 +3,7 @@
 #define worldapi_ResponseGetWorld
 
 #include <vector>
-#include "MessageBase.h"
+#include "WorldMessage.h"
 #include "Rectangle.h"
 #include "Point.h"
 #include "WorldId.h"
@@ -11,7 +11,7 @@
 
 namespace worldapi
 {
-    class ResponseGetWorld : public MessageBase
+    class ResponseGetWorld : public WorldMessage
     {
     public:
         ResponseGetWorld();

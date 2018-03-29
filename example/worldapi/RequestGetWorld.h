@@ -2,14 +2,14 @@
 #ifndef worldapi_RequestGetWorld
 #define worldapi_RequestGetWorld
 
-#include "MessageBase.h"
+#include "WorldMessage.h"
 #include "Rectangle.h"
 #include "WorldId.h"
 
 
 namespace worldapi
 {
-    class RequestGetWorld : public MessageBase
+    class RequestGetWorld : public WorldMessage
     {
     public:
         RequestGetWorld();

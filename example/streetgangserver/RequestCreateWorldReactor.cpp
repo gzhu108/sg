@@ -9,7 +9,7 @@ using namespace streetgangserver;
 
 RequestCreateWorldReactor::RequestCreateWorldReactor(Connection& connection, std::shared_ptr<RequestCreateWorld> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
-    , mResponder(responder)
+    , StreetGangReactor(responder)
 {
 }
 
@@ -21,4 +21,9 @@ bool RequestCreateWorldReactor::Process()
 {
     SessionId sessionId = StreetGangSessionManager::GetInstance().CreateWorld(InputMessage()->WorldName.cref());
     return mResponder->SendCreateWorldResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->WorldName.cref());
+}
+
+bool RequestCreateWorldReactor::SendResponse(const SessionId& sessionId, const std::string& worldName)
+{
+    return mResponder->SendCreateWorldResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, worldName);
 }

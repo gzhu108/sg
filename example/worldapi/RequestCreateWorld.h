@@ -2,12 +2,12 @@
 #ifndef worldapi_RequestCreateWorld
 #define worldapi_RequestCreateWorld
 
-#include "MessageBase.h"
+#include "WorldMessage.h"
 
 
 namespace worldapi
 {
-    class RequestCreateWorld : public MessageBase
+    class RequestCreateWorld : public WorldMessage
     {
     public:
         RequestCreateWorld();

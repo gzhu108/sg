@@ -4,13 +4,16 @@
 
 #include "MessageReactor.h"
 #include "StreetGangResponder.h"
-#include "RequestGetScene.h"
+#include "streetgangapi/RequestGetScene.h"
 #include "WorldServiceProvider.h"
+#include "StreetGangReactor.h"
 
 
 namespace streetgangserver
 {
-    class RequestGetSceneReactor : public sg::microreactor::MessageReactor<streetgangapi::RequestGetScene>
+    class RequestGetSceneReactor
+        : public sg::microreactor::MessageReactor<streetgangapi::RequestGetScene>
+        , public StreetGangReactor
     {
     public:
         RequestGetSceneReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
@@ -18,9 +21,7 @@ namespace streetgangserver
         
     public:
         virtual bool Process() override;
-
-    protected:
-        std::shared_ptr<streetgangapi::StreetGangResponder> mResponder;
+        virtual bool SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<streetgangapi::Point<float>>& items);
     };
 }
 

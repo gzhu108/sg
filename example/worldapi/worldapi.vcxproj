@@ -41,7 +41,7 @@
   <ItemGroup>
     <ClCompile Include="WorldRequester.cpp" />
     <ClCompile Include="WorldResponder.cpp" />
-    <ClCompile Include="MessageBase.cpp" />
+    <ClCompile Include="WorldMessage.cpp" />
     <ClCompile Include="RequestCreateWorld.cpp" />
     <ClCompile Include="RequestGetWorld.cpp" />
     <ClCompile Include="ResponseCreateWorld.cpp" />
@@ -49,7 +49,7 @@
     <ClCompile Include="ResponseGetWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MessageBase.h" />
+    <ClInclude Include="WorldMessage.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="RequestCreateWorld.h" />

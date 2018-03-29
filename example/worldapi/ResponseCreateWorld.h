@@ -2,13 +2,13 @@
 #ifndef worldapi_ResponseCreateWorld
 #define worldapi_ResponseCreateWorld
 
-#include "MessageBase.h"
+#include "WorldMessage.h"
 #include "WorldId.h"
 
 
 namespace worldapi
 {
-    class ResponseCreateWorld : public MessageBase
+    class ResponseCreateWorld : public WorldMessage
     {
     public:
         ResponseCreateWorld();

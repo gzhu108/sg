@@ -4,12 +4,15 @@
 
 #include "MessageReactor.h"
 #include "StreetGangResponder.h"
-#include "RequestByebye.h"
+#include "streetgangapi/RequestByebye.h"
+#include "StreetGangReactor.h"
 
 
 namespace streetgangserver
 {
-    class RequestByebyeReactor : public sg::microreactor::MessageReactor<streetgangapi::RequestByebye>
+    class RequestByebyeReactor
+        : public sg::microreactor::MessageReactor<streetgangapi::RequestByebye>
+        , public StreetGangReactor
     {
     public:
         RequestByebyeReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestByebye> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
@@ -17,9 +20,6 @@ namespace streetgangserver
 
     public:
         virtual bool Process() override;
-
-    protected:
-        std::shared_ptr<streetgangapi::StreetGangResponder> mResponder;
     };
 }
 
