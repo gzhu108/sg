@@ -18,6 +18,10 @@ mkdir -p $DISTDIR/metricator/bin
 cp $SRCDIR/metricator/bin/metricator $DISTDIR/metricator/bin
 cp -r $SRCDIR/metricator/config/ $DISTDIR/metricator
 
+mkdir -p $DISTDIR/worldserver/bin
+cp $SRCDIR/worldserver/bin/worldserver $DISTDIR/worldserver/bin
+cp -r $SRCDIR/worldserver/config/ $DISTDIR/worldserver
+
 mkdir -p $DISTDIR/streetgangserver/bin
 cp $SRCDIR/streetgangserver/bin/streetgangserver $DISTDIR/streetgangserver/bin
 cp -r $SRCDIR/streetgangserver/config/ $DISTDIR/streetgangserver

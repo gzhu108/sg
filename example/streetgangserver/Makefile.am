@@ -6,7 +6,9 @@ AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++11 \
     -I../../tools/protobuf/linux/include \
     -I../../tools/json \
     -I../../microreactor/src \
+    -I.. \
     -I../discoveryservice \
+    -I../worldapi \
     -I../streetgangapi \
     -I../metricatorapi
 
@@ -23,11 +25,17 @@ __top_builddir__bin_streetgangserver_SOURCES = \
     RequestCreateWorldReactor.cpp \
     RequestGetSceneReactor.cpp \
     RequestGetVersionReactor.cpp \
+    ResponseCreateWorldReactor.cpp \
+    ResponseErrorReactor.cpp \
+    ResponseGetWorldReactor.cpp \
     StreetGangBinaryDispatcher.cpp \
     StreetGangPBDispatcher.cpp \
     StreetGangBinaryService.cpp \
     StreetGangPBService.cpp \
     StreetGangRestService.cpp \
+    StreetGangReactor.cpp \
+    WorldClient.cpp \
+    WorldClientDispatcher.cpp \
     StreetGangSessionManager.cpp \
     WorldServiceProvider.cpp
 
@@ -35,7 +43,9 @@ __top_builddir__bin_streetgangserver_SOURCES = \
 __top_builddir__bin_streetgangserver_LDADD = \
     ../metricatorapi/lib/libmetricatorapi.a \
     ../streetgangapi/lib/libstreetgangapi.a \
+    ../worldapi/lib/libworldapi.a \
     ../discoveryservice/lib/libdiscoveryservice.a \
     ../../microreactor/lib/libmicroreactor.a \
-    ../../tools/protobuf/linux/lib/libprotobuf.a
+    ../../tools/protobuf/linux/lib/libprotobuf.a \
+    -luuid
 

@@ -37,5 +37,7 @@ bool ResponseGetWorldReactor::Process()
     }
 
     auto reactor = reinterpret_cast<RequestGetSceneReactor*>(mParentMessage->UserData.get());
-    return SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, items), reactor->shared_from_this(), this, "RequestGetSceneReactor::SendResponse");
+    SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, items), reactor->shared_from_this(), this, "RequestGetSceneReactor::SendResponse");
+
+    return true;
 }

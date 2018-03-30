@@ -23,6 +23,5 @@ __top_builddir__bin_worldserver_SOURCES = \
     WorldService.cpp 
 
 __top_builddir__bin_worldserver_LDADD = \
-    ../../microreactor/lib/libmicroreactor.a \
-    ../metricatorapi/lib/libmetricatorapi.a \
-    ../worldapi/lib/libworldapi.a
+    ../worldapi/lib/libworldapi.a \
+    ../../microreactor/lib/libmicroreactor.a

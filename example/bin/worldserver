@@ -1,0 +1,8 @@
+#!/bin/bash
+
+BASEDIR="$( cd "$(dirname "$0")/.." ; pwd -P )"
+if [ ! -z "$1" ] ; then
+    BASEDIR=$1
+fi
+
+$BASEDIR/worldserver/bin/worldserver --config $BASEDIR/worldserver/config/conf.xml

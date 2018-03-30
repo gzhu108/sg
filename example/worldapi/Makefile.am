@@ -13,7 +13,7 @@ lib_LIBRARIES = \
     $(top_builddir)/lib/libworldapi.a
 
 nobase_include_HEADERS = \
-    MessageBase.h \
+    WorldMessage.h \
     Point.h \
     Rectangle.h \
     RequestCreateWorld.h \
@@ -26,7 +26,7 @@ nobase_include_HEADERS = \
     WorldResponder.h
 
 __top_builddir__lib_libworldapi_a_SOURCES = \
-    MessageBase.cpp \
+    WorldMessage.cpp \
     RequestCreateWorld.cpp \
     RequestGetWorld.cpp \
     ResponseCreateWorld.cpp \

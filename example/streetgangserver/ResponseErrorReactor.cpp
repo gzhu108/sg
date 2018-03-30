@@ -31,6 +31,4 @@ bool ResponseErrorReactor::Process()
         requestId);
 
     return streetGangReactor->GetResponder()->SendErrorResponse(streetGangMessage->TrackId.cref(), (streetgangapi::ResultCode)errorCode, streetGangMessage->Id.cref(), InputMessage()->ErrorMessage.cref());
-
-    return true;
 }

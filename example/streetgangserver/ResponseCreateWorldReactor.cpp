@@ -29,5 +29,7 @@ bool ResponseCreateWorldReactor::Process()
         worldName.c_str());
 
     auto reactor = reinterpret_cast<RequestCreateWorldReactor*>(mParentMessage->UserData.get());
-    return SUBMIT(std::bind(&RequestCreateWorldReactor::SendResponse, reactor, worldId, worldName), reactor->shared_from_this(), this, "RequestCreateWorldReactor::SendResponse");
+    SUBMIT(std::bind(&RequestCreateWorldReactor::SendResponse, reactor, worldId, worldName), reactor->shared_from_this(), this, "RequestCreateWorldReactor::SendResponse");
+
+    return true;
 }

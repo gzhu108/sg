@@ -5,7 +5,8 @@ SUBDIRS = \
     example/metricatorapi \
     example/metricator \
     example/streetgangapi \
-	example/streetgangworldapi \
+	example/worldapi \
+    example/worldserver \
     example/streetgangserver \
     example/streetgangclient \
     example/simplewebserver \

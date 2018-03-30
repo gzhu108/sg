@@ -15,7 +15,8 @@ AC_CONFIG_SUBDIRS( \
     [example/metricatorapi] \
     [example/metricator] \
     [example/streetgangapi] \
-	[example/streetgangworldapi] \
+	[example/worldapi] \
+    [example/worldserver] \
     [example/streetgangclient] \
     [example/streetgangserver] \
     [example/simplewebserver] \
