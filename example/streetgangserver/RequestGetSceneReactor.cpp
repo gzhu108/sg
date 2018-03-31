@@ -1,9 +1,6 @@
 #include "RequestGetSceneReactor.h"
-#include "StreetGangSessionManager.h"
 #include "WorldRequester.h"
 #include "WorldClient.h"
-#include "ConfigurationSingleton.h"
-#include "ResponseGetScene.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -28,29 +25,14 @@ bool RequestGetSceneReactor::Process()
         return false;
     }
 
-    auto configuration = ConfigurationSingleton::GetConfiguration();
+    auto requester = std::make_shared<worldapi::WorldRequester>(*WorldClient::GetInstance().GetConnection());
+    return requester->GetWorld(InputMessage()->WorldId.cref(), reinterpret_cast<uintptr_t>(this));
+}
 
-    std::string protocol;
-    std::string worldHost;
-    uint16_t worldPort = 0;
-    configuration->GetValue("Protocol", protocol);
-    configuration->GetValue("WorldHost", worldHost);
-    configuration->GetValue("WorldPort", worldPort);
-
-    std::shared_ptr<Client> client = std::make_shared<WorldClient>(protocol, worldHost, worldPort);
-    auto requester = std::make_shared<worldapi::WorldRequester>(*client->GetConnection());
-    requester->GetWorld(InputMessage()->WorldId.cref(), reinterpret_cast<uintptr_t>(this));
-
-    auto session = StreetGangSessionManager::GetInstance().GetSession(InputMessage()->WorldId.cref());
-    if (session == nullptr)
-    {
-        return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), ResultCode::ErrorBadRequest, InputMessage()->Id.cref(), "Scene not found");
-    }
-
-    std::vector<Point<float>> items;
-    session->GetItemsInRect(InputMessage()->Rect.cref(), items);
-
-    if (items.size() == 0)
+bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items)
+{
+    std::vector<Point<float>> targetItems;
+    if (GetItemsInRect(InputMessage()->Rect.cref(), items, targetItems) == 0)
     {
         LOG("No item found Rect(%f, %f, %f, %f)",
             InputMessage()->Rect->mX,
@@ -59,10 +41,23 @@ bool RequestGetSceneReactor::Process()
             InputMessage()->Rect->mH);
     }
 
-    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, session->Id.cref(), InputMessage()->Rect.cref(), items);
+    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->Rect.cref(), targetItems);
 }
 
-bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<Point<float>>& items)
+uint64_t RequestGetSceneReactor::GetItemsInRect(const streetgangapi::Rectangle<float>& rect, const std::vector<worldapi::Point<float>>& sourceItems, std::vector<streetgangapi::Point<float>>& targetItems)
 {
-    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->Rect.cref(), items);
+    targetItems.clear();
+
+    for (auto& item : sourceItems)
+    {
+        if (item.mX >= rect.mX &&
+            item.mX < (rect.mX + rect.mW) &&
+            item.mY >= rect.mY &&
+            item.mY < (rect.mY + rect.mH))
+        {
+            targetItems.emplace_back(streetgangapi::Point<float>(item.mX, item.mY, item.mZ));
+        }
+    }
+
+    return targetItems.size();
 }

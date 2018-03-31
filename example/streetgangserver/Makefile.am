@@ -35,9 +35,7 @@ __top_builddir__bin_streetgangserver_SOURCES = \
     StreetGangRestService.cpp \
     StreetGangReactor.cpp \
     WorldClient.cpp \
-    WorldClientDispatcher.cpp \
-    StreetGangSessionManager.cpp \
-    WorldServiceProvider.cpp
+    WorldClientDispatcher.cpp
 
 
 __top_builddir__bin_streetgangserver_LDADD = \

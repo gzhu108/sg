@@ -6,7 +6,6 @@
 #include "protobuf/cpp/GetVersionRequest.pb.h"
 
 #include "StreetGangPBDispatcher.h"
-#include "StreetGangSessionManager.h"
 
 #include "RequestGetVersionReactor.h"
 #include "RequestByebyeReactor.h"

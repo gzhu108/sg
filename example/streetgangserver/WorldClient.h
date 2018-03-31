@@ -11,8 +11,12 @@ namespace streetgangserver
     class WorldClient : public sg::microreactor::Client
     {
     public:
-        WorldClient(const std::string& protocol, const std::string& hostName, uint16_t port);
         virtual ~WorldClient();
+        static WorldClient& GetInstance();
+
+    protected:
+        WorldClient(const std::string& protocol, const std::string& hostName, uint16_t port);
+        static std::shared_ptr<WorldClient> mInstance;
    };
 }
 

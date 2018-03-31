@@ -1,6 +1,6 @@
 #include "RequestCreateWorldReactor.h"
-#include "ResponseCreateWorld.h"
-#include "StreetGangSessionManager.h"
+#include "WorldRequester.h"
+#include "WorldClient.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -19,8 +19,8 @@ RequestCreateWorldReactor::~RequestCreateWorldReactor()
 
 bool RequestCreateWorldReactor::Process()
 {
-    SessionId sessionId = StreetGangSessionManager::GetInstance().CreateWorld(InputMessage()->WorldName.cref());
-    return mResponder->SendCreateWorldResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->WorldName.cref());
+    auto requester = std::make_shared<worldapi::WorldRequester>(*WorldClient::GetInstance().GetConnection());
+    return requester->CreateWorld(InputMessage()->WorldName.cref(), reinterpret_cast<uintptr_t>(this));
 }
 
 bool RequestCreateWorldReactor::SendResponse(const SessionId& sessionId, const std::string& worldName)

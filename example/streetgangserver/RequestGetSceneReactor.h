@@ -4,8 +4,9 @@
 
 #include "MessageReactor.h"
 #include "StreetGangResponder.h"
+#include "worldapi/Point.h"
+#include "streetgangapi/Point.h"
 #include "streetgangapi/RequestGetScene.h"
-#include "WorldServiceProvider.h"
 #include "StreetGangReactor.h"
 
 
@@ -21,7 +22,10 @@ namespace streetgangserver
         
     public:
         virtual bool Process() override;
-        virtual bool SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<streetgangapi::Point<float>>& items);
+        virtual bool SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items);
+
+    protected:
+        virtual uint64_t GetItemsInRect(const streetgangapi::Rectangle<float>& rect, const std::vector<worldapi::Point<float>>& sourceItems, std::vector<streetgangapi::Point<float>>& targetItems);
     };
 }
 

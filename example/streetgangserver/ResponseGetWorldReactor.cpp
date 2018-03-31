@@ -30,14 +30,8 @@ bool ResponseGetWorldReactor::Process()
         worldRect.mX, worldRect.mY, worldRect.mW, worldRect.mH,
         static_cast<const int32_t>(worldItems.size()));
 
-    std::vector<streetgangapi::Point<float>> items;
-    for (const auto& worldItem : worldItems)
-    {
-        items.emplace_back(streetgangapi::Point<float>(worldItem.mX, worldItem.mY, worldItem.mZ));
-    }
-
     auto reactor = reinterpret_cast<RequestGetSceneReactor*>(mParentMessage->UserData.get());
-    SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, items), reactor->shared_from_this(), this, "RequestGetSceneReactor::SendResponse");
+    SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, worldItems), reactor->shared_from_this(), this, "RequestGetSceneReactor::SendResponse");
 
     return true;
 }

@@ -53,10 +53,8 @@
     <ClCompile Include="StreetGangPBService.cpp" />
     <ClCompile Include="StreetGangReactor.cpp" />
     <ClCompile Include="StreetGangRestService.cpp" />
-    <ClCompile Include="StreetGangSessionManager.cpp" />
     <ClCompile Include="WorldClient.cpp" />
     <ClCompile Include="WorldClientDispatcher.cpp" />
-    <ClCompile Include="WorldServiceProvider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RequestByebyeReactor.h" />
@@ -72,10 +70,8 @@
     <ClInclude Include="StreetGangPBService.h" />
     <ClInclude Include="StreetGangReactor.h" />
     <ClInclude Include="StreetGangRestService.h" />
-    <ClInclude Include="StreetGangSessionManager.h" />
     <ClInclude Include="WorldClient.h" />
     <ClInclude Include="WorldClientDispatcher.h" />
-    <ClInclude Include="WorldServiceProvider.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9BB77B5E-1F94-49F9-8307-D8696B8310A1}</ProjectGuid>

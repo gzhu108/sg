@@ -7,7 +7,6 @@
 #include "RestRequestGetVersion.h"
 #include "RestRequestCreateWorld.h"
 #include "RestRequestGetScene.h"
-#include "StreetGangSessionManager.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;

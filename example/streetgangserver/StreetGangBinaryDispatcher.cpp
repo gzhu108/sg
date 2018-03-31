@@ -1,5 +1,4 @@
 #include "StreetGangBinaryDispatcher.h"
-#include "StreetGangSessionManager.h"
 #include "BinarySerializer.h"
 
 #include "RequestGetVersionReactor.h"

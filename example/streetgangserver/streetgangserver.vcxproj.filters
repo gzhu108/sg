@@ -39,12 +39,6 @@
     <ClCompile Include="StreetGangRestService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StreetGangSessionManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldServiceProvider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StreetGangBinaryService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,12 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreetGangRestService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StreetGangSessionManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldServiceProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StreetGangBinaryService.h">
