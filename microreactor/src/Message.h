@@ -8,6 +8,8 @@
 
 namespace sg { namespace microreactor
 {
+    class Reactor;
+
     class Message
     {
     public:
@@ -16,7 +18,7 @@ namespace sg { namespace microreactor
 
         PROPERTY(TrackId, std::string);
         PROPERTY(ResponseTimeout, int64_t, 0);
-        PROPERTY(UserData, uintptr_t, 0);
+        PROPERTY(ResponderReactor, std::shared_ptr<Reactor>);
 
     public:
         const std::chrono::time_point<std::chrono::high_resolution_clock>& GetCreationTime() { return mCreationTime; }

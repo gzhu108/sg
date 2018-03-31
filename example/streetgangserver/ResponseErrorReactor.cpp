@@ -18,8 +18,8 @@ ResponseErrorReactor::~ResponseErrorReactor()
 
 bool ResponseErrorReactor::Process()
 {
-    auto reactor = reinterpret_cast<sg::microreactor::Reactor*>(mParentMessage->UserData.get());
-    auto streetGangReactor = dynamic_cast<StreetGangReactor*>(reactor);
+    auto reactor = mRequesterMessage->ResponderReactor.get();
+    auto streetGangReactor = std::dynamic_pointer_cast<StreetGangReactor>(reactor);
     auto streetGangMessage = std::static_pointer_cast<streetgangapi::MessageBase>(reactor->Input());
 
     auto& errorCode = InputMessage()->Result.cref();
@@ -27,7 +27,7 @@ bool ResponseErrorReactor::Process()
 
     LOG("ResponseErrorReactor() [Error=%d] [TrackId=%s] [RequestId=%d]",
         errorCode,
-        mParentMessage == nullptr ? "0" : mParentMessage->TrackId->c_str(),
+        mRequesterMessage == nullptr ? "0" : mRequesterMessage->TrackId->c_str(),
         requestId);
 
     return streetGangReactor->GetResponder()->SendErrorResponse(streetGangMessage->TrackId.cref(), (streetgangapi::ResultCode)errorCode, streetGangMessage->Id.cref(), InputMessage()->ErrorMessage.cref());

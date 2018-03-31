@@ -20,7 +20,7 @@ RequestCreateWorldReactor::~RequestCreateWorldReactor()
 bool RequestCreateWorldReactor::Process()
 {
     worldapi::WorldRequester requester(*WorldClient::GetInstance().GetConnection());
-    return requester.CreateWorld(InputMessage()->WorldName.cref(), reinterpret_cast<uintptr_t>(this));
+    return requester.CreateWorld(InputMessage()->WorldName.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
 }
 
 bool RequestCreateWorldReactor::SendResponse(const SessionId& sessionId, const std::string& worldName)

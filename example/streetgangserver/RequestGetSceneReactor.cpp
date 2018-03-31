@@ -20,7 +20,7 @@ RequestGetSceneReactor::~RequestGetSceneReactor()
 bool RequestGetSceneReactor::Process()
 {
     worldapi::WorldRequester requester(*WorldClient::GetInstance().GetConnection());
-    return requester.GetWorld(InputMessage()->WorldId.cref(), reinterpret_cast<uintptr_t>(this));
+    return requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
 }
 
 bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items)

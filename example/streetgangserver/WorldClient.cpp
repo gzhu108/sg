@@ -32,7 +32,7 @@ WorldClient::WorldClient(const std::string& protocol, const std::string& hostNam
         responseError->ErrorMessage.set("WorldServer timeout");
 
         auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(timedOutMessage.mConnection, responseError);
-        responseErrorReactor->SetParent(timedOutMessage.mMessage);
+        responseErrorReactor->SetRequesterMessage(timedOutMessage.mMessage);
         
         responseErrorReactor->Process();
     });
