@@ -19,8 +19,8 @@ RequestCreateWorldReactor::~RequestCreateWorldReactor()
 
 bool RequestCreateWorldReactor::Process()
 {
-    auto requester = std::make_shared<worldapi::WorldRequester>(*WorldClient::GetInstance().GetConnection());
-    return requester->CreateWorld(InputMessage()->WorldName.cref(), reinterpret_cast<uintptr_t>(this));
+    worldapi::WorldRequester requester(*WorldClient::GetInstance().GetConnection());
+    return requester.CreateWorld(InputMessage()->WorldName.cref(), reinterpret_cast<uintptr_t>(this));
 }
 
 bool RequestCreateWorldReactor::SendResponse(const SessionId& sessionId, const std::string& worldName)

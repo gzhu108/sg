@@ -3,7 +3,6 @@
 #define streetgangserver_WorldClient
 
 #include "Client.h"
-#include "StreetGangReactor.h"
 
 
 namespace streetgangserver

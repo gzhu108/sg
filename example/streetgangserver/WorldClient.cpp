@@ -50,15 +50,15 @@ WorldClient& WorldClient::GetInstance()
     if (mInstance == nullptr)
     {
         std::string protocol;
-        std::string worldHost;
-        uint16_t worldPort = 0;
+        std::string worldServerHost;
+        uint16_t worldServerPort = 0;
 
         auto configuration = ConfigurationSingleton::GetConfiguration();
         configuration->GetValue("Protocol", protocol);
-        configuration->GetValue("WorldHost", worldHost);
-        configuration->GetValue("WorldPort", worldPort);
+        configuration->GetValue("WorldServerHost", worldServerHost);
+        configuration->GetValue("WorldServerPort", worldServerPort);
 
-        mInstance.reset(new WorldClient(protocol, worldHost, worldPort));
+        mInstance.reset(new WorldClient(protocol, worldServerHost, worldServerPort));
     }
 
     return *mInstance;
