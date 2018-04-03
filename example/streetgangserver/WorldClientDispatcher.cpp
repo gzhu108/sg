@@ -16,9 +16,9 @@ using namespace streetgangserver;
 
 WorldClientDispatcher::WorldClientDispatcher()
 {
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::Error), std::bind(&WorldClientDispatcher::CreateErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldResponse), std::bind(&WorldClientDispatcher::CreateCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneResponse), std::bind(&WorldClientDispatcher::CreateGetWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::Error), std::bind(&WorldClientDispatcher::CreateErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::CreateWorldResponse), std::bind(&WorldClientDispatcher::CreateCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::GetWorldResponse), std::bind(&WorldClientDispatcher::CreateGetWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 WorldClientDispatcher::~WorldClientDispatcher()
