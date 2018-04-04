@@ -16,15 +16,9 @@ namespace streetgangserver
         StreetGangBinaryService();
         virtual ~StreetGangBinaryService();
         
-    public:
-        virtual bool Start() override;
-        virtual bool Stop() override;
-
     protected:
-        bool CreateBinaryListener();
+        virtual bool Initialize() override;
         
-        void OnConnectionMade(const std::shared_ptr<const sg::microreactor::Connection>& connection);
-
         void SetResponseTime(std::shared_ptr<streetgangapi::MessageBase> response);
         void OnTaskPreprocess(const sg::microreactor::TaskPtr& task);
         void OnTaskPostprocess(const sg::microreactor::TaskPtr& task);

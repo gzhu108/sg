@@ -86,6 +86,7 @@ void Endpoint::AcceptConnection()
             mActiveConnections.erase(connection);
         }, reinterpret_cast<uintptr_t>(this));
 
+        // Signal a connection is made
         mConnectionMade(connection);
 
         // Push to the queue to receive messages.

@@ -32,47 +32,7 @@ WorldService::~WorldService()
     }
 }
 
-bool WorldService::Start()
-{
-    if (CreateBinaryListener())
-    {
-        // Start the endpoint
-        if (mEndpoint != nullptr)
-        {
-            if (!mEndpoint->Start())
-            {
-                return false;
-            }
-
-            // Connection to the ConnectonMade signal
-            mEndpoint->ConnectionMade.Connect(std::bind(&WorldService::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool WorldService::Stop()
-{
-    // Stop all listeners
-    if (mEndpoint != nullptr)
-    {
-        if (!mEndpoint->Stop())
-        {
-            return false;
-        }
-
-        // Disconnect the ConnectonMade signal
-        mEndpoint->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
-        mEndpoint = nullptr;
-        return true;
-    }
-
-    return false;
-}
-
-bool WorldService::CreateBinaryListener()
+bool WorldService::Initialize()
 {
     auto configuration = ConfigurationSingleton::GetConfiguration();
     if (configuration == nullptr)
@@ -112,17 +72,4 @@ bool WorldService::CreateBinaryListener()
     mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
     return true;
-}
-
-void WorldService::OnConnectionMade(const std::shared_ptr<const Connection>& connection)
-{
-    std::string hostName = connection->Name.cref();
-    std::string connectionName = std::string("[") + connection->GetPeerName() + "]:" + std::to_string(connection->GetPeerPort());
-
-    connection->Closed.Connect([=]()
-    {
-        LOG("Disconnected %s -> %s", hostName.c_str(), connectionName.c_str());
-    });
-
-    LOG("Connection accepted %s -> %s", hostName.c_str(), connectionName.c_str());
 }

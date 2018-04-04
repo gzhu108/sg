@@ -51,47 +51,7 @@ StreetGangBinaryService::~StreetGangBinaryService()
     taskProcessHook.Postprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
 }
 
-bool StreetGangBinaryService::Start()
-{
-    if (CreateBinaryListener())
-    {
-        // Start the endpoint
-        if (mEndpoint != nullptr)
-        {
-            if (!mEndpoint->Start())
-            {
-                return false;
-            }
-
-            // Connection to the ConnectonMade signal
-            mEndpoint->ConnectionMade.Connect(std::bind(&StreetGangBinaryService::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool StreetGangBinaryService::Stop()
-{
-    // Stop all listeners
-    if (mEndpoint != nullptr)
-    {
-        if (!mEndpoint->Stop())
-        {
-            return false;
-        }
-
-        // Disconnect the ConnectonMade signal
-        mEndpoint->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
-        mEndpoint = nullptr;
-        return true;
-    }
-
-    return false;
-}
-
-bool StreetGangBinaryService::CreateBinaryListener()
+bool StreetGangBinaryService::Initialize()
 {
     auto configuration = ConfigurationSingleton::GetConfiguration();
     if (configuration == nullptr)
@@ -131,19 +91,6 @@ bool StreetGangBinaryService::CreateBinaryListener()
     mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
     return true;
-}
-
-void StreetGangBinaryService::OnConnectionMade(const std::shared_ptr<const Connection>& connection)
-{
-    std::string hostName = connection->Name.cref();
-    std::string connectionName = std::string("[") + connection->GetPeerName() + "]:" + std::to_string(connection->GetPeerPort());
-
-    connection->Closed.Connect([=]()
-    {
-        LOG("Disconnected %s -> %s", hostName.c_str(), connectionName.c_str());
-    });
-
-    LOG("Connection accepted %s -> %s", hostName.c_str(), connectionName.c_str());
 }
 
 void StreetGangBinaryService::SetResponseTime(std::shared_ptr<MessageBase> response)

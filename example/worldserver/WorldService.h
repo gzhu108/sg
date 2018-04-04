@@ -15,13 +15,8 @@ namespace worldserver
         WorldService();
         virtual ~WorldService();
         
-    public:
-        virtual bool Start() override;
-        virtual bool Stop() override;
-
     protected:
-        bool CreateBinaryListener();        
-        void OnConnectionMade(const std::shared_ptr<const sg::microreactor::Connection>& connection);
+        virtual bool Initialize() override;
         
     protected:
         sg::microreactor::Signal<void>::SignalId mConfigurationConnectionId;
