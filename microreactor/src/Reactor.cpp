@@ -3,7 +3,7 @@
 using namespace sg::microreactor;
 
 
-Reactor::Reactor(Connection& connection)
+Reactor::Reactor(std::shared_ptr<Connection> connection)
     : mConnection(connection)
 {
 }

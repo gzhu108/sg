@@ -4,10 +4,6 @@
 using namespace sg::microreactor;
 
 
-std::map<std::shared_ptr<Connection>, Endpoint*> Endpoint::mActiveConnections;
-std::recursive_mutex Endpoint::mActiveConnectionsLock;
-
-
 Endpoint::Endpoint(std::shared_ptr<Profile> profile)
     : mProfile(profile)
 {
@@ -15,16 +11,6 @@ Endpoint::Endpoint(std::shared_ptr<Profile> profile)
 
 Endpoint::~Endpoint()
 {
-    ScopeLock<decltype(mActiveConnectionsLock)> scopeLock(mActiveConnectionsLock);
-    for (auto& connection : mActiveConnections)
-    {
-        if (connection.second == this)
-        {
-            connection.first->Closed.Disconnect(reinterpret_cast<uintptr_t>(this));
-            connection.first->Stop();
-        }
-    }
-
     CancelAllTasks(ListenTimeout.cref());
     
     // Do not clear connections as the mActiveConnections is shared with all endpoint.
@@ -57,34 +43,12 @@ void Endpoint::AcceptConnection()
         return;
     }
 
-    // Remove all closed connections
-    RemoveClosedConnections();
-
     auto listenTimeout = ListenTimeout.cref();
-    {
-        ScopeLock<decltype(mActiveConnectionsLock)> scopeLock(mActiveConnectionsLock);
-        if (mActiveConnections.empty())
-        {
-            listenTimeout = std::chrono::milliseconds(100);
-        }
-    }
-
     std::shared_ptr<Connection> connection = Listen(listenTimeout);
     if (connection != nullptr)
     {
-        {
-            ScopeLock<decltype(mActiveConnectionsLock)> scopeLock(mActiveConnectionsLock);
-            mActiveConnections.emplace(connection, this);
-        }
-
         connection->ReceiveTimeout.set(ReceiveTimeout.cref());
         connection->SendTimeout.set(SendTimeout.cref());
-
-        connection->Closed.Connect([&]
-        {
-            ScopeLock<decltype(mActiveConnectionsLock)> scopeLock(mActiveConnectionsLock);
-            mActiveConnections.erase(connection);
-        }, reinterpret_cast<uintptr_t>(this));
 
         // Signal a connection is made
         mConnectionMade(connection);
@@ -108,24 +72,6 @@ void Endpoint::CancelAllTasks(const std::chrono::microseconds& waitTime)
         while (GET_ACTIVE_TASK_COUNT(this) > 0)
         {
             std::this_thread::sleep_for(waitTime);
-        }
-    }
-}
-
-void Endpoint::RemoveClosedConnections()
-{
-    ScopeLock<decltype(mActiveConnectionsLock)> scopeLock(mActiveConnectionsLock);
-
-    auto activeConnection = mActiveConnections.begin();
-    while (activeConnection != mActiveConnections.end())
-    {
-        if (activeConnection->first->IsClosed())
-        {
-            activeConnection = mActiveConnections.erase(activeConnection);
-        }
-        else
-        {
-            activeConnection++;
         }
     }
 }

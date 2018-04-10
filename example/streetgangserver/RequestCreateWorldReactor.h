@@ -15,7 +15,7 @@ namespace streetgangserver
         , public StreetGangReactor
     {
     public:
-        RequestCreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestCreateWorld> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
+        RequestCreateWorldReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::RequestCreateWorld> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
         virtual ~RequestCreateWorldReactor();
         
     public:

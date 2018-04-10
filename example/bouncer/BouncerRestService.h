@@ -17,8 +17,8 @@ namespace bouncer
         virtual bool Initialize() override;
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateBouncerReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateSettingsReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateBouncerReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateSettingsReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection);
     };
 }
 

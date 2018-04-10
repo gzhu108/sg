@@ -12,7 +12,7 @@ namespace streetgangclient
     class ResponseGetVersionReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseGetVersion>
     {
     public:
-        ResponseGetVersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseGetVersion> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
+        ResponseGetVersionReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::ResponseGetVersion> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
         virtual ~ResponseGetVersionReactor();
 
     public:

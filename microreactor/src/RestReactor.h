@@ -16,7 +16,7 @@ namespace sg { namespace microreactor
     public:
         typedef T MessageType;
 
-        RestReactor(Connection& connection, std::shared_ptr<RestRequest> request)
+        RestReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
             : Reactor(connection)
         {
             mInput = std::make_shared<MessageType>(request);

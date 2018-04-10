@@ -12,7 +12,7 @@ namespace streetgangserver
     class ResponseErrorReactor : public sg::microreactor::MessageReactor<worldapi::ResponseError>
     {
     public:
-        ResponseErrorReactor(sg::microreactor::Connection& connection, std::shared_ptr<worldapi::ResponseError> message);
+        ResponseErrorReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<worldapi::ResponseError> message);
         virtual ~ResponseErrorReactor();
 
     public:

@@ -3,7 +3,6 @@
 #define sg_microreactor_Endpoint
 
 #include <chrono>
-#include "Shareable.h"
 #include "Connection.h"
 
 
@@ -33,16 +32,12 @@ namespace sg { namespace microreactor
         virtual bool Close() = 0;
         virtual void AcceptConnection();
         virtual void CancelAllTasks(const std::chrono::microseconds& waitTime);
-        virtual void RemoveClosedConnections();
 
         virtual std::shared_ptr<Connection> Listen(const std::chrono::milliseconds& timeout) = 0;
 
     protected:
         Emittable<std::shared_ptr<Connection>> mConnectionMade;
         std::shared_ptr<Profile> mProfile;
-
-        static std::map<std::shared_ptr<Connection>, Endpoint*> mActiveConnections;
-        static std::recursive_mutex mActiveConnectionsLock;
     };
 }}
 

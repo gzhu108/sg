@@ -17,7 +17,7 @@ namespace streetgangserver
         , public StreetGangReactor
     {
     public:
-        RequestGetSceneReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
+        RequestGetSceneReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
         virtual ~RequestGetSceneReactor();
         
     public:

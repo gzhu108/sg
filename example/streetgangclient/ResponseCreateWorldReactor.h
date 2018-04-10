@@ -12,7 +12,7 @@ namespace streetgangclient
     class ResponseCreateWorldReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseCreateWorld>
     {
     public:
-        ResponseCreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::ResponseCreateWorld> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
+        ResponseCreateWorldReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::ResponseCreateWorld> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
         virtual ~ResponseCreateWorldReactor();
         
     public:

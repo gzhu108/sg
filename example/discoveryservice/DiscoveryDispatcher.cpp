@@ -45,7 +45,7 @@ void DiscoveryDispatcher::Dispatch(Connection& connection)
             auto message = std::make_shared<RequestSearch>();
             message->Deserialize(outStream, serializer);
 
-            auto reactor = std::make_shared<RequestSearchReactor>(connection, message);
+            auto reactor = std::make_shared<RequestSearchReactor>(std::static_pointer_cast<Connection>(connection.shared_from_this()), message);
             if (reactor)
             {
                 reactor->Process();

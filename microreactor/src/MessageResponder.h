@@ -11,14 +11,14 @@ namespace sg { namespace microreactor
     class MessageResponder
     {
     public:
-        explicit MessageResponder(Connection& connection);
+        explicit MessageResponder(std::shared_ptr<Connection> connection);
         virtual ~MessageResponder();
 
     public:
         virtual bool SendMessage(std::shared_ptr<Message> message);
 
     protected:
-        Connection& mConnection;
+        std::shared_ptr<Connection> mConnection;
     };
 }}
 

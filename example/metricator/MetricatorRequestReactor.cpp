@@ -5,7 +5,7 @@ using namespace metricatorapi;
 using namespace metricator;
 
 
-MetricatorRequestReactor::MetricatorRequestReactor(Connection& connection, std::shared_ptr<MetricatorRequest> message)
+MetricatorRequestReactor::MetricatorRequestReactor(std::shared_ptr<Connection> connection, std::shared_ptr<MetricatorRequest> message)
     : MessageReactor(connection, message)
 {
 }
@@ -24,7 +24,7 @@ bool MetricatorRequestReactor::Process()
     }
 
     //LOG("%s: %s", mConnection.Name->c_str(), s.str().c_str());
-    printf("%s: %s\n", mConnection.Name->c_str(), s.str().c_str());
+    printf("%s: %s\n", mConnection->Name->c_str(), s.str().c_str());
 
     return true;
 }

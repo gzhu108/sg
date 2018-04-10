@@ -26,7 +26,7 @@ StreetGangPBClient::StreetGangPBClient(const std::string& protocol, const std::s
         responseError->Result.set((int32_t)ResultCode::ErrorTimeout);
         responseError->RequestId.set(std::static_pointer_cast<MessageBase>(timedOutMessage.mMessage)->Id.cref());
 
-        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(timedOutMessage.mConnection, responseError, nullptr);
+        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(std::static_pointer_cast<Connection>(timedOutMessage.mConnection.shared_from_this()), responseError, nullptr);
         responseErrorReactor->SetRequesterMessage(timedOutMessage.mMessage);
         
         responseErrorReactor->Process();

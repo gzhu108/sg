@@ -12,6 +12,7 @@ namespace streetgangserver
     public:
         virtual ~WorldClient();
         static WorldClient& GetInstance();
+        static void ResetWorldClient();
 
     protected:
         WorldClient(const std::string& protocol, const std::string& hostName, uint16_t port);

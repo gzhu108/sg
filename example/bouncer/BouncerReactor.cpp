@@ -7,7 +7,7 @@ using namespace sg::microreactor;
 using namespace bouncer;
 
 
-BouncerReactor::BouncerReactor(Connection& connection, std::shared_ptr<Connection> target, std::istream& stream)
+BouncerReactor::BouncerReactor(std::shared_ptr<Connection> connection, std::shared_ptr<Connection> target, std::istream& stream)
     : Reactor(connection)
     , mTarget(target)
 {
@@ -30,7 +30,7 @@ bool BouncerReactor::Process()
         return false;
     }
 
-    LOG("%s: Received " FMT_UINT64 " bytes", mConnection.Name->c_str(), mData.size());
+    LOG("%s: Received " FMT_UINT64 " bytes", mConnection->Name->c_str(), mData.size());
 
     auto bytesSent = mTarget->Send(&mData[0], (int32_t)mData.size());
     if (bytesSent != mData.size())
@@ -56,13 +56,13 @@ bool BouncerReactor::ReceiveTarget()
 
         if (bytesReceived)
         {
-            auto bytesSent = mConnection.Send(&response[0], (int32_t)bytesReceived);
+            auto bytesSent = mConnection->Send(&response[0], (int32_t)bytesReceived);
             if (bytesSent != bytesReceived)
             {
                 return false;
             }
 
-            LOG("%s: Sent " FMT_UINT64 " bytes", mConnection.Name->c_str(), bytesSent);
+            LOG("%s: Sent " FMT_UINT64 " bytes", mConnection->Name->c_str(), bytesSent);
         }
 
         SUBMIT(std::bind(&BouncerReactor::ReceiveTarget, this), shared_from_this(), this, "BouncerReactor::ReceiveTarget");

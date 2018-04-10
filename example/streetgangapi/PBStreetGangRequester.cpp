@@ -11,7 +11,7 @@ using namespace sg::microreactor;
 using namespace streetgangapi;
 
 
-PBStreetGangRequester::PBStreetGangRequester(Connection& connection)
+PBStreetGangRequester::PBStreetGangRequester(std::shared_ptr<Connection> connection)
     : StreetGangRequester(connection)
 {
 }

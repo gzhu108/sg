@@ -5,14 +5,14 @@
 #include <chrono>
 #include <set>
 #include <mutex>
-#include "Shareable.h"
+#include "Parkable.h"
 #include "Profile.h"
 #include "Message.h"
 
 
 namespace sg { namespace microreactor
 {
-    class Connection : public Shareable
+    class Connection : public Parkable
     {
     public:
         explicit Connection(std::shared_ptr<Profile> profile);

@@ -3,6 +3,7 @@
 #define sg_microreactor_ScopeLock
 
 #include <mutex>
+#include <atomic>
 
 
 namespace sg { namespace microreactor
@@ -12,14 +13,14 @@ namespace sg { namespace microreactor
         extern uint64_t GetThreadPoolSize();
     }
 
-    template<class _Mutex>
+    template<class Mutex>
     class ScopeLock
     {
     public:
-        typedef _Mutex mutex_type;
+        typedef Mutex mutex_type;
 
-        explicit ScopeLock(_Mutex& _Mtx)
-            : mMutex(_Mtx)
+        explicit ScopeLock(Mutex& m)
+            : mMutex(m)
             , mShouldLock(TaskManagerSingleton::GetThreadPoolSize() != 0)
         {
             if (mShouldLock)
@@ -40,8 +41,8 @@ namespace sg { namespace microreactor
         ScopeLock& operator=(const ScopeLock&) = delete;
 
     private:
-        _Mutex& mMutex;
-        bool mShouldLock;
+        Mutex& mMutex;
+        std::atomic<bool> mShouldLock;
     };
 }}
 

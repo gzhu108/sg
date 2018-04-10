@@ -17,9 +17,9 @@ namespace streetgangserver
         virtual bool Initialize() override;
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetVersionReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateCreateWorldReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetSceneReactor(std::shared_ptr<sg::microreactor::RestRequest> request, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetVersionReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateCreateWorldReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetSceneReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection);
     };
 }
 

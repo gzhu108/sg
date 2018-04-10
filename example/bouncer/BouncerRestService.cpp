@@ -31,15 +31,15 @@ bool BouncerRestService::Initialize()
     return RestService::Initialize();
 }
 
-std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_ptr<RestRequest> request, Connection& connection)
+std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
 {
     if (request->mUri.length() < std::string("/").length())
     {
-        RestResponse::SendErrorWith(connection, 404, "Not found");
+        RestResponse::SendErrorWith(*connection, 404, "Not found");
         return nullptr;
     }
 
-    auto bouncerProfile = std::static_pointer_cast<BouncerProfile>(connection.GetProfile());
+    auto bouncerProfile = std::static_pointer_cast<BouncerProfile>(connection->GetProfile());
     std::string protocol = bouncerProfile->Protocol.cref();
     std::string targetName = bouncerProfile->TargetName.cref();
     uint16_t targetPort = bouncerProfile->TargetPort.cref();
@@ -73,14 +73,14 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
     return std::make_shared<BouncerReactor>(connection, target, stream);
 }
 
-std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_ptr<RestRequest> request, Connection& connection)
+std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
 {
     if (request->mUri.length() < std::string("/settings").length() || request->mBody.mLength == 0)
     {
         return nullptr;
     }
 
-    auto bouncerProfile = std::static_pointer_cast<BouncerProfile>(connection.GetProfile());
+    auto bouncerProfile = std::static_pointer_cast<BouncerProfile>(connection->GetProfile());
     std::string targetName = bouncerProfile->TargetName.cref();
     uint16_t targetPort = bouncerProfile->TargetPort.cref();
 
@@ -116,12 +116,12 @@ std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_p
 
         // Respond with OK
         RestResponse ok;
-        ok.Send(connection);
+        ok.Send(*connection);
     }
     catch (...)
     {
         LOG("Failed to parse JSON: %.*s", (int)request->mBody.mLength, request->mBody.mOffset);
-        RestResponse::SendErrorWith(connection, 405, "Method Not Allowed");
+        RestResponse::SendErrorWith(*connection, 405, "Method Not Allowed");
     }
 
     return nullptr;

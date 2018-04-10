@@ -7,7 +7,7 @@ using namespace worldapi;
 using namespace streetgangserver;
 
 
-ResponseErrorReactor::ResponseErrorReactor(Connection& connection, std::shared_ptr<ResponseError> message)
+ResponseErrorReactor::ResponseErrorReactor(std::shared_ptr<Connection> connection, std::shared_ptr<ResponseError> message)
     : MessageReactor(connection, message)
 {
 }

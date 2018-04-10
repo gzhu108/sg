@@ -11,7 +11,7 @@ namespace sg { namespace service
     class DiscoveryRequester : public sg::microreactor::MessageRequester
     {
     public:
-        explicit DiscoveryRequester(sg::microreactor::Connection& connection);
+        explicit DiscoveryRequester(std::shared_ptr<sg::microreactor::Connection> connection);
         virtual ~DiscoveryRequester();
         
     public:

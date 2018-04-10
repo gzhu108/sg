@@ -6,7 +6,7 @@ using namespace worldapi;
 using namespace streetgangserver;
 
 
-ResponseGetWorldReactor::ResponseGetWorldReactor(Connection& connection, std::shared_ptr<ResponseGetWorld> message)
+ResponseGetWorldReactor::ResponseGetWorldReactor(std::shared_ptr<Connection> connection, std::shared_ptr<ResponseGetWorld> message)
     : MessageReactor(connection, message)
 {
 }

@@ -1,4 +1,5 @@
 #include "RequestGetSceneReactor.h"
+#include "Park.h"
 #include "WorldRequester.h"
 #include "WorldClient.h"
 
@@ -7,7 +8,7 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestGetSceneReactor::RequestGetSceneReactor(Connection& connection, std::shared_ptr<RequestGetScene> message, std::shared_ptr<StreetGangResponder> responder)
+RequestGetSceneReactor::RequestGetSceneReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RequestGetScene> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
     , StreetGangReactor(responder)
 {
@@ -19,12 +20,17 @@ RequestGetSceneReactor::~RequestGetSceneReactor()
 
 bool RequestGetSceneReactor::Process()
 {
-    worldapi::WorldRequester requester(*WorldClient::GetInstance().GetConnection());
+    Park::ParkingLot().Add(reinterpret_cast<uintptr_t>(this), std::static_pointer_cast<Parkable>(shared_from_this()));
+
+    worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection());
     return requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
 }
 
 bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items)
 {
+    std::vector<std::shared_ptr<Parkable>> parkables;
+    Park::ParkingLot().Remove(reinterpret_cast<uintptr_t>(this), parkables);
+
     if (mResponder == nullptr)
     {
         LOG("Invalid responder");

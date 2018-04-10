@@ -21,7 +21,7 @@ bool SimpleWebService::Initialize()
     return RestService::Initialize();
 }
 
-std::shared_ptr<Reactor> SimpleWebService::CreateGetFileReactor(std::shared_ptr<RestRequest> request, Connection& connection)
+std::shared_ptr<Reactor> SimpleWebService::CreateGetFileReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
 {
     if (request->mUri.length() < std::string("/").length())
     {

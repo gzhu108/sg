@@ -160,6 +160,16 @@ int32_t main(int32_t argc, const char* argv[])
         LOG("Failed to start the settings service");
     }
 
+    // Cancell all tasks
+    uint64_t cancelCount = CANCEL_TASKS();
+    if (cancelCount > 0)
+    {
+        while (GET_ACTIVE_TASK_COUNT() > 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
     LOG("All done...");
     return 0;
 }

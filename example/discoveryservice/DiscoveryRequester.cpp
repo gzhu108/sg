@@ -6,7 +6,7 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-DiscoveryRequester::DiscoveryRequester(Connection& connection)
+DiscoveryRequester::DiscoveryRequester(std::shared_ptr<Connection> connection)
     : MessageRequester(connection)
 {
 }
@@ -24,8 +24,8 @@ void DiscoveryRequester::MulticastSearch(const std::string& serviceType, const s
     
     if (!SendMessage(request))
     {
-        auto peerName = mConnection.GetPeerName();
-        auto peerPort = mConnection.GetPeerPort();
+        auto peerName = mConnection->GetPeerName();
+        auto peerPort = mConnection->GetPeerPort();
         LOG("Failed to send multicast search request to %s:%u", peerName.c_str(), peerPort);
     }
 }
@@ -39,8 +39,8 @@ void DiscoveryRequester::UnicastSearch(const std::string& serviceType, const std
 
     if (!SendMessage(request))
     {
-        auto peerName = mConnection.GetPeerName();
-        auto peerPort = mConnection.GetPeerPort();
+        auto peerName = mConnection->GetPeerName();
+        auto peerPort = mConnection->GetPeerPort();
         LOG("Failed to send unicast search request to %s:%u", peerName.c_str(), peerPort);
     }
 }

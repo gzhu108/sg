@@ -10,7 +10,7 @@ using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-ResponseCreateWorldReactor::ResponseCreateWorldReactor(Connection& connection, std::shared_ptr<ResponseCreateWorld> message, std::shared_ptr<StreetGangRequester> requester)
+ResponseCreateWorldReactor::ResponseCreateWorldReactor(std::shared_ptr<Connection> connection, std::shared_ptr<ResponseCreateWorld> message, std::shared_ptr<StreetGangRequester> requester)
     : MessageReactor(connection, message)
     , mRequester(requester)
 {

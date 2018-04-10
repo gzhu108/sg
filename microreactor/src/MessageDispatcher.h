@@ -17,7 +17,7 @@ namespace sg { namespace microreactor
         MessageDispatcher() {}
         virtual ~MessageDispatcher() {}
 
-        typedef std::function<std::shared_ptr<Reactor>(InputStream&, Connection&)> Factory;
+        typedef std::function<std::shared_ptr<Reactor>(InputStream&, std::shared_ptr<Connection>)> Factory;
 
     public:
         virtual void Dispatch(Connection& connection) override

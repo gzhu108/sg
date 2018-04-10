@@ -185,6 +185,8 @@
     <ClCompile Include="src\MessageResponder.cpp" />
     <ClCompile Include="src\Microservice.cpp" />
     <ClCompile Include="src\NetworkUtility.cpp" />
+    <ClCompile Include="src\Park.cpp" />
+    <ClCompile Include="src\Parkable.cpp" />
     <ClCompile Include="src\Profile.cpp" />
     <ClCompile Include="src\Reactor.cpp" />
     <ClCompile Include="src\RestFileResponse.cpp" />
@@ -249,6 +251,8 @@
     <ClInclude Include="src\Microreactor.h" />
     <ClInclude Include="src\Microservice.h" />
     <ClInclude Include="src\NetworkUtility.h" />
+    <ClInclude Include="src\Park.h" />
+    <ClInclude Include="src\Parkable.h" />
     <ClInclude Include="src\Profile.h" />
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\Reactor.h" />

@@ -114,18 +114,28 @@ int32_t main(int32_t argc, const char* argv[])
     {
         client = std::make_shared<StreetGangPBClient>(protocol, serverAddress, serverPort);
 
-        auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*client->GetConnection(), nullptr, std::make_shared<PBStreetGangRequester>(*client->GetConnection()));
+        auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(client->GetConnection(), nullptr, std::make_shared<PBStreetGangRequester>(client->GetConnection()));
         SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, "ResponseGetSceneReactor::SendNextRequest");
     }
     else
     {
         client = std::make_shared<StreetGangBinaryClient>(protocol, serverAddress, serverPort);
 
-        auto requester = std::make_shared<BinaryStreetGangRequester>(*client->GetConnection());
+        auto requester = std::make_shared<BinaryStreetGangRequester>(client->GetConnection());
         requester->GetVersion();
     }
 
     START_BLOCKING_TASK_LOOP();
+
+    // Cancell all tasks
+    uint64_t cancelCount = CANCEL_TASKS();
+    if (cancelCount > 0)
+    {
+        while (GET_ACTIVE_TASK_COUNT() > 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
 
     // Optional: Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();

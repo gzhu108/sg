@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace simplewebserver;
 
 
-GetFileReactor::GetFileReactor(Connection& connection, std::shared_ptr<RestRequest> request)
+GetFileReactor::GetFileReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }
@@ -39,5 +39,5 @@ bool GetFileReactor::Process()
 
     RestFileResponse response(path);
     response.mHeaders.emplace_back(HttpHeader("Content-Type", "image/jpg"));
-    return response.Send(mConnection);
+    return response.Send(*mConnection);
 }

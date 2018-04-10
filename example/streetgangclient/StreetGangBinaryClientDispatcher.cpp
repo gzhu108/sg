@@ -86,10 +86,10 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::Decode(std::istream& 
         return nullptr;
     }
 
-    return factory(stream, connection);
+    return factory(stream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateErrorResponseReactor(std::istream& stream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateErrorResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseError>();
     if (message->Decode(stream))
@@ -100,7 +100,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateErrorResponseRe
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetVersionResponseReactor(std::istream& stream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetVersionResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseGetVersion>();
     if (message->Decode(stream))
@@ -111,7 +111,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetVersionRespo
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateCreateWorldResponseReactor(std::istream& stream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateCreateWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseCreateWorld>();
     if (message->Decode(stream))
@@ -122,7 +122,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateCreateWorldResp
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetSceneResponseReactor(std::istream& stream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetSceneResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseGetScene>();
     if (message->Decode(stream))

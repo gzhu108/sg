@@ -7,7 +7,7 @@ using namespace worldapi;
 using namespace worldserver;
 
 
-CreateWorldReactor::CreateWorldReactor(Connection& connection, std::shared_ptr<RequestCreateWorld> message, std::shared_ptr<WorldResponder> responder)
+CreateWorldReactor::CreateWorldReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RequestCreateWorld> message, std::shared_ptr<WorldResponder> responder)
     : MessageReactor(connection, message)
     , mResponder(responder)
 {

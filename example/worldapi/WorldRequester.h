@@ -13,7 +13,7 @@ namespace worldapi
     class WorldRequester : protected sg::microreactor::MessageRequester
     {
     public:
-        WorldRequester(sg::microreactor::Connection& connection);
+        WorldRequester(std::shared_ptr<sg::microreactor::Connection> connection);
         virtual ~WorldRequester();
 
     public:

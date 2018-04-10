@@ -34,5 +34,5 @@ std::shared_ptr<sg::microreactor::Reactor> BouncerDecoder::Decode(std::istream& 
     targetProfile->Port.set(targetPort);
 
     std::shared_ptr<Connection> target = NetworkUtility::CreateConnection(targetProfile);
-    return std::make_shared<BouncerReactor>(connection, target, stream);
+    return std::make_shared<BouncerReactor>(std::static_pointer_cast<Connection>(connection.shared_from_this()), target, stream);
 }

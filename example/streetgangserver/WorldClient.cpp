@@ -31,7 +31,7 @@ WorldClient::WorldClient(const std::string& protocol, const std::string& hostNam
         responseError->RequestId.set(std::static_pointer_cast<WorldMessage>(timedOutMessage.mMessage)->Id.cref());
         responseError->ErrorMessage.set("WorldServer timeout");
 
-        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(timedOutMessage.mConnection, responseError);
+        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(std::static_pointer_cast<Connection>(timedOutMessage.mConnection.shared_from_this()), responseError);
         responseErrorReactor->SetRequesterMessage(timedOutMessage.mMessage);
         
         responseErrorReactor->Process();
@@ -62,4 +62,9 @@ WorldClient& WorldClient::GetInstance()
     }
 
     return *mInstance;
+}
+
+void WorldClient::ResetWorldClient()
+{
+    mInstance = nullptr;
 }

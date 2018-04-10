@@ -112,7 +112,7 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
             return nullptr;
         }
 
-        auto reactor = restReactorFactory(restRequest, connection);
+        auto reactor = restReactorFactory(restRequest, std::static_pointer_cast<Connection>(connection.shared_from_this()));
         if (reactor == nullptr)
         {
             RestResponse::SendErrorWith(connection, 400, "Bad Request");

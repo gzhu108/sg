@@ -53,15 +53,15 @@ std::shared_ptr<Reactor> StreetGangPBDispatcher::Decode(std::istream& stream, Co
     if (factory == nullptr)
     {
         LOG("Unknown request: [Request=%s]", header.message_id().c_str());
-        auto responder = std::make_shared<PBStreetGangResponder>(connection);
+        auto responder = std::make_shared<PBStreetGangResponder>(std::static_pointer_cast<Connection>(connection.shared_from_this()));
         responder->SendErrorResponse("Unknown", ResultCode::ErrorNotImplemented, static_cast<int32_t>(streetgangapi::ID::Unknown), header.message_id() + " Unknown request");
         return nullptr;
     }
 
-    return factory(codedInputStream, connection);
+    return factory(codedInputStream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
 }
 
-std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateByebyeReactor(google::protobuf::io::CodedInputStream& codedInputStream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateByebyeReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBRequestByebye>();
     if (message->Decode(codedInputStream))
@@ -72,7 +72,7 @@ std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateByebyeReactor(google::pro
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetVersionReactor(google::protobuf::io::CodedInputStream& codedInputStream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetVersionReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBRequestGetVersion>();
     if (message->Decode(codedInputStream))
@@ -83,7 +83,7 @@ std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetVersionReactor(google:
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateCreateWorldReactor(google::protobuf::io::CodedInputStream& codedInputStream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateCreateWorldReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBRequestCreateWorld>();
     if (message->Decode(codedInputStream))
@@ -94,7 +94,7 @@ std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateCreateWorldReactor(google
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetSceneReactor(google::protobuf::io::CodedInputStream& codedInputStream, Connection& connection)
+std::shared_ptr<Reactor> StreetGangPBDispatcher::CreateGetSceneReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBRequestGetScene>();
     if (message->Decode(codedInputStream))

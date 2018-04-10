@@ -10,6 +10,7 @@
 #include "StreetGangBinaryService.h"
 #include "StreetGangPBService.h"
 #include "StreetGangRestService.h"
+#include "WorldClient.h"
 #include "ConfigurationXml.h"
 #include "MetricatorLogger.h"
 //#include "UdpSocket.h"
@@ -202,6 +203,19 @@ int32_t main(int32_t argc, const char* argv[])
     {
         LOG("Failed to start the streetgangserver");
     }
+
+    // Cancell all tasks
+    uint64_t cancelCount = CANCEL_TASKS();
+    if (cancelCount > 0)
+    {
+        while (GET_ACTIVE_TASK_COUNT() > 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+    }
+
+    // Reset the world client
+    WorldClient::ResetWorldClient();
 
     // Optional: Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();

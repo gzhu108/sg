@@ -6,7 +6,7 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-RequestSearchReactor::RequestSearchReactor(Connection& connection, std::shared_ptr<RequestSearch> message)
+RequestSearchReactor::RequestSearchReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RequestSearch> message)
     : MessageReactor(connection, message)
 {
 }
@@ -17,7 +17,7 @@ RequestSearchReactor::~RequestSearchReactor()
 
 bool RequestSearchReactor::Process()
 {
-    auto udpConnection = static_cast<UdpConnection*>(&mConnection);
+    auto udpConnection = std::static_pointer_cast<UdpConnection>(mConnection);
     LOG("peer = %s:%u", udpConnection->Source->c_str(), udpConnection->Port.cref());
     return true;
 }

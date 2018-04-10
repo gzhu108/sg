@@ -11,7 +11,7 @@ namespace sg { namespace service
     class RequestSearchReactor : public sg::microreactor::MessageReactor<RequestSearch>
     {
     public:
-        RequestSearchReactor(sg::microreactor::Connection& connection, std::shared_ptr<RequestSearch> message);
+        RequestSearchReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<RequestSearch> message);
         virtual ~RequestSearchReactor();
 
     public:
