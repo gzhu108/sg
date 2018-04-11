@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace myserver;
 
 
-UpdateReactor::UpdateReactor(Connection& connection, std::shared_ptr<RestRequest> request)
+UpdateReactor::UpdateReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : POSTv1updateReactorBase(connection, request)
 {
 }
@@ -23,5 +23,5 @@ bool UpdateReactor::Process()
     }
 
     POSTv1updateResponse response;
-    return response.Send(mConnection);
+    return response.Send(*mConnection);
 }

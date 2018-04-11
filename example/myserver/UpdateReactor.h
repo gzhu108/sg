@@ -10,7 +10,7 @@ namespace myserver
     class UpdateReactor : public POSTv1updateReactorBase
     {
     public:
-        UpdateReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        UpdateReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~UpdateReactor();
 
     public:

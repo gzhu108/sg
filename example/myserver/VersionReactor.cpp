@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace myserver;
 
 
-VersionReactor::VersionReactor(Connection& connection, std::shared_ptr<RestRequest> request)
+VersionReactor::VersionReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : GETv1versionReactorBase(connection, request)
 {
 }
@@ -24,5 +24,5 @@ bool VersionReactor::Process()
 
     GETv1versionResponse response;
     response.Version.set("v1");
-    return response.Send(mConnection);
+    return response.Send(*mConnection);
 }

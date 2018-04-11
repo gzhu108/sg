@@ -15,7 +15,7 @@ MyService::~MyService()
 {
 }
 
-std::shared_ptr<Reactor> MyService::CreateGETv1versionReactor(std::shared_ptr<RestRequest> request, Connection& connection)
+std::shared_ptr<Reactor> MyService::CreateGETv1versionReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
 {
     if (request->mUri.length() < std::string("/v1/version").length())
     {
@@ -25,7 +25,7 @@ std::shared_ptr<Reactor> MyService::CreateGETv1versionReactor(std::shared_ptr<Re
     return std::make_shared<VersionReactor>(connection, request);
 }
 
-std::shared_ptr<Reactor> MyService::CreatePOSTv1updateReactor(std::shared_ptr<RestRequest> request, Connection& connection)
+std::shared_ptr<Reactor> MyService::CreatePOSTv1updateReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
 {
     if (request->mUri.length() < std::string("/v1/update").length())
     {
