@@ -11,7 +11,7 @@ namespace myserver
     class POSTv1updateReactorBase : public sg::microreactor::RestReactor<POSTv1updateMessage>
     {
     public:
-        POSTv1updateReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        POSTv1updateReactorBase(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~POSTv1updateReactorBase();
 
     public:

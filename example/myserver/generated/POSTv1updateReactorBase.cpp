@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace myserver;
 
 
-POSTv1updateReactorBase::POSTv1updateReactorBase(Connection& connection, std::shared_ptr<RestRequest> request)
+POSTv1updateReactorBase::POSTv1updateReactorBase(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }

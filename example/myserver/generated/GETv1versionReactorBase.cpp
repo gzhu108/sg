@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace myserver;
 
 
-GETv1versionReactorBase::GETv1versionReactorBase(Connection& connection, std::shared_ptr<RestRequest> request)
+GETv1versionReactorBase::GETv1versionReactorBase(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }

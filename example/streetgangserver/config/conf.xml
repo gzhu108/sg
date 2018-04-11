@@ -5,7 +5,7 @@
     <ListenTimeout>1</ListenTimeout>
     <ReceiveTimeout>1</ReceiveTimeout>
     <SendTimeout>100</SendTimeout>
-    <ThreadPoolSize>4</ThreadPoolSize>
+    <ThreadPoolSize>8</ThreadPoolSize>
     <Protocol>tcp</Protocol>
     <ServiceAddress>0.0.0.0</ServiceAddress>
     <PBPort>7390</PBPort>

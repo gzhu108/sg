@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace $namespace;
 
 
-$method$funcReactorBase::$method$funcReactorBase(Connection& connection, std::shared_ptr<RestRequest> request)
+$method$funcReactorBase::$method$funcReactorBase(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }

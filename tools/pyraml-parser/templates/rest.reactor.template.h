@@ -11,7 +11,7 @@ namespace $namespace
     class $method$funcReactorBase : public sg::microreactor::RestReactor<$method$funcMessage>
     {
     public:
-        $method$funcReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        $method$funcReactorBase(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~$method$funcReactorBase();
 
     public:
