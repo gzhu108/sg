@@ -18,7 +18,7 @@ bool Dispatcher::InitializeReactor(Reactor& reactor)
     if (reactor.Input() != nullptr)
     {
         auto message = GetTrackedMessage(reactor.Input()->TrackId.cref());
-        reactor.SetRequesterMessage(message);
+        reactor.SetOriginalMessage(message);
     }
     
     return true;

@@ -17,7 +17,7 @@ ResponseCreateWorldReactor::~ResponseCreateWorldReactor()
 
 bool ResponseCreateWorldReactor::Process()
 {
-    auto latency = mRequesterMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mRequesterMessage->GetRequestTime()).count();
+    auto latency = mOriginalMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
     auto& worldId = InputMessage()->WorldId.cref();
     auto& worldName = InputMessage()->WorldName.cref();
 
@@ -28,7 +28,7 @@ bool ResponseCreateWorldReactor::Process()
         worldId,
         worldName.c_str());
 
-    auto reactor = std::static_pointer_cast<RequestCreateWorldReactor>(mRequesterMessage->ResponderReactor.get());
+    auto reactor = std::static_pointer_cast<RequestCreateWorldReactor>(mOriginalMessage->OriginalReactor.get());
     SUBMIT(std::bind(&RequestCreateWorldReactor::SendResponse, reactor, worldId, worldName), reactor, this, "RequestCreateWorldReactor::SendResponse");
 
     return true;

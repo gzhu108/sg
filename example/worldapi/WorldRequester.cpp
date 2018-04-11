@@ -23,7 +23,7 @@ bool WorldRequester::CreateWorld(const std::string& worldName, std::shared_ptr<R
 {
     auto message = std::make_shared<RequestCreateWorld>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
-    message->ResponderReactor.set(reactor);
+    message->OriginalReactor.set(reactor);
     message->WorldName.set(worldName);
     return SendMessage(message);
 }
@@ -32,7 +32,7 @@ bool WorldRequester::GetWorld(const WorldId& worldId, std::shared_ptr<Reactor> r
 {
     auto message = std::make_shared<RequestGetWorld>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
-    message->ResponderReactor.set(reactor);
+    message->OriginalReactor.set(reactor);
     message->WorldId.set(worldId);
 
     return SendMessage(message);

@@ -23,7 +23,7 @@ bool ResponseErrorReactor::Process()
 
     LOG("ResponseErrorReactor() [Error=%d] [TrackId=%s] [RequestId=%d]",
         errorCode,
-        mRequesterMessage == nullptr ? "0" : mRequesterMessage->TrackId->c_str(),
+        mOriginalMessage == nullptr ? "0" : mOriginalMessage->TrackId->c_str(),
         requestId);
 
     STOP_TASK_MANAGER();

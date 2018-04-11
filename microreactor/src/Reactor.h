@@ -17,12 +17,12 @@ namespace sg { namespace microreactor
 
     public:
         virtual bool Process() = 0;
-        virtual void SetRequesterMessage(std::shared_ptr<Message> message) { mRequesterMessage = message; }
+        virtual void SetOriginalMessage(std::shared_ptr<Message> message) { mOriginalMessage = message; }
         virtual std::shared_ptr<Message> Input() { return mInput; }
 
     protected:
         std::shared_ptr<Connection> mConnection;
-        std::shared_ptr<Message> mRequesterMessage;
+        std::shared_ptr<Message> mOriginalMessage;
         std::shared_ptr<Message> mInput;
     };
 }}

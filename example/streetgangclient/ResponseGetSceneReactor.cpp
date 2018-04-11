@@ -20,7 +20,7 @@ ResponseGetSceneReactor::~ResponseGetSceneReactor()
 
 bool ResponseGetSceneReactor::Process()
 {
-    auto latency = mRequesterMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mRequesterMessage->GetRequestTime()).count();
+    auto latency = mOriginalMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
     auto& worldId = InputMessage()->WorldId.cref();
     auto& rect = InputMessage()->Rect.cref();
     auto& items = InputMessage()->Items.cref();

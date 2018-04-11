@@ -22,7 +22,7 @@ ResponseCreateWorldReactor::~ResponseCreateWorldReactor()
 
 bool ResponseCreateWorldReactor::Process()
 {
-    auto latency = mRequesterMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mRequesterMessage->GetRequestTime()).count();
+    auto latency = mOriginalMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
     auto& worldId = InputMessage()->WorldId.cref();
     auto& worldName = InputMessage()->WorldName.cref();
 

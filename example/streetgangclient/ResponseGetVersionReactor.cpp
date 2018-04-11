@@ -20,7 +20,7 @@ ResponseGetVersionReactor::~ResponseGetVersionReactor()
 
 bool ResponseGetVersionReactor::Process()
 {
-    auto latency = mRequesterMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mRequesterMessage->GetRequestTime()).count();
+    auto latency = mOriginalMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
     auto& version = InputMessage()->Version.cref();
 
     LOG("[TrackId=%s] [Latency=" FMT_INT64 "] [Result=%d] ResponseGetVersionReactor() [version=%s]",
