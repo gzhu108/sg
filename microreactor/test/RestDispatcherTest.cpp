@@ -16,7 +16,7 @@ public:
 class ReactorFactoryMock
 {
 public:
-    std::shared_ptr<Reactor> CreateReactor(std::shared_ptr<RestRequest>, Connection&)
+    std::shared_ptr<Reactor> CreateReactor(std::shared_ptr<RestRequest>, std::shared_ptr<Connection>)
     {
         return nullptr;
     }
