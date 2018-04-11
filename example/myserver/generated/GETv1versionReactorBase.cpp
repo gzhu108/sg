@@ -23,5 +23,5 @@ bool GETv1versionReactorBase::Process()
     }
 
     // Send GETv1versionResponse or error response
-    return RestResponse::SendErrorWith(mConnection, 501, "GET [/v1/version] not Implemented");
+    return RestResponse::SendErrorWith(*mConnection, 501, "GET [/v1/version] not Implemented");
 }

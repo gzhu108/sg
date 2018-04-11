@@ -23,5 +23,5 @@ bool $method$funcReactorBase::Process()
     }
 
     // Send $method$funcResponse or error response
-    return RestResponse::SendErrorWith(mConnection, 501, "$method [$path] not Implemented");
+    return RestResponse::SendErrorWith(*mConnection, 501, "$method [$path] not Implemented");
 }

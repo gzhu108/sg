@@ -23,5 +23,5 @@ bool POSTv1updateReactorBase::Process()
     }
 
     // Send POSTv1updateResponse or error response
-    return RestResponse::SendErrorWith(mConnection, 501, "POST [/v1/update] not Implemented");
+    return RestResponse::SendErrorWith(*mConnection, 501, "POST [/v1/update] not Implemented");
 }
