@@ -41,5 +41,7 @@ mkdir -p $DISTDIR/bouncer/bin
 cp $SRCDIR/bouncer/bin/bouncer $DISTDIR/bouncer/bin
 cp -r $SRCDIR/bouncer/config/ $DISTDIR/bouncer
 
+cp -r $SRCDIR/cert/ $DISTDIR
+
 # copy the bash files
 cp -r $SRCDIR/bin/ $DISTDIR/bin
