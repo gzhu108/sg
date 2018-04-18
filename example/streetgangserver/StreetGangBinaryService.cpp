@@ -1,5 +1,6 @@
 #include "StreetGangBinaryService.h"
-#include "NetworkUtility.h"
+#include "SecureTcpSocket.h"
+#include "TcpEndpoint.h"
 #include "ConfigurationSingleton.h"
 #include "StreetGangBinaryDispatcher.h"
 #include "DiscoveryRequester.h"
@@ -85,7 +86,12 @@ bool StreetGangBinaryService::Initialize()
 
     profile->Dispatcher.set(std::make_shared<StreetGangBinaryDispatcher>());
 
-    mEndpoint = NetworkUtility::CreateEndpoint(profile);
+    auto socket = std::make_shared<SecureTcpSocket>();
+    socket->ConfigureSslContext(SSLv23_server_method(), "Server.key", "Server.cer", SecureTcpSocket::VerifyPeer);
+    //auto socket = std::make_shared<TcpSocket>();
+    mEndpoint = std::make_shared<TcpEndpoint>(socket, profile);
+    LOG("SECURE TCP HOST: %s", mEndpoint->Name->c_str());
+
     mEndpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
     mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
     mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));

@@ -1,5 +1,6 @@
 #include "StreetGangBinaryClient.h"
-#include "NetworkUtility.h"
+#include "SecureTcpSocket.h"
+#include "TcpConnection.h"
 #include "StreetGangBinaryClientDispatcher.h"
 #include "BinaryResponseError.h"
 #include "ResponseErrorReactor.h"
@@ -32,7 +33,11 @@ StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, cons
         responseErrorReactor->Process();
     });
 
-    auto connection = NetworkUtility::CreateConnection(profile);
+    auto socket = std::make_shared<SecureTcpSocket>();
+    socket->ConfigureSslContext(SSLv23_client_method(), "Client.key", "Client.cer", SecureTcpSocket::VerifyPeer);
+    //auto socket = std::make_shared<TcpSocket>();
+    auto connection = std::make_shared<TcpConnection>(socket, profile);
+
     Initialize(connection, std::chrono::milliseconds(30));
 }
 

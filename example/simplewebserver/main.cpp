@@ -110,7 +110,7 @@ int32_t main(int32_t argc, const char* argv[])
     secureProfile->Port.set(securePort);
 
     auto secureSocket = std::make_shared<SecureTcpSocket>();
-    secureSocket->ConfigureSslContext("selfsigned.key", "cert.pem", SecureTcpSocket::VerifyPeer);
+    secureSocket->ConfigureSslContext(SSLv23_server_method(), "selfsigned.key", "cert.pem", SecureTcpSocket::VerifyPeer);
     auto secureEndpoint = std::make_shared<TcpEndpoint>(secureSocket, secureProfile);
     secureSocket = nullptr;
 

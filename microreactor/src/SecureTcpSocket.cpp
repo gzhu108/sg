@@ -1,6 +1,7 @@
 #include "SecureTcpSocket.h"
 #include "Exception.h"
 #include <openssl/bio.h>
+#include <openssl/x509_vfy.h>
 
 #ifndef SSL_CTX_set_ecdh_auto
 #define SSL_CTX_set_ecdh_auto(dummy, onoff) ((void)0)
@@ -49,10 +50,12 @@ std::shared_ptr<TcpSocket> SecureTcpSocket::Accept(const std::chrono::millisecon
     auto secureClient = std::make_shared<SecureTcpSocket>();
     secureClient->Swap(*client);
     secureClient->mSsl = SSL_new(mContext);
-    SSL_set_fd(secureClient->mSsl, (int)secureClient->mSocket);
+    int result = SSL_set_fd(secureClient->mSsl, (int)secureClient->mSocket);
 
-    if (SSL_accept(secureClient->mSsl) <= 0)
+    result = SSL_accept(secureClient->mSsl);
+    if (result <= 0)
     {
+        LOG("SSL_accept() error = %d\n", result);
         return nullptr;
     }
 
@@ -74,17 +77,46 @@ bool SecureTcpSocket::Connect(const std::string& address, uint16_t port, const s
     }
 
     mSsl = SSL_new(mContext); //create new SSL connection state
-    SSL_set_fd(mSsl, (int)mSocket); // attach the socket descriptor
+    int result = SSL_set_fd(mSsl, (int)mSocket); // attach the socket descriptor
+
+    // Set the socket non-blocking
+    SetNonblocking(true);
 
     // perform the connection
-    if (SSL_connect(mSsl) <= 0)
+    result = SSL_connect(mSsl);
+    while (result <= 0)
     {
-        Detach();
-        return false;
+        result = SSL_get_error(mSsl, result);
+
+        if (result == SSL_ERROR_WANT_READ)
+        {
+            if (!ReceiveWait(timeout))
+            {
+                LOG("SSL_connect() read timeout\n");
+                Detach();
+                return false;
+            }
+        }
+        else if (result == SSL_ERROR_WANT_WRITE)
+        {
+            if (!SendWait(timeout))
+            {
+                LOG("SSL_connect() write timeout\n");
+                Detach();
+                return false;
+            }
+        }
+        else
+        {
+            LOG("SSL_connect() error = %d\n", result);
+            Detach();
+            return false;
+        }
+
+        result = SSL_connect(mSsl);
     }
 
     ShowCerts();
-
     return true;
 }
 
@@ -112,12 +144,16 @@ bool SecureTcpSocket::Send(const char* buffer, int32_t length, int32_t& bytesSen
     return bytesSent > 0;
 }
 
-bool SecureTcpSocket::ConfigureSslContext(const std::string& privateKey, const std::string& certificate, SSL_verify_cb verifyPeer)
+bool SecureTcpSocket::ConfigureSslContext(const SSL_METHOD* method, const std::string& privateKey, const std::string& certificate, SSL_verify_cb verifyPeer)
 {
     OpenSSL_add_all_algorithms();
     SSL_load_error_strings();
 
-    const SSL_METHOD* method = SSLv23_server_method();
+    if (method == nullptr)
+    {
+        return false;
+    }
+
     mContext = SSL_CTX_new(method);
     if (mContext == nullptr)
     {
@@ -153,6 +189,17 @@ int SecureTcpSocket::VerifyPeer(int preverifyOk, X509_STORE_CTX* context)
 {
 #if 1
 
+    char buf[256];
+    X509* err_cert = X509_STORE_CTX_get_current_cert(context);
+    int err = X509_STORE_CTX_get_error(context);
+    int depth = X509_STORE_CTX_get_error_depth(context);
+    X509_NAME_oneline(X509_get_subject_name(err_cert), buf, 256);
+
+    if (!preverifyOk)
+    {
+        printf("verify error:num=%d:%s:depth=%d:%s\n", err, X509_verify_cert_error_string(err), depth, buf);
+    }
+
     return 1;
 
 #else
@@ -163,7 +210,7 @@ int SecureTcpSocket::VerifyPeer(int preverifyOk, X509_STORE_CTX* context)
         int verify_depth;
         int always_continue;
     };
-    int mydata_index;
+    int mydata_index = 0;
 
     char    buf[256];
     X509   *err_cert;
@@ -216,7 +263,7 @@ int SecureTcpSocket::VerifyPeer(int preverifyOk, X509_STORE_CTX* context)
     */
     if (!preverifyOk && (err == X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT))
     {
-        X509_NAME_oneline(X509_get_issuer_name(context->current_cert), buf, 256);
+        X509_NAME_oneline(X509_get_issuer_name(err_cert), buf, 256);
         printf("issuer= %s\n", buf);
     }
 
