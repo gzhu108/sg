@@ -179,6 +179,7 @@ bool StreetGangBinaryService::Initialize()
 
     auto socket = std::make_shared<SecureTcpSocket>();
     socket->ConfigureSslContext(SSLv23_server_method(), "cert/Server.key", "cert/Server.cer", VerifyPeer);
+    socket->LoadSslContextVerifyLocations("cert/IntermediateCA.cer", "");
     //auto socket = std::make_shared<TcpSocket>();
     mEndpoint = std::make_shared<TcpEndpoint>(socket, profile);
     LOG("SECURE TCP HOST: %s", mEndpoint->Name->c_str());

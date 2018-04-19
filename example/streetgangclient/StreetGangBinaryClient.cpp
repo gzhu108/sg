@@ -126,6 +126,7 @@ StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, cons
 
     auto socket = std::make_shared<SecureTcpSocket>();
     socket->ConfigureSslContext(SSLv23_client_method(), "cert/Client.key", "cert/Client.cer", VerifyPeer);
+    socket->LoadSslContextVerifyLocations("cert/IntermediateCA.cer", "");
     //auto socket = std::make_shared<TcpSocket>();
     auto connection = std::make_shared<TcpConnection>(socket, profile);
 

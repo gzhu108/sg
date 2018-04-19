@@ -163,7 +163,7 @@ bool SecureTcpSocket::ConfigureSslContext(const SSL_METHOD* method, const std::s
     SSL_CTX_set_ecdh_auto(mContext, 1);
 
     // Set the key and cert
-    if (!certificate.empty() && SSL_CTX_use_certificate_file(mContext, certificate.c_str(), SSL_FILETYPE_PEM) <= 0)
+    if (!certificate.empty() && SSL_CTX_use_certificate_chain_file(mContext, certificate.c_str()) <= 0)
     {
         SSL_CTX_free(mContext);
         mContext = nullptr;
@@ -177,12 +177,46 @@ bool SecureTcpSocket::ConfigureSslContext(const SSL_METHOD* method, const std::s
         return false;
     }
 
+    if (SSL_CTX_check_private_key(mContext) <= 0)
+    {
+        SSL_CTX_free(mContext);
+        mContext = nullptr;
+        return false;
+    }
+
     if (verifyPeer != nullptr)
     {
         SSL_CTX_set_verify(mContext, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, verifyPeer);
     }
 
     return true;
+}
+
+bool SecureTcpSocket::LoadSslContextVerifyLocations(const std::string& caFile, const std::string& caPath)
+{
+    if (mContext == nullptr)
+    {
+        return false;
+    }
+
+    int result = SSL_CTX_load_verify_locations(mContext, caFile.empty() ? nullptr : caFile.c_str(), caPath.empty() ? nullptr : caPath.c_str());
+    if (result > 0)
+    {
+        //result = SSL_CTX_set_client_CA_list(mContext, SSL_get_client_CA_list)
+    }
+
+    return result > 0;
+}
+
+bool SecureTcpSocket::AddContextClientCa(X509* caCert)
+{
+    if (mContext == nullptr)
+    {
+        return false;
+    }
+
+    int result = SSL_CTX_add_client_CA(mContext, caCert);
+    return result > 0;
 }
 
 int SecureTcpSocket::VerifyPeer(int preverifyOk, X509_STORE_CTX* context)
