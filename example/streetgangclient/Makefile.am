@@ -30,5 +30,8 @@ __top_builddir__bin_streetgangclient_LDADD = \
     ../streetgangapi/lib/libstreetgangapi.a \
     ../../microreactor/lib/libmicroreactor.a \
     ../../tools/protobuf/linux/lib/libprotobuf.a \
-    -luuid
+    ../../tools/openssl/linux/lib/libssl.a \
+    ../../tools/openssl/linux/lib/libcrypto.a \
+    -luuid \
+    -ldl
     

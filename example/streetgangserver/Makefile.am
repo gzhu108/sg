@@ -5,6 +5,7 @@ AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -g -fno-omit-frame-poi
 AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++11 \
     -I../../tools/protobuf/linux/include \
     -I../../tools/json \
+    -I../../tools/openssl/linux/include \
     -I../../microreactor/src \
     -I.. \
     -I../discoveryservice \
@@ -45,5 +46,8 @@ __top_builddir__bin_streetgangserver_LDADD = \
     ../discoveryservice/lib/libdiscoveryservice.a \
     ../../microreactor/lib/libmicroreactor.a \
     ../../tools/protobuf/linux/lib/libprotobuf.a \
-    -luuid
+    ../../tools/openssl/linux/lib/libssl.a \
+    ../../tools/openssl/linux/lib/libcrypto.a \
+    -luuid \
+    -ldl
 
