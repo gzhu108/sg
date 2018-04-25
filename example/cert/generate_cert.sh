@@ -21,13 +21,13 @@ rm -f Server.csr
 rm -f Server.cer
 openssl genrsa -out Server.key 2048
 openssl req -new -key Server.key -out Server.csr
-openssl x509 -req -days 1000 -in Server.csr -CA ChainCA.cer -CAkey IntermediateCA.key -CAcreateserial -serial -out Server.cer -sha1
+openssl x509 -req -days 1000 -in Server.csr -CA IntermediateCA.cer -CAkey IntermediateCA.key -CAcreateserial -serial -out Server.cer -sha1
 
 rm -f Client.key
 rm -f Client.csr
 rm -f Client.cer
 openssl genrsa -out Client.key 2048
 openssl req -new -key Client.key -out Client.csr
-openssl x509 -req -days 1000 -in Client.csr -CA ChainCA.cer -CAkey IntermediateCA.key -CAcreateserial -serial -out Client.cer -sha1
+openssl x509 -req -days 1000 -in Client.csr -CA IntermediateCA.cer -CAkey IntermediateCA.key -CAcreateserial -serial -out Client.cer -sha1
 
 set +x
