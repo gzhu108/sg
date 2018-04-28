@@ -46,7 +46,7 @@ static std::shared_ptr<StreetGangRestService> CreateRestService()
     auto configuration = ConfigurationSingleton::GetConfiguration();
     if (configuration == nullptr)
     {
-        return false;
+        return nullptr;
     }
 
     uint32_t listenTimeout = 30;
