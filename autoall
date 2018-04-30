@@ -46,6 +46,7 @@ make
 popd
 
 pushd tools/protobuf
+./build-linux.sh
 if [ ! -d linux ] ; then
     tar -xzvf linux.tar.gz
 fi
