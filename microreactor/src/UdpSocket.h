@@ -3,6 +3,7 @@
 #define sg_microreactor_UdpSocket
 
 #include "Socket.h"
+#include "NetworkUtility.h"
 
 
 namespace sg { namespace microreactor

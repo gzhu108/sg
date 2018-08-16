@@ -10,7 +10,7 @@ UdpEndpoint::UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Prof
     : Endpoint(profile)
     , mSocket(socket)
 {
-    if (mSocket == nullptr || !mSocket->IsValid())
+    if (mSocket == nullptr)
     {
         mSocket = std::make_shared<UdpSocket>();
     }
@@ -19,7 +19,11 @@ UdpEndpoint::UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Prof
     {
         try
         {
-            mSocket->Bind(mProfile->Address->c_str(), mProfile->Port.cref());
+            if (!mSocket->IsValid())
+            {
+                mSocket->Bind(mProfile->Address->c_str(), mProfile->Port.cref());
+            }
+
             mConnection = std::make_shared<UdpConnection>(mSocket, mProfile);
             Name.set(std::string("[") + mSocket->HostName.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
         }

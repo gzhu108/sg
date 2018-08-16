@@ -63,6 +63,7 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t 
     
     if (SetSockOpt(optLevel, option, optVal, optLen) == SOCKET_ERROR)
     {
+        int32_t error = GetSocketError();
         return false;
     }
 

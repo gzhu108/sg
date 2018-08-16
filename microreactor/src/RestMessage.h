@@ -13,7 +13,6 @@ namespace sg { namespace microreactor
     class RestMessage : public Message
     {
     public:
-        RestMessage() {}
         RestMessage(std::shared_ptr<RestRequest> request) : mRestRequest(request) {}
         virtual ~RestMessage() {}
 

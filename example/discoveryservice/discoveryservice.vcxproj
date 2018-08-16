@@ -40,17 +40,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DiscoveryRequester.cpp" />
-    <ClCompile Include="RequestSearchReactor.cpp" />
+    <ClCompile Include="MSearchMessage.cpp" />
+    <ClCompile Include="MSearchReactor.cpp" />
     <ClCompile Include="DiscoveryService.cpp" />
-    <ClCompile Include="DiscoveryDispatcher.cpp" />
-    <ClCompile Include="RequestSearch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DiscoveryRequester.h" />
-    <ClInclude Include="RequestSearchReactor.h" />
+    <ClInclude Include="MSearchMessage.h" />
+    <ClInclude Include="MSearchReactor.h" />
     <ClInclude Include="DiscoveryService.h" />
-    <ClInclude Include="DiscoveryDispatcher.h" />
-    <ClInclude Include="RequestSearch.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A1CF5343-D95A-4247-A634-897BD8DB454E}</ProjectGuid>

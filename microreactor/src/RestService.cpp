@@ -3,6 +3,11 @@
 using namespace sg::microreactor;
 
 
+RestService::RestService()
+    : mRestDispatcher(std::make_shared<RestDispatcher>())
+{
+}
+
 RestService::RestService(const std::string& hostName, uint16_t port)
     : mRestDispatcher(std::make_shared<RestDispatcher>())
 {
@@ -40,4 +45,17 @@ RestService::~RestService()
 bool RestService::Initialize()
 {
     return Microservice::Initialize();
+}
+
+void RestService::OnConnectionMade(const std::shared_ptr<Connection>& connection)
+{
+    std::string hostName = connection->Name.cref();
+    std::string connectionName = std::string("[") + connection->GetPeerName() + "]:" + std::to_string(connection->GetPeerPort());
+
+    connection->Closed.Connect([=]()
+    {
+        LOG("Disconnected %s -> %s", hostName.c_str(), connectionName.c_str());
+    });
+
+    LOG("Connection accepted %s -> %s", hostName.c_str(), connectionName.c_str());
 }

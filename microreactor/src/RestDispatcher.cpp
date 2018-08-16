@@ -84,7 +84,10 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
     }
     else
     {
-        RestResponse::SendErrorWith(connection, 400, "Bad Request");
+        if (ReplyError.cref())
+        {
+            RestResponse::SendErrorWith(connection, 400, "Bad Request");
+        }
         return nullptr;
     }
 
@@ -108,14 +111,21 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
         auto restReactorFactory = GetRestReactorFactory(restRequest);
         if (restReactorFactory == nullptr)
         {
-            RestResponse::SendErrorWith(connection, 404, "Not Found");
+            if (ReplyError.cref())
+            {
+                RestResponse::SendErrorWith(connection, 404, "Not Found");
+            }
             return nullptr;
         }
 
         auto reactor = restReactorFactory(restRequest, std::static_pointer_cast<Connection>(connection.shared_from_this()));
         if (reactor == nullptr)
         {
-            RestResponse::SendErrorWith(connection, 400, "Bad Request");
+            if (ReplyError.cref())
+            {
+                RestResponse::SendErrorWith(connection, 400, "Bad Request");
+            }
+            return nullptr;
         }
 
         return reactor;

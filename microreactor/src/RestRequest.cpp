@@ -7,14 +7,15 @@ using namespace sg::microreactor;
 
 static int OnMessageBegin(http_parser* parser)
 {
-    auto request = static_cast<RestRequest*>(parser->data);
-    request->mMethod.assign(http_method_str((http_method)parser->method));
+    //auto request = static_cast<RestRequest*>(parser->data);
+    //request->mMethod.assign(http_method_str((http_method)parser->method));
     return 0;
 }
 
 static int OnUrl(http_parser* parser, const char* start, size_t length)
 {
     auto request = static_cast<RestRequest*>(parser->data);
+    request->mMethod.assign(http_method_str((http_method)parser->method));
     request->mUri.assign(start, length);
     return UriDecode(request->mUri) ? 0 : -1;
 }

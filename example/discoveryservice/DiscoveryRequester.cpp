@@ -1,6 +1,5 @@
 #include "DiscoveryRequester.h"
-#include "StringSerializer.h"
-#include "RequestSearch.h"
+#include "MSearchMessage.h"
 
 using namespace sg::microreactor;
 using namespace sg::service;
@@ -17,6 +16,7 @@ DiscoveryRequester::~DiscoveryRequester()
 
 void DiscoveryRequester::MulticastSearch(const std::string& serviceType, const std::string& multicastAddress, uint16_t port)
 {
+#if 0
     std::shared_ptr<RequestSearch> request = std::make_shared<RequestSearch>();
     request->Endpoint.set(multicastAddress + ":" + std::to_string(port));
     request->Mx.set(5);
@@ -28,10 +28,12 @@ void DiscoveryRequester::MulticastSearch(const std::string& serviceType, const s
         auto peerPort = mConnection->GetPeerPort();
         LOG("Failed to send multicast search request to %s:%u", peerName.c_str(), peerPort);
     }
+#endif
 }
 
 void DiscoveryRequester::UnicastSearch(const std::string& serviceType, const std::string& unicastAddress, uint16_t port)
 {
+#if 0
     std::shared_ptr<RequestSearch> request = std::make_shared<RequestSearch>();
     request->Endpoint.set(unicastAddress + ":" + std::to_string(port));
     request->Mx.set(0);
@@ -43,4 +45,5 @@ void DiscoveryRequester::UnicastSearch(const std::string& serviceType, const std
         auto peerPort = mConnection->GetPeerPort();
         LOG("Failed to send unicast search request to %s:%u", peerName.c_str(), peerPort);
     }
+#endif
 }

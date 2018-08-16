@@ -16,9 +16,6 @@ namespace sg { namespace microreactor
     public:
         UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Profile> profile);
         virtual ~UdpConnection();
-
-        PROPERTY(Source, std::string, {});
-        PROPERTY(Port, uint16_t, 0);
         
     public:
         virtual std::string GetPeerName() const override;

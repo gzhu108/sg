@@ -12,11 +12,8 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {
-        Source.set(mProfile->Address.cref());
-        Port.set(mProfile->Port.cref());
-
         mSocket = std::make_shared<UdpSocket>();
-        mSocket->Create(Source.cref(), Port.cref());
+        mSocket->Create(mProfile->Address.cref(), mProfile->Port.cref());
     }
 
     if (!mSocket->HostName->empty())
@@ -82,8 +79,6 @@ uint64_t UdpConnection::Receive(char* buffer, int32_t length)
 
     if (mSocket->ReceiveFrom(&buffer[0], length, source, port, received))
     {
-        Source.set(source);
-        Port.set(port);
         mDataRetrieved = true;
     }
 
@@ -107,7 +102,7 @@ uint64_t UdpConnection::Send(const char* buffer, int32_t length)
         if (mSocket->SendWait(SendTimeout.cref()))
         {
             int32_t sent = 0;
-            if (mSocket->SendTo(&buffer[0], length, Source.cref(), Port.cref(), sent))
+            if (mSocket->SendTo(&buffer[0], length, mSocket->PeerName.cref(), mSocket->PeerPort.cref(), sent))
             {
                 return sent;
             }

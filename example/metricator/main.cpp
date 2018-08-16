@@ -32,10 +32,10 @@ int32_t main(int32_t argc, const char* argv[])
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-    //GET_LOGGER().AddLogger([](const std::string& text)
-    //{
-    //    printf("%s\n", text.c_str());
-    //});
+    GET_LOGGER().AddLogger([](const std::string& text)
+    {
+        printf("%s\n", text.c_str());
+    });
     
     LOG("Metricator Started");
     LOG("press ctrl+c to terminate");
@@ -104,12 +104,8 @@ int32_t main(int32_t argc, const char* argv[])
         configuration->GetValue("HostPort", hostPort);
     }
     
-    // Create the socket for DiscoveryService
-    auto socket = std::make_shared<UdpSocket>();
-    socket->Bind("0.0.0.0", (uint16_t)1900);
-    
     // Create DiscoveryService
-    DiscoveryService discoveryService(socket);
+    DiscoveryService discoveryService("0.0.0.0", (uint16_t)1900);
     discoveryService.Start();
 
     auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();

@@ -11,6 +11,7 @@ namespace sg { namespace microreactor
     class RestService : public Microservice
     {
     public:
+        RestService();
         RestService(const std::string& hostName, uint16_t port);
         explicit RestService(std::shared_ptr<Profile> profile);
         explicit RestService(std::shared_ptr<Endpoint> endpoint);
@@ -18,6 +19,9 @@ namespace sg { namespace microreactor
 
     public:
         virtual bool Initialize() override;
+
+    protected:
+        virtual void OnConnectionMade(const std::shared_ptr<Connection>& connection) override;
 
     protected:
         std::shared_ptr<RestDispatcher> mRestDispatcher;

@@ -3,7 +3,6 @@
 #define sg_service_DiscoveryRequester
 
 #include "MessageRequester.h"
-#include "RequestSearch.h"
 
 
 namespace sg { namespace service
