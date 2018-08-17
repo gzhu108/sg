@@ -22,8 +22,13 @@ RestFileResponse::RestFileResponse(const std::string& path)
         uint64_t fileSize = GetStreamSize(mFileStream);
         if (fileSize < CHUNK_SIZE)
         {
-            mBody.resize((size_t)fileSize);
-            mFileStream.read(&mBody[0], fileSize);
+            auto message = std::make_shared<std::string>();
+            message->resize((size_t)fileSize);
+            mFileStream.read(&(*message)[0], fileSize);
+
+            SetHttpBody(message, *this);
+            mBody.mOffset = mRawMessage->data();
+            mBody.mLength = mRawMessage->length();
         }
         else
         {
@@ -37,7 +42,7 @@ RestFileResponse::RestFileResponse(const std::string& path)
         mStatusText = "Not Found";
         mHeaders.emplace_back(HttpHeader("Connection", "Closed"));
         mHeaders.emplace_back(HttpHeader("Content-Type", "text/plain"));
-        mBody = "404 Not Found";
+        SetHttpBody("404 Not Found", *this);
     }
 }
 
@@ -52,7 +57,7 @@ bool RestFileResponse::Send(Connection& connection)
     if (FlushToBuffer(buffer))
     {
         bool result = connection.Send(buffer.data(), (int32_t)buffer.length()) == buffer.length();
-        if (!result || !mFileStream.is_open() || !mBody.empty())
+        if (!result || !mFileStream.is_open() || mBody.mLength)
         {
             return result;
         }

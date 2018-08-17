@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include "Connection.h"
 #include "HttpHeader.h"
 
 
@@ -16,11 +17,14 @@ namespace sg { namespace microreactor
         std::string mUri;
         std::string mVersion;
         std::vector<HttpHeader> mHeaders;
-        HttpData mBody;
-        std::vector<HttpChunk> mChunks;
+        HttpChunk mBody;
+        std::vector<RestRequest> mChunks;
         bool mChunkCompleted = false;
 
         virtual bool Parse(std::shared_ptr<std::string> message);
+        virtual bool Send(Connection& connection);
+        virtual bool FlushToBuffer(std::string& buffer);
+        virtual bool FlushToStream(std::ostream& stream);
     };
 }}
 

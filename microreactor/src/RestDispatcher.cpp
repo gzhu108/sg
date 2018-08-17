@@ -77,7 +77,7 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
         for (auto& chunk : restRequest->mChunks)
         {
             LOG("\n++++ Chunk ++++");
-            LOG("\n%.*s", (int)chunk.mLength, chunk.mOffset);
+            LOG("\n%.*s", (int)chunk.mBody.mLength, chunk.mBody.mOffset);
             LOG("\n---- Chunk ----");
         }
         LOG("\n+++++++++++++++++++++++++++++++++++++++");

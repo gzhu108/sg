@@ -7,7 +7,7 @@
 
 namespace sg { namespace microreactor
 {
-    struct HttpData
+    struct HttpChunk
     {
         const char* mOffset = nullptr;
         size_t mLength = 0;
@@ -26,10 +26,19 @@ namespace sg { namespace microreactor
         }
     };
 
-    struct HttpChunk : HttpData
+    template<typename T>
+    void SetHttpBody(std::shared_ptr<std::string> body, T& message)
     {
-        std::shared_ptr<std::string> mRawData;
-    };
+        message.mRawMessage = body;
+        message.mBody.mOffset = message.mRawMessage->data();
+        message.mBody.mLength = message.mRawMessage->length();
+    }
+
+    template<typename T>
+    void SetHttpBody(const std::string& body, T& message)
+    {
+        SetHttpBody(std::make_shared<std::string>(body), message);
+    }
 }}
 
 

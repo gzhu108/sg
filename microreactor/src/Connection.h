@@ -31,6 +31,9 @@ namespace sg { namespace microreactor
         virtual std::string GetPeerName() const = 0;
         virtual uint16_t GetPeerPort() const = 0;
 
+        virtual void SetPeerName(const std::string& peerName) {};
+        virtual void SetPeerPort(uint16_t peerPort) {};
+
         virtual bool Receive(std::iostream& stream);
         virtual bool Send(std::iostream& stream);
 

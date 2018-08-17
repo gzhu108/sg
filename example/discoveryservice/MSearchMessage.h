@@ -11,6 +11,7 @@ namespace sg { namespace service
     class MSearchMessage : public sg::microreactor::RestMessage
     {
     public:
+        MSearchMessage();
         MSearchMessage(std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~MSearchMessage();
 

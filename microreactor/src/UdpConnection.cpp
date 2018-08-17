@@ -49,6 +49,26 @@ uint16_t UdpConnection::GetPeerPort() const
     return mSocket->PeerPort.cref();
 }
 
+void UdpConnection::SetPeerName(const std::string& peerName)
+{
+    if (mSocket == nullptr || !mSocket->IsValid())
+    {
+        return;
+    }
+
+    mSocket->PeerName.set(peerName);
+}
+
+void UdpConnection::SetPeerPort(uint16_t peerPort)
+{
+    if (mSocket == nullptr || !mSocket->IsValid())
+    {
+        return;
+    }
+
+    mSocket->PeerPort.set(peerPort);
+}
+
 bool UdpConnection::DataReady()
 {
     if (mSocket == nullptr || !mSocket->IsValid())

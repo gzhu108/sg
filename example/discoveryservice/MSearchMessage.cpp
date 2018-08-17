@@ -11,6 +11,11 @@ const char MSearchMessage::MX[] = "MX";
 const char MSearchMessage::ST[] = "ST";
 
 
+MSearchMessage::MSearchMessage()
+    : RestMessage(nullptr)
+{
+}
+
 MSearchMessage::MSearchMessage(std::shared_ptr<RestRequest> request)
     : RestMessage(request)
 {

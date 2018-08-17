@@ -1,4 +1,5 @@
 #include "MSearchReactor.h"
+#include "RestResponse.h"
 
 using namespace sg::microreactor;
 using namespace sg::service;
@@ -28,6 +29,17 @@ bool MSearchReactor::Process()
     }
 
     LOG("M-SEARCH received from %s:%u", mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+
+    std::string s;
+    if (InputMessage()->GetHeader(MSearchMessage::S, s))
+    {
+        if (s == "someservice:1:0")
+        {
+            RestResponse response;
+            response.mHeaders.emplace_back(HttpHeader("AL", "http://localhost/someapi"));
+            return response.Send(*mConnection);
+        }
+    }
 
     return true;
 }

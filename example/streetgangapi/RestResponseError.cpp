@@ -45,7 +45,7 @@ bool RestResponseError::Encode(std::ostream& stream) const
     response.mStatusCode = 500;
     response.mStatusText = "Interanl Server Error";
     response.mHeaders.emplace_back(HttpHeader("Content-Type", "application/json"));
-    response.mBody = buffer.GetString();
+    SetHttpBody(buffer.GetString(), response);
 
     return response.FlushToStream(stream);
 }

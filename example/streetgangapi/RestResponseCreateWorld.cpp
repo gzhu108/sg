@@ -37,7 +37,7 @@ bool RestResponseCreateWorld::Encode(std::ostream& stream) const
 
     RestResponse response;
     response.mHeaders.emplace_back(HttpHeader("Content-Type", "application/json"));
-    response.mBody = buffer.GetString();
+    SetHttpBody(buffer.GetString(), response);
 
     return response.FlushToStream(stream);
 }
