@@ -1,5 +1,5 @@
 #include "DiscoveryRequester.h"
-#include "MSearchMessage.h"
+#include "RestRequest.h"
 
 using namespace sg::microreactor;
 using namespace sg::service;
@@ -16,25 +16,23 @@ DiscoveryRequester::~DiscoveryRequester()
 
 void DiscoveryRequester::MulticastSearch(const std::string& serviceType, const std::string& multicastAddress, uint16_t port)
 {
-#if 0
-    std::shared_ptr<RequestSearch> request = std::make_shared<RequestSearch>();
-    request->Endpoint.set(multicastAddress + ":" + std::to_string(port));
-    request->Mx.set(5);
-    request->St.set(serviceType);
-    
-    if (!SendMessage(request))
-    {
-        auto peerName = mConnection->GetPeerName();
-        auto peerPort = mConnection->GetPeerPort();
-        LOG("Failed to send multicast search request to %s:%u", peerName.c_str(), peerPort);
-    }
-#endif
-
     mConnection->SetPeerName(multicastAddress);
     mConnection->SetPeerPort(port);
 
-    auto message = std::make_shared<MSearchMessage>();
-    SendMessage(message);
+    RestRequest request;
+    request.mMethod = "M-SEARCH";
+    request.mUri = "*";
+    request.mVersion = "HTTP/1.1";
+    request.mHeaders.emplace_back(HttpHeader("HOST", multicastAddress + ":" + std::to_string(port)));
+    request.mHeaders.emplace_back(HttpHeader("MAN", "ssdp:discover"));
+    request.mHeaders.emplace_back(HttpHeader("MX", "2"));
+    request.mHeaders.emplace_back(HttpHeader("ST", serviceType));
+
+    std::string buffer;
+    if (request.FlushToBuffer(buffer))
+    {
+        mConnection->Send(buffer.data(), buffer.length());
+    }
 }
 
 void DiscoveryRequester::UnicastSearch(const std::string& serviceType, const std::string& unicastAddress, uint16_t port)

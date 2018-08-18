@@ -89,5 +89,59 @@ std::shared_ptr<Reactor> DiscoveryService::CreateMSearchReactor(std::shared_ptr<
     }
 
     auto reactor = std::make_shared<MSearchReactor>(connection, request);
+    if (reactor != nullptr)
+    {
+        reactor->NotifyMaxAge.set(NotifyMaxAge.cref());
+        reactor->Location.set(Location.cref());
+        reactor->ServerInfo.set(ServerInfo.cref());
+        reactor->Usn.set(Usn.cref());
+        reactor->ServiceType.set(ServiceType.cref());
+    }
+
     return reactor;
+}
+
+bool DiscoveryService::AdvertiseAlive()
+{
+    RestRequest request;
+    request.mMethod = "NOTIFY";
+    request.mUri = "*";
+    request.mVersion = "HTTP/1.1";
+    request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(mProfile->Port.cref())));
+    request.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(NotifyMaxAge.cref())));
+    request.mHeaders.emplace_back(HttpHeader("LOCATION", Location.cref()));
+    request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:alive"));
+    request.mHeaders.emplace_back(HttpHeader("SERVER", ServerInfo.cref()));
+    request.mHeaders.emplace_back(HttpHeader("USN", Usn.cref()));
+    request.mHeaders.emplace_back(HttpHeader("NT", ServiceType.cref()));
+    
+    std::string buffer;
+    if (request.FlushToBuffer(buffer))
+    {
+        int32_t bytesSent = 0;
+        return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, mProfile->Port.cref(), bytesSent);
+    }
+
+    return false;
+}
+
+bool DiscoveryService::AdvertiseByebye()
+{
+    RestRequest request;
+    request.mMethod = "NOTIFY";
+    request.mUri = "*";
+    request.mVersion = "HTTP/1.1";
+    request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(mProfile->Port.cref())));
+    request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:byebye"));
+    request.mHeaders.emplace_back(HttpHeader("USN", Usn.cref()));
+    request.mHeaders.emplace_back(HttpHeader("NT", ServiceType.cref()));
+
+    std::string buffer;
+    if (request.FlushToBuffer(buffer))
+    {
+        int32_t bytesSent = 0;
+        return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, mProfile->Port.cref(), bytesSent);
+    }
+
+    return false;
 }

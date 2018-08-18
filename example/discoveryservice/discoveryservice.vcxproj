@@ -40,13 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DiscoveryRequester.cpp" />
-    <ClCompile Include="MSearchMessage.cpp" />
     <ClCompile Include="MSearchReactor.cpp" />
     <ClCompile Include="DiscoveryService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DiscoveryRequester.h" />
-    <ClInclude Include="MSearchMessage.h" />
     <ClInclude Include="MSearchReactor.h" />
     <ClInclude Include="DiscoveryService.h" />
   </ItemGroup>

@@ -17,6 +17,12 @@ namespace sg { namespace service
         explicit DiscoveryService(const std::string& serverAddress, uint16_t port = DEFAULT_MULTICAST_PORT, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS);
         virtual ~DiscoveryService();
         
+        PROPERTY(NotifyMaxAge, uint32_t, 0);
+        PROPERTY(Location, std::string);
+        PROPERTY(ServerInfo, std::string);
+        PROPERTY(Usn, std::string);
+        PROPERTY(ServiceType, std::string);
+
     public:
         std::string GetMulticastAddress() { return mMulticastAddress; }
         uint16_t GetMulticastPort() { return mProfile->Port.cref(); }
@@ -25,6 +31,8 @@ namespace sg { namespace service
 
     protected:
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual bool AdvertiseAlive();
+        virtual bool AdvertiseByebye();
         
     protected:
         std::shared_ptr<sg::microreactor::UdpSocket> mSocket;
