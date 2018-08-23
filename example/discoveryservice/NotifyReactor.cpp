@@ -1,4 +1,4 @@
-#include "MSearchReactor.h"
+#include "NotifyReactor.h"
 #include "RestResponse.h"
 #include "StringUtility.h"
 
@@ -6,16 +6,16 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-MSearchReactor::MSearchReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
+NotifyReactor::NotifyReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }
 
-MSearchReactor::~MSearchReactor()
+NotifyReactor::~NotifyReactor()
 {
 }
 
-bool MSearchReactor::Process()
+bool NotifyReactor::Process()
 {
     auto request = InputMessage();
     if (request == nullptr)

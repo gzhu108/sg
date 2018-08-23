@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_service_MSearchReactor
-#define sg_service_MSearchReactor
+#ifndef sg_service_NotifyReactor
+#define sg_service_NotifyReactor
 
 #include "RestReactor.h"
 #include "RestRequest.h"
@@ -8,11 +8,11 @@
 
 namespace sg { namespace service
 {
-    class MSearchReactor : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
+    class NotifyReactor : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
     {
     public:
-        MSearchReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
-        virtual ~MSearchReactor();
+        NotifyReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        virtual ~NotifyReactor();
 
         PROPERTY(NotifyMaxAge, uint32_t, 0);
         PROPERTY(Location, std::string);
@@ -26,4 +26,4 @@ namespace sg { namespace service
 }}
 
 
-#endif // sg_service_MSearchReactor
+#endif // sg_service_NotifyReactor

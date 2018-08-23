@@ -39,14 +39,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DiscoveryRequester.cpp" />
+    <ClCompile Include="DiscoveryClient.cpp" />
     <ClCompile Include="MSearchReactor.cpp" />
     <ClCompile Include="DiscoveryService.cpp" />
+    <ClCompile Include="NotifyReactor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DiscoveryRequester.h" />
+    <ClInclude Include="DiscoveryClient.h" />
     <ClInclude Include="MSearchReactor.h" />
     <ClInclude Include="DiscoveryService.h" />
+    <ClInclude Include="NotifyReactor.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A1CF5343-D95A-4247-A634-897BD8DB454E}</ProjectGuid>

@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 #include "Message.h"
-#include "RestRequest.h"
+#include "Connection.h"
+#include "HttpHeader.h"
 
 
 namespace sg { namespace microreactor
@@ -13,17 +14,31 @@ namespace sg { namespace microreactor
     class RestMessage : public Message
     {
     public:
-        RestMessage(std::shared_ptr<RestRequest> request) : mRestRequest(request) {}
-        virtual ~RestMessage() {}
+        enum RestMessageType
+        {
+            UnknownType = 0,
+            Request,
+            Response,
+        };
+
+        RestMessage(const RestMessageType& messageType);
+        virtual ~RestMessage();
 
     public:
-        virtual std::shared_ptr<RestRequest> Request()
-        {
-            return mRestRequest;
-        }
+        static std::shared_ptr<RestMessage> Parse(std::shared_ptr<RestMessage> parent, std::shared_ptr<std::string> message);
+        virtual bool Send(Connection& connection);
+        virtual bool FlushToBuffer(std::string& buffer) = 0;
+        virtual bool FlushToStream(std::ostream& stream);
+        virtual std::shared_ptr<RestMessage> CreateMessage() = 0;
 
-    protected:
-        std::shared_ptr<RestRequest> mRestRequest;
+    public:
+        RestMessageType mMessageType;
+        std::string mVersion;
+        std::vector<HttpHeader> mHeaders;
+        HttpChunk mBody;
+        std::vector<std::shared_ptr<RestMessage>> mChunks;
+        bool mChunkCompleted = false;
+        std::shared_ptr<std::string> mRawMessage;
     };
 }}
 

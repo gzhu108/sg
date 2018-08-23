@@ -2,7 +2,7 @@
 #include "NetworkUtility.h"
 #include "ConfigurationSingleton.h"
 #include "StreetGangPBDispatcher.h"
-#include "DiscoveryRequester.h"
+#include "DiscoveryClient.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;

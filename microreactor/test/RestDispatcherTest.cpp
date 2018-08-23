@@ -4,7 +4,7 @@
 using namespace sg::microreactor;
 
 
-class RestDispatcherMock : public RestDispatcher
+class RestRequestDispatcherMock : public RestDispatcher
 {
 public:
     virtual Factory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest) override
@@ -16,7 +16,7 @@ public:
 class ReactorFactoryMock
 {
 public:
-    std::shared_ptr<Reactor> CreateReactor(std::shared_ptr<RestRequest>, std::shared_ptr<Connection>)
+    std::shared_ptr<Reactor> CreateReactor(std::shared_ptr<RestMessage>, std::shared_ptr<Connection>)
     {
         return nullptr;
     }
@@ -26,7 +26,7 @@ public:
 TEST(RestDispatcherTest, RegisterRestFactoryNormal)
 {
     ReactorFactoryMock factory;   
-    RestDispatcherMock decoder;
+    RestRequestDispatcherMock decoder;
     decoder.RegisterRestReactorFactory("GET", "/api_1/data", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
     decoder.RegisterRestReactorFactory("POST", "/api_2/save", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
 

@@ -27,10 +27,10 @@ namespace sg { namespace service
         std::string GetMulticastAddress() { return mMulticastAddress; }
         uint16_t GetMulticastPort() { return mProfile->Port.cref(); }
 
-        virtual bool Initialize();
+        virtual bool Initialize() override;
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestMessage> message, std::shared_ptr<sg::microreactor::Connection> connection);
         virtual bool AdvertiseAlive();
         virtual bool AdvertiseByebye();
         

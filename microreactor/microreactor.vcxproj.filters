@@ -60,9 +60,6 @@
     <ClCompile Include="src\RestFileResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\RestDispatcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\RestRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,11 +147,14 @@
     <ClCompile Include="test\RestDispatcherTest.cpp">
       <Filter>Test Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Http2Dispatcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test\RestResponseTest.cpp">
       <Filter>Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RestDispatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RestMessage.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -237,9 +237,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\RestMessage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RestDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\RestReactor.h">
@@ -341,7 +338,7 @@
     <ClInclude Include="src\Parkable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Http2Dispatcher.h">
+    <ClInclude Include="src\RestDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,10 +18,13 @@
     <ClCompile Include="DiscoveryService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DiscoveryRequester.cpp">
+    <ClCompile Include="MSearchReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MSearchReactor.cpp">
+    <ClCompile Include="DiscoveryClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NotifyReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,10 +32,13 @@
     <ClInclude Include="DiscoveryService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DiscoveryRequester.h">
+    <ClInclude Include="MSearchReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MSearchReactor.h">
+    <ClInclude Include="DiscoveryClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NotifyReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,7 +5,6 @@
 #include "RestDispatcher.h"
 #include "Connection.h"
 #include "TaskManagerSingleton.h"
-#include "RestResponse.h"
 #include "StringUtility.h"
 
 #define DEFAULT_HTTP_BUFFER_SIZE 10240
@@ -59,79 +58,81 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
         return nullptr;
     }
 
-    std::shared_ptr<RestRequest> restRequest = PopChunkedRequest(connection);
-    if (restRequest == nullptr)
+    std::shared_ptr<RestMessage> parent = PopChunkedMessage(connection);
+    std::shared_ptr<RestMessage> restMessage = restMessage->Parse(parent, message);
+    if (restMessage == nullptr)
     {
-        restRequest = std::make_shared<RestRequest>();
-    }
-
-    if (restRequest->Parse(message))
-    {
-        LOG("\n+++++++++++++++++++++++++++++++++++++++");
-        LOG("%s %s %s", restRequest->mMethod.c_str(), restRequest->mUri.c_str(), restRequest->mVersion.c_str());
-        for (auto& header : restRequest->mHeaders)
-        {
-            LOG("%s: %s", header.mName.c_str(), header.mValue.c_str());
-        }
-        LOG("\n%.*s", (int)restRequest->mBody.mLength, restRequest->mBody.mOffset);
-        for (auto& chunk : restRequest->mChunks)
-        {
-            LOG("\n++++ Chunk ++++");
-            LOG("\n%.*s", (int)chunk.mBody.mLength, chunk.mBody.mOffset);
-            LOG("\n---- Chunk ----");
-        }
-        LOG("\n+++++++++++++++++++++++++++++++++++++++");
-    }
-    else
-    {
-        if (ReplyError.cref())
-        {
-            RestResponse::SendErrorWith(connection, 400, "Bad Request");
-        }
+        // Do not response if the message is melformed
+        //RestResponse::SendErrorWith(connection, 400, "Bad Message");
         return nullptr;
     }
 
     // Handle chunked data before Getting the API object.
-    if (restRequest->mChunks.empty() || restRequest->mChunkCompleted)
+    if (restMessage->mChunks.empty() || restMessage->mChunkCompleted)
     {
-        for (auto& header : restRequest->mHeaders)
+        for (auto& header : restMessage->mHeaders)
         {
             if (header.mName == "Content-Length")
             {
                 size_t contentLength = std::strtoul(header.mValue.c_str(), nullptr, 10);
-                if (restRequest->mBody.mLength > contentLength)
+                if (restMessage->mBody.mLength > contentLength)
                 {
-                    restRequest->mBody.mLength = contentLength;
+                    restMessage->mBody.mLength = contentLength;
                 }
 
                 break;
             }
         };
 
-        auto restReactorFactory = GetRestReactorFactory(restRequest);
+        return CreateReactor(restMessage, connection);
+    }
+
+    PushChunkedMessage(connection, restMessage);
+    return nullptr;
+}
+
+std::shared_ptr<Reactor> RestDispatcher::CreateReactor(std::shared_ptr<RestMessage> restMessage, Connection& connection)
+{
+    if (restMessage == nullptr)
+    {
+        return nullptr;
+    }
+
+    if (restMessage->mMessageType == RestMessage::Request)
+    {
+        auto restReactorFactory = GetRestReactorFactory(std::static_pointer_cast<RestRequest>(restMessage));
         if (restReactorFactory == nullptr)
         {
-            if (ReplyError.cref())
-            {
-                RestResponse::SendErrorWith(connection, 404, "Not Found");
-            }
+            RestResponse::SendErrorWith(connection, 404, "Not Found");
             return nullptr;
         }
 
-        auto reactor = restReactorFactory(restRequest, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+        auto reactor = restReactorFactory(restMessage, std::static_pointer_cast<Connection>(connection.shared_from_this()));
         if (reactor == nullptr)
         {
-            if (ReplyError.cref())
-            {
-                RestResponse::SendErrorWith(connection, 400, "Bad Request");
-            }
+            RestResponse::SendErrorWith(connection, 400, "Bad Message");
+            return nullptr;
+        }
+
+        return reactor;
+    }
+    else if (restMessage->mMessageType == RestMessage::Response)
+    {
+        auto restReactorFactory = GetRestReactorFactory(std::static_pointer_cast<RestResponse>(restMessage));
+        if (restReactorFactory == nullptr)
+        {
+            return nullptr;
+        }
+
+        auto reactor = restReactorFactory(restMessage, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+        if (reactor == nullptr)
+        {
             return nullptr;
         }
 
         return reactor;
     }
 
-    PushChunkedRequest(connection, restRequest);
     return nullptr;
 }
 
@@ -141,6 +142,21 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
     {
         return nullptr;
     }
+
+    LOG("\n+++++++++++++++++++++++++++++++++++++++");
+    LOG("%s %s %s", restRequest->mMethod.c_str(), restRequest->mUri.c_str(), restRequest->mVersion.c_str());
+    for (auto& header : restRequest->mHeaders)
+    {
+        LOG("%s: %s", header.mName.c_str(), header.mValue.c_str());
+    }
+    LOG("\n%.*s", (int)restRequest->mBody.mLength, restRequest->mBody.mOffset);
+    for (auto& chunk : restRequest->mChunks)
+    {
+        LOG("\n++++ Chunk ++++");
+        LOG("\n%.*s", (int)chunk->mBody.mLength, chunk->mBody.mOffset);
+        LOG("\n---- Chunk ----");
+    }
+    LOG("\n+++++++++++++++++++++++++++++++++++++++");
 
     std::string key = restRequest->mMethod;
     StringUtility::ToUpper(key);
@@ -176,23 +192,56 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
     return nullptr;
 }
 
-void RestDispatcher::PushChunkedRequest(sg::microreactor::Connection& connection, std::shared_ptr<RestRequest> restRequest)
+RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<RestResponse> restResponse)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-    mChunkedRequestStore[reinterpret_cast<uintptr_t>(&connection)] = restRequest;
-}
-
-std::shared_ptr<RestRequest> RestDispatcher::PopChunkedRequest(sg::microreactor::Connection& connection)
-{
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-    std::shared_ptr<RestRequest> restRequest;
-
-    auto found = mChunkedRequestStore.find(reinterpret_cast<uintptr_t>(&connection));
-    if (found != mChunkedRequestStore.end())
+    if (restResponse == nullptr || mMessageReactorFactoryTable.empty())
     {
-        restRequest = found->second;
-        mChunkedRequestStore.erase(found);
+        return nullptr;
     }
 
-    return restRequest;
+    LOG("\n+++++++++++++++++++++++++++++++++++++++");
+    LOG("%d %s %s", restResponse->mStatusCode, restResponse->mStatusText.c_str(), restResponse->mVersion.c_str());
+    for (auto& header : restResponse->mHeaders)
+    {
+        LOG("%s: %s", header.mName.c_str(), header.mValue.c_str());
+    }
+    LOG("\n%.*s", (int)restResponse->mBody.mLength, restResponse->mBody.mOffset);
+    for (auto& chunk : restResponse->mChunks)
+    {
+        LOG("\n++++ Chunk ++++");
+        LOG("\n%.*s", (int)chunk->mBody.mLength, chunk->mBody.mOffset);
+        LOG("\n---- Chunk ----");
+    }
+    LOG("\n+++++++++++++++++++++++++++++++++++++++");
+
+    // Use an empty key for response
+    std::string key;
+    auto found = mMessageReactorFactoryTable.find(key);
+    if (found == mMessageReactorFactoryTable.end())
+    {
+        return false;
+    }
+
+    return found->second;
+}
+
+void RestDispatcher::PushChunkedMessage(sg::microreactor::Connection& connection, std::shared_ptr<RestMessage> restMessage)
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+    mChunkedMessageStore[reinterpret_cast<uintptr_t>(&connection)] = restMessage;
+}
+
+std::shared_ptr<RestMessage> RestDispatcher::PopChunkedMessage(sg::microreactor::Connection& connection)
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+    std::shared_ptr<RestMessage> restMessage;
+
+    auto found = mChunkedMessageStore.find(reinterpret_cast<uintptr_t>(&connection));
+    if (found != mChunkedMessageStore.end())
+    {
+        restMessage = found->second;
+        mChunkedMessageStore.erase(found);
+    }
+
+    return restMessage;
 }

@@ -3,7 +3,7 @@
 #include "TcpEndpoint.h"
 #include "ConfigurationSingleton.h"
 #include "StreetGangBinaryDispatcher.h"
-#include "DiscoveryRequester.h"
+#include "DiscoveryClient.h"
 
 //CHECK_MEMORY_INIT
 

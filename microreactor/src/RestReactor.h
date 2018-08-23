@@ -16,21 +16,16 @@ namespace sg { namespace microreactor
     public:
         typedef T MessageType;
 
-        RestReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
+        RestReactor(std::shared_ptr<Connection> connection, std::shared_ptr<MessageType> request)
             : Reactor(connection)
         {
-            mInput = std::make_shared<MessageType>(request);
+            mInput = std::static_pointer_cast<Message>(request);
             mInput->TrackId.set(Uuid::GenerateUuid().ToString());
         }
 
         virtual ~RestReactor() {}
 
     protected:
-        virtual std::shared_ptr<RestRequest> Request()
-        {
-            return InputMessage()->Request();
-        }
-
         virtual std::shared_ptr<MessageType> InputMessage()
         {
             return std::static_pointer_cast<MessageType>(mInput);

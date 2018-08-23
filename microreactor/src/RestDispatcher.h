@@ -5,11 +5,12 @@
 #include "MessageDispatcher.h"
 #include "Reactor.h"
 #include "RestRequest.h"
+#include "RestResponse.h"
 
 
 namespace sg { namespace microreactor
 {
-    class RestDispatcher : public MessageDispatcher<std::string, std::shared_ptr<RestRequest>>
+    class RestDispatcher : public MessageDispatcher<std::string, std::shared_ptr<RestMessage>>
     {
     public:
         RestDispatcher();
@@ -24,14 +25,16 @@ namespace sg { namespace microreactor
     protected:
         virtual std::shared_ptr<Reactor> Decode(std::istream& stream, Connection& connection) override { return nullptr; }
         virtual std::shared_ptr<Reactor> Decode(Connection& connection);
+        virtual std::shared_ptr<Reactor> CreateReactor(std::shared_ptr<RestMessage> restMessage, Connection& connection);
         virtual Factory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest);
+        virtual Factory GetRestReactorFactory(std::shared_ptr<RestResponse> restResponse);
 
-        virtual void PushChunkedRequest(Connection& connection, std::shared_ptr<RestRequest> restRequest);
-        virtual std::shared_ptr<RestRequest> PopChunkedRequest(Connection& connection);
+        virtual void PushChunkedMessage(Connection& connection, std::shared_ptr<RestMessage> restMessage);
+        virtual std::shared_ptr<RestMessage> PopChunkedMessage(Connection& connection);
 
     protected:
         std::recursive_mutex mLock;
-        std::map<uintptr_t, std::shared_ptr<RestRequest>> mChunkedRequestStore;
+        std::map<uintptr_t, std::shared_ptr<RestMessage>> mChunkedMessageStore;
     };
 }}
 

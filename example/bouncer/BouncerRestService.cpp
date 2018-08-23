@@ -31,8 +31,9 @@ bool BouncerRestService::Initialize()
     return RestService::Initialize();
 }
 
-std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
 {
+    auto request = std::static_pointer_cast<RestRequest>(message);
     if (request->mUri.length() < std::string("/").length())
     {
         RestResponse::SendErrorWith(*connection, 404, "Not found");
@@ -73,8 +74,9 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
     return std::make_shared<BouncerReactor>(connection, target, stream);
 }
 
-std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
 {
+    auto request = std::static_pointer_cast<RestRequest>(message);
     if (request->mUri.length() < std::string("/settings").length() || request->mBody.mLength == 0)
     {
         return nullptr;

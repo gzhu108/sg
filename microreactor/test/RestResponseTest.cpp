@@ -9,7 +9,7 @@ TEST(RestResponseTest, ParseResponse)
     auto message = std::make_shared<std::string>("HTTP/1.1 200 OK\r\nDate: Fri, 17 Aug 2018 20:46:47 GMT\r\n\r\n<html></html>");
 
     RestResponse response;
-    response.Parse(message);
+    response.Parse(nullptr, message);
 
     EXPECT_EQ(message, response.mRawMessage);
     EXPECT_EQ(200, response.mStatusCode);

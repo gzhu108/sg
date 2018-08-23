@@ -2,29 +2,27 @@
 #ifndef sg_microreactor_RestRequest
 #define sg_microreactor_RestRequest
 
-#include <string>
-#include <vector>
-#include "Connection.h"
-#include "HttpHeader.h"
+#include "RestMessage.h"
 
 
 namespace sg { namespace microreactor
 {
-    struct RestRequest
+    class RestRequest : public RestMessage
     {
-        std::shared_ptr<std::string> mRawMessage;
+    public:
+        RestRequest() : RestMessage(RestMessage::Request) {}
+        virtual ~RestRequest() {}
+
+    public:
         std::string mMethod;
         std::string mUri;
-        std::string mVersion;
-        std::vector<HttpHeader> mHeaders;
-        HttpChunk mBody;
-        std::vector<RestRequest> mChunks;
-        bool mChunkCompleted = false;
 
-        virtual bool Parse(std::shared_ptr<std::string> message);
-        virtual bool Send(Connection& connection);
-        virtual bool FlushToBuffer(std::string& buffer);
-        virtual bool FlushToStream(std::ostream& stream);
+        virtual bool FlushToBuffer(std::string& buffer) override;
+
+        virtual std::shared_ptr<RestMessage> CreateMessage() override
+        {
+            return std::make_shared<RestRequest>();
+        }
     };
 }}
 
