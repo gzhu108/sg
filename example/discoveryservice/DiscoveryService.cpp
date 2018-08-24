@@ -1,6 +1,7 @@
 #include "DiscoveryService.h"
 #include "NetworkUtility.h"
 #include "UdpEndpoint.h"
+#include "DiscoveryDispatcher.h"
 #include "MSearchReactor.h"
 
 using namespace sg::microreactor;
@@ -10,6 +11,8 @@ using namespace sg::service;
 DiscoveryService::DiscoveryService(const std::string& serverAddress, uint16_t port, const std::string& multicastAddress)
     : mMulticastAddress(multicastAddress)
 {
+    mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
+
     // Create service profile
     mProfile = std::make_shared<Profile>();
     mProfile->Protocol.set("udp");

@@ -62,8 +62,8 @@ std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
     std::shared_ptr<RestMessage> restMessage = restMessage->Parse(parent, message);
     if (restMessage == nullptr)
     {
-        // Do not response if the message is melformed
-        //RestResponse::SendErrorWith(connection, 400, "Bad Message");
+        // Do not response if the message is malformed
+        //SendBadMessageResponse(connection);
         return nullptr;
     }
 
@@ -103,14 +103,14 @@ std::shared_ptr<Reactor> RestDispatcher::CreateReactor(std::shared_ptr<RestMessa
         auto restReactorFactory = GetRestReactorFactory(std::static_pointer_cast<RestRequest>(restMessage));
         if (restReactorFactory == nullptr)
         {
-            RestResponse::SendErrorWith(connection, 404, "Not Found");
+            SendNotFoundResponse(connection);
             return nullptr;
         }
 
         auto reactor = restReactorFactory(restMessage, std::static_pointer_cast<Connection>(connection.shared_from_this()));
         if (reactor == nullptr)
         {
-            RestResponse::SendErrorWith(connection, 400, "Bad Message");
+            SendBadMessageResponse(connection);
             return nullptr;
         }
 
@@ -244,4 +244,14 @@ std::shared_ptr<RestMessage> RestDispatcher::PopChunkedMessage(sg::microreactor:
     }
 
     return restMessage;
+}
+
+void RestDispatcher::SendBadMessageResponse(Connection& connection)
+{
+    RestResponse::SendErrorWith(connection, 400, "Bad Message");
+}
+
+void RestDispatcher::SendNotFoundResponse(Connection& connection)
+{
+    RestResponse::SendErrorWith(connection, 404, "Not Found");
 }

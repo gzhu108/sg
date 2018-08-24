@@ -41,5 +41,8 @@
     <ClInclude Include="NotifyReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DiscoveryDispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

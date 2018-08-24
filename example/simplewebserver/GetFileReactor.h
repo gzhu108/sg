@@ -3,15 +3,14 @@
 #define simplewebserver_GetFileReactor
 
 #include "Microreactor.h"
-#include "GetFileMessage.h"
 
 
 namespace simplewebserver
 {
-    class GetFileReactor : public sg::microreactor::RestReactor<GetFileMessage>
+    class GetFileReactor : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
     {
     public:
-        GetFileReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<GetFileMessage> request);
+        GetFileReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~GetFileReactor();
 
     public:

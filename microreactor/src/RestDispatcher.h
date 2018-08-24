@@ -30,6 +30,9 @@ namespace sg { namespace microreactor
         virtual void PushChunkedMessage(Connection& connection, std::shared_ptr<RestMessage> restMessage);
         virtual std::shared_ptr<RestMessage> PopChunkedMessage(Connection& connection);
 
+        virtual void SendBadMessageResponse(Connection& connection);
+        virtual void SendNotFoundResponse(Connection& connection);
+
     protected:
         std::recursive_mutex mLock;
         std::map<uintptr_t, std::shared_ptr<RestMessage>> mChunkedMessageStore;

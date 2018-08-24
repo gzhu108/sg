@@ -23,7 +23,7 @@ bool SimpleWebService::Initialize()
 
 std::shared_ptr<Reactor> SimpleWebService::CreateGetFileReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
 {
-    auto request = std::static_pointer_cast<GetFileMessage>(message);
+    auto request = std::static_pointer_cast<RestRequest>(message);
     if (request->mUri.length() < std::string("/").length())
     {
         return nullptr;

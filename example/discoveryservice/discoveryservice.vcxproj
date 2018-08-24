@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DiscoveryClient.h" />
+    <ClInclude Include="DiscoveryDispatcher.h" />
     <ClInclude Include="MSearchReactor.h" />
     <ClInclude Include="DiscoveryService.h" />
     <ClInclude Include="NotifyReactor.h" />

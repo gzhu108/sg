@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace simplewebserver;
 
 
-GetFileReactor::GetFileReactor(std::shared_ptr<Connection> connection, std::shared_ptr<GetFileMessage> request)
+GetFileReactor::GetFileReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }

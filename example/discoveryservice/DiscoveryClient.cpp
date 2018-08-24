@@ -1,6 +1,6 @@
 #include "DiscoveryClient.h"
 #include "UdpEndpoint.h"
-#include "RestDispatcher.h"
+#include "DiscoveryDispatcher.h"
 #include "NotifyReactor.h"
 
 using namespace sg::microreactor;
@@ -11,7 +11,7 @@ DiscoveryClient::DiscoveryClient(const std::string& multicastAddress, uint16_t p
     : mMulticastAddress(multicastAddress)
     , mPort(port)
 {
-    auto dispatcher = std::make_shared<RestDispatcher>();
+    auto dispatcher = std::make_shared<DiscoveryDispatcher>();
 
     // Create client profile
     auto profile = std::make_shared<Profile>();
