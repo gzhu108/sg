@@ -16,8 +16,6 @@ namespace sg { namespace microreactor
         RestDispatcher();
         virtual ~RestDispatcher();
 
-        PROPERTY(ReplyError, bool, true);
-
     public:
         virtual void Dispatch(Connection& connection) override;
         virtual void RegisterRestReactorFactory(const std::string& method, const std::string& uri, Factory factory);

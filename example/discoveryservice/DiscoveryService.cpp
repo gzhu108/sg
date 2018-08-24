@@ -20,7 +20,6 @@ DiscoveryService::DiscoveryService(const std::string& serverAddress, uint16_t po
     // Register M-SEARCH
     if (mRestDispatcher)
     {
-        mRestDispatcher->ReplyError.set(false);
         mRestDispatcher->RegisterRestReactorFactory("M-SEARCH", "*", std::bind(&DiscoveryService::CreateMSearchReactor, this, std::placeholders::_1, std::placeholders::_2));
     }
 }
@@ -51,7 +50,7 @@ bool DiscoveryService::Initialize()
 
     try
     {
-        LOG("Discovery Server Endpoint: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
+        LOG("Discovery server endpoint: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
 
         uint32_t multicastInterfaceIndex = 0;
         std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;

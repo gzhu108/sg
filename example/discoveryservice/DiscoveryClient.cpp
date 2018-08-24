@@ -9,6 +9,7 @@ using namespace sg::service;
 
 DiscoveryClient::DiscoveryClient(const std::string& multicastAddress, uint16_t port)
     : mMulticastAddress(multicastAddress)
+    , mPort(port)
 {
     auto dispatcher = std::make_shared<RestDispatcher>();
 
@@ -16,40 +17,48 @@ DiscoveryClient::DiscoveryClient(const std::string& multicastAddress, uint16_t p
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set("udp");
     profile->Address.set("127.0.0.1");
-    profile->Port.set(port);
+    profile->Port.set(mPort);
     profile->Dispatcher.set(dispatcher);
 
-    // Register M-SEARCH
-    if (mRestDispatcher)
-    {
-        mRestDispatcher->ReplyError.set(false);
-        mRestDispatcher->RegisterRestReactorFactory("NOTIFY", "*", std::bind(&DiscoveryClient::CreateNotifyReactor, this, std::placeholders::_1, std::placeholders::_2));
-    }
+    // Create UDP socket
+    mSocket = std::make_shared<UdpSocket>();
+
+    // Create UDP connection
+    auto connection = std::make_shared<UdpConnection>(mSocket, profile);
+    Initialize(connection, std::chrono::milliseconds(30));
+
+    dispatcher->RegisterRestReactorFactory("NOTIFY", "*", std::bind(&DiscoveryClient::CreateNotifyReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 DiscoveryClient::~DiscoveryClient()
 {
 }
 
-bool DiscoveryClient::Initialize()
+void DiscoveryClient::MulticastMSearch(const std::string& serviceType, const std::string& multicastAddress, uint16_t port)
 {
-    // Create UDP socket
-    mSocket = std::make_shared<UdpSocket>();
+    mConnection->SetPeerName(multicastAddress);
+    mConnection->SetPeerPort(port);
+    SendMSearch(serviceType, multicastAddress, port, "2");
+}
 
-    // Create UDP endpoint
-    mEndpoint = std::make_shared<UdpEndpoint>(mSocket, mProfile);
-    if (!mSocket->IsValid())
-    {
-        return false;
-    }
+void DiscoveryClient::UnicastMSearch(const std::string& serviceType, const std::string& unicastAddress, uint16_t port)
+{
+    mConnection->SetPeerName(unicastAddress);
+    mConnection->SetPeerPort(port);
+    SendMSearch(serviceType, unicastAddress, port, "0");
+}
 
-    mEndpoint->ListenTimeout.set(std::chrono::milliseconds(30));
-    mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(30));
-    mEndpoint->SendTimeout.set(std::chrono::milliseconds(1000));
+void DiscoveryClient::RegisterResponseReactorFactory(sg::microreactor::RestDispatcher::Factory factory)
+{
+    auto dispatcher = std::static_pointer_cast<RestDispatcher>(mConnection->GetProfile()->Dispatcher.cref());
+    dispatcher->RegisterRestReactorFactory("", "", factory);
+}
 
+void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const std::chrono::milliseconds& timeout)
+{
     try
     {
-        LOG("Discovery Server Endpoint: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
+        LOG("Discovery client connection: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
 
         uint32_t multicastInterfaceIndex = 0;
         std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
@@ -68,29 +77,13 @@ bool DiscoveryClient::Initialize()
         // Initialize multicasting
         if (mSocket->JoinMulticastGoup(mMulticastAddress, multicastInterfaceIndex))
         {
-            return RestService::Initialize();
+            Client::Initialize(connection, timeout);
         }
     }
     catch (SocketException& e)
     {
         LOG("Error: [%s]:[%u] %s (%d)", e.mName.c_str(), e.mPort, e.what(), e.mError);
     }
-
-    return false;
-}
-
-void DiscoveryClient::MulticastMSearch(const std::string& serviceType, const std::string& multicastAddress, uint16_t port)
-{
-    mConnection->SetPeerName(multicastAddress);
-    mConnection->SetPeerPort(port);
-    SendMSearch(serviceType, multicastAddress, port, "2");
-}
-
-void DiscoveryClient::UnicastMSearch(const std::string& serviceType, const std::string& unicastAddress, uint16_t port)
-{
-    mConnection->SetPeerName(unicastAddress);
-    mConnection->SetPeerPort(port);
-    SendMSearch(serviceType, unicastAddress, port, "0");
 }
 
 void DiscoveryClient::SendMSearch(const std::string& serviceType, const std::string& address, uint16_t port, const std::string& mx)

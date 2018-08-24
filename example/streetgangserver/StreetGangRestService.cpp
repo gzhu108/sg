@@ -31,8 +31,9 @@ bool StreetGangRestService::Initialize()
     return RestService::Initialize();
 }
 
-std::shared_ptr<Reactor> StreetGangRestService::CreateGetVersionReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangRestService::CreateGetVersionReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
 {
+    auto request = std::static_pointer_cast<RestRequest>(message);
     if (request == nullptr || request->mUri.length() != std::string("/version").length())
     {
         auto responder = std::make_shared<RestStreetGangResponder>(connection);
@@ -40,10 +41,10 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateGetVersionReactor(std::sha
         return nullptr;
     }
 
-    auto message = std::make_shared<RestRequestGetVersion>();
-    if (message->Decode(request))
+    auto restRequestGetVersion = std::make_shared<RestRequestGetVersion>();
+    if (restRequestGetVersion->Decode(request))
     {
-        return std::make_shared<RequestGetVersionReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
+        return std::make_shared<RequestGetVersionReactor>(connection, restRequestGetVersion, std::make_shared<RestStreetGangResponder>(connection));
     }
     else
     {
@@ -55,9 +56,10 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateGetVersionReactor(std::sha
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangRestService::CreateCreateWorldReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangRestService::CreateCreateWorldReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
 {
     std::string path = "/createworld";
+    auto request = std::static_pointer_cast<RestRequest>(message);
     if (request == nullptr || request->mUri.length() < path.length())
     {
         auto responder = std::make_shared<RestStreetGangResponder>(connection);
@@ -65,10 +67,10 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateCreateWorldReactor(std::sh
         return nullptr;
     }
 
-    auto message = std::make_shared<RestRequestCreateWorld>();
-    if (message->Decode(request))
+    auto restRequestCreateWorld = std::make_shared<RestRequestCreateWorld>();
+    if (restRequestCreateWorld->Decode(request))
     {
-        return std::make_shared<RequestCreateWorldReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
+        return std::make_shared<RequestCreateWorldReactor>(connection, restRequestCreateWorld, std::make_shared<RestStreetGangResponder>(connection));
     }
     else
     {
@@ -80,8 +82,9 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateCreateWorldReactor(std::sh
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangRestService::CreateGetSceneReactor(std::shared_ptr<RestRequest> request, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangRestService::CreateGetSceneReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
 {
+    auto request = std::static_pointer_cast<RestRequest>(message);
     if (request == nullptr || request->mUri.length() < std::string("/getscene").length())
     {
         auto responder = std::make_shared<RestStreetGangResponder>(connection);
@@ -106,10 +109,10 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateGetSceneReactor(std::share
         return nullptr;
     }
 
-    auto message = std::make_shared<RestRequestGetScene>();
-    if (message->Decode(request))
+    auto restRequestGetScene = std::make_shared<RestRequestGetScene>();
+    if (restRequestGetScene->Decode(request))
     {
-        return std::make_shared<RequestGetSceneReactor>(connection, message, std::make_shared<RestStreetGangResponder>(connection));
+        return std::make_shared<RequestGetSceneReactor>(connection, restRequestGetScene, std::make_shared<RestStreetGangResponder>(connection));
     }
     else
     {

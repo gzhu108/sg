@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace simplewebserver;
 
 
-GetFileReactor::GetFileReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
+GetFileReactor::GetFileReactor(std::shared_ptr<Connection> connection, std::shared_ptr<GetFileMessage> request)
     : RestReactor(connection, request)
 {
 }
@@ -16,14 +16,15 @@ GetFileReactor::~GetFileReactor()
 
 bool GetFileReactor::Process()
 {
-    if (Request() == nullptr)
+    auto request = InputMessage();
+    if (request == nullptr)
     {
-        LOG("Invalid request [ReqId=%s]\n", InputMessage()->TrackId.cref().c_str());
+        LOG("Invalid request [ReqId=%s]\n", request->TrackId.cref().c_str());
         return false;
     }
 
     // trim '/' at the end of URI
-    std::string uri = Request()->mUri;
+    std::string uri = request->mUri;
     if (uri.back() == '/')
     {
         uri.resize(uri.length() - 1);

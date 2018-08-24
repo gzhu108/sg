@@ -11,7 +11,7 @@ namespace simplewebserver
     class GetFileReactor : public sg::microreactor::RestReactor<GetFileMessage>
     {
     public:
-        GetFileReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        GetFileReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<GetFileMessage> request);
         virtual ~GetFileReactor();
 
     public:
