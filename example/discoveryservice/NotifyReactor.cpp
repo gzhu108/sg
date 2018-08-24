@@ -20,7 +20,6 @@ bool NotifyReactor::Process()
     auto request = InputMessage();
     if (request == nullptr)
     {
-        LOG("Invalid request [ReqId=%s]\n", InputMessage()->TrackId.cref().c_str());
         return false;
     }
 
@@ -30,45 +29,80 @@ bool NotifyReactor::Process()
         return false;
     }
 
-    LOG("M-SEARCH received from %s:%u", mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+    LOG("NOTIFY received from %s:%u", mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
 
-    std::string man;
-    std::string mx;
-    std::string st;
+    std::string host;
+    std::string cacheControl;
+    std::string location;
+    std::string nts;
+    std::string server;
+    Uuid usn;
+    std::string nt;
+
     for (const auto& header : request->mHeaders)
     {
-        if (header.mName == "MAN")
+        if (header.mName == "HOST")
         {
-            man = header.mValue;
+            host = header.mValue;
         }
-        else if (header.mName == "MX")
+        else if (header.mName == "CACHE-CONTROL")
         {
-            mx = header.mValue;
+            cacheControl = header.mValue;
         }
-        else if (header.mName == "ST")
+        else if (header.mName == "LOCATION" || header.mName == "AL")
         {
-            st = header.mValue;
+            location = header.mValue;
+        }
+        else if (header.mName == "NTS")
+        {
+            nts = header.mValue;
+        }
+        else if (header.mName == "SERVER")
+        {
+            server = header.mValue;
+        }
+        else if (header.mName == "USN")
+        {
+            usn = Uuid(header.mValue);
+        }
+        else if (header.mName == "NT")
+        {
+            nt = header.mValue;
         }
     }
 
-    if (man == "ssdp:discover" && st == ServiceType.cref())
+    if (nt == ServiceType.cref())
     {
-        uint64_t waitTimeSeconds = std::atoi(mx.c_str());
-        if (waitTimeSeconds > 0)
+        if (nts == "ssdp:alive")
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(waitTimeSeconds * 1000));
+            UnicastMSearch(mConnection->GetPeerName(), mConnection->GetPeerPort());
         }
-
-        RestResponse response;
-        response.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(NotifyMaxAge.cref())));
-        response.mHeaders.emplace_back(HttpHeader("AL", Location.cref()));
-        response.mHeaders.emplace_back(HttpHeader("SERVER", ServerInfo.cref()));
-        response.mHeaders.emplace_back(HttpHeader("USN", Usn.cref()));
-        response.mHeaders.emplace_back(HttpHeader("ST", ServiceType.cref()));
-        response.mHeaders.emplace_back(HttpHeader("DATE", StringUtility::GetHttpTimeString()));
-
-        return response.Send(*mConnection);
+        if (nts == "ssdp:byebye")
+        {
+            mByebye(usn);
+        }
     }
 
     return true;
+}
+
+void NotifyReactor::UnicastMSearch(const std::string& unicastAddress, uint16_t port)
+{
+    mConnection->SetPeerName(unicastAddress);
+    mConnection->SetPeerPort(port);
+
+    RestRequest request;
+    request.mMethod = "M-SEARCH";
+    request.mUri = "*";
+    request.mVersion = "HTTP/1.1";
+    request.mHeaders.emplace_back(HttpHeader("HOST", unicastAddress + ":" + std::to_string(port)));
+    request.mHeaders.emplace_back(HttpHeader("MAN", "ssdp:discover"));
+    request.mHeaders.emplace_back(HttpHeader("MX", "0"));
+    request.mHeaders.emplace_back(HttpHeader("ST", ServiceType.cref()));
+
+    std::string buffer;
+    if (request.FlushToBuffer(buffer))
+    {
+        mConnection->Send(buffer.data(), buffer.length());
+    }
 }

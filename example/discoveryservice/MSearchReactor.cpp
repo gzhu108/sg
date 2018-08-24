@@ -20,7 +20,6 @@ bool MSearchReactor::Process()
     auto request = InputMessage();
     if (request == nullptr)
     {
-        LOG("Invalid request [ReqId=%s]\n", InputMessage()->TrackId.cref().c_str());
         return false;
     }
 
@@ -51,7 +50,7 @@ bool MSearchReactor::Process()
         }
     }
 
-    if (man == "ssdp:discover" && st == ServiceType.cref())
+    if (man == "ssdp:discover" && st == Description->ServiceType.cref())
     {
         uint64_t waitTimeSeconds = std::atoi(mx.c_str());
         if (waitTimeSeconds > 0)
@@ -60,11 +59,11 @@ bool MSearchReactor::Process()
         }
 
         RestResponse response;
-        response.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(NotifyMaxAge.cref())));
-        response.mHeaders.emplace_back(HttpHeader("AL", Location.cref()));
-        response.mHeaders.emplace_back(HttpHeader("SERVER", ServerInfo.cref()));
-        response.mHeaders.emplace_back(HttpHeader("USN", Usn.cref()));
-        response.mHeaders.emplace_back(HttpHeader("ST", ServiceType.cref()));
+        response.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(Description->NotifyMaxAge.cref())));
+        response.mHeaders.emplace_back(HttpHeader("AL", Description->Location.cref()));
+        response.mHeaders.emplace_back(HttpHeader("SERVER", Description->ServerInfo.cref()));
+        response.mHeaders.emplace_back(HttpHeader("USN", Description->Usn->ToString()));
+        response.mHeaders.emplace_back(HttpHeader("ST", Description->ServiceType.cref()));
         response.mHeaders.emplace_back(HttpHeader("DATE", StringUtility::GetHttpTimeString()));
 
         return response.Send(*mConnection);

@@ -13,10 +13,10 @@
 #include "WorldClient.h"
 #include "ConfigurationXml.h"
 #include "MetricatorLogger.h"
-//#include "UdpSocket.h"
-//#include "DiscoveryService.h"
+#include "DiscoveryClient.h"
 
 using namespace sg::microreactor;
+using namespace sg::service;
 using namespace metricatorapi;
 using namespace streetgangapi;
 using namespace streetgangserver;
@@ -147,37 +147,20 @@ int32_t main(int32_t argc, const char* argv[])
         }
     }
     
-#if 0
-    // Create the socket for DiscoveryService
-    auto socket = std::make_shared<UdpSocket>();
-    socket->Bind(address, (uint16_t)1900);
-    
-    // Create DiscoveryService
-    DiscoveryService discoveryService(socket);
-    discoveryService.Start();
+    auto dispatcher = std::make_shared<DiscoveryDispatcher>();
+    DiscoveryClient discoveryClient(dispatcher);
 
-    // Create the discovery client
-    std::string metricatorServiceType = "urn:streetgang:service:metricator:1";
-    profile->GetConfiguration()->GetValue("MetricatorServiceType", metricatorServiceType);
+    const std::string metricatorServiceType = "urn:streetgang:service:metricator:1";
+    discoveryClient.ServiceType.set(metricatorServiceType);
+    discoveryClient.MulticastMSearch(DEFAULT_MULTICAST_ADDRESS, DEFAULT_MULTICAST_PORT, "2");
 
-    std::shared_ptr<UdpConnection> discoveryConnection = std::make_shared<UdpConnection>(discoverySocket);
-    discoveryConnection->Source.set(multicastAddress);
-    discoveryConnection->Port.set(multicastPort);
+    discoveryClient.ServiceFound.Connect([](const ServiceDescription& description)
+    {
+    });
 
-    mDiscoveryClient = std::make_shared<Client>();
-    mDiscoveryClient->Initialize(profile, discoveryConnection, std::chrono::milliseconds(1000));
-    DiscoveryRequester discoveryRequester(discoveryConnection);
-    DiscoveryRequester.MulticastSearch(metricatorServiceType, multicastAddress, multicastPort);
-
-    // Stop DiscoveryService
-    discoveryService.Stop();
-#endif
-    
-    //auto profile = std::make_shared<Profile>();
-    //profile->Protocol.set(std::string("tcp"));
-    //profile->Address.set(std::string("0.0.0.0"));
-    //profile->Port.set(8390);
-    //Microservice streetGangService(profile);
+    discoveryClient.Byebye.Connect([](const Uuid& usn)
+    {
+    });
 
     StreetGangBinaryService streetGangBinaryService;
     StreetGangPBService streetGangPBService;

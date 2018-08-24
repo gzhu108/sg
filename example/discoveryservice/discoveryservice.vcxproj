@@ -42,6 +42,7 @@
     <ClCompile Include="DiscoveryClient.cpp" />
     <ClCompile Include="MSearchReactor.cpp" />
     <ClCompile Include="DiscoveryService.cpp" />
+    <ClCompile Include="MSearchResponseReactor.cpp" />
     <ClCompile Include="NotifyReactor.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -49,7 +50,9 @@
     <ClInclude Include="DiscoveryDispatcher.h" />
     <ClInclude Include="MSearchReactor.h" />
     <ClInclude Include="DiscoveryService.h" />
+    <ClInclude Include="MSearchResponseReactor.h" />
     <ClInclude Include="NotifyReactor.h" />
+    <ClInclude Include="ServiceDescription.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A1CF5343-D95A-4247-A634-897BD8DB454E}</ProjectGuid>

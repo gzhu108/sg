@@ -4,6 +4,7 @@
 
 #include "RestReactor.h"
 #include "RestRequest.h"
+#include "Uuid.h"
 
 
 namespace sg { namespace service
@@ -14,14 +15,18 @@ namespace sg { namespace service
         NotifyReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~NotifyReactor();
 
-        PROPERTY(NotifyMaxAge, uint32_t, 0);
-        PROPERTY(Location, std::string);
-        PROPERTY(ServerInfo, std::string);
-        PROPERTY(Usn, std::string);
         PROPERTY(ServiceType, std::string);
+
+        sg::microreactor::Signal<sg::microreactor::Uuid>& Byebye = mByebye;
 
     public:
         virtual bool Process() override;
+
+    protected:
+        void UnicastMSearch(const std::string& unicastAddress, uint16_t port);
+
+    protected:
+        sg::microreactor::Emittable<sg::microreactor::Uuid> mByebye;
     };
 }}
 

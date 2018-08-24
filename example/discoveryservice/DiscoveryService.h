@@ -4,6 +4,8 @@
 
 #include "UdpSocket.h"
 #include "RestService.h"
+#include "DiscoveryDispatcher.h"
+#include "ServiceDescription.h"
 
 
 namespace sg { namespace service
@@ -17,11 +19,7 @@ namespace sg { namespace service
         explicit DiscoveryService(const std::string& serverAddress, uint16_t port = DEFAULT_MULTICAST_PORT, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS);
         virtual ~DiscoveryService();
         
-        PROPERTY(NotifyMaxAge, uint32_t, 0);
-        PROPERTY(Location, std::string);
-        PROPERTY(ServerInfo, std::string);
-        PROPERTY(Usn, std::string);
-        PROPERTY(ServiceType, std::string);
+        PROPERTY(Description, ServiceDescription);
 
     public:
         std::string GetMulticastAddress() { return mMulticastAddress; }
@@ -29,10 +27,11 @@ namespace sg { namespace service
 
         virtual bool Initialize() override;
 
-    protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestMessage> message, std::shared_ptr<sg::microreactor::Connection> connection);
         virtual bool AdvertiseAlive();
         virtual bool AdvertiseByebye();
+
+    protected:
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestMessage> message, std::shared_ptr<sg::microreactor::Connection> connection);
         
     protected:
         std::shared_ptr<sg::microreactor::UdpSocket> mSocket;

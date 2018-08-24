@@ -105,8 +105,16 @@ int32_t main(int32_t argc, const char* argv[])
     }
     
     // Create DiscoveryService
-    DiscoveryService discoveryService("0.0.0.0", (uint16_t)1900);
+    ServiceDescription description;
+    description.Location.set("localhost:8490");
+    description.ServerInfo.set("Metractor Service");
+    description.Usn.set(Uuid());
+    description.ServiceType.set("urn:streetgang:service:metricator:1");
+
+    DiscoveryService discoveryService("127.0.0.1");
+    discoveryService.Description.set(description);
     discoveryService.Start();
+    discoveryService.AdvertiseAlive();
 
     auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();
     auto profile = std::make_shared<Profile>();

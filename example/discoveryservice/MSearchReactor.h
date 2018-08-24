@@ -4,6 +4,7 @@
 
 #include "RestReactor.h"
 #include "RestRequest.h"
+#include "ServiceDescription.h"
 
 
 namespace sg { namespace service
@@ -14,11 +15,7 @@ namespace sg { namespace service
         MSearchReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~MSearchReactor();
 
-        PROPERTY(NotifyMaxAge, uint32_t, 0);
-        PROPERTY(Location, std::string);
-        PROPERTY(ServerInfo, std::string);
-        PROPERTY(Usn, std::string);
-        PROPERTY(ServiceType, std::string);
+        PROPERTY(Description, ServiceDescription);
 
     public:
         virtual bool Process() override;

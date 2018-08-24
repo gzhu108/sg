@@ -4,7 +4,6 @@ using namespace sg::microreactor;
 
 
 RestService::RestService()
-    : mRestDispatcher(std::make_shared<RestDispatcher>())
 {
 }
 
@@ -20,21 +19,35 @@ RestService::RestService(const std::string& hostName, uint16_t port)
 
 RestService::RestService(std::shared_ptr<Profile> profile)
     : Microservice(profile)
-    , mRestDispatcher(std::make_shared<RestDispatcher>())
 {
     if (mProfile != nullptr)
     {
-        mProfile->Dispatcher.set(mRestDispatcher);
+        if (mProfile->Dispatcher.cref() == nullptr)
+        {
+            mRestDispatcher = std::make_shared<RestDispatcher>();
+            mProfile->Dispatcher.set(mRestDispatcher);
+        }
+        else
+        {
+            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(mProfile->Dispatcher.cref());
+        }
     }
 }
 
 RestService::RestService(std::shared_ptr<Endpoint> endpoint)
     : Microservice(endpoint)
-    , mRestDispatcher(std::make_shared<RestDispatcher>())
 {
     if (mProfile != nullptr)
     {
-        mProfile->Dispatcher.set(mRestDispatcher);
+        if (mProfile->Dispatcher.cref() == nullptr)
+        {
+            mRestDispatcher = std::make_shared<RestDispatcher>();
+            mProfile->Dispatcher.set(mRestDispatcher);
+        }
+        else
+        {
+            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(mProfile->Dispatcher.cref());
+        }
     }
 }
 

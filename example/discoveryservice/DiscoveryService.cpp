@@ -1,7 +1,6 @@
 #include "DiscoveryService.h"
 #include "NetworkUtility.h"
 #include "UdpEndpoint.h"
-#include "DiscoveryDispatcher.h"
 #include "MSearchReactor.h"
 
 using namespace sg::microreactor;
@@ -83,27 +82,6 @@ bool DiscoveryService::Initialize()
     return false;
 }
 
-std::shared_ptr<Reactor> DiscoveryService::CreateMSearchReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
-{
-    auto request = std::static_pointer_cast<RestRequest>(message);
-    if (request->mUri.length() < std::string("*").length())
-    {
-        return nullptr;
-    }
-
-    auto reactor = std::make_shared<MSearchReactor>(connection, request);
-    if (reactor != nullptr)
-    {
-        reactor->NotifyMaxAge.set(NotifyMaxAge.cref());
-        reactor->Location.set(Location.cref());
-        reactor->ServerInfo.set(ServerInfo.cref());
-        reactor->Usn.set(Usn.cref());
-        reactor->ServiceType.set(ServiceType.cref());
-    }
-
-    return reactor;
-}
-
 bool DiscoveryService::AdvertiseAlive()
 {
     RestRequest request;
@@ -111,12 +89,12 @@ bool DiscoveryService::AdvertiseAlive()
     request.mUri = "*";
     request.mVersion = "HTTP/1.1";
     request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(mProfile->Port.cref())));
-    request.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(NotifyMaxAge.cref())));
-    request.mHeaders.emplace_back(HttpHeader("LOCATION", Location.cref()));
+    request.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(Description->NotifyMaxAge.cref())));
+    request.mHeaders.emplace_back(HttpHeader("LOCATION", Description->Location.cref()));
     request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:alive"));
-    request.mHeaders.emplace_back(HttpHeader("SERVER", ServerInfo.cref()));
-    request.mHeaders.emplace_back(HttpHeader("USN", Usn.cref()));
-    request.mHeaders.emplace_back(HttpHeader("NT", ServiceType.cref()));
+    request.mHeaders.emplace_back(HttpHeader("SERVER", Description->ServerInfo.cref()));
+    request.mHeaders.emplace_back(HttpHeader("USN", Description->Usn->ToString()));
+    request.mHeaders.emplace_back(HttpHeader("NT", Description->ServiceType.cref()));
     
     std::string buffer;
     if (request.FlushToBuffer(buffer))
@@ -136,8 +114,8 @@ bool DiscoveryService::AdvertiseByebye()
     request.mVersion = "HTTP/1.1";
     request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(mProfile->Port.cref())));
     request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:byebye"));
-    request.mHeaders.emplace_back(HttpHeader("USN", Usn.cref()));
-    request.mHeaders.emplace_back(HttpHeader("NT", ServiceType.cref()));
+    request.mHeaders.emplace_back(HttpHeader("USN", Description->Usn->ToString()));
+    request.mHeaders.emplace_back(HttpHeader("NT", Description->ServiceType.cref()));
 
     std::string buffer;
     if (request.FlushToBuffer(buffer))
@@ -147,4 +125,25 @@ bool DiscoveryService::AdvertiseByebye()
     }
 
     return false;
+}
+
+std::shared_ptr<Reactor> DiscoveryService::CreateMSearchReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
+{
+    auto request = std::static_pointer_cast<RestRequest>(message);
+    if (request->mUri.length() < std::string("*").length())
+    {
+        return nullptr;
+    }
+
+    auto reactor = std::make_shared<MSearchReactor>(connection, request);
+    if (reactor != nullptr)
+    {
+        reactor->Description->NotifyMaxAge.set(Description->NotifyMaxAge.cref());
+        reactor->Description->Location.set(Description->Location.cref());
+        reactor->Description->ServerInfo.set(Description->ServerInfo.cref());
+        reactor->Description->Usn.set(Description->Usn.cref());
+        reactor->Description->ServiceType.set(Description->ServiceType.cref());
+    }
+
+    return reactor;
 }

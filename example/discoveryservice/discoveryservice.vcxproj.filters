@@ -27,6 +27,9 @@
     <ClCompile Include="NotifyReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MSearchResponseReactor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DiscoveryService.h">
@@ -42,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DiscoveryDispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceDescription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MSearchResponseReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
