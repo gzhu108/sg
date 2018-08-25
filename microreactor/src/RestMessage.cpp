@@ -17,7 +17,7 @@ static int OnUrl(http_parser* parser, const char* start, size_t length)
     auto request = static_cast<RestRequest*>(parser->data);
     if (request == nullptr)
     {
-        auto request = new RestRequest();
+        request = new RestRequest();
     }
 
     parser->data = static_cast<RestMessage*>(request);

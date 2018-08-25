@@ -111,7 +111,7 @@ int32_t main(int32_t argc, const char* argv[])
     description.Usn.set(Uuid());
     description.ServiceType.set("urn:streetgang:service:metricator:1");
 
-    DiscoveryService discoveryService("127.0.0.1");
+    DiscoveryService discoveryService("0.0.0.0");
     discoveryService.Description.set(description);
     discoveryService.Start();
     discoveryService.AdvertiseAlive();

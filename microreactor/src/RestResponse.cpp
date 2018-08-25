@@ -23,10 +23,14 @@ bool RestResponse::FlushToBuffer(std::string& buffer)
     }
     else
     {
-        buffer += "Content-Length: " + std::to_string(mBody.mLength) + "\r\n";
         if (mBody.mLength)
         {
+            buffer += "Content-Length: " + std::to_string(mBody.mLength) + "\r\n";
             buffer += "\r\n" + std::string(mBody.mOffset, mBody.mLength);
+        }
+        else
+        {
+            buffer += "\r\n";
         }
     }
 
