@@ -12,7 +12,7 @@ UdpSocket::~UdpSocket()
 {
 }
 
-bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex, uint32_t timeToLive, bool loopback)
+bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex, bool loopback, uint32_t timeToLive)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 

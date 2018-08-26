@@ -16,7 +16,7 @@ namespace sg { namespace service
     class DiscoveryService : public sg::microreactor::RestService
     {
     public:
-        explicit DiscoveryService(const std::string& serverAddress, uint16_t port = DEFAULT_MULTICAST_PORT, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS);
+        explicit DiscoveryService(const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS, uint16_t port = DEFAULT_MULTICAST_PORT);
         virtual ~DiscoveryService();
         
         PROPERTY(Description, ServiceDescription);

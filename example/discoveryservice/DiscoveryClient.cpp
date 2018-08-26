@@ -20,7 +20,7 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     // Create client profile
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set("udp");
-    profile->Address.set("127.0.0.1");
+    profile->Address.set("0.0.0.0");    // TODO: depends on multicastAddress is ipv4 or ipv6
     profile->Port.set(mPort);
     profile->Dispatcher.set(dispatcher);
 
@@ -81,7 +81,7 @@ void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const s
         }
 
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, multicastInterfaceIndex))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, multicastInterfaceIndex, false))
         {
             Client::Initialize(connection, timeout);
         }

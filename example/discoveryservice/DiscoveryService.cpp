@@ -7,7 +7,7 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-DiscoveryService::DiscoveryService(const std::string& serverAddress, uint16_t port, const std::string& multicastAddress)
+DiscoveryService::DiscoveryService(const std::string& multicastAddress, uint16_t port)
     : mMulticastAddress(multicastAddress)
 {
     mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
@@ -15,7 +15,7 @@ DiscoveryService::DiscoveryService(const std::string& serverAddress, uint16_t po
     // Create service profile
     mProfile = std::make_shared<Profile>();
     mProfile->Protocol.set("udp");
-    mProfile->Address.set(serverAddress);
+    mProfile->Address.set("0.0.0.0");   // TODO: depends on multicastAddress is ipv4 or ipv6
     mProfile->Port.set(port);
     mProfile->Dispatcher.set(mRestDispatcher);
     
@@ -69,7 +69,7 @@ bool DiscoveryService::Initialize()
         }
 
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, multicastInterfaceIndex))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, multicastInterfaceIndex, false))
         {
             return RestService::Initialize();
         }

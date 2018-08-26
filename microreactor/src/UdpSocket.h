@@ -15,7 +15,7 @@ namespace sg { namespace microreactor
         virtual ~UdpSocket();
         
     public:
-        virtual bool JoinMulticastGoup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex, uint32_t timeToLive = 1, bool loopback = true);
+        virtual bool JoinMulticastGoup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex, bool loopback = true, uint32_t timeToLive = 1);
         virtual bool LeaveMulticastGroup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex);
         
         virtual bool Bind(const std::string& hostName, uint16_t port);

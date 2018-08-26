@@ -106,12 +106,12 @@ int32_t main(int32_t argc, const char* argv[])
     
     // Create DiscoveryService
     ServiceDescription description;
-    description.Location.set("localhost:8490");
+    description.Location.set("localhost:8490"); // todo: set description xml's url
     description.ServerInfo.set("Metractor Service");
-    description.Usn.set(Uuid());
+    description.Usn.set(Uuid::GenerateUuid());
     description.ServiceType.set("urn:streetgang:service:metricator:1");
 
-    DiscoveryService discoveryService("0.0.0.0");
+    DiscoveryService discoveryService;
     discoveryService.Description.set(description);
     discoveryService.Start();
     discoveryService.AdvertiseAlive();
