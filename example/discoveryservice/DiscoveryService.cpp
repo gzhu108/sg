@@ -30,6 +30,7 @@ DiscoveryService::~DiscoveryService()
 {
     if (mSocket != nullptr && mSocket->IsValid())
     {
+        AdvertiseByebye();
         mSocket->LeaveMulticastGroup(mMulticastAddress, 0);
     }
 }
@@ -93,7 +94,7 @@ bool DiscoveryService::AdvertiseAlive()
     request.mHeaders.emplace_back(HttpHeader("LOCATION", Description->Location.cref()));
     request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:alive"));
     request.mHeaders.emplace_back(HttpHeader("SERVER", Description->ServerInfo.cref()));
-    request.mHeaders.emplace_back(HttpHeader("USN", Description->Usn->ToString()));
+    request.mHeaders.emplace_back(HttpHeader("USN", Description->Usn.cref()));
     request.mHeaders.emplace_back(HttpHeader("NT", Description->ServiceType.cref()));
     
     std::string buffer;
@@ -114,7 +115,7 @@ bool DiscoveryService::AdvertiseByebye()
     request.mVersion = "HTTP/1.1";
     request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(mProfile->Port.cref())));
     request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:byebye"));
-    request.mHeaders.emplace_back(HttpHeader("USN", Description->Usn->ToString()));
+    request.mHeaders.emplace_back(HttpHeader("USN", Description->Usn.cref()));
     request.mHeaders.emplace_back(HttpHeader("NT", Description->ServiceType.cref()));
 
     std::string buffer;
@@ -138,11 +139,7 @@ std::shared_ptr<Reactor> DiscoveryService::CreateMSearchReactor(std::shared_ptr<
     auto reactor = std::make_shared<MSearchReactor>(connection, request);
     if (reactor != nullptr)
     {
-        reactor->Description->NotifyMaxAge.set(Description->NotifyMaxAge.cref());
-        reactor->Description->Location.set(Description->Location.cref());
-        reactor->Description->ServerInfo.set(Description->ServerInfo.cref());
-        reactor->Description->Usn.set(Description->Usn.cref());
-        reactor->Description->ServiceType.set(Description->ServiceType.cref());
+        reactor->Description.set(Description.cref());
     }
 
     return reactor;

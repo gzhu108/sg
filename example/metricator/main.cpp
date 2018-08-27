@@ -108,7 +108,7 @@ int32_t main(int32_t argc, const char* argv[])
     ServiceDescription description;
     description.Location.set("localhost:8490"); // todo: set description xml's url
     description.ServerInfo.set("Metractor Service");
-    description.Usn.set(Uuid::GenerateUuid());
+    description.Usn.set(Uuid::GenerateUuid().ToString());
     description.ServiceType.set("urn:streetgang:service:metricator:1");
 
     DiscoveryService discoveryService;

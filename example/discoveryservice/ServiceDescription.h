@@ -27,7 +27,7 @@ namespace sg { namespace service
         PROPERTY(NotifyMaxAge, uint32_t, 0);
         PROPERTY(Location, std::string);
         PROPERTY(ServerInfo, std::string);
-        PROPERTY(Usn, sg::microreactor::Uuid);
+        PROPERTY(Usn, std::string);
         PROPERTY(ServiceType, std::string);
         PROPERTY(Date, std::string);
 

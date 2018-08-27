@@ -46,7 +46,7 @@ bool MSearchResponseReactor::Process()
         }
         else if (header.mName == "USN")
         {
-            description.Usn.set(Uuid(header.mValue));
+            description.Usn.set(header.mValue);
         }
         else if (header.mName == "DATE")
         {

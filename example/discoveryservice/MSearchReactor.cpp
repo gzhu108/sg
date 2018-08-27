@@ -63,7 +63,7 @@ bool MSearchReactor::Process()
         response.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(Description->NotifyMaxAge.cref())));
         response.mHeaders.emplace_back(HttpHeader("AL", Description->Location.cref()));
         response.mHeaders.emplace_back(HttpHeader("SERVER", Description->ServerInfo.cref()));
-        response.mHeaders.emplace_back(HttpHeader("USN", Description->Usn->ToString()));
+        response.mHeaders.emplace_back(HttpHeader("USN", Description->Usn.cref()));
         response.mHeaders.emplace_back(HttpHeader("ST", Description->ServiceType.cref()));
         response.mHeaders.emplace_back(HttpHeader("DATE", StringUtility::GetHttpTimeString()));
 
