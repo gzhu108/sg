@@ -23,4 +23,5 @@ __top_builddir__bin_metricator_SOURCES = \
 __top_builddir__bin_metricator_LDADD = \
     ../metricatorapi/lib/libmetricatorapi.a \
     ../discoveryservice/lib/libdiscoveryservice.a \
-    ../../microreactor/lib/libmicroreactor.a
+    ../../microreactor/lib/libmicroreactor.a \
+    -luuid

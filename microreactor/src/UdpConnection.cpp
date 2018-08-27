@@ -10,10 +10,25 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
     : Connection(profile)
     , mSocket(socket)
 {
-    if (mSocket == nullptr || !mSocket->IsValid())
+    if (mSocket == nullptr)
     {
         mSocket = std::make_shared<UdpSocket>();
+    }
+
+    if (!mSocket->IsValid())
+    {
         mSocket->Create(mProfile->Address.cref(), mProfile->Port.cref());
+    }
+
+    try
+    {
+        mSocket->Bind(mProfile->Address->c_str(), mProfile->Port.cref());
+    }
+    catch (SocketException& e)
+    {
+        // Socket exception received.
+        LOG("Failed to bind: exception(%d): %s [%s]:%u", e.mError, e.what(), e.mName.c_str(), e.mPort);
+        Close();
     }
 
     if (!mSocket->HostName->empty())

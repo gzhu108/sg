@@ -219,7 +219,7 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
     auto found = mMessageReactorFactoryTable.find(key);
     if (found == mMessageReactorFactoryTable.end())
     {
-        return false;
+        return nullptr;
     }
 
     return found->second;

@@ -181,7 +181,7 @@ std::shared_ptr<RestMessage> RestMessage::Parse(std::shared_ptr<RestMessage> par
 {
     if (message->empty())
     {
-        return false;
+        return nullptr;
     }
 
     LOG("HTTP raw message:\n%s\n", message->c_str());

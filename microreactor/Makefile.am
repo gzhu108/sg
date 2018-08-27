@@ -114,6 +114,7 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/UdpEndpoint.cpp \
     src/UdpSocket.cpp \
     src/Uuid.cpp \
+    src/RestMessage.cpp \
     src/RestRequest.cpp \
     src/RestResponse.cpp \
     src/RestFileResponse.cpp \

@@ -17,22 +17,8 @@ UdpEndpoint::UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Prof
 
     if (mProfile != nullptr)
     {
-        try
-        {
-            if (!mSocket->IsValid())
-            {
-                mSocket->Bind(mProfile->Address->c_str(), mProfile->Port.cref());
-            }
-
-            mConnection = std::make_shared<UdpConnection>(mSocket, mProfile);
-            Name.set(std::string("[") + mSocket->HostName.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
-        }
-        catch (SocketException& e)
-        {
-            // Socket exception received.
-            LOG("Failed to bind: exception(%d): %s [%s]:%u", e.mError, e.what(), e.mName.c_str(), e.mPort);
-            Close();
-        }
+        mConnection = std::make_shared<UdpConnection>(mSocket, mProfile);
+        Name.set(std::string("[") + mSocket->HostName.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
     }
     else
     {

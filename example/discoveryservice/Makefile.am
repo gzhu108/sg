@@ -13,8 +13,8 @@ lib_LIBRARIES = \
     $(top_builddir)/lib/libdiscoveryservice.a
 
 __top_builddir__lib_libdiscoveryservice_a_SOURCES = \
-    DiscoveryRequester.cpp \
-    DiscoveryDispatcher.cpp \
+    DiscoveryClient.cpp \
     DiscoveryService.cpp \
-    RequestSearch.cpp \
-    RequestSearchReactor.cpp
+    MSearchReactor.cpp \
+    MSearchResponseReactor.cpp \
+    NotifyReactor.cpp
