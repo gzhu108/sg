@@ -12,6 +12,7 @@ namespace sg { namespace microreactor
     {
     public:
         UdpSocket();
+        explicit UdpSocket(SOCKET socket);
         virtual ~UdpSocket();
         
     public:

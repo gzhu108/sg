@@ -177,6 +177,15 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
         // Move the lower bound back one position
         low--;
 
+        if (key.empty() && low->first.empty())
+        {
+            return low->second;
+        }
+        else if (key.empty() || low->first.empty())
+        {
+            return nullptr;
+        }
+
         // Check if the lower bound key is a substring of the URL
         if (key.find(low->first) == 0 && (low->first.back() == '/' || key[low->first.length()] == '/'))
         {

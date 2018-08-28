@@ -8,6 +8,15 @@ UdpSocket::UdpSocket()
 {
 }
 
+UdpSocket::UdpSocket(SOCKET socket)
+{
+    if (Attach(socket))
+    {
+        GetSocketName();
+        GetPeerName();
+    }
+}
+
 UdpSocket::~UdpSocket()
 {
 }
