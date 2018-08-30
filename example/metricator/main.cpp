@@ -111,11 +111,14 @@ int32_t main(int32_t argc, const char* argv[])
     description.Usn.set(Uuid::GenerateUuid().ToString());
     description.ServiceType.set("urn:streetgang:service:metricator:1");
 
-    DiscoveryService discoveryService;
+    DiscoveryService discoveryService(DEFAULT_MULTICAST_ADDRESS);
     discoveryService.Description.set(description);
     discoveryService.Start();
     discoveryService.AdvertiseAlive();
 
+#if 1
+    START_BLOCKING_TASK_LOOP();
+#else
     auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set(protocol);
@@ -139,6 +142,7 @@ int32_t main(int32_t argc, const char* argv[])
     {
         LOG("Failed to start metricator");
     }
+#endif
 
     // Cancell all tasks
     uint64_t cancelCount = CANCEL_TASKS();

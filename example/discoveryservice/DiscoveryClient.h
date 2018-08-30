@@ -10,9 +10,6 @@
 
 namespace sg { namespace service
 {
-    const std::string DEFAULT_MULTICAST_ADDRESS("239.255.255.250");
-    const uint16_t DEFAULT_MULTICAST_PORT = 1900;
-
     class DiscoveryClient : public sg::microreactor::Client
     {
     public:

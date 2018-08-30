@@ -580,7 +580,7 @@ bool Socket::CreateSocketFromAddress(const std::string& address, uint16_t port, 
     addrHints.ai_family = AF_UNSPEC;
     addrHints.ai_socktype = type;
     addrHints.ai_protocol = protocol;
-    addrHints.ai_flags = forBinding ? AI_PASSIVE : 0;
+    addrHints.ai_flags = AI_CANONNAME | (forBinding ? AI_PASSIVE : 0);
 
     const char* node = nullptr;
     if (!address.empty())

@@ -12,12 +12,33 @@ DiscoveryService::DiscoveryService(const std::string& multicastAddress, uint16_t
 {
     mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
 
+    addrinfo* addrInfo = nullptr;
+    NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false, &addrInfo);
+
+    std::string address("0.0.0.0");
+    if (addrInfo != nullptr)
+    {
+        if (addrInfo->ai_addr->sa_family == AF_INET6)
+        {
+            address = "::";
+        }
+
+        freeaddrinfo(addrInfo);
+        addrInfo = nullptr;
+    }
+
     // Create service profile
     mProfile = std::make_shared<Profile>();
     mProfile->Protocol.set("udp");
-    mProfile->Address.set("0.0.0.0");   // TODO: depends on multicastAddress is ipv4 or ipv6
+    mProfile->Address.set(address);
     mProfile->Port.set(port);
     mProfile->Dispatcher.set(mRestDispatcher);
+
+    if (addrInfo != nullptr)
+    {
+        freeaddrinfo(addrInfo);
+        addrInfo = nullptr;
+    }
     
     // Register M-SEARCH
     if (mRestDispatcher)
@@ -55,6 +76,7 @@ bool DiscoveryService::Initialize()
     {
         LOG("Discovery server endpoint: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
 
+#if 0
         uint32_t multicastInterfaceIndex = 0;
         std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
         if (NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfoList))
@@ -63,14 +85,15 @@ bool DiscoveryService::Initialize()
             {
                 if (!networkInterface.mAddress.empty() && networkInterface.mAddress != "0.0.0.0")
                 {
-                    //multicastInterfaceIndex = networkInterface.mIndex;
+                    multicastInterfaceIndex = networkInterface.mIndex;
                     break;
                 }
             }
         }
+#endif
 
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, multicastInterfaceIndex, false))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, INADDR_ANY, false))
         {
             return RestService::Initialize();
         }

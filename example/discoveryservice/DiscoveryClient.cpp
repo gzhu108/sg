@@ -81,7 +81,7 @@ void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const s
         }
 
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, multicastInterfaceIndex, false))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress))
         {
             Client::Initialize(connection, timeout);
         }

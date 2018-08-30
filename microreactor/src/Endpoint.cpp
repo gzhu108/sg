@@ -38,6 +38,7 @@ bool Endpoint::Stop()
 
 void Endpoint::AcceptConnection()
 {
+    LOG("Endpoint::AcceptConnection() %s", Name->c_str());
     if (IsClosed())
     {
         return;

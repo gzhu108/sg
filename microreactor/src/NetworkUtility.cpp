@@ -346,14 +346,16 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
 
 bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& networkInterfaceInfoList)
 {
-    struct ifaddrs *ifaddr, *ifa;
-    int family, s;
-    char host[NI_MAXHOST];
+    bool result = true;
+    ifaddrs* ifaddr = nullptr;
+    ifaddrs* ifa = nullptr;
+    int family = 0;
+    int s = 0;
+    char host[NI_MAXHOST] = { 0 };
 
     if (getifaddrs(&ifaddr) == -1)
     {
-        perror("getifaddrs");
-        exit(EXIT_FAILURE);
+        return false;
     }
 
     /* Walk through linked list, maintaining head pointer so we
@@ -362,37 +364,79 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
     for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
     {
         if (ifa->ifa_addr == NULL)
+        {
             continue;
+        }
 
-       family = ifa->ifa_addr->sa_family;
+        family = ifa->ifa_addr->sa_family;
 
-       /* Display interface name and family (including symbolic
-           form of the latter for the common families) */
+        /* Display interface name and family (including symbolic
+            form of the latter for the common families) */
 
-       LOG("%s  address family: %d%s",
-                ifa->ifa_name, family,
-                (family == AF_PACKET) ? " (AF_PACKET)" :
-                (family == AF_INET) ?   " (AF_INET)" :
-                (family == AF_INET6) ?  " (AF_INET6)" : "");
+        LOG("%s  address family: %d%s",
+            ifa->ifa_name, family,
+            (family == AF_PACKET) ? " (AF_PACKET)" :
+            (family == AF_INET) ?   " (AF_INET)" :
+            (family == AF_INET6) ?  " (AF_INET6)" : "");
 
-       /* For an AF_INET* interface address, display the address */
+        /* For an AF_INET* interface address, display the address */
 
-       if (family == AF_INET || family == AF_INET6)
-       {
+        if (family == AF_INET || family == AF_INET6)
+        {
             s = getnameinfo(ifa->ifa_addr,
-                    (family == AF_INET) ? sizeof(struct sockaddr_in) :
-                                          sizeof(struct sockaddr_in6),
+                    (family == AF_INET) ? sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6),
                     host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
-            if (s != 0) {
+
+            if (s != 0)
+            {
                 LOG("getnameinfo() failed: %s", gai_strerror(s));
-                exit(EXIT_FAILURE);
+                result = false;
+                break;
             }
+
             LOG("\taddress: <%s>", host);
+            //networkInterfaceInfoList.emplace_back();
         }
     }
 
     freeifaddrs(ifaddr);
-    return false;
+    return result;
 }
 
 #endif
+
+bool NetworkUtility::GetAddressInfo(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding, addrinfo** addrInfo)
+{
+#ifdef _MSC_VER
+    // Initialize Winsock
+    WSADATA socketInfo = { 0 };
+    WSAStartup(MAKEWORD(2, 2), &socketInfo);
+#endif
+
+    addrinfo addrHints;
+    memset(&addrHints, 0, sizeof(addrHints));
+    addrHints.ai_family = AF_UNSPEC;
+    addrHints.ai_socktype = type;
+    addrHints.ai_protocol = protocol;
+    addrHints.ai_flags = AI_CANONNAME | (forBinding ? AI_PASSIVE : 0);
+
+    const char* node = nullptr;
+    if (!address.empty())
+    {
+        node = address.c_str();
+    }
+
+    // Resolve address info
+    int32_t result = getaddrinfo(node, std::to_string(port).c_str(), &addrHints, addrInfo);
+    if (result != 0)
+    {
+        int32_t error = GetSocketError();
+        return false;
+    }
+
+#ifdef _MSC_VER
+    WSACleanup();
+#endif
+
+    return true;
+}

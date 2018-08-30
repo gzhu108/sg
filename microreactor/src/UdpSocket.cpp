@@ -140,7 +140,7 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t 
     else if (mAddrInfo->ai_addr->sa_family == AF_INET6)
     {
         // Set the options for IPv6
-        optLevel = IPPROTO_IP;
+        optLevel = IPPROTO_IPV6;
         option   = IPV6_MULTICAST_LOOP;
         optVal   = (char*)&nLoopback;
         optLen   = sizeof(nLoopback);
@@ -318,8 +318,6 @@ bool UdpSocket::Create(const std::string& address, uint16_t port)
         THROW(SocketException, error, HostName.cref(), HostPort.cref());
     }
 #endif
-    
-    LOG("UDP [%s]:%d", HostName->c_str(), HostPort.cref());
 
     mConnected();
     return true;

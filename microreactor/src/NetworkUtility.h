@@ -24,6 +24,7 @@ namespace sg { namespace microreactor
         };
 
         bool GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& networkInterfaceInfoList);
+        bool GetAddressInfo(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding, addrinfo** addrInfo);
     }
 }}
 
