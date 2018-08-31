@@ -67,7 +67,7 @@ bool DiscoveryService::Initialize()
 
         std::string interfaceAddress = "43.148.16.145";
 
-#if 1
+#if 0
         uint32_t multicastInterfaceIndex = 0;
         std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
         if (NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfoList))
@@ -83,14 +83,8 @@ bool DiscoveryService::Initialize()
         }
 #endif
 
-        std::shared_ptr<addrinfo> addrInfo = nullptr;
-        if (!interfaceAddress.empty())
-        {
-            addrInfo = NetworkUtility::GetAddressInfo(interfaceAddress, 0, SOCK_DGRAM, IPPROTO_UDP, true);
-        }
-
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, addrInfo, false))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, interfaceAddress, false))
         {
             return RestService::Initialize();
         }
