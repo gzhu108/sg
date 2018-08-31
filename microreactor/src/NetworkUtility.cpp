@@ -405,7 +405,7 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
 
 #endif
 
-bool NetworkUtility::GetAddressInfo(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding, addrinfo** addrInfo)
+std::shared_ptr<addrinfo> NetworkUtility::GetAddressInfo(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding)
 {
 #ifdef _MSC_VER
     // Initialize Winsock
@@ -427,16 +427,18 @@ bool NetworkUtility::GetAddressInfo(const std::string& address, uint16_t port, i
     }
 
     // Resolve address info
-    int32_t result = getaddrinfo(node, std::to_string(port).c_str(), &addrHints, addrInfo);
+    addrinfo* addrInfo = nullptr;
+    int32_t result = getaddrinfo(node, std::to_string(port).c_str(), &addrHints, &addrInfo);
     if (result != 0)
     {
         int32_t error = GetSocketError();
-        return false;
+        return nullptr;
     }
 
 #ifdef _MSC_VER
     WSACleanup();
 #endif
 
-    return true;
+    std::shared_ptr<addrinfo> addrInfoPtr(addrInfo, freeaddrinfo);
+    return addrInfoPtr;
 }

@@ -12,19 +12,14 @@ DiscoveryService::DiscoveryService(const std::string& multicastAddress, uint16_t
 {
     mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
 
-    addrinfo* addrInfo = nullptr;
-    NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false, &addrInfo);
-
     std::string address("0.0.0.0");
+    std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false);
     if (addrInfo != nullptr)
     {
         if (addrInfo->ai_addr->sa_family == AF_INET6)
         {
             address = "::";
         }
-
-        freeaddrinfo(addrInfo);
-        addrInfo = nullptr;
     }
 
     // Create service profile
@@ -33,12 +28,6 @@ DiscoveryService::DiscoveryService(const std::string& multicastAddress, uint16_t
     mProfile->Address.set(address);
     mProfile->Port.set(port);
     mProfile->Dispatcher.set(mRestDispatcher);
-
-    if (addrInfo != nullptr)
-    {
-        freeaddrinfo(addrInfo);
-        addrInfo = nullptr;
-    }
     
     // Register M-SEARCH
     if (mRestDispatcher)
@@ -76,7 +65,9 @@ bool DiscoveryService::Initialize()
     {
         LOG("Discovery server endpoint: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
 
-#if 0
+        std::string interfaceAddress = "43.148.16.145";
+
+#if 1
         uint32_t multicastInterfaceIndex = 0;
         std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
         if (NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfoList))
@@ -85,15 +76,21 @@ bool DiscoveryService::Initialize()
             {
                 if (!networkInterface.mAddress.empty() && networkInterface.mAddress != "0.0.0.0")
                 {
-                    multicastInterfaceIndex = networkInterface.mIndex;
+                    //interfaceAddress = networkInterface.mAddress;
                     break;
                 }
             }
         }
 #endif
 
+        std::shared_ptr<addrinfo> addrInfo = nullptr;
+        if (!interfaceAddress.empty())
+        {
+            addrInfo = NetworkUtility::GetAddressInfo(interfaceAddress, 0, SOCK_DGRAM, IPPROTO_UDP, true);
+        }
+
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, INADDR_ANY, false))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, addrInfo, false))
         {
             return RestService::Initialize();
         }

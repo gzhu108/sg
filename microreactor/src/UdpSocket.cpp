@@ -21,7 +21,7 @@ UdpSocket::~UdpSocket()
 {
 }
 
-bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex, bool loopback, uint32_t timeToLive)
+bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, std::shared_ptr<addrinfo> interfaceInfo, bool loopback, uint32_t timeToLive)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -30,18 +30,18 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t 
         return false;
     }
 
-    // if_nametoindex
-
     // Set socket multicast options
     int32_t optLevel = 0;
     int32_t option = 0;
     char* optVal = NULL;
     int32_t optLen = 0;
 
+    uint32_t anyMulticastInterfaceIndex = INADDR_ANY;
+
 #ifdef _MSC_VER
     // Bind to adapter index to work around weak host model of TCPIP stack
     DWORD dw = 0;
-    WSAIoctl(mSocket, SIO_INDEX_BIND, &multicastInterfaceIndex, sizeof(multicastInterfaceIndex), NULL, 0, &dw, NULL, NULL);
+    WSAIoctl(mSocket, SIO_INDEX_BIND, &anyMulticastInterfaceIndex, sizeof(anyMulticastInterfaceIndex), NULL, 0, &dw, NULL, NULL);
 #endif
 
     // Join the multicast group
@@ -50,7 +50,14 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t 
         // Setup the v4 option values and ip_mreq structure
         ip_mreq mreqv4;
         inet_pton(AF_INET, multicastAddress.c_str(), &mreqv4.imr_multiaddr);
-        mreqv4.imr_interface.s_addr = multicastInterfaceIndex;
+        if (interfaceInfo == nullptr)
+        {
+            memset(&mreqv4.imr_interface, sizeof(mreqv4.imr_interface), INADDR_ANY);
+        }
+        else
+        {
+            memcpy(&mreqv4.imr_interface, interfaceInfo->ai_addr, sizeof(sockaddr_in));
+        }
 
         optLevel = IPPROTO_IP;
         option   = IP_ADD_MEMBERSHIP;
@@ -62,7 +69,7 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t 
         // Setup the v6 option values and ipv6_mreq structure
         ipv6_mreq mreqv6;
         inet_pton(AF_INET6, multicastAddress.c_str(), &mreqv6.ipv6mr_multiaddr);
-        mreqv6.ipv6mr_interface = multicastInterfaceIndex;
+        mreqv6.ipv6mr_interface = (interfaceInfo == nullptr) ? INADDR_ANY : ((sockaddr_in6*)interfaceInfo->ai_addr)->sin6_scope_id;
 
         optLevel = IPPROTO_IPV6;
         option   = IPV6_ADD_MEMBERSHIP;
@@ -82,16 +89,34 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t 
         // Set the options for V4
         optLevel = IPPROTO_IP;
         option   = IP_MULTICAST_IF;
-        optVal   = (char*)&multicastInterfaceIndex;
-        optLen   = sizeof(multicastInterfaceIndex);
+
+        if (interfaceInfo == nullptr)
+        {
+            optVal = (char*)&anyMulticastInterfaceIndex;
+            optLen = sizeof(anyMulticastInterfaceIndex);
+        }
+        else
+        {
+            optVal = (char*)interfaceInfo->ai_addr;
+            optLen = sizeof(sockaddr_in);
+        }
     }
     else if (mAddrInfo->ai_addr->sa_family == AF_INET6)
     {
         // Set the options for V6
         optLevel = IPPROTO_IPV6;
         option   = IPV6_MULTICAST_IF;
-        optVal   = (char*)&multicastInterfaceIndex;
-        optLen   = sizeof(multicastInterfaceIndex);
+
+        if (interfaceInfo == nullptr)
+        {
+            optVal = (char*)&anyMulticastInterfaceIndex;
+            optLen = sizeof(anyMulticastInterfaceIndex);
+        }
+        else
+        {
+            optVal = (char*)interfaceInfo->ai_addr;
+            optLen = sizeof(sockaddr_in6);
+        }
     }
     
     if (SetSockOpt(optLevel, option, optVal, optLen) == SOCKET_ERROR)
@@ -154,7 +179,7 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, uint32_t 
     return true;
 }
 
-bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex)
+bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, std::shared_ptr<addrinfo> interfaceInfo)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -181,7 +206,14 @@ bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, uint32_
     {
         // Setup the v4 option values and ip_mreq structure
         inet_pton(AF_INET, multicastAddress.c_str(), &mreqv4.imr_multiaddr);
-        mreqv4.imr_interface.s_addr = multicastInterfaceIndex;
+        if (interfaceInfo == nullptr)
+        {
+            memset(&mreqv4.imr_interface, sizeof(mreqv4.imr_interface), INADDR_ANY);
+        }
+        else
+        {
+            memcpy(&mreqv4.imr_interface, interfaceInfo->ai_addr, sizeof(sockaddr_in));
+        }
 
         optLevel = IPPROTO_IP;
         option   = IP_DROP_MEMBERSHIP;
@@ -200,7 +232,7 @@ bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, uint32_
     {
         // Setup the v6 option values and ipv6_mreq structure
         inet_pton(AF_INET6, multicastAddress.c_str(), &mreqv6.ipv6mr_multiaddr.s6_addr);
-        mreqv6.ipv6mr_interface = multicastInterfaceIndex;
+        mreqv6.ipv6mr_interface = (interfaceInfo == nullptr) ? INADDR_ANY : ((sockaddr_in6*)interfaceInfo->ai_addr)->sin6_scope_id;
 
         optLevel = IPPROTO_IPV6;
         option   = IPV6_DROP_MEMBERSHIP;
