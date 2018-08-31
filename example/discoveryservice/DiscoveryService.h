@@ -13,7 +13,7 @@ namespace sg { namespace service
     class DiscoveryService : public sg::microreactor::RestService
     {
     public:
-        explicit DiscoveryService(const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS, uint16_t port = DEFAULT_MULTICAST_PORT);
+        explicit DiscoveryService(const std::string& interfaceAddress, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS, uint16_t port = DEFAULT_MULTICAST_PORT);
         virtual ~DiscoveryService();
         
         PROPERTY(Description, ServiceDescription);
@@ -31,8 +31,10 @@ namespace sg { namespace service
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestMessage> message, std::shared_ptr<sg::microreactor::Connection> connection);
         
     protected:
-        std::shared_ptr<sg::microreactor::UdpSocket> mSocket;
+        std::string mInterfaceAddress;
         std::string mMulticastAddress;
+        std::shared_ptr<sg::microreactor::UdpSocket> mSocket;
+        std::shared_ptr<sg::microreactor::RestService> mDescriptionServer;
     };
 }}
 

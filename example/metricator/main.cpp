@@ -111,10 +111,28 @@ int32_t main(int32_t argc, const char* argv[])
     description.Usn.set(Uuid::GenerateUuid().ToString());
     description.ServiceType.set("urn:streetgang:service:metricator:1");
 
-    DiscoveryService discoveryService(DEFAULT_MULTICAST_ADDRESS);
-    discoveryService.Description.set(description);
-    discoveryService.Start();
-    discoveryService.AdvertiseAlive();
+    std::vector<std::shared_ptr<DiscoveryService>> discoveryServiceList;
+    std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
+    if (NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfoList))
+    {
+        for (auto& networkInterface : networkInterfaceInfoList)
+        {
+            if (!networkInterface.mAddress.empty() && networkInterface.mAddress != "0.0.0.0")
+            {
+                auto discoveryService = std::make_shared<DiscoveryService>(networkInterface.mAddress, DEFAULT_MULTICAST_ADDRESS);
+                discoveryService->Description.set(description);
+                if (discoveryService->Start())
+                {
+                    discoveryService->AdvertiseAlive();
+                    discoveryServiceList.emplace_back(discoveryService);
+                }
+                else
+                {
+                    LOG("Failed to start discovery server on interface %s", networkInterface.mAddress.c_str());
+                }
+            }
+        }
+    }
 
 #if 1
     START_BLOCKING_TASK_LOOP();

@@ -1,5 +1,6 @@
 #include "DiscoveryService.h"
 #include "NetworkUtility.h"
+#include "TcpEndpoint.h"
 #include "UdpEndpoint.h"
 #include "MSearchReactor.h"
 
@@ -7,18 +8,23 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-DiscoveryService::DiscoveryService(const std::string& multicastAddress, uint16_t port)
-    : mMulticastAddress(multicastAddress)
+DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const std::string& multicastAddress, uint16_t port)
+    : mInterfaceAddress(interfaceAddress)
+    , mMulticastAddress(multicastAddress)
 {
     mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
 
-    std::string address("0.0.0.0");
-    std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false);
-    if (addrInfo != nullptr)
+    std::string address = interfaceAddress;
+    if (address.empty())
     {
-        if (addrInfo->ai_addr->sa_family == AF_INET6)
+        address = "0.0.0.0";
+        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false);
+        if (addrInfo != nullptr)
         {
-            address = "::";
+            if (addrInfo->ai_addr->sa_family == AF_INET6)
+            {
+                address = "::";
+            }
         }
     }
 
@@ -41,7 +47,7 @@ DiscoveryService::~DiscoveryService()
     if (mSocket != nullptr && mSocket->IsValid())
     {
         AdvertiseByebye();
-        mSocket->LeaveMulticastGroup(mMulticastAddress, 0);
+        mSocket->LeaveMulticastGroup(mMulticastAddress, mInterfaceAddress);
     }
 }
 
@@ -63,30 +69,24 @@ bool DiscoveryService::Initialize()
 
     try
     {
-        LOG("Discovery server endpoint: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
-
-        std::string interfaceAddress = "43.148.16.145";
-
-#if 0
-        uint32_t multicastInterfaceIndex = 0;
-        std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
-        if (NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfoList))
-        {
-            for (auto& networkInterface : networkInterfaceInfoList)
-            {
-                if (!networkInterface.mAddress.empty() && networkInterface.mAddress != "0.0.0.0")
-                {
-                    //interfaceAddress = networkInterface.mAddress;
-                    break;
-                }
-            }
-        }
-#endif
-
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, interfaceAddress, false))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))
         {
-            return RestService::Initialize();
+            if (RestService::Initialize())
+            {
+                LOG("Discovery server endpoint: [%s]:%d on interface %s", mSocket->HostName->c_str(), mSocket->HostPort.cref(), mInterfaceAddress.c_str());
+                
+                auto descriptionServerDispatcher = std::make_shared<RestDispatcher>();
+
+                auto descriptionServerProfile = std::make_shared<Profile>();
+                descriptionServerProfile->Protocol.set("tcp");
+                descriptionServerProfile->Address.set(mInterfaceAddress);
+                descriptionServerProfile->Port.set(mSocket->HostPort.cref());
+                descriptionServerProfile->Dispatcher.set(descriptionServerDispatcher);
+
+                mDescriptionServer = std::make_shared<RestService>(descriptionServerProfile);
+                return mDescriptionServer->Start();
+            }
         }
     }
     catch (SocketException& e)

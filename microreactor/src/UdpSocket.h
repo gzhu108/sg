@@ -17,10 +17,8 @@ namespace sg { namespace microreactor
         
     public:
         virtual bool JoinMulticastGoup(const std::string& multicastAddress, const std::string& interfaceAddress = {}, bool loopback = false, uint32_t timeToLive = 1);
-        virtual bool LeaveMulticastGroup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex = INADDR_ANY);
-        
+        virtual bool LeaveMulticastGroup(const std::string& multicastAddress, const std::string& interfaceAddress);
         virtual bool Bind(const std::string& hostName, uint16_t port);
-        virtual bool Create(const std::string& address, uint16_t port);
     };
 }}
 

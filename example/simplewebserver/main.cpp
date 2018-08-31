@@ -94,6 +94,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     // Create the simple REST service
     auto simpleProfile = std::make_shared<Profile>();
+    simpleProfile->Protocol.set("tcp");
     simpleProfile->Address.set(hostName);
     simpleProfile->Port.set(hostPort);
 
@@ -106,6 +107,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     // Create the secure REST service
     auto secureProfile = std::make_shared<Profile>();
+    simpleProfile->Protocol.set("tcp");
     secureProfile->Address.set(hostName);
     secureProfile->Port.set(securePort);
 

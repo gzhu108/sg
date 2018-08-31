@@ -57,6 +57,11 @@ RestService::~RestService()
 
 bool RestService::Initialize()
 {
+    if (mRestDispatcher == nullptr)
+    {
+        return false;
+    }
+
     return Microservice::Initialize();
 }
 

@@ -51,13 +51,13 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, const std
         }
     }
 
+    uint32_t anyMulticastInterfaceIndex = INADDR_ANY;
+
     // Set socket multicast options
     int32_t optLevel = 0;
     int32_t option = 0;
     char* optVal = NULL;
     int32_t optLen = 0;
-
-    uint32_t anyMulticastInterfaceIndex = INADDR_ANY;
 
 #ifdef _MSC_VER
     // Bind to adapter index to work around weak host model of TCPIP stack
@@ -83,7 +83,6 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, const std
         // Setup the v6 option values and ipv6_mreq structure
         ipv6_mreq mreqv6;
         inet_pton(AF_INET6, multicastAddress.c_str(), &mreqv6.ipv6mr_multiaddr);
-
         if (interfaceAddress.empty())
         {
             mreqv6.ipv6mr_interface = anyMulticastInterfaceIndex;
@@ -184,19 +183,37 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, const std
     return true;
 }
 
-bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, uint32_t multicastInterfaceIndex)
+bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, const std::string& interfaceAddress)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    if (!IsValid())
+    if (!IsValid() || mAddrInfo == nullptr || multicastAddress.length() == 0)
     {
         return false;
     }
 
-    if (multicastAddress.length() == 0)
+    std::shared_ptr<addrinfo> interfaceAddressInfo = nullptr;
+    if (!interfaceAddress.empty())
     {
-        return false;
+        interfaceAddressInfo = NetworkUtility::GetAddressInfo(interfaceAddress, 0, SOCK_DGRAM, IPPROTO_UDP, true);
     }
+
+    in_addr multicastInterface = { 0 };
+    in6_addr multicastInterfaceIpv6 = { 0 };
+
+    if (interfaceAddressInfo != nullptr)
+    {
+        if (interfaceAddressInfo->ai_addr->sa_family == AF_INET)
+        {
+            inet_pton(AF_INET, interfaceAddress.c_str(), &multicastInterface);
+        }
+        else
+        {
+            inet_pton(AF_INET6, interfaceAddress.c_str(), &multicastInterfaceIpv6);
+        }
+    }
+
+    uint32_t anyMulticastInterfaceIndex = INADDR_ANY;
     
     // Set socket multicast options
     char* optVal = NULL;
@@ -211,7 +228,7 @@ bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, uint32_
     {
         // Setup the v4 option values and ip_mreq structure
         inet_pton(AF_INET, multicastAddress.c_str(), &mreqv4.imr_multiaddr);
-        mreqv4.imr_interface.s_addr = multicastInterfaceIndex;
+        memcpy(&mreqv4.imr_interface, &multicastInterface, sizeof(multicastInterface));
 
         optLevel = IPPROTO_IP;
         option   = IP_DROP_MEMBERSHIP;
@@ -230,7 +247,15 @@ bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, uint32_
     {
         // Setup the v6 option values and ipv6_mreq structure
         inet_pton(AF_INET6, multicastAddress.c_str(), &mreqv6.ipv6mr_multiaddr.s6_addr);
-        mreqv6.ipv6mr_interface = multicastInterfaceIndex;
+        if (interfaceAddress.empty())
+        {
+            mreqv6.ipv6mr_interface = anyMulticastInterfaceIndex;
+        }
+        else
+        {
+            std::shared_ptr<addrinfo> interfaceAddressInfo = NetworkUtility::GetAddressInfo(interfaceAddress, 0, SOCK_DGRAM, IPPROTO_UDP, true);
+            mreqv6.ipv6mr_interface = ((sockaddr_in6*)interfaceAddressInfo->ai_addr)->sin6_scope_id;
+        }
 
         optLevel = IPPROTO_IPV6;
         option   = IPV6_DROP_MEMBERSHIP;
@@ -294,53 +319,6 @@ bool UdpSocket::Bind(const std::string& hostName, uint16_t port)
     // Set to FALSE to disable reporting.
     // IOCTL: SIO_UDP_CONNRESET
     result = WSAIoctl(mSocket, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), nullptr, 0, &dwBytesReturned, nullptr, nullptr);
-    if (result == SOCKET_ERROR)
-    {
-        // WSAIoctl(SIO_UDP_CONNRESET) Error
-        int32_t error = GetSocketError();
-        THROW(SocketException, error, HostName.cref(), HostPort.cref());
-    }
-#endif
-
-    mConnected();
-    return true;
-}
-
-bool UdpSocket::Create(const std::string& address, uint16_t port)
-{
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-
-    // Close previous socket
-    Detach();
-
-    if (!CreateSocketFromAddress(address, port, SOCK_DGRAM, IPPROTO_UDP, false))
-    {
-        return false;
-    }
-
-    // Set SO_REUSEADDR on the socket to true (1)
-    int32_t optval = 1;
-    SetSockOpt(SOL_SOCKET, SO_REUSEADDR, (char*)&optval, sizeof(optval));
-
-    // Set SO_LINGER on the socket to false (0):
-    linger lingerval = { 0 };
-    SetSockOpt(SOL_SOCKET, SO_LINGER, (char*)&lingerval, sizeof(lingerval));
-
-    // Get the host name and port number
-    GetSocketName();
-
-#ifdef _MSC_VER
-    // If sending a datagram using the sendto function results in an "ICMP port unreachable"
-    // response and the select function is set for readfds, the program returns 1 and the subsequent
-    // call to the recvfrom function does not work with a WSAECONNRESET (10054) error response.
-    // In Microsoft Windows NT 4.0, this situation causes the select function to block or time out.
-    DWORD dwBytesReturned = 0;
-    BOOL bNewBehavior = FALSE;
-
-    // Controls whether UDP PORT_UNREACHABLE messages are reported. Set to TRUE to enable reporting.
-    // Set to FALSE to disable reporting.
-    // IOCTL: SIO_UDP_CONNRESET
-    int32_t result = WSAIoctl(mSocket, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), nullptr, 0, &dwBytesReturned, nullptr, nullptr);
     if (result == SOCKET_ERROR)
     {
         // WSAIoctl(SIO_UDP_CONNRESET) Error
