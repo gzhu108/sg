@@ -18,7 +18,8 @@ bin_PROGRAMS = \
 __top_builddir__bin_metricator_SOURCES = \
     main.cpp \
     MetricatorDispatcher.cpp \
-    MetricatorRequestReactor.cpp
+    MetricatorRequestReactor.cpp \
+    GetDescriptionReactor.cpp
     
 __top_builddir__bin_metricator_LDADD = \
     ../metricatorapi/lib/libmetricatorapi.a \

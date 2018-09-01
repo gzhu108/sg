@@ -149,9 +149,6 @@ int32_t main(int32_t argc, const char* argv[])
         }
     }
 
-#if 1
-    START_BLOCKING_TASK_LOOP();
-#else
     auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set(protocol);
@@ -166,7 +163,10 @@ int32_t main(int32_t argc, const char* argv[])
         START_BLOCKING_TASK_LOOP();
         
         // Stop DiscoveryService
-        discoveryService.Stop();
+        for (auto& discoveryService : discoveryServiceList)
+        {
+            discoveryService->Stop();
+        }
         
         // Stop metricatorService
         metricatorService.Stop();
@@ -175,7 +175,6 @@ int32_t main(int32_t argc, const char* argv[])
     {
         LOG("Failed to start metricator");
     }
-#endif
 
     // Cancell all tasks
     uint64_t cancelCount = CANCEL_TASKS();

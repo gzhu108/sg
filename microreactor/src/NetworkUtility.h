@@ -4,6 +4,7 @@
 
 #include <vector>
 #include "Profile.h"
+#include "Socket.h"
 #include "Connection.h"
 #include "Endpoint.h"
 

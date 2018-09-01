@@ -66,20 +66,6 @@ void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const s
     {
         LOG("Discovery client connection: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
 
-        uint32_t multicastInterfaceIndex = 0;
-        std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
-        if (NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfoList))
-        {
-            for (auto& networkInterface : networkInterfaceInfoList)
-            {
-                if (!networkInterface.mAddress.empty() && networkInterface.mAddress != "0.0.0.0")
-                {
-                    //multicastInterfaceIndex = networkInterface.mIndex;
-                    break;
-                }
-            }
-        }
-
         // Initialize multicasting
         if (mSocket->JoinMulticastGoup(mMulticastAddress))
         {
