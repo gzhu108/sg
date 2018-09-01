@@ -15,11 +15,6 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
         mSocket = std::make_shared<UdpSocket>();
     }
 
-    //if (!mSocket->IsValid())
-    //{
-    //    mSocket->Create(mProfile->Address.cref(), mProfile->Port.cref());
-    //}
-
     try
     {
         mSocket->Bind(mProfile->Address->c_str(), mProfile->Port.cref());

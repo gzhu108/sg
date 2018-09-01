@@ -39,11 +39,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GetDescriptionReactor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MetricatorDispatcher.cpp" />
     <ClCompile Include="MetricatorRequestReactor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GetDescriptionReactor.h" />
     <ClInclude Include="MetricatorDispatcher.h" />
     <ClInclude Include="MetricatorRequestReactor.h" />
   </ItemGroup>

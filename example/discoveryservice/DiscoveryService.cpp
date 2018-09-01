@@ -58,7 +58,7 @@ bool DiscoveryService::Initialize()
 
     // Create UDP endpoint
     mEndpoint = std::make_shared<UdpEndpoint>(mSocket, mProfile);
-    if (!mSocket->IsValid())
+    if (!mSocket->IsValid() || mDescriptionReactorFactory == nullptr)
     {
         return false;
     }
@@ -76,16 +76,21 @@ bool DiscoveryService::Initialize()
             {
                 LOG("Discovery server endpoint: [%s]:%d on interface %s", mSocket->HostName->c_str(), mSocket->HostPort.cref(), mInterfaceAddress.c_str());
                 
-                auto descriptionServerDispatcher = std::make_shared<RestDispatcher>();
+                std::string location = "http://";
+                location += mInterfaceAddress + ":" + std::to_string(mSocket->HostPort.cref()) + mDescriptionUri;
+                Description->Location.set(location);
 
-                auto descriptionServerProfile = std::make_shared<Profile>();
-                descriptionServerProfile->Protocol.set("tcp");
-                descriptionServerProfile->Address.set(mInterfaceAddress);
-                descriptionServerProfile->Port.set(mSocket->HostPort.cref());
-                descriptionServerProfile->Dispatcher.set(descriptionServerDispatcher);
+                auto descriptionServiceDispatcher = std::make_shared<RestDispatcher>();
+                descriptionServiceDispatcher->RegisterRestReactorFactory("GET", mDescriptionUri, mDescriptionReactorFactory);
 
-                mDescriptionServer = std::make_shared<RestService>(descriptionServerProfile);
-                return mDescriptionServer->Start();
+                auto descriptionServiceProfile = std::make_shared<Profile>();
+                descriptionServiceProfile->Protocol.set("tcp");
+                descriptionServiceProfile->Address.set(mInterfaceAddress);
+                descriptionServiceProfile->Port.set(mSocket->HostPort.cref());
+                descriptionServiceProfile->Dispatcher.set(descriptionServiceDispatcher);
+
+                mDescriptionService = std::make_shared<RestService>(descriptionServiceProfile);
+                return mDescriptionService->Start();
             }
         }
     }
@@ -140,6 +145,12 @@ bool DiscoveryService::AdvertiseByebye()
     }
 
     return false;
+}
+
+void DiscoveryService::RegisterDescriptionReactorFactory(const std::string& uri, sg::microreactor::RestDispatcher::Factory factory)
+{
+    mDescriptionUri = uri;
+    mDescriptionReactorFactory = factory;
 }
 
 std::shared_ptr<Reactor> DiscoveryService::CreateMSearchReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)

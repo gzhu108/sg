@@ -51,15 +51,7 @@ bool TcpSocket::Listen(const std::string& hostName, uint16_t port)
     }
 
     // Save the host name and port number
-    if (mAddrInfo->ai_canonname != nullptr)
-    {
-        HostName.set(mAddrInfo->ai_canonname);
-        HostPort.set(port);
-    }
-    else
-    {
-        GetSocketName();
-    }
+    GetSocketName();
 
     // Listen to the socket
     result = listen(mSocket, SOMAXCONN);
@@ -141,15 +133,7 @@ bool TcpSocket::Connect(const std::string& address, uint16_t port, const std::ch
     else
     {
         // Get the host name
-        if (mAddrInfo->ai_canonname != nullptr)
-        {
-            HostName.set(mAddrInfo->ai_canonname);
-            HostPort.set(port);
-        }
-        else
-        {
-            GetSocketName();
-        }
+        GetSocketName();
 
         // Get the connection name
         if (GetPeerName())

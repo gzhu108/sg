@@ -3,6 +3,7 @@
 #define sg_service_ServiceDescription
 
 #include "Uuid.h"
+#include "RestDispatcher.h"
 
 
 namespace sg { namespace service

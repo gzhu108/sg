@@ -11,6 +11,7 @@
 #include "Microservice.h"
 #include "MetricatorDispatcher.h"
 #include "DiscoveryService.h"
+#include "GetDescriptionReactor.h"
 
 using namespace sg::microreactor;
 using namespace sg::service;
@@ -23,6 +24,19 @@ void SingalHandler(int type)
     terminateSignal = true;
     STOP_TASK_MANAGER();
 }
+
+std::shared_ptr<Reactor> CreateGetDescriptionReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
+{
+    auto request = std::static_pointer_cast<RestRequest>(message);
+    if (request->mUri == "/servicedescription.xml")
+    {
+        return nullptr;
+    }
+
+    auto reactor = std::make_shared<GetDescriptionReactor>(connection, request);
+    return reactor;
+}
+
 
 int32_t main(int32_t argc, const char* argv[])
 {
@@ -106,7 +120,6 @@ int32_t main(int32_t argc, const char* argv[])
     
     // Create DiscoveryService
     ServiceDescription description;
-    description.Location.set("localhost:8490"); // todo: set description xml's url
     description.ServerInfo.set("Metractor Service");
     description.Usn.set(Uuid::GenerateUuid().ToString());
     description.ServiceType.set("urn:streetgang:service:metricator:1");
@@ -121,6 +134,8 @@ int32_t main(int32_t argc, const char* argv[])
             {
                 auto discoveryService = std::make_shared<DiscoveryService>(networkInterface.mAddress, DEFAULT_MULTICAST_ADDRESS);
                 discoveryService->Description.set(description);
+                discoveryService->RegisterDescriptionReactorFactory("/servicedescription.xml", CreateGetDescriptionReactor);
+
                 if (discoveryService->Start())
                 {
                     discoveryService->AdvertiseAlive();
