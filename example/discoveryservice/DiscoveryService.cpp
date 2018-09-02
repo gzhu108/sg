@@ -14,7 +14,7 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
 {
     mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
 
-    std::string address = interfaceAddress;
+    std::string address = mInterfaceAddress;
     if (address.empty())
     {
         address = "0.0.0.0";

@@ -30,13 +30,18 @@ void Client::Initialize(std::shared_ptr<Connection> connection, const std::chron
     else
     {
         // Push to the queue to receive messages.
-        connection->ReceiveTimeout.set(timeout);
-        connection->Start();
-
-        ClientName.set(connection->Name.cref());
-        if (!ClientName->empty())
+        mConnection->ReceiveTimeout.set(timeout);
+        if (mConnection->Start())
         {
-            LOG("Client receive message from [%s]:%u", connection->GetPeerName().c_str(), connection->GetPeerPort());
+            ClientName.set(mConnection->Name.cref());
+            if (!ClientName->empty())
+            {
+                LOG("Client receive message from %s <-- [%s:%d]", ClientName->c_str(), mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+            }
+        }
+        else
+        {
+            LOG("Client failed to start [%s] <-- [%s:%d]", ClientName->c_str(), mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
         }
     }
 }

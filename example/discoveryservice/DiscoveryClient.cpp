@@ -8,8 +8,9 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher, const std::string& multicastAddress, uint16_t port)
-    : mMulticastAddress(multicastAddress)
+DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher, const std::string& interfaceAddress, const std::string& multicastAddress, uint16_t port)
+    : mInterfaceAddress(interfaceAddress)
+    , mMulticastAddress(multicastAddress)
     , mPort(port)
 {
     if (dispatcher == nullptr)
@@ -17,10 +18,24 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
         dispatcher = std::make_shared<DiscoveryDispatcher>();
     }
 
+    std::string address = mInterfaceAddress;
+    if (address.empty())
+    {
+        address = "0.0.0.0";
+        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false);
+        if (addrInfo != nullptr)
+        {
+            if (addrInfo->ai_addr->sa_family == AF_INET6)
+            {
+                address = "::";
+            }
+        }
+    }
+
     // Create client profile
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set("udp");
-    profile->Address.set("0.0.0.0");    // TODO: depends on multicastAddress is ipv4 or ipv6
+    profile->Address.set(address);
     profile->Port.set(mPort);
     profile->Dispatcher.set(dispatcher);
 
@@ -64,12 +79,12 @@ void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const s
 {
     try
     {
-        LOG("Discovery client connection: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
-
+        Client::Initialize(connection, timeout);
+    
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress))
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))
         {
-            Client::Initialize(connection, timeout);
+            LOG("Discovery client connection: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
         }
     }
     catch (SocketException& e)

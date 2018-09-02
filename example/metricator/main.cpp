@@ -102,7 +102,7 @@ int32_t main(int32_t argc, const char* argv[])
     }
     
     LOG("Configuration file: %s", configFilePath.c_str());
-        
+
     // Create metricator service profile
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Service");
     if (protocol.empty())
@@ -124,6 +124,16 @@ int32_t main(int32_t argc, const char* argv[])
     description.Usn.set(Uuid::GenerateUuid().ToString());
     description.ServiceType.set("urn:streetgang:service:metricator:1");
 
+#if 1
+    auto discoveryService = std::make_shared<DiscoveryService>();
+    discoveryService->Description.set(description);
+    discoveryService->RegisterDescriptionReactorFactory("/servicedescription.xml", CreateGetDescriptionReactor);
+
+    if (discoveryService->Start())
+    {
+        discoveryService->AdvertiseAlive();
+    }
+#else
     std::vector<std::shared_ptr<DiscoveryService>> discoveryServiceList;
     std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfoList;
     if (NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfoList))
@@ -148,6 +158,7 @@ int32_t main(int32_t argc, const char* argv[])
             }
         }
     }
+#endif
 
     auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();
     auto profile = std::make_shared<Profile>();
@@ -163,10 +174,10 @@ int32_t main(int32_t argc, const char* argv[])
         START_BLOCKING_TASK_LOOP();
         
         // Stop DiscoveryService
-        for (auto& discoveryService : discoveryServiceList)
-        {
-            discoveryService->Stop();
-        }
+        //for (auto& discoveryService : discoveryServiceList)
+        //{
+        //    disco/veryService->Stop();
+        //}
         
         // Stop metricatorService
         metricatorService.Stop();

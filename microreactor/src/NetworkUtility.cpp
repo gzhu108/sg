@@ -338,6 +338,7 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
 #include <ifaddrs.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <net/if.h>
 #include <netdb.h>
 #include <ifaddrs.h>
 #include <stdio.h>
@@ -348,7 +349,6 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
 {
     bool result = true;
     ifaddrs* ifaddr = nullptr;
-    ifaddrs* ifa = nullptr;
     int family = 0;
     int s = 0;
     char host[NI_MAXHOST] = { 0 };
@@ -361,9 +361,9 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
     /* Walk through linked list, maintaining head pointer so we
        can free list later */
 
-    for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
+    for (ifaddrs* ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
     {
-        if (ifa->ifa_addr == NULL)
+        if (ifa->ifa_addr == NULL || std::string("lo") == ifa->ifa_name)
         {
             continue;
         }
@@ -390,12 +390,16 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
             if (s != 0)
             {
                 LOG("getnameinfo() failed: %s", gai_strerror(s));
-                result = false;
-                break;
+                continue;
             }
 
             LOG("\taddress: <%s>", host);
-            //networkInterfaceInfoList.emplace_back();
+
+            NetworkInterfaceInfo networkInterfaceInfo;
+            networkInterfaceInfo.mName = ifa->ifa_name;
+            networkInterfaceInfo.mFamily = family;
+            networkInterfaceInfo.mAddress = host;
+            networkInterfaceInfoList.emplace_back(networkInterfaceInfo);
         }
     }
 

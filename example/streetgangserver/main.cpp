@@ -121,31 +121,6 @@ int32_t main(int32_t argc, const char* argv[])
     LOG("Configuration file: %s", configFilePath.c_str());
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Service");
     ConfigurationSingleton::InitializeConfiguration(configuration);
-
-    // Create the metricator client for logging
-    std::string metricatorProtocol = "udp";
-    std::string metricatorHost = "127.0.0.1";
-    uint16_t metricatorPort = 0;
-
-    configuration->GetValue("MetricatorProtocol", metricatorProtocol);
-    configuration->GetValue("MetricatorHost", metricatorHost);
-    configuration->GetValue("MetricatorPort", metricatorPort);
-
-    MetricatorLogger metricatorLogger(metricatorProtocol, metricatorHost, metricatorPort);
-    GET_LOGGER().AddLogger(std::bind(&MetricatorLogger::Log, &metricatorLogger, std::placeholders::_1));
-
-    // Determine the service IP address
-    std::string address = "127.0.0.1";
-    std::vector<NetworkUtility::NetworkInterfaceInfo> networkInterfaceInfos;
-    NetworkUtility::GetNetworkInterfaceInfo(networkInterfaceInfos);
-    for (auto& networkInterface : networkInterfaceInfos)
-    {
-        if (!networkInterface.mAddress.empty() && networkInterface.mAddress != "0.0.0.0")
-        {
-            address = networkInterface.mAddress;
-            break;
-        }
-    }
     
     auto dispatcher = std::make_shared<DiscoveryDispatcher>();
     DiscoveryClient discoveryClient(dispatcher);
@@ -161,6 +136,18 @@ int32_t main(int32_t argc, const char* argv[])
     discoveryClient.Byebye.Connect([](const Uuid& usn)
     {
     });
+
+    // Create the metricator client for logging
+    std::string metricatorProtocol = "udp";
+    std::string metricatorHost = "127.0.0.1";
+    uint16_t metricatorPort = 0;
+
+    configuration->GetValue("MetricatorProtocol", metricatorProtocol);
+    configuration->GetValue("MetricatorHost", metricatorHost);
+    configuration->GetValue("MetricatorPort", metricatorPort);
+
+    MetricatorLogger metricatorLogger(metricatorProtocol, metricatorHost, metricatorPort);
+    GET_LOGGER().AddLogger(std::bind(&MetricatorLogger::Log, &metricatorLogger, std::placeholders::_1));
 
     StreetGangBinaryService streetGangBinaryService;
     StreetGangPBService streetGangPBService;

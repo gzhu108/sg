@@ -22,6 +22,7 @@ namespace sg { namespace microreactor
             std::string mAddress;
             uint32_t mIndex{ 0 };
             uint32_t mType{ 0 };
+            uint16_t mFamily{ 0 };
         };
 
         bool GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& networkInterfaceInfoList);
