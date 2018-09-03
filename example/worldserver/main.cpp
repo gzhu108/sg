@@ -69,6 +69,14 @@ int32_t main(int32_t argc, const char* argv[])
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Service");
     ConfigurationSingleton::InitializeConfiguration(configuration);
 
+    if (configuration != nullptr)
+    {
+        // Get the thread pool size from the configuration file
+        uint64_t threadPoolSize = 0;
+        configuration->GetValue("ThreadPoolSize", threadPoolSize);
+        TaskManagerSingleton::SetThreadPoolSize(threadPoolSize);
+    }
+
     WorldService service;
     if (service.Start())
     {

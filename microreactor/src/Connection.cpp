@@ -117,6 +117,7 @@ bool Connection::Stop()
 void Connection::ReceiveMessage()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
+
     if (mProfile->Dispatcher.cref() != nullptr)
     {
         // Remove timed out messages

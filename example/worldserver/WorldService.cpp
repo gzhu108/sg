@@ -10,14 +10,6 @@ using namespace worldserver;
 
 WorldService::WorldService()
 {
-    auto configuration = ConfigurationSingleton::GetConfiguration();
-    if (configuration != nullptr)
-    {
-        // Get the thread pool size from the configuration file
-        uint64_t threadPoolSize = 0;
-        configuration->GetValue("ThreadPoolSize", threadPoolSize);
-        TaskManagerSingleton::SetThreadPoolSize(threadPoolSize);
-    }
 }
 
 WorldService::~WorldService()

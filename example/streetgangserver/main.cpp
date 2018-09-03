@@ -121,6 +121,14 @@ int32_t main(int32_t argc, const char* argv[])
     LOG("Configuration file: %s", configFilePath.c_str());
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Service");
     ConfigurationSingleton::InitializeConfiguration(configuration);
+
+    if (configuration != nullptr)
+    {
+        // Get the thread pool size from the configuration file
+        uint64_t threadPoolSize = 0;
+        configuration->GetValue("ThreadPoolSize", threadPoolSize);
+        TaskManagerSingleton::SetThreadPoolSize(threadPoolSize);
+    }
     
     auto dispatcher = std::make_shared<DiscoveryDispatcher>();
     DiscoveryClient discoveryClient(dispatcher);
@@ -146,8 +154,8 @@ int32_t main(int32_t argc, const char* argv[])
     configuration->GetValue("MetricatorHost", metricatorHost);
     configuration->GetValue("MetricatorPort", metricatorPort);
 
-    MetricatorLogger metricatorLogger(metricatorProtocol, metricatorHost, metricatorPort);
-    GET_LOGGER().AddLogger(std::bind(&MetricatorLogger::Log, &metricatorLogger, std::placeholders::_1));
+    //MetricatorLogger metricatorLogger(metricatorProtocol, metricatorHost, metricatorPort);
+    //GET_LOGGER().AddLogger(std::bind(&MetricatorLogger::Log, &metricatorLogger, std::placeholders::_1));
 
     StreetGangBinaryService streetGangBinaryService;
     StreetGangPBService streetGangPBService;
