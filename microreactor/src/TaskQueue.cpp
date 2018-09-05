@@ -124,16 +124,16 @@ uint64_t TaskQueue::GetActiveTaskCount(uintptr_t owner)
     return std::distance(range.first, range.second);
 }
 
-uint64_t TaskQueue::CancelTasks(uintptr_t owner)
+uint64_t TaskQueue::CancelTasks(uintptr_t activeId)
 {
     std::lock_guard<decltype(mTaskQueueMutex)> scopeLock(mTaskQueueMutex);
     uint64_t cancelCount = 0;
 
     // Determine how many active tasks to cancel
     auto range = std::make_pair(mActivePool.begin(), mActivePool.end());
-    if (owner != 0)
+    if (activeId != 0)
     {
-        range = mActivePool.equal_range(owner);
+        range = mActivePool.equal_range(activeId);
     }
 
     // Cancel tasks in the active pool
@@ -147,7 +147,7 @@ uint64_t TaskQueue::CancelTasks(uintptr_t owner)
     auto task = mTaskQueue.begin();
     while (task != mTaskQueue.end())
     {
-        if (owner == 0 || owner == (*task)->ActiveId.cref())
+        if (activeId == 0 || activeId == (*task)->ActiveId.cref())
         {
             (*task)->Cancel();
             task = mTaskQueue.erase(task);

@@ -40,7 +40,7 @@ namespace sg { namespace microreactor
 
         // Submit(1)
         template <typename TaskFunc>
-        auto Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
+        auto Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = {}, bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
         {
             typedef decltype(taskFunc()) ValueType;
             std::function<ValueType ()> run = std::bind(taskFunc);
@@ -49,7 +49,7 @@ namespace sg { namespace microreactor
 
         // Submit(2)
         template <typename TaskFunc, typename ValueType>
-        auto Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
+        auto Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = {}, bool insertBack = true) -> TaskFuture<decltype(taskFunc())>
         {
             //std::function<ValueType ()> run = std::bind(taskFunc);
             //return Submit(run, insertBack); // Call Submit(3)
@@ -65,7 +65,7 @@ namespace sg { namespace microreactor
         
         // Submit(3)
         template <typename ValueType>
-        auto Submit(std::function<ValueType ()> run, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true) -> TaskFuture<ValueType>
+        auto Submit(std::function<ValueType ()> run, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = {}, bool insertBack = true) -> TaskFuture<ValueType>
         {
             auto task = std::make_shared<PromisedTask<ValueType>>(run);
             task->Owner.set(owner);
@@ -77,7 +77,7 @@ namespace sg { namespace microreactor
         }
 
         // Submit(4)
-        TaskFuture<void> Submit(BaseTaskPtr task, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
+        TaskFuture<void> Submit(BaseTaskPtr task, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = {}, bool insertBack = true)
         {
             task->Owner.set(owner);
             task->Name.set(taskName);
@@ -89,13 +89,13 @@ namespace sg { namespace microreactor
 
 #else // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
         template <typename TaskFunc>
-        bool Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
+        bool Submit(TaskFunc&& taskFunc, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = {}, bool insertBack = true)
         {
             auto task = std::make_shared<Task>(taskFunc);
             return Submit(task, owner, activeId, taskName, insertBack);
         }
 
-        inline bool Submit(std::function<void ()> run, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
+        inline bool Submit(std::function<void ()> run, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = {}, bool insertBack = true)
         {
             auto task = std::make_shared<Task>(run);
             return Submit(task, owner, activeId, taskName, insertBack);
@@ -104,7 +104,7 @@ namespace sg { namespace microreactor
 #endif // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
 
         // Submit(5)
-        inline bool Submit(TaskPtr task, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = "", bool insertBack = true)
+        inline bool Submit(TaskPtr task, std::shared_ptr<Shareable> owner, void* activeId, const std::string& taskName = {}, bool insertBack = true)
         {
             task->Owner.set(owner);
             task->Name.set(taskName);

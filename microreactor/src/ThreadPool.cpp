@@ -97,7 +97,7 @@ void ThreadPool::TaskLoop()
         }
         else
         {
-            task = mTaskQueue->GetTask(std::chrono::milliseconds(30));
+            task = mTaskQueue->GetTask(std::chrono::milliseconds(10));
         }
 
         if (task != nullptr)
@@ -105,7 +105,16 @@ void ThreadPool::TaskLoop()
             mPreprocess(task);
             task->Execute();
             mPostprocess(task);
+
+            // Remove the task from the active queue
             mTaskQueue->CompleteTask(task);
+
+            // Check if the task is still scheduled to run
+            if (task->GetStatus() == TaskStatus::Scheduled)
+            {
+                // Put the task back to the task queue
+                mTaskQueue->Submit(task);
+            }
         }
     }
 }

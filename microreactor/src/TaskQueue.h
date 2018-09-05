@@ -30,7 +30,7 @@ namespace sg { namespace microreactor
         
         // This operation does not obtain a mutex lock.
         // Thus, this operation is not thread safe.
-        virtual bool EnqueueTask(TaskPtr task, bool insertBack = true);
+        virtual bool EnqueueTask(TaskPtr task, bool insertBack);
         
         // This operation does not obtain a mutex lock.
         // Thus, this operation is not thread safe.
@@ -43,7 +43,7 @@ namespace sg { namespace microreactor
         virtual TaskPtr GetTask(const std::chrono::milliseconds& timeout);
 
         virtual uint64_t GetActiveTaskCount(uintptr_t owner);
-        virtual uint64_t CancelTasks(uintptr_t owner);
+        virtual uint64_t CancelTasks(uintptr_t activeId);
         virtual void CompleteTask(TaskPtr task);
 
     protected:

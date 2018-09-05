@@ -5,6 +5,7 @@
 #include <functional>
 #include <atomic>
 #include <future>
+#include <chrono>
 #include "Shareable.h"
 #include "Cancelable.h"
 
@@ -33,13 +34,15 @@ namespace sg { namespace microreactor
         PROPERTY(ActiveId, uintptr_t, 0);
 
     public:
+        virtual void SetExecuteTime(const std::chrono::time_point<std::chrono::high_resolution_clock>& executeTime);
         virtual TaskStatus GetStatus() const { return mStatus; }
         virtual void Schedule() { mStatus = TaskStatus::Scheduled; }
         virtual void Cancel() override { mStatus = TaskStatus::Canceled; }
         virtual bool Execute();
         
     protected:
-        std::atomic<TaskStatus> mStatus { TaskStatus::Created };
+        std::atomic<TaskStatus> mStatus{ TaskStatus::Created };
+        std::chrono::time_point<std::chrono::high_resolution_clock> mExecuteTime{ std::chrono::high_resolution_clock::now() };
         std::function<void ()> mRun;
     };
     typedef std::shared_ptr<Task> TaskPtr;

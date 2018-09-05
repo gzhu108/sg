@@ -16,10 +16,21 @@ Task::~Task()
 {
 }
 
+void Task::SetExecuteTime(const std::chrono::time_point<std::chrono::high_resolution_clock>& executeTime)
+{
+    mExecuteTime = executeTime;
+}
+
 bool Task::Execute()
 {
     if (mStatus != TaskStatus::Created && mStatus != TaskStatus::Scheduled)
     {
+        return false;
+    }
+
+    if (mExecuteTime > std::chrono::high_resolution_clock::now())
+    {
+        // The task is not ready to run
         return false;
     }
 
