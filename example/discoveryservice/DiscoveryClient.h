@@ -13,7 +13,7 @@ namespace sg { namespace service
     class DiscoveryClient : public sg::microreactor::Client
     {
     public:
-        explicit DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher, const std::string& interfaceAddress = {}, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS, uint16_t port = DEFAULT_MULTICAST_PORT);
+        explicit DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher, const std::string& interfaceAddress = {}, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS, uint16_t multicastPort = DEFAULT_MULTICAST_PORT);
         virtual ~DiscoveryClient();
 
         PROPERTY(ServiceType, std::string);
@@ -23,7 +23,7 @@ namespace sg { namespace service
 
     public:
         std::string GetMulticastAddress() { return mMulticastAddress; }
-        uint16_t GetMulticastPort() { return mPort; }
+        uint16_t GetMulticastPort() { return mMulticastPort; }
 
         void MulticastMSearch(const std::string& multicastAddress, uint16_t port, const std::string& mx);
 
@@ -38,7 +38,7 @@ namespace sg { namespace service
         sg::microreactor::Emittable<sg::microreactor::Uuid> mByebye;
         std::string mInterfaceAddress;
         std::string mMulticastAddress;
-        uint16_t mPort;
+        uint16_t mMulticastPort;
         std::shared_ptr<sg::microreactor::UdpSocket> mSocket;
    };
 }}

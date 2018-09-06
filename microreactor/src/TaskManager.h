@@ -36,7 +36,7 @@ namespace sg { namespace microreactor
         virtual uint64_t GetActiveTaskCount(void* activeId = nullptr) { return mTaskQueue->GetActiveTaskCount(reinterpret_cast<uintptr_t>(activeId)); }
         virtual uint64_t GetQueueDepth() { return mTaskQueue->GetQueueDepth(); }
 
-#if defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
+#if 0 && defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
 
         // Submit(1)
         template <typename TaskFunc>

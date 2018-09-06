@@ -8,10 +8,10 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher, const std::string& interfaceAddress, const std::string& multicastAddress, uint16_t port)
+DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher, const std::string& interfaceAddress, const std::string& multicastAddress, uint16_t multicastPort)
     : mInterfaceAddress(interfaceAddress)
     , mMulticastAddress(multicastAddress)
-    , mPort(port)
+    , mMulticastPort(multicastPort)
 {
     if (dispatcher == nullptr)
     {
@@ -22,7 +22,7 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     if (address.empty())
     {
         address = "0.0.0.0";
-        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false);
+        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, false);
         if (addrInfo != nullptr)
         {
             if (addrInfo->ai_addr->sa_family == AF_INET6)
@@ -36,7 +36,7 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set("udp");
     profile->Address.set(address);
-    profile->Port.set(mPort);
+    profile->Port.set(mMulticastPort);
     profile->Dispatcher.set(dispatcher);
 
     // Create UDP socket

@@ -47,7 +47,7 @@ namespace sg { namespace microreactor
     };
     typedef std::shared_ptr<Task> TaskPtr;
     
-#if defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
+#if 0 && defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
 
     // Promised task object
     template <typename ValueType>

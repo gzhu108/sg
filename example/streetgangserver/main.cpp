@@ -33,9 +33,7 @@ namespace
         }
     };
 
-    class MSearchTask
-        : public BaseTask
-        , public Shareable
+    class MSearchTask : public BaseTask
     {
     public:
         explicit MSearchTask(DiscoveryClient& discoveryClient, const std::chrono::milliseconds& searchTime)
@@ -56,7 +54,6 @@ namespace
         {
             mDiscoveryClient.MulticastMSearch(DEFAULT_MULTICAST_ADDRESS, DEFAULT_MULTICAST_PORT, "2");
             SetExecuteTime(std::chrono::high_resolution_clock::now() + mSearchTime);
-            SUBMIT(std::static_pointer_cast<Task>(SharedFromThis<MSearchTask>()), nullptr, &mDiscoveryClient, "MSearch");
         }
 
     private:
@@ -172,10 +169,14 @@ int32_t main(int32_t argc, const char* argv[])
 
     discoveryClient.ServiceFound.Connect([](const ServiceDescription& description)
     {
+        LOG("M_SEARCH OK received:");
+        LOG("%s", description.Location->c_str());
     });
 
     discoveryClient.Byebye.Connect([](const Uuid& usn)
     {
+        LOG("BYEBYE received:");
+        LOG("%s", usn.ToString().c_str());
     });
 
     // Create the metricator client for logging

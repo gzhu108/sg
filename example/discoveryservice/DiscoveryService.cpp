@@ -8,9 +8,10 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const std::string& multicastAddress, uint16_t port)
+DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const std::string& multicastAddress, uint16_t multicastPort)
     : mInterfaceAddress(interfaceAddress)
     , mMulticastAddress(multicastAddress)
+    , mMulticastPort(multicastPort)
 {
     mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
 
@@ -18,7 +19,7 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
     if (address.empty())
     {
         address = "0.0.0.0";
-        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(multicastAddress, port, SOCK_DGRAM, IPPROTO_UDP, false);
+        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, false);
         if (addrInfo != nullptr)
         {
             if (addrInfo->ai_addr->sa_family == AF_INET6)
@@ -32,7 +33,7 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
     mProfile = std::make_shared<Profile>();
     mProfile->Protocol.set("udp");
     mProfile->Address.set(address);
-    mProfile->Port.set(port);
+    mProfile->Port.set(mMulticastPort);
     mProfile->Dispatcher.set(mRestDispatcher);
     
     // Register M-SEARCH
