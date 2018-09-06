@@ -1,6 +1,7 @@
 #include "Socket.h"
 #include "Exception.h"
 #include "Endianness.h"
+#include "NetworkUtility.h"
 
 #ifndef IPv4LOOPBACK
 #define IPv4LOOPBACK 0x100007f
@@ -376,17 +377,8 @@ bool Socket::SendTo(const char* buffer, int32_t length, const std::string& desti
         THROW(InvalidArgumentException);
     }
 
-    addrinfo addrHints;
-    memset(&addrHints, 0, sizeof(addrHints));
-    addrHints.ai_family = mAddrInfo->ai_family;
-    addrHints.ai_socktype = mAddrInfo->ai_socktype;
-    addrHints.ai_protocol = mAddrInfo->ai_protocol;
-    addrHints.ai_flags = mAddrInfo->ai_flags;
-
-    // Resolve the local address and port to be used by the server
-    addrinfo* addrInfo;
-    int32_t result = getaddrinfo(destination.c_str(), std::to_string(port).c_str(), &addrHints, &addrInfo);
-    if (result != 0)
+    std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(destination, port, mAddrInfo->ai_socktype, mAddrInfo->ai_protocol, false);
+    if (addrInfo == nullptr)
     {
         return false;
     }
@@ -435,7 +427,6 @@ bool Socket::SendTo(const char* buffer, int32_t length, const std::string& desti
     }
 
     bytesSent = (int32_t)(ptrBuf - buffer);
-    freeaddrinfo(addrInfo);
 
     return bytesSent > 0;
 }
@@ -459,11 +450,7 @@ void Socket::Detach()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    if (mAddrInfo != nullptr)
-    {
-        freeaddrinfo(mAddrInfo);
-        mAddrInfo = nullptr;
-    }
+    mAddrInfo = nullptr;
         
     if(mSocket != INVALID_SOCKET)
     {
@@ -575,23 +562,8 @@ bool Socket::CreateSocketFromAddress(const std::string& address, uint16_t port, 
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    addrinfo addrHints;
-    memset(&addrHints, 0, sizeof(addrHints));
-    addrHints.ai_family = AF_UNSPEC;
-    addrHints.ai_socktype = type;
-    addrHints.ai_protocol = protocol;
-    addrHints.ai_flags = AI_CANONNAME | (forBinding ? AI_PASSIVE : 0);
-
-    const char* node = nullptr;
-    if (!address.empty())
-    {
-        node = address.c_str();
-    }
-
-    // Resolve address info
-    addrinfo* addrInfo = nullptr;
-    int32_t result = getaddrinfo(node, std::to_string(port).c_str(), &addrHints, &addrInfo);
-    if (result != 0)
+    std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(address, port, type, protocol, forBinding);
+    if (addrInfo == nullptr)
     {
         return false;
     }
@@ -616,10 +588,6 @@ bool Socket::CreateSocketFromAddress(const std::string& address, uint16_t port, 
         {
             return false;
         }
-    }
-    else
-    {
-        freeaddrinfo(addrInfo);
     }
     
     return true;

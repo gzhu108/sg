@@ -217,6 +217,7 @@ int32_t main(int32_t argc, const char* argv[])
     }
 
     // Cancell all tasks
+    sg::microreactor::TaskManagerSingleton::GetTaskManager()->Pause();
     uint64_t cancelCount = CANCEL_TASKS();
     if (cancelCount > 0)
     {

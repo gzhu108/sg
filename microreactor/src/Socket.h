@@ -84,7 +84,7 @@ namespace sg { namespace microreactor
     protected:
         std::recursive_mutex mLock;
         SOCKET mSocket;
-        addrinfo* mAddrInfo;
+        std::shared_ptr<addrinfo> mAddrInfo;
         Emittable<void> mConnected;
         Emittable<void> mDisconnected;
         
