@@ -36,7 +36,7 @@ uint64_t TaskQueue::GetQueueDepth()
 
 bool TaskQueue::EnqueueTask(TaskPtr task, bool insertBack)
 {
-    if (mStop || task == nullptr || task->GetStatus() != TaskStatus::Created)
+    if (mStop || task == nullptr)
     {
         // Stop inserting into the task queue
         return false;

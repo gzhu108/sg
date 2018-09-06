@@ -32,6 +32,37 @@ namespace
             printf("%s\n", text.c_str());
         }
     };
+
+    class MSearchTask
+        : public BaseTask
+        , public Shareable
+    {
+    public:
+        explicit MSearchTask(DiscoveryClient& discoveryClient, const std::chrono::milliseconds& searchTime)
+            : mDiscoveryClient(discoveryClient)
+            , mSearchTime(searchTime)
+        {
+            SetExecuteTime(std::chrono::high_resolution_clock::now() + mSearchTime);
+            Completed.Connect([&]() {
+                mStatus = TaskStatus::Scheduled;
+            });
+        }
+
+        virtual ~MSearchTask()
+        {
+        }
+
+        virtual void Run() override
+        {
+            mDiscoveryClient.MulticastMSearch(DEFAULT_MULTICAST_ADDRESS, DEFAULT_MULTICAST_PORT, "2");
+            SetExecuteTime(std::chrono::high_resolution_clock::now() + mSearchTime);
+            SUBMIT(std::static_pointer_cast<Task>(SharedFromThis<MSearchTask>()), nullptr, &mDiscoveryClient, "MSearch");
+        }
+
+    private:
+        DiscoveryClient& mDiscoveryClient;
+        std::chrono::milliseconds mSearchTime;
+    };
 }
 
 volatile bool terminateSignal = false;
@@ -135,7 +166,9 @@ int32_t main(int32_t argc, const char* argv[])
 
     const std::string metricatorServiceType = "urn:streetgang:service:metricator:1";
     discoveryClient.ServiceType.set(metricatorServiceType);
-    discoveryClient.MulticastMSearch(DEFAULT_MULTICAST_ADDRESS, DEFAULT_MULTICAST_PORT, "2");
+
+    auto timedTask = std::make_shared<MSearchTask>(discoveryClient, std::chrono::milliseconds(2000));
+    SUBMIT(std::static_pointer_cast<Task>(timedTask), nullptr, &discoveryClient, "MSearch");
 
     discoveryClient.ServiceFound.Connect([](const ServiceDescription& description)
     {
