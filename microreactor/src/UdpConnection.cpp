@@ -9,26 +9,49 @@ using namespace sg::microreactor;
 UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Profile> profile)
     : Connection(profile)
     , mSocket(socket)
+    , mServerConnection(false)
+    , mDataRetrieved(false)
 {
-    if (mSocket == nullptr)
+    if (mSocket != nullptr && mSocket->IsValid())
     {
-        mSocket = std::make_shared<UdpSocket>();
+        // Server connection received from a client
+        mServerConnection = true;
+    }
+    else
+    {
+        if (mSocket == nullptr)
+        {
+            mSocket = std::make_shared<UdpSocket>();
+        }
+
+        std::string address = LOCAL_HOST;
+        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mProfile->Address.cref(), mProfile->Port.cref(), SOCK_DGRAM, IPPROTO_UDP, false);
+        if (addrInfo != nullptr && addrInfo->ai_addr->sa_family == AF_INET6)
+        {
+            address = LOCAL_HOST_IPV6;
+        }
+
+        try
+        {
+            mSocket->Bind(address, 0);
+        }
+        catch (SocketException& e)
+        {
+            // Socket exception received.
+            LOG("Failed to bind: exception(%d): %s [%s]:%u", e.mError, e.what(), e.mName.c_str(), e.mPort);
+            Close();
+        }
+
+        mSocket->PeerAddress.set(mProfile->Address.cref());
+        mSocket->PeerPort.set(mProfile->Port.cref());
+
+        // Client connection to a server
+        mServerConnection = false;
     }
 
-    try
+    if (!mSocket->HostAddress->empty())
     {
-        mSocket->Bind(mProfile->Address->c_str(), mProfile->Port.cref());
-    }
-    catch (SocketException& e)
-    {
-        // Socket exception received.
-        LOG("Failed to bind: exception(%d): %s [%s]:%u", e.mError, e.what(), e.mName.c_str(), e.mPort);
-        Close();
-    }
-
-    if (!mSocket->HostName->empty())
-    {
-        Name.set(std::string("[") + mSocket->HostName.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
     }
 
     mSocket->SetReceiveBufferSize(DEFAULT_UDP_CONNECTION_BUFFER_SIZE);
@@ -39,14 +62,14 @@ UdpConnection::~UdpConnection()
 {
 }
 
-std::string UdpConnection::GetPeerName() const
+std::string UdpConnection::GetPeerAddress() const
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {
         return "";
     }
 
-    return mSocket->PeerName.cref();
+    return mSocket->PeerAddress.cref();
 }
 
 uint16_t UdpConnection::GetPeerPort() const
@@ -59,14 +82,14 @@ uint16_t UdpConnection::GetPeerPort() const
     return mSocket->PeerPort.cref();
 }
 
-void UdpConnection::SetPeerName(const std::string& peerName)
+void UdpConnection::SetPeerAddress(const std::string& peerAddress)
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {
         return;
     }
 
-    mSocket->PeerName.set(peerName);
+    mSocket->PeerAddress.set(peerAddress);
 }
 
 void UdpConnection::SetPeerPort(uint16_t peerPort)
@@ -132,7 +155,7 @@ uint64_t UdpConnection::Send(const char* buffer, int32_t length)
         if (mSocket->SendWait(SendTimeout.cref()))
         {
             int32_t sent = 0;
-            if (mSocket->SendTo(&buffer[0], length, mSocket->PeerName.cref(), mSocket->PeerPort.cref(), sent))
+            if (mSocket->SendTo(&buffer[0], length, mSocket->PeerAddress.cref(), mSocket->PeerPort.cref(), sent))
             {
                 return sent;
             }

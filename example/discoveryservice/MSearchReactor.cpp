@@ -30,7 +30,7 @@ bool MSearchReactor::Process()
         return false;
     }
 
-    LOG("M-SEARCH received from %s:%u", mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+    LOG("M-SEARCH received from %s:%u", mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
 
     std::string man;
     std::string mx;

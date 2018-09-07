@@ -48,7 +48,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     std::string configFilePath;
     std::string protocol;
-    std::string hostName;
+    std::string hostAddress;
     uint16_t hostPort = 0;
     std::string targetName;
     uint16_t targetPort = 0;
@@ -75,7 +75,7 @@ int32_t main(int32_t argc, const char* argv[])
         else if (FIND_CMD(hostArgs, argv[i]))
         {
             LOG("Command line argument: %s %s", argv[i], argv[i + 1]);
-            hostName = argv[++i];
+            hostAddress = argv[++i];
         }
         else if (FIND_CMD(portArgs, argv[i]))
         {
@@ -106,9 +106,9 @@ int32_t main(int32_t argc, const char* argv[])
     {
         configuration->GetValue("Protocol", protocol);
     }
-    if (hostName.empty())
+    if (hostAddress.empty())
     {
-        configuration->GetValue("HostName", hostName);
+        configuration->GetValue("HostAddress", hostAddress);
     }
     if (hostPort == 0)
     {
@@ -128,7 +128,7 @@ int32_t main(int32_t argc, const char* argv[])
     auto bouncerDecoder = std::make_shared<BouncerDecoder>();
     auto profile = std::make_shared<BouncerProfile>();
     profile->Protocol.set(protocol);
-    profile->Address.set("0.0.0.0");
+    profile->Address.set(ANY_HOST);
     profile->Port.set(443);
     profile->Dispatcher.set(bouncerDecoder);
     profile->TargetName.set(targetName);
@@ -138,7 +138,7 @@ int32_t main(int32_t argc, const char* argv[])
     BouncerRestService restService(profile);
     if (restService.Start())
     {
-        profile->Address.set(hostName);
+        profile->Address.set(hostAddress);
         profile->Port.set(hostPort);
 
         // Create a microservice

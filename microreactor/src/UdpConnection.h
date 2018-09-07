@@ -18,10 +18,10 @@ namespace sg { namespace microreactor
         virtual ~UdpConnection();
         
     public:
-        virtual std::string GetPeerName() const override;
+        virtual std::string GetPeerAddress() const override;
         virtual uint16_t GetPeerPort() const override;
 
-        virtual void SetPeerName(const std::string& peerName) override;
+        virtual void SetPeerAddress(const std::string& peerAddress) override;
         virtual void SetPeerPort(uint16_t peerPort) override;
 
         virtual bool DataReady() override;
@@ -35,7 +35,8 @@ namespace sg { namespace microreactor
         
     protected:
         std::shared_ptr<UdpSocket> mSocket;
-        bool mDataRetrieved = false;
+        bool mServerConnection;
+        bool mDataRetrieved;
     };
 }}
 

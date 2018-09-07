@@ -65,7 +65,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     std::string configFilePath;
     std::string protocol;
-    std::string hostName;
+    std::string hostAddress;
     uint16_t hostPort = 0;
 
     const char* configArgs[] = {"--config", "-c"};
@@ -88,7 +88,7 @@ int32_t main(int32_t argc, const char* argv[])
         else if (FIND_CMD(hostArgs, argv[i]))
         {
             LOG("Command line argument: %s %s", argv[i], argv[i + 1]);
-            hostName = argv[++i];
+            hostAddress = argv[++i];
         }
         else if (FIND_CMD(portArgs, argv[i]))
         {
@@ -109,9 +109,9 @@ int32_t main(int32_t argc, const char* argv[])
     {
         configuration->GetValue("Protocol", protocol);
     }
-    if (hostName.empty())
+    if (hostAddress.empty())
     {
-        configuration->GetValue("HostName", hostName);
+        configuration->GetValue("HostAddress", hostAddress);
     }
     if (hostPort == 0)
     {
@@ -140,7 +140,7 @@ int32_t main(int32_t argc, const char* argv[])
     {
         for (auto& networkInterface : networkInterfaceInfoList)
         {
-            if (!networkInterface.mAddress.empty() && networkInterface.mAddress != "0.0.0.0")
+            if (!networkInterface.mAddress.empty() && networkInterface.mAddress != ANY_HOST)
             {
                 auto discoveryService = std::make_shared<DiscoveryService>(networkInterface.mAddress, DEFAULT_MULTICAST_ADDRESS);
                 discoveryService->Description.set(description);
@@ -163,7 +163,7 @@ int32_t main(int32_t argc, const char* argv[])
     auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set(protocol);
-    profile->Address.set(hostName);
+    profile->Address.set(hostAddress);
     profile->Port.set(hostPort);
     profile->Dispatcher.set(messageDecoder);
 

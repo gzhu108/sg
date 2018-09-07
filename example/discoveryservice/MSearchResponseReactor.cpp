@@ -23,7 +23,7 @@ bool MSearchResponseReactor::Process()
         return false;
     }
 
-    LOG("M-SEARCH response received from %s:%u", mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+    LOG("M-SEARCH response received from %s:%u", mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
 
     ServiceDescription description;
     for (const auto& header : response->mHeaders)

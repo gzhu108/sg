@@ -20,7 +20,7 @@ namespace sg { namespace microreactor
         PROPERTY_SET(ReceiveBufferSize, uint32_t, DEFAULT_TCP_CONNECTION_BUFFER_SIZE, TcpConnection::SetReceiveBufferSize);
         
     public:
-        virtual std::string GetPeerName() const override;
+        virtual std::string GetPeerAddress() const override;
         virtual uint16_t GetPeerPort() const override;
 
         virtual bool DataReady() override;

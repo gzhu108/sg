@@ -15,7 +15,7 @@ namespace streetgangserver
         static void ResetWorldClient();
 
     protected:
-        WorldClient(const std::string& protocol, const std::string& hostName, uint16_t port);
+        WorldClient(const std::string& protocol, const std::string& hostAddress, uint16_t port);
         static std::shared_ptr<WorldClient> mInstance;
    };
 }

@@ -48,7 +48,7 @@ bool WorldService::Initialize()
     configuration->GetValue("Protocol", protocol);
     profile->Protocol.set(protocol);
 
-    std::string address = "0.0.0.0";
+    std::string address = ANY_HOST;
     configuration->GetValue("ServiceAddress", address);
     profile->Address.set(address);
 

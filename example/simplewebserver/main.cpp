@@ -36,7 +36,7 @@ int32_t main(int32_t argc, const char* argv[])
 #endif
 
     std::string configFilePath;
-    std::string hostName;
+    std::string hostAddress;
     uint16_t hostPort = 0;
     uint16_t securePort = 0;
 
@@ -55,7 +55,7 @@ int32_t main(int32_t argc, const char* argv[])
         else if (FIND_CMD(hostArgs, argv[i]))
         {
             LOG("Command line argument: %s %s", argv[i], argv[i + 1]);
-            hostName = argv[++i];
+            hostAddress = argv[++i];
         }
         else if (FIND_CMD(portArgs, argv[i]))
         {
@@ -77,9 +77,9 @@ int32_t main(int32_t argc, const char* argv[])
         
     // Create metricator service profile
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Service");
-    if (hostName.empty())
+    if (hostAddress.empty())
     {
-        configuration->GetValue("Address", hostName);
+        configuration->GetValue("Address", hostAddress);
     }
     if (hostPort == 0)
     {
@@ -95,7 +95,7 @@ int32_t main(int32_t argc, const char* argv[])
     // Create the simple REST service
     auto simpleProfile = std::make_shared<Profile>();
     simpleProfile->Protocol.set("tcp");
-    simpleProfile->Address.set(hostName);
+    simpleProfile->Address.set(hostAddress);
     simpleProfile->Port.set(hostPort);
 
     auto simpleSocket = std::make_shared<TcpSocket>();
@@ -108,7 +108,7 @@ int32_t main(int32_t argc, const char* argv[])
     // Create the secure REST service
     auto secureProfile = std::make_shared<Profile>();
     simpleProfile->Protocol.set("tcp");
-    secureProfile->Address.set(hostName);
+    secureProfile->Address.set(hostAddress);
     secureProfile->Port.set(securePort);
 
     auto secureSocket = std::make_shared<SecureTcpSocket>();

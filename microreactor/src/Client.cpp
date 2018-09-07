@@ -36,12 +36,12 @@ void Client::Initialize(std::shared_ptr<Connection> connection, const std::chron
             ClientName.set(mConnection->Name.cref());
             if (!ClientName->empty())
             {
-                LOG("Client receive message from %s <-- [%s:%d]", ClientName->c_str(), mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+                LOG("Client receive message from %s --> [%s:%d]", ClientName->c_str(), mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
             }
         }
         else
         {
-            LOG("Client failed to start [%s] <-- [%s:%d]", ClientName->c_str(), mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+            LOG("Client failed to start [%s] --> [%s:%d]", ClientName->c_str(), mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
         }
     }
 }

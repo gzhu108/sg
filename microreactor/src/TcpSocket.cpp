@@ -12,8 +12,8 @@ TcpSocket::TcpSocket(SOCKET socket)
 {
     if (Attach(socket))
     {
-        GetSocketName();
-        GetPeerName();
+        GetSocketAddress();
+        GetPeerAddress();
     }
 }
 
@@ -21,14 +21,14 @@ TcpSocket::~TcpSocket()
 {
 }
 
-bool TcpSocket::Listen(const std::string& hostName, uint16_t port)
+bool TcpSocket::Listen(const std::string& hostAddress, uint16_t port)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
     // Close previous socket
     Detach();
 
-    if (!CreateSocketFromAddress(hostName, port, SOCK_STREAM, IPPROTO_TCP, true))
+    if (!CreateSocketFromAddress(hostAddress, port, SOCK_STREAM, IPPROTO_TCP, true))
     {
         return false;
     }
@@ -47,11 +47,11 @@ bool TcpSocket::Listen(const std::string& hostName, uint16_t port)
     {
         Detach();
         int32_t error = GetSocketError();
-        THROW(SocketException, error, hostName, port);
+        THROW(SocketException, error, hostAddress, port);
     }
 
     // Save the host name and port number
-    GetSocketName();
+    GetSocketAddress();
 
     // Listen to the socket
     result = listen(mSocket, SOMAXCONN);
@@ -59,7 +59,7 @@ bool TcpSocket::Listen(const std::string& hostName, uint16_t port)
     {
         Detach();
         int32_t error = GetSocketError();
-        THROW(SocketException, error, hostName, port);
+        THROW(SocketException, error, hostAddress, port);
     }
 
     return true;
@@ -92,7 +92,7 @@ std::shared_ptr<TcpSocket> TcpSocket::Accept(const std::chrono::milliseconds& ti
     {
         // select error
         int32_t error = GetSocketError();
-        THROW(SocketException, error, HostName.cref(), HostPort.cref());
+        THROW(SocketException, error, HostAddress.cref(), HostPort.cref());
     }
     else if (result > 0)
     {
@@ -133,12 +133,12 @@ bool TcpSocket::Connect(const std::string& address, uint16_t port, const std::ch
     else
     {
         // Get the host name
-        GetSocketName();
+        GetSocketAddress();
 
         // Get the connection name
-        if (GetPeerName())
+        if (GetPeerAddress())
         {
-            LOG("TCP [%s]:%d -> [%s]:%d", HostName->c_str(), HostPort.cref(), PeerName->c_str(), PeerPort.cref());
+            LOG("TCP [%s]:%d -> [%s]:%d", HostAddress->c_str(), HostPort.cref(), PeerAddress->c_str(), PeerPort.cref());
             mConnected();
         }
 

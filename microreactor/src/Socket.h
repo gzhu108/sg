@@ -26,7 +26,10 @@ typedef int32_t SOCKET;
 #include <chrono>
 #include "Common.h"
 
+#define ANY_HOST "0.0.0.0"
+#define ANY_HOST_IPV6 "::"
 #define LOCAL_HOST "127.0.0.1"
+#define LOCAL_HOST_IPV6 "::1"
 #define DEFAULT_SOCKET_BUFLEN 2048
 
 
@@ -42,13 +45,15 @@ namespace sg { namespace microreactor
         Signal<void>& Connected = mConnected;
         Signal<void>& Disconnected = mDisconnected;
         
-        PROPERTY(HostName, std::string);
+        PROPERTY(HostAddress, std::string);
         PROPERTY(HostPort, uint16_t, 0);
         
-        PROPERTY(PeerName, std::string);
+        PROPERTY(PeerAddress, std::string);
         PROPERTY(PeerPort, uint16_t, 0);
 
     public:
+        virtual void SetAddrInfo(std::shared_ptr<addrinfo> addrInfo);
+
         virtual bool SetReceiveBufferSize(uint32_t sizeInBytes);
         virtual bool SetSendBufferSize(uint32_t sizeInBytes);
 
@@ -77,8 +82,8 @@ namespace sg { namespace microreactor
 
     protected:
         virtual bool Attach(const SOCKET& socket);
-        virtual bool GetSocketName();
-        virtual bool GetPeerName();
+        virtual bool GetSocketAddress();
+        virtual bool GetPeerAddress();
         virtual bool CreateSocketFromAddress(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding);
 
     protected:

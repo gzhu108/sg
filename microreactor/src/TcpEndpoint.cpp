@@ -36,7 +36,7 @@ TcpEndpoint::TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<Prof
         }
     }
 
-    Name.set(std::string("[") + mSocket->HostName.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+    Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
 }
 
 TcpEndpoint::~TcpEndpoint()
@@ -53,7 +53,7 @@ bool TcpEndpoint::Close()
 {
     if (mSocket != nullptr)
     {
-        LOG("Close endpoint: %s:%u", mSocket->HostName->c_str(), mSocket->HostPort.cref());
+        LOG("Close endpoint: %s:%u", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
         mSocket->Detach();
         mSocket = nullptr;
     }

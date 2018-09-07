@@ -16,9 +16,9 @@ bool MessageResponder::SendMessage(std::shared_ptr<Message> message)
 {
     if (message == nullptr || mConnection == nullptr || mConnection->IsClosed())
     {
-        auto peerName = mConnection->GetPeerName();
+        auto peerAddress = mConnection->GetPeerAddress();
         auto peerPort = mConnection->GetPeerPort();
-        LOG("Fail to send response [Connection=%s:%u]", peerName.c_str(), peerPort);
+        LOG("Fail to send response [Connection=%s:%u]", peerAddress.c_str(), peerPort);
         return false;
     }
 
@@ -33,8 +33,8 @@ bool MessageResponder::SendMessage(std::shared_ptr<Message> message)
         }
     }
 
-    auto peerName = mConnection->GetPeerName();
+    auto peerAddress = mConnection->GetPeerAddress();
     auto peerPort = mConnection->GetPeerPort();
-    LOG("[TrackId=%s] Fail to send response [Connection=%s:%u]", message->TrackId->c_str(), peerName.c_str(), peerPort);
+    LOG("[TrackId=%s] Fail to send response [Connection=%s:%u]", message->TrackId->c_str(), peerAddress.c_str(), peerPort);
     return false;
 }

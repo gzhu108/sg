@@ -27,9 +27,9 @@ TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<
         mServerConnection = false;
     }
 
-    if (!mSocket->HostName->empty())
+    if (!mSocket->HostAddress->empty())
     {
-        Name.set(std::string("[") + mSocket->HostName.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
     }
 
     mSocket->SetReceiveBufferSize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);
@@ -41,14 +41,14 @@ TcpConnection::~TcpConnection()
     Close();
 }
 
-std::string TcpConnection::GetPeerName() const
+std::string TcpConnection::GetPeerAddress() const
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {
         return "";
     }
 
-    return mSocket->PeerName.cref();
+    return mSocket->PeerAddress.cref();
 }
 
 uint16_t TcpConnection::GetPeerPort() const
@@ -148,7 +148,7 @@ bool TcpConnection::Close()
     {
         if (mSocket->IsValid())
         {
-            LOG("Close connection: [%s]:%u", mSocket->PeerName->c_str(), mSocket->PeerPort.cref());
+            LOG("Close connection: [%s]:%u", mSocket->PeerAddress->c_str(), mSocket->PeerPort.cref());
             mSocket->Detach();
         }
         
@@ -196,7 +196,7 @@ bool TcpConnection::EnsureConnection()
             return false;
         }
 
-        Name.set(std::string("[") + mSocket->HostName.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
 
         mSocket->SetReceiveBufferSize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);
         mReceiveBuffer.resize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);

@@ -18,13 +18,13 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
     std::string address = mInterfaceAddress;
     if (address.empty())
     {
-        address = "0.0.0.0";
+        address = ANY_HOST;
         std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, false);
         if (addrInfo != nullptr)
         {
             if (addrInfo->ai_addr->sa_family == AF_INET6)
             {
-                address = "::";
+                address = ANY_HOST_IPV6;
             }
         }
     }
@@ -75,7 +75,7 @@ bool DiscoveryService::Initialize()
         {
             if (RestService::Initialize())
             {
-                LOG("Discovery server endpoint: [%s]:%d on interface %s", mSocket->HostName->c_str(), mSocket->HostPort.cref(), mInterfaceAddress.c_str());
+                LOG("Discovery server endpoint: [%s]:%d on interface %s", mSocket->HostAddress->c_str(), mSocket->HostPort.cref(), mInterfaceAddress.c_str());
                 
                 std::string location = "http://";
                 location += mInterfaceAddress + ":" + std::to_string(mSocket->HostPort.cref()) + mDescriptionUri;

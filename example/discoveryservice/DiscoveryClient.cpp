@@ -21,13 +21,13 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     std::string address = mInterfaceAddress;
     if (address.empty())
     {
-        address = "0.0.0.0";
+        address = ANY_HOST;
         std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, false);
         if (addrInfo != nullptr)
         {
             if (addrInfo->ai_addr->sa_family == AF_INET6)
             {
-                address = "::";
+                address = ANY_HOST_IPV6;
             }
         }
     }
@@ -35,7 +35,7 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     // Create client profile
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set("udp");
-    profile->Address.set(address);
+    profile->Address.set(mMulticastAddress);
     profile->Port.set(mMulticastPort);
     profile->Dispatcher.set(dispatcher);
 
@@ -56,7 +56,7 @@ DiscoveryClient::~DiscoveryClient()
 
 void DiscoveryClient::MulticastMSearch(const std::string& multicastAddress, uint16_t port, const std::string& mx)
 {
-    mConnection->SetPeerName(multicastAddress);
+    mConnection->SetPeerAddress(multicastAddress);
     mConnection->SetPeerPort(port);
 
     RestRequest request;
@@ -82,10 +82,10 @@ void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const s
         Client::Initialize(connection, timeout);
     
         // Initialize multicasting
-        if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))
-        {
-            LOG("Discovery client connection: [%s]:%d", mSocket->HostName->c_str(), mSocket->HostPort.cref());
-        }
+        //if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))
+        //{
+        //    LOG("Discovery client connection: [%s]:%d", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
+        //}
     }
     catch (SocketException& e)
     {

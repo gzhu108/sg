@@ -29,7 +29,7 @@ bool NotifyReactor::Process()
         return false;
     }
 
-    LOG("NOTIFY received from %s:%u", mConnection->GetPeerName().c_str(), mConnection->GetPeerPort());
+    LOG("NOTIFY received from %s:%u", mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
 
     std::string host;
     std::string cacheControl;
@@ -75,7 +75,7 @@ bool NotifyReactor::Process()
     {
         if (nts == "ssdp:alive")
         {
-            UnicastMSearch(mConnection->GetPeerName(), mConnection->GetPeerPort());
+            UnicastMSearch(mConnection->GetPeerAddress(), mConnection->GetPeerPort());
         }
         if (nts == "ssdp:byebye")
         {
@@ -88,7 +88,7 @@ bool NotifyReactor::Process()
 
 void NotifyReactor::UnicastMSearch(const std::string& unicastAddress, uint16_t port)
 {
-    mConnection->SetPeerName(unicastAddress);
+    mConnection->SetPeerAddress(unicastAddress);
     mConnection->SetPeerPort(port);
 
     RestRequest request;

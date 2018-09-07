@@ -70,7 +70,7 @@ bool StreetGangPBService::Initialize()
     configuration->GetValue("Protocol", protocol);
     profile->Protocol.set(protocol);
 
-    std::string address = "127.0.0.1";
+    std::string address = LOCAL_HOST;
     configuration->GetValue("ServiceAddress", address);
     profile->Address.set(address);
 

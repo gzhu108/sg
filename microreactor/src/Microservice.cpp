@@ -80,7 +80,7 @@ bool Microservice::Initialize()
 void Microservice::OnConnectionMade(const std::shared_ptr<Connection>& connection)
 {
     std::string hostName = connection->Name.cref();
-    std::string connectionName = std::string("[") + connection->GetPeerName() + "]:" + std::to_string(connection->GetPeerPort());
+    std::string connectionName = std::string("[") + connection->GetPeerAddress() + "]:" + std::to_string(connection->GetPeerPort());
 
     connection->Closed.Connect([=]()
     {

@@ -12,8 +12,8 @@ UdpSocket::UdpSocket(SOCKET socket)
 {
     if (Attach(socket))
     {
-        GetSocketName();
-        GetPeerName();
+        GetSocketAddress();
+        GetPeerAddress();
     }
 }
 
@@ -276,14 +276,14 @@ bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, const s
     return true;
 }
 
-bool UdpSocket::Bind(const std::string& hostName, uint16_t port)
+bool UdpSocket::Bind(const std::string& hostAddress, uint16_t port)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
     // Close previous socket
     Detach();
     
-    if (!CreateSocketFromAddress(hostName, port, SOCK_DGRAM, IPPROTO_UDP, true))
+    if (!CreateSocketFromAddress(hostAddress, port, SOCK_DGRAM, IPPROTO_UDP, true))
     {
         return false;
     }
@@ -301,11 +301,11 @@ bool UdpSocket::Bind(const std::string& hostName, uint16_t port)
     if (result == SOCKET_ERROR)
     {
         int32_t error = GetSocketError();
-        THROW(SocketException, error, hostName, port);
+        THROW(SocketException, error, hostAddress, port);
     }
 
     // Get the host name and port number
-    GetSocketName();
+    GetSocketAddress();
 
 #ifdef _MSC_VER
     // If sending a datagram using the sendto function results in an "ICMP port unreachable"
@@ -323,7 +323,7 @@ bool UdpSocket::Bind(const std::string& hostName, uint16_t port)
     {
         // WSAIoctl(SIO_UDP_CONNRESET) Error
         int32_t error = GetSocketError();
-        THROW(SocketException, error, HostName.cref(), HostPort.cref());
+        THROW(SocketException, error, HostAddress.cref(), HostPort.cref());
     }
 #endif
 

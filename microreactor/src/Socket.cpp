@@ -36,6 +36,11 @@ Socket::~Socket()
 #endif
 }
 
+void Socket::SetAddrInfo(std::shared_ptr<addrinfo> addrInfo)
+{
+    mAddrInfo = addrInfo;
+}
+
 bool Socket::SetReceiveBufferSize(uint32_t sizeInBytes)
 {
     return SetSockOpt(SOL_SOCKET, SO_RCVBUF, (char*)&sizeInBytes, sizeof(uint32_t)) != SOCKET_ERROR;
@@ -164,7 +169,7 @@ bool Socket::ReceiveWait(const std::chrono::milliseconds& timeout)
     {
         // select error
         int32_t error = GetSocketError();
-        THROW(SocketException, error, PeerName.cref(), PeerPort.cref());
+        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
     }
     else if (result > 0)
     {
@@ -207,7 +212,7 @@ bool Socket::Receive(char* buffer, int32_t length, int32_t& bytesReceived)
         {
             return false;
         }
-        THROW(SocketException, error, PeerName.cref(), PeerPort.cref());
+        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
     }
     else if (bytesReceived == 0)
     {
@@ -252,7 +257,7 @@ bool Socket::SendWait(const std::chrono::milliseconds& timeout)
     {
         // select error
         int32_t error = GetSocketError();
-        THROW(SocketException, error, PeerName.cref(), PeerPort.cref());
+        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
     }
     else if (result > 0)
     {
@@ -308,7 +313,7 @@ bool Socket::Send(const char* buffer, int32_t length, int32_t& bytesSent)
                 bytesSent = (int32_t)(ptrBuf - buffer);
                 return false;
             }
-            THROW(SocketException, error, PeerName.cref(), PeerPort.cref());
+            THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
         }
 
         ptrBuf += sent;
@@ -345,7 +350,7 @@ bool Socket::ReceiveFrom(char* buffer, int32_t length, std::string& source, uint
         {
             return false;
         }
-        THROW(SocketException, error, PeerName.cref(), PeerPort.cref());
+        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
     }
     else if (bytesReceived == 0)
     {
@@ -359,10 +364,10 @@ bool Socket::ReceiveFrom(char* buffer, int32_t length, std::string& source, uint
         return false;
     }
 
-    GetSocketName();
+    GetSocketAddress();
     
     // Set the peer name and port
-    PeerName.set(source);
+    PeerAddress.set(source);
     PeerPort.set(port);
 
     return bytesReceived > 0;
@@ -412,7 +417,7 @@ bool Socket::SendTo(const char* buffer, int32_t length, const std::string& desti
                 bytesSent = (int32_t)(ptrBuf - buffer);
                 return false;
             }
-            THROW(SocketException, error, PeerName.cref(), PeerPort.cref());
+            THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
         }
 
         ptrBuf += sent;
@@ -443,7 +448,7 @@ bool Socket::Attach(const SOCKET& socket)
     // Close previous socket
     Detach();
     mSocket = socket;
-    return GetSocketName();
+    return GetSocketAddress();
 }
 
 void Socket::Detach()
@@ -483,11 +488,11 @@ Socket& Socket::Swap(Socket& socket)
     std::swap(mInitialized, socket.mInitialized);
 #endif
 
-    socket.GetSocketName();
-    socket.GetPeerName();
+    socket.GetSocketAddress();
+    socket.GetPeerAddress();
 
-    GetSocketName();
-    GetPeerName();
+    GetSocketAddress();
+    GetPeerAddress();
 
     return *this;
 }
@@ -512,7 +517,7 @@ bool Socket::GetAddressName(const sockaddr_storage& addr, std::string& name, uin
     return false;
 }
 
-bool Socket::GetSocketName()
+bool Socket::GetSocketAddress()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -526,7 +531,7 @@ bool Socket::GetSocketName()
         
         if (GetAddressName(socketAddr, socketName, socketPort))
         {
-            HostName.set(socketName);
+            HostAddress.set(socketName);
             HostPort.set(socketPort);
             return true;
         }
@@ -535,7 +540,7 @@ bool Socket::GetSocketName()
     return false;
 }
 
-bool Socket::GetPeerName()
+bool Socket::GetPeerAddress()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -544,12 +549,12 @@ bool Socket::GetPeerName()
     int32_t result = getpeername(mSocket, (sockaddr*)&peerAddr, &peerAddrLength);
     if (result == 0)
     {
-        std::string peerName;
+        std::string peerAddress;
         uint16_t peerPort = 0;
         
-        if (GetAddressName(peerAddr, peerName, peerPort))
+        if (GetAddressName(peerAddr, peerAddress, peerPort))
         {
-            PeerName.set(peerName);
+            PeerAddress.set(peerAddress);
             PeerPort.set(peerPort);
             return true;
         }

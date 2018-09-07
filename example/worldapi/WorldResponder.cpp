@@ -52,9 +52,9 @@ bool WorldResponder::SendMessage(std::shared_ptr<WorldMessage> message)
 {
     if (message == nullptr || mConnection->IsClosed())
     {
-        auto peerName = mConnection->GetPeerName();
+        auto peerAddress = mConnection->GetPeerAddress();
         auto peerPort = mConnection->GetPeerPort();
-        LOG("Fail to send response [Connection=%s:%u]", peerName.c_str(), peerPort);
+        LOG("Fail to send response [Connection=%s:%u]", peerAddress.c_str(), peerPort);
         return false;
     }
 
@@ -77,8 +77,8 @@ bool WorldResponder::SendMessage(std::shared_ptr<WorldMessage> message)
         }
     }
 
-    auto peerName = mConnection->GetPeerName();
+    auto peerAddress = mConnection->GetPeerAddress();
     auto peerPort = mConnection->GetPeerPort();
-    LOG("[Message=%d] [TrackId=%s] Fail to send response [Connection=%s:%u]", message->Id.cref(), message->TrackId->c_str(), peerName.c_str(), peerPort);
+    LOG("[Message=%d] [TrackId=%s] Fail to send response [Connection=%s:%u]", message->Id.cref(), message->TrackId->c_str(), peerAddress.c_str(), peerPort);
     return false;
 }

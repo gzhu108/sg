@@ -85,7 +85,7 @@ static std::shared_ptr<StreetGangRestService> CreateRestService()
     configuration->GetValue("ReceiveTimeout", receiveTimeout);
     configuration->GetValue("SendTimeout", sendTimeout);
 
-    std::string serviceAddress = "0.0.0.0";
+    std::string serviceAddress = ANY_HOST;
     uint16_t restPort = 9390;
     configuration->GetValue("ServiceAddress", serviceAddress);
     configuration->GetValue("RestPort", restPort);
@@ -181,7 +181,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     // Create the metricator client for logging
     std::string metricatorProtocol = "udp";
-    std::string metricatorHost = "127.0.0.1";
+    std::string metricatorHost = LOCAL_HOST;
     uint16_t metricatorPort = 0;
 
     configuration->GetValue("MetricatorProtocol", metricatorProtocol);
