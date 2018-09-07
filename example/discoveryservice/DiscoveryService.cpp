@@ -19,13 +19,10 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
     if (address.empty())
     {
         address = ANY_HOST;
-        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, false);
-        if (addrInfo != nullptr)
+        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, true);
+        if (addrInfo != nullptr && addrInfo->ai_addr->sa_family == AF_INET6)
         {
-            if (addrInfo->ai_addr->sa_family == AF_INET6)
-            {
-                address = ANY_HOST_IPV6;
-            }
+            address = ANY_HOST_IPV6;
         }
     }
 

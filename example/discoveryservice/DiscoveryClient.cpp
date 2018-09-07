@@ -18,20 +18,6 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
         dispatcher = std::make_shared<DiscoveryDispatcher>();
     }
 
-    std::string address = mInterfaceAddress;
-    if (address.empty())
-    {
-        address = ANY_HOST;
-        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, false);
-        if (addrInfo != nullptr)
-        {
-            if (addrInfo->ai_addr->sa_family == AF_INET6)
-            {
-                address = ANY_HOST_IPV6;
-            }
-        }
-    }
-
     // Create client profile
     auto profile = std::make_shared<Profile>();
     profile->Protocol.set("udp");
@@ -39,8 +25,24 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     profile->Port.set(mMulticastPort);
     profile->Dispatcher.set(dispatcher);
 
+    std::string address = mInterfaceAddress;
+    if (address.empty())
+    {
+        address = ANY_HOST;
+        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mMulticastAddress, mMulticastPort, SOCK_DGRAM, IPPROTO_UDP, true);
+        if (addrInfo != nullptr && addrInfo->ai_addr->sa_family == AF_INET6)
+        {
+            address = ANY_HOST_IPV6;
+        }
+    }
+
     // Create UDP socket
     mSocket = std::make_shared<UdpSocket>();
+
+    // Bind ANY_HOST address to the socket prior to creating connection
+    mSocket->Bind(address, mMulticastPort);
+    mSocket->PeerAddress.set(mMulticastAddress);
+    mSocket->PeerPort.set(mMulticastPort);
 
     // Create UDP connection
     auto connection = std::make_shared<UdpConnection>(mSocket, profile);
@@ -82,10 +84,10 @@ void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const s
         Client::Initialize(connection, timeout);
     
         // Initialize multicasting
-        //if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))
-        //{
-        //    LOG("Discovery client connection: [%s]:%d", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
-        //}
+        if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))
+        {
+            LOG("Discovery client connection: [%s]:%d", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
+        }
     }
     catch (SocketException& e)
     {
