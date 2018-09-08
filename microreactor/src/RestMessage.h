@@ -33,7 +33,7 @@ namespace sg { namespace microreactor
 
     public:
         RestMessageType mMessageType;
-        std::string mVersion;
+        std::string mVersion = "HTTP/1.1";
         std::vector<HttpHeader> mHeaders;
         HttpChunk mBody;
         std::vector<std::shared_ptr<RestMessage>> mChunks;
