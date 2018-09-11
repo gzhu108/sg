@@ -40,6 +40,13 @@ echo "CXX=$CXX"
 echo "TARGET=$TARGET"
 echo "HOST=$HOST"
 
+export BUILD_TYPE="debug"
+if [ "$2" == "release" ] ; then
+    export BUILD_TYPE="release"
+fi
+echo "BUILD_TYPE=$BUILD_TYPE"
+
+
 pushd tools/googletest
 cmake CMakeLists.txt
 make
@@ -161,7 +168,13 @@ autoheader
 automake --add-missing
 autoconf
 echo "./configure --build=$TARGET --host=$HOST --target=$TARGET"
-./configure --build=$TARGET --host=$HOST --target=$TARGET 'CFLAGS=-O0 -g' 'CXXFLAGS=-O0 -g'
+
+if [ "$BUILD_TYPE" == "release" ] ; then
+    ./configure --build=$TARGET --host=$HOST --target=$TARGET
+else
+    ./configure --build=$TARGET --host=$HOST --target=$TARGET 'CFLAGS=-O0 -g' 'CXXFLAGS=-O0 -g'
+fi
+
 
 make
 make check
