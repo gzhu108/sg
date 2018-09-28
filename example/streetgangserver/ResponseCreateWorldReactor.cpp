@@ -17,11 +17,23 @@ ResponseCreateWorldReactor::~ResponseCreateWorldReactor()
 
 bool ResponseCreateWorldReactor::Process()
 {
-    auto latency = mOriginalMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
     auto& worldId = InputMessage()->WorldId.cref();
     auto& worldName = InputMessage()->WorldName.cref();
 
-    LOG("[TrackId=%s] [Latency=" FMT_INT64 "] [Result=%d] ResponseCreateWorldReactor() [WorldId=" FMT_INT64 "] [WorldName=%s]",
+    if (mOriginalMessage == nullptr)
+    {
+        LOG("ResponseCreateWorldReactor() ERROR: Invalid original message [TrackId=%s] [Result=%d] [WorldId=" FMT_INT64 "] [WorldName=%s]",
+            InputMessage()->TrackId->c_str(),
+            InputMessage()->Result.cref(),
+            worldId,
+            worldName.c_str());
+
+        return false;
+    }
+
+    auto latency = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
+
+    LOG("ResponseCreateWorldReactor() INOFO: [TrackId=%s] [Latency=" FMT_INT64 "] [Result=%d] [WorldId=" FMT_INT64 "] [WorldName=%s]",
         InputMessage()->TrackId->c_str(),
         latency,
         InputMessage()->Result.cref(),

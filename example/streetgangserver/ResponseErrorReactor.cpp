@@ -18,6 +18,12 @@ ResponseErrorReactor::~ResponseErrorReactor()
 
 bool ResponseErrorReactor::Process()
 {
+    if (mOriginalMessage == nullptr)
+    {
+        LOG("ResponseErrorReactor() ERROR: Invalid original message");
+        return false;
+    }
+
     auto originalReactor = mOriginalMessage->OriginalReactor.get();
     auto streetGangReactor = std::dynamic_pointer_cast<StreetGangReactor>(originalReactor);
     auto streetGangMessage = std::static_pointer_cast<streetgangapi::MessageBase>(originalReactor->Input());

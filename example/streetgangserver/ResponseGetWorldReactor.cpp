@@ -17,12 +17,25 @@ ResponseGetWorldReactor::~ResponseGetWorldReactor()
 
 bool ResponseGetWorldReactor::Process()
 {
-    auto latency = mOriginalMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
     auto& worldId = InputMessage()->WorldId.cref();
     auto& worldRect = InputMessage()->Rect.cref();
     auto& worldItems = InputMessage()->Items.cref();
 
-    LOG("[TrackId=%s] [Latency=" FMT_INT64 "] [Result=%d] ResponseGetWorldReactor() [WorldId=" FMT_INT64 "] Rect(%f, %f, %f, %f), Items = %d",
+    if (mOriginalMessage == nullptr)
+    {
+        LOG("ResponseGetWorldReactor() ERROR: Invalid original message [TrackId=%s] [Result=%d] [WorldId=" FMT_INT64 "] Rect(%f, %f, %f, %f), Items = %d",
+            InputMessage()->TrackId->c_str(),
+            InputMessage()->Result.cref(),
+            worldId,
+            worldRect.mX, worldRect.mY, worldRect.mW, worldRect.mH,
+            static_cast<const int32_t>(worldItems.size()));
+
+        return false;
+    }
+
+    auto latency = mOriginalMessage == nullptr ? 0 : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mOriginalMessage->GetRequestTime()).count();
+
+    LOG("ResponseGetWorldReactor() INFO: [TrackId=%s] [Latency=" FMT_INT64 "] [Result=%d] [WorldId=" FMT_INT64 "] Rect(%f, %f, %f, %f), Items = %d",
         InputMessage()->TrackId->c_str(),
         latency,
         InputMessage()->Result.cref(),
