@@ -44,6 +44,6 @@ void ResponseGetVersionReactor::SendNextRequest()
     {
         LOG("%s Failed to create a new world", ss.str().c_str());
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        //SUBMIT(std::bind(&ResponseGetVersionReactor::SendNextRequest, this), shared_from_this(), this, "ResponseGetVersionReactor::SendNextRequest");
+        //SUBMIT_MEMBER(ResponseGetVersionReactor::SendNextRequest, "ResponseGetVersionReactor::SendNextRequest");
     }
 }

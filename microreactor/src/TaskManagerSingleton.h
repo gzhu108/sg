@@ -6,11 +6,12 @@
 
 #define START_BLOCKING_TASK_LOOP() sg::microreactor::TaskManagerSingleton::GetTaskManager()->BlockingTaskLoop()
 #define STOP_TASK_MANAGER() sg::microreactor::TaskManagerSingleton::GetTaskManager()->Stop()
-#define SUBMIT(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->Submit(__VA_ARGS__)
 #define GET_TASK_PROCESS_HOOK() sg::microreactor::TaskManagerSingleton::GetTaskManager()->GetTaskProcessHook()
 #define GET_ACTIVE_TASK_COUNT(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->GetActiveTaskCount(__VA_ARGS__)
 #define CANCEL_TASKS(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->CancelTasks(__VA_ARGS__)
 #define DESTROY_TASK_MANAGER() sg::microreactor::TaskManagerSingleton::DestroyTaskManager()
+#define SUBMIT(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->Submit(__VA_ARGS__)
+#define SUBMIT_MEMBER(_member, ...) SUBMIT(std::bind(&_member, this), shared_from_this(), this, __VA_ARGS__)
 
 
 namespace sg { namespace microreactor

@@ -20,7 +20,7 @@ Endpoint::~Endpoint()
 bool Endpoint::Start()
 {
     // Start listening on the endpoint
-    SUBMIT(std::bind(&Endpoint::AcceptConnection, this), shared_from_this(), this, "Endpoint::AcceptConnection");
+    SUBMIT_MEMBER(Endpoint::AcceptConnection, "Endpoint::AcceptConnection");
     return true;
 }
 
@@ -59,7 +59,7 @@ void Endpoint::AcceptConnection()
 
     if (!IsClosed())
     {
-        SUBMIT(std::bind(&Endpoint::AcceptConnection, this), shared_from_this(), this, "Endpoint::AcceptConnection");
+        SUBMIT_MEMBER(Endpoint::AcceptConnection, "Endpoint::AcceptConnection");
     }
 }
 

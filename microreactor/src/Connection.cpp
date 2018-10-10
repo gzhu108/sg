@@ -94,7 +94,7 @@ bool Connection::Start()
     if (!IsClosed() && ReceiveTimeout->count())
     {
         // Push to the queue to receive connection data.
-        SUBMIT(std::bind(&Connection::ReceiveMessage, this), shared_from_this(), this, "Connection::ReceiveMessage");
+        SUBMIT_MEMBER(Connection::ReceiveMessage, "Connection::ReceiveMessage");
         return true;
     }
 
@@ -134,7 +134,7 @@ void Connection::ReceiveMessage()
     if (!IsClosed())
     {
         // Push to the queue to receive connection data.
-        SUBMIT(std::bind(&Connection::ReceiveMessage, this), shared_from_this(), this, "Connection::ReceiveMessage");
+        SUBMIT_MEMBER(Connection::ReceiveMessage, "Connection::ReceiveMessage");
     }
 }
 

@@ -165,7 +165,9 @@ int32_t main(int32_t argc, const char* argv[])
     discoveryClient.ServiceType.set(metricatorServiceType);
 
     auto timedTask = std::make_shared<MSearchTask>(discoveryClient, std::chrono::milliseconds(2000));
-    SUBMIT(std::static_pointer_cast<Task>(timedTask), nullptr, &discoveryClient, "MSearch");
+    timedTask->Name.set("MSearch");
+    timedTask->ActiveId.set(reinterpret_cast<uintptr_t>(&discoveryClient));
+    SUBMIT(std::static_pointer_cast<Task>(timedTask));
 
     discoveryClient.ServiceFound.Connect([](const ServiceDescription& description)
     {

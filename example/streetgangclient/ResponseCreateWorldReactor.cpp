@@ -46,6 +46,6 @@ void ResponseCreateWorldReactor::SendNextRequest()
     {
         LOG("Failed to get scenen");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        SUBMIT(std::bind(&ResponseCreateWorldReactor::SendNextRequest, this), shared_from_this(), this, "ResponseCreateWorldReactor::SendNextRequest");
+        SUBMIT_MEMBER(ResponseCreateWorldReactor::SendNextRequest, "ResponseCreateWorldReactor::SendNextRequest");
     }
 }

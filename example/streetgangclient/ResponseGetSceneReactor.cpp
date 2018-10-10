@@ -43,6 +43,6 @@ void ResponseGetSceneReactor::SendNextRequest()
     {
         LOG("Failed to get the server version");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, this), shared_from_this(), this, "ResponseGetSceneReactor::SendNextRequest");
+        SUBMIT_MEMBER(ResponseGetSceneReactor::SendNextRequest, "ResponseGetSceneReactor::SendNextRequest");
     }
 }
