@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo apt-get update -y
 sudo apt-get install g++ -y
 sudo apt-get install automake -y
 sudo apt-get install pkg-config -y
