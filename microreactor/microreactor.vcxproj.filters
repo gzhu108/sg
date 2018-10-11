@@ -138,12 +138,6 @@
     <ClCompile Include="src\ConfigurationSingleton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Park.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Parkable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test\RestDispatcherTest.cpp">
       <Filter>Test Files</Filter>
     </ClCompile>

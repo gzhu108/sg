@@ -8,25 +8,81 @@
 
 namespace sg { namespace microreactor
 {
+    template <typename T>
     class Park
     {
     public:
-        virtual ~Park();
+        typedef T ParkingSpaceNumber;
+
+        Park()
+        {
+        }
+
+        virtual ~Park()
+        {
+        }
 
     public:
-        static Park& ParkingLot();
+        virtual std::shared_ptr<Parkable<ParkingSpaceNumber>> Add(ParkingSpaceNumber parkingSpace, std::shared_ptr<Parkable<ParkingSpaceNumber>> parkable)
+        {
+            ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-        virtual bool Add(uintptr_t parking, std::shared_ptr<Parkable> parkable);
-        virtual uint64_t Remove(uintptr_t parking, std::vector<std::shared_ptr<Parkable>>& parkables);
-        virtual uint64_t Get(uintptr_t parking, std::vector<std::shared_ptr<Parkable>>& parkables);
+            auto oldParkable = Remove(parkingSpace);
+
+            mParkables[parkingSpace] = parkable;
+            parkable->AssignParkingSpace(parkingSpace);
+            return oldParkable;
+        }
+
+        virtual std::shared_ptr<Parkable<ParkingSpaceNumber>> Remove(ParkingSpaceNumber parkingSpace)
+        {
+            ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+            auto parking = mParkables.find(parkingSpace);
+            if (parking == mParkables.end())
+            {
+                return nullptr;
+            }
+
+            auto parkable = parking->second;
+            parkable->UnassignParkingSpace();
+            mParkables.erase(parking);
+
+            return parkable;
+        }
+
+        virtual std::shared_ptr<Parkable<ParkingSpaceNumber>> Get(ParkingSpaceNumber parkingSpace)
+        {
+            ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+            auto parking = mParkables.find(parkingSpace);
+            if (parking == mParkables.end())
+            {
+                return nullptr;
+            }
+
+            return parking->second;
+        }
+
+        virtual bool GetAll(std::vector<std::shared_ptr<Parkable<ParkingSpaceNumber>>>& parkables)
+        {
+            ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+            parkables.clear();
+            if (!mParkables.empty())
+            {
+                for (const auto& parking : mParkables)
+                {
+                    parkables.push_back(parking.second);
+                }
+            }
+
+            return !parkables.empty();
+        }
 
     protected:
-        static Park mParkingLot;
         mutable std::recursive_mutex mLock;
-        std::unordered_multimap<uintptr_t, std::shared_ptr<Parkable>> mParkables;
-
-    private:
-        Park();
+        std::unordered_map<ParkingSpaceNumber, std::shared_ptr<Parkable<ParkingSpaceNumber>>> mParkables;
     };
 }}
 

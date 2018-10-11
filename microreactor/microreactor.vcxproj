@@ -197,8 +197,6 @@
     <ClCompile Include="src\MessageResponder.cpp" />
     <ClCompile Include="src\Microservice.cpp" />
     <ClCompile Include="src\NetworkUtility.cpp" />
-    <ClCompile Include="src\Park.cpp" />
-    <ClCompile Include="src\Parkable.cpp" />
     <ClCompile Include="src\Profile.cpp" />
     <ClCompile Include="src\Reactor.cpp" />
     <ClCompile Include="src\RestDispatcher.cpp" />

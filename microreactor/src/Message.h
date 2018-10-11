@@ -4,13 +4,14 @@
 
 #include <chrono>
 #include "Common.h"
+#include "Parkable.h"
 
 
 namespace sg { namespace microreactor
 {
     class Reactor;
 
-    class Message
+    class Message : public Parkable<std::string>
     {
     public:
         Message();

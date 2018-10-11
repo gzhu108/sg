@@ -4,12 +4,13 @@
 
 #include <unordered_map>
 #include "Common.h"
+#include "Park.h"
+#include "Message.h"
 
 
 namespace sg { namespace microreactor
 {
     class Connection;
-    class Message;
     class Reactor;
 
     class Dispatcher
@@ -42,9 +43,8 @@ namespace sg { namespace microreactor
         virtual std::shared_ptr<Message> GetTrackedMessage(const std::string& trackId);
 
     protected:
-        std::recursive_mutex mLock;
         Emittable<TimedOutMessage> mMessageTimedOut;
-        std::unordered_map<std::string, std::shared_ptr<Message>> mTrackedMessages;
+        Park<Message::ParkingSpaceNumber> mTrackedMessages;
     };
 }}
 

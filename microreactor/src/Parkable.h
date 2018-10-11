@@ -8,19 +8,45 @@
 
 namespace sg { namespace microreactor
 {
+    template <typename T>
     class Parkable : public Shareable
     {
     public:
-        Parkable();
-        virtual ~Parkable();
+        typedef T ParkingSpaceNumber;
+
+        Parkable()
+        {
+        }
+
+        virtual ~Parkable()
+        {
+        }
 
     public:
-        virtual bool IsParked() { return mParking != 0; }
-        virtual void AssignParking(uintptr_t parking) { mParking = parking; }
-        virtual uintptr_t GetParking() const { return mParking; }
+        virtual bool IsParked()
+        {
+            return mParked;
+        }
+
+        virtual void AssignParkingSpace(ParkingSpaceNumber parkingSpace)
+        {
+            mParkingSpace = parkingSpace;
+            mParked = true;
+        }
+
+        virtual void UnassignParkingSpace()
+        {
+            mParked = false;
+        }
+
+        virtual ParkingSpaceNumber GetParkingSpace() const
+        {
+            return mParkingSpace;
+        }
 
     protected:
-        uintptr_t mParking = 0;
+        ParkingSpaceNumber mParkingSpace;
+        bool mParked = false;
     };
 }}
 

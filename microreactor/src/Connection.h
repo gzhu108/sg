@@ -12,7 +12,7 @@
 
 namespace sg { namespace microreactor
 {
-    class Connection : public Parkable
+    class Connection : public Parkable<uintptr_t>
     {
     public:
         explicit Connection(std::shared_ptr<Profile> profile);

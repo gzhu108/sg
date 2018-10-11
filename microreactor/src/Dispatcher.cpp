@@ -26,47 +26,37 @@ bool Dispatcher::InitializeReactor(Reactor& reactor)
 
 void Dispatcher::RegisterMessage(std::shared_ptr<Message> message)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-    
     // Only register the message that expects a response
     if (message != nullptr && message->ResponseTimeout.cref() > 0)
     {
         // Track the message
-        mTrackedMessages[message->TrackId.cref()] = message;
+        mTrackedMessages.Add(message->TrackId.cref(), message);
         message->SetRequestTime();
     }
 }
 
 void Dispatcher::RemoveTimedOutMessages(Connection& connection)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-    
-    for (auto& message : mTrackedMessages)
+    std::vector<std::shared_ptr<Parkable<Message::ParkingSpaceNumber>>> trackedMessages;
+    if (mTrackedMessages.GetAll(trackedMessages))
     {
-        if (message.second != nullptr && message.second->HasTimedOut())
+        for (auto& trackedMessage : trackedMessages)
         {
-            LOG("[" FMT_INT64 "] Dispatcher::RemoveTimedOutMessages() [TrackId=%s]",
-            std::chrono::high_resolution_clock::now().time_since_epoch().count(),
-            message.second->TrackId->c_str());
+            auto message = std::static_pointer_cast<Message>(trackedMessage);
+            if (message != nullptr && message->HasTimedOut())
+            {
+                LOG("[" FMT_INT64 "] Dispatcher::RemoveTimedOutMessages() [TrackId=%s]",
+                    std::chrono::high_resolution_clock::now().time_since_epoch().count(),
+                    message->TrackId->c_str());
 
-            mMessageTimedOut(TimedOutMessage(message.second, connection));
-            message.second = nullptr;
+                mMessageTimedOut(TimedOutMessage(message, connection));
+                mTrackedMessages.Remove(message->TrackId.cref());
+            }
         }
     }
 }
 
 std::shared_ptr<Message> Dispatcher::GetTrackedMessage(const std::string& trackId)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-
-    // Find tracked message by track ID
-    auto found = mTrackedMessages.find(trackId);
-    if (found != mTrackedMessages.end())
-    {
-        std::shared_ptr<Message> trackedMessage = found->second;
-        mTrackedMessages.erase(found);
-        return trackedMessage;
-    }
-
-    return nullptr;
+    return std::static_pointer_cast<Message>(mTrackedMessages.Remove(trackId));
 }

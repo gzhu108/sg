@@ -1,5 +1,4 @@
 #include "RequestGetSceneReactor.h"
-#include "Park.h"
 #include "WorldRequester.h"
 #include "WorldClient.h"
 
@@ -20,17 +19,12 @@ RequestGetSceneReactor::~RequestGetSceneReactor()
 
 bool RequestGetSceneReactor::Process()
 {
-    Park::ParkingLot().Add(reinterpret_cast<uintptr_t>(this), std::static_pointer_cast<Parkable>(shared_from_this()));
-
     worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection());
     return requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
 }
 
 bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items)
 {
-    std::vector<std::shared_ptr<Parkable>> parkables;
-    Park::ParkingLot().Remove(reinterpret_cast<uintptr_t>(this), parkables);
-
     if (mResponder == nullptr)
     {
         LOG("Invalid responder");

@@ -9,7 +9,7 @@
 
 namespace sg { namespace microreactor
 {
-    class Reactor : public Parkable
+    class Reactor : public Parkable<uintptr_t>
     {
     public:
         explicit Reactor(std::shared_ptr<Connection> connection);
