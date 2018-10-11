@@ -128,14 +128,7 @@ int32_t main(int32_t argc, const char* argv[])
     START_BLOCKING_TASK_LOOP();
 
     // Cancell all tasks
-    uint64_t cancelCount = CANCEL_TASKS();
-    if (cancelCount > 0)
-    {
-        while (GET_ACTIVE_TASK_COUNT() > 0)
-        {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        }
-    }
+    CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER();
 
     // Optional: Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();

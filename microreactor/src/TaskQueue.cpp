@@ -59,7 +59,7 @@ bool TaskQueue::EnqueueTask(TaskPtr task, bool insertBack)
 
 TaskPtr TaskQueue::DequeueTask()
 {
-    if (mTaskQueue.empty())
+    if (mStop || mTaskQueue.empty())
     {
         return nullptr;
     }

@@ -11,7 +11,19 @@
 #define CANCEL_TASKS(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->CancelTasks(__VA_ARGS__)
 #define DESTROY_TASK_MANAGER() sg::microreactor::TaskManagerSingleton::DestroyTaskManager()
 #define SUBMIT(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->Submit(__VA_ARGS__)
-#define SUBMIT_MEMBER(_member, ...) SUBMIT(std::bind(&_member, this), shared_from_this(), this, __VA_ARGS__)
+#define SUBMIT_MEMBER(_member, ...) SUBMIT(std::bind(&_member, this), this, this, __VA_ARGS__)
+
+#define CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER() \
+    sg::microreactor::TaskManagerSingleton::GetTaskManager()->Pause(); \
+    uint64_t cancelCount = CANCEL_TASKS(); \
+    if (cancelCount > 0) \
+    { \
+        while (GET_ACTIVE_TASK_COUNT() > 0) \
+        { \
+            std::this_thread::sleep_for(std::chrono::milliseconds(1)); \
+        } \
+    } \
+    DESTROY_TASK_MANAGER()
 
 
 namespace sg { namespace microreactor

@@ -71,7 +71,10 @@ void ThreadPool::Stop()
     // Join all threads
     for (auto& thread : mWorkerThreads)
     {
-        thread.second->join();
+        if (thread.second->joinable())
+        {
+            thread.second->join();
+        }
     }
 
     std::lock_guard<decltype(mLock)> scopeLock(mLock);
