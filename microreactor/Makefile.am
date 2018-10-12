@@ -92,8 +92,6 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/MessageResponder.cpp \
     src/Microservice.cpp \
     src/NetworkUtility.cpp \
-    src/Park.cpp \
-    src/Parkable.cpp \
     src/Profile.cpp \
     src/Reactor.cpp \
     src/Serializer.cpp \
