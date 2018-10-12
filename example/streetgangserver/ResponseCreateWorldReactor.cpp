@@ -41,7 +41,7 @@ bool ResponseCreateWorldReactor::Process()
         worldName.c_str());
 
     auto reactor = std::static_pointer_cast<RequestCreateWorldReactor>(mOriginalMessage->OriginalReactor.get());
-    SUBMIT(std::bind(&RequestCreateWorldReactor::SendResponse, reactor, worldId, worldName), reactor, this, "RequestCreateWorldReactor::SendResponse");
+    SUBMIT(std::bind(&RequestCreateWorldReactor::SendResponse, reactor, worldId, worldName), reactor, this, typeid(*reactor).hash_code(), "RequestCreateWorldReactor::SendResponse");
 
     return true;
 }

@@ -3,6 +3,8 @@
 #define sg_microreactor_Common
 
 #include "MemoryTrack.h"
+#include <typeinfo>
+#include <typeindex>
 #include <cstdint>
 #include <cstring>
 #include <errno.h>

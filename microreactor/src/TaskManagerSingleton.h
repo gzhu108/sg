@@ -11,7 +11,7 @@
 #define CANCEL_TASKS(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->CancelTasks(__VA_ARGS__)
 #define DESTROY_TASK_MANAGER() sg::microreactor::TaskManagerSingleton::DestroyTaskManager()
 #define SUBMIT(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->Submit(__VA_ARGS__)
-#define SUBMIT_MEMBER(_member, ...) SUBMIT(std::bind(&_member, this), this, this, __VA_ARGS__)
+#define SUBMIT_MEMBER(_member, ...) SUBMIT(std::bind(&_member, this), this, this, typeid(*this).hash_code(), __VA_ARGS__)
 
 #define CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER() \
     sg::microreactor::TaskManagerSingleton::GetTaskManager()->Pause(); \

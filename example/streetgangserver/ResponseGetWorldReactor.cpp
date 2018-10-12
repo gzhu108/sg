@@ -44,7 +44,7 @@ bool ResponseGetWorldReactor::Process()
         static_cast<const int32_t>(worldItems.size()));
 
     auto reactor = std::static_pointer_cast<RequestGetSceneReactor>(mOriginalMessage->OriginalReactor.get());
-    SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, worldItems), reactor, this, "RequestGetSceneReactor::SendResponse");
+    SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, worldItems), reactor, this, typeid(*reactor).hash_code(), "RequestGetSceneReactor::SendResponse");
 
     return true;
 }

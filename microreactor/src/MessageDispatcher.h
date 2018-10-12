@@ -39,7 +39,7 @@ namespace sg { namespace microreactor
                 if (reactor != nullptr && InitializeReactor(*reactor))
                 {
                     // Submit shared_ptr reactor process to task queue so it's reference counted.
-                    SUBMIT(std::bind(&Reactor::Process, reactor), reactor, &connection, "Reactor::Process");
+                    SUBMIT(std::bind(&Reactor::Process, reactor), reactor, &connection, typeid(connection).hash_code(), "Reactor::Process");
                 }
 
                 // If no more data CAN be read (currentSize == previousSize), 

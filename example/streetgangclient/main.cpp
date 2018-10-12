@@ -115,7 +115,7 @@ int32_t main(int32_t argc, const char* argv[])
         client = std::make_shared<StreetGangPBClient>(protocol, serverAddress, serverPort);
 
         auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(client->GetConnection(), nullptr, std::make_shared<PBStreetGangRequester>(client->GetConnection()));
-        SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, "ResponseGetSceneReactor::SendNextRequest");
+        SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, 0, "ResponseGetSceneReactor::SendNextRequest");
     }
     else
     {

@@ -25,16 +25,28 @@ void TaskQueue::Stop()
 void TaskQueue::ClearQueue()
 {
     std::lock_guard<decltype(mTaskQueueMutex)> scopeLock(mTaskQueueMutex);
+    mCategoryQueue.clear();
     mTaskQueue.clear();
 }
 
 uint64_t TaskQueue::GetQueueDepth()
 {
     std::lock_guard<decltype(mTaskQueueMutex)> scopeLock(mTaskQueueMutex);
-    return mTaskQueue.size();
+    return GetTaskQueueDepth();
 }
 
-bool TaskQueue::EnqueueTask(TaskPtr task, bool insertBack)
+uint64_t TaskQueue::GetTaskQueueDepth()
+{
+    uint64_t queueDepth = 0;
+    for (const auto& taskQueue : mTaskQueue)
+    {
+        queueDepth += taskQueue->size();
+    }
+
+    return queueDepth;
+}
+
+bool TaskQueue::EnqueueTask(TaskPtr task, int64_t category)
 {
     if (mStop || task == nullptr)
     {
@@ -42,15 +54,15 @@ bool TaskQueue::EnqueueTask(TaskPtr task, bool insertBack)
         return false;
     }
 
-    if (insertBack)
+    auto categoryQueue = mCategoryQueue.find(category);
+    if (categoryQueue == mCategoryQueue.end())
     {
-        // Insert the task to the back of the queue
-        mTaskQueue.emplace_back(task);
+        mCategoryQueue[category].emplace_back(task);
+        mTaskQueue.emplace_back(&mCategoryQueue[category]);
     }
     else
     {
-        // Insert the task to the front of the queue
-        mTaskQueue.emplace_front(task);
+        categoryQueue->second.emplace_back(task);
     }
 
     task->Schedule();
@@ -59,25 +71,37 @@ bool TaskQueue::EnqueueTask(TaskPtr task, bool insertBack)
 
 TaskPtr TaskQueue::DequeueTask()
 {
-    if (mStop || mTaskQueue.empty())
+    if (mStop || mTaskQueue.empty() || GetTaskQueueDepth() == 0)
     {
         return nullptr;
     }
     
-    // Remove a task from the front
-    TaskPtr task = std::move(mTaskQueue.front());
-    mTaskQueue.pop_front();
+    TaskPtr task = nullptr;
+    do
+    {
+        auto taskQueue = std::move(mTaskQueue.front());
+        if (!taskQueue->empty())
+        {
+            // Remove the task from the queue
+            task = std::move(taskQueue->front());
+            taskQueue->pop_front();
+        }
 
+        // Move the queue to the back
+        mTaskQueue.pop_front();
+        mTaskQueue.emplace_back(taskQueue);
+    } while (task == nullptr);
+    
     // Move the task to the active pool
     mActivePool.insert(std::make_pair(task->ActiveId.cref(), task));
 
     return task;
 }
 
-bool TaskQueue::Submit(TaskPtr task, bool insertBack)
+bool TaskQueue::Submit(TaskPtr task, int64_t category)
 {
     std::lock_guard<decltype(mTaskQueueMutex)> scopeLock(mTaskQueueMutex);
-    bool result = EnqueueTask(task, insertBack);
+    bool result = EnqueueTask(task, category);
     if (result)
     {
         mTaskSubmitted.notify_one();
@@ -144,18 +168,21 @@ uint64_t TaskQueue::CancelTasks(uintptr_t activeId)
     }
 
     // Cancel and remove tasks in the queue
-    auto task = mTaskQueue.begin();
-    while (task != mTaskQueue.end())
+    for (auto taskQueue : mTaskQueue)
     {
-        if (activeId == 0 || activeId == (*task)->ActiveId.cref())
+        auto task = taskQueue->begin();
+        while (task != taskQueue->end())
         {
-            (*task)->Cancel();
-            task = mTaskQueue.erase(task);
-            cancelCount++;
-        }
-        else
-        {
-            task++;
+            if (activeId == 0 || activeId == (*task)->ActiveId.cref())
+            {
+                (*task)->Cancel();
+                task = taskQueue->erase(task);
+                cancelCount++;
+            }
+            else
+            {
+                task++;
+            }
         }
     }
 

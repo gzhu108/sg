@@ -27,17 +27,21 @@ namespace sg { namespace microreactor
 
         // This operation is thread safe.
         virtual uint64_t GetQueueDepth();
+
+        // This operation does not obtain a mutex lock.
+        // Thus, this operation is not thread safe.
+        virtual uint64_t GetTaskQueueDepth();
         
         // This operation does not obtain a mutex lock.
         // Thus, this operation is not thread safe.
-        virtual bool EnqueueTask(TaskPtr task, bool insertBack);
+        virtual bool EnqueueTask(TaskPtr task, int64_t category);
         
         // This operation does not obtain a mutex lock.
         // Thus, this operation is not thread safe.
         virtual TaskPtr DequeueTask();
         
         // This operation is thread safe.
-        virtual bool Submit(TaskPtr task, bool insertBack = true);
+        virtual bool Submit(TaskPtr task, int64_t category = 0);
         
         // This operation is thread safe.
         virtual TaskPtr GetTask(const std::chrono::milliseconds& timeout);
@@ -47,7 +51,11 @@ namespace sg { namespace microreactor
         virtual void CompleteTask(TaskPtr task);
 
     protected:
-        std::list<TaskPtr> mTaskQueue;
+        typedef std::map<int64_t, std::list<TaskPtr>> CategoryQueue;
+        typedef std::list<std::list<TaskPtr>*> Multiqueue;
+
+        CategoryQueue mCategoryQueue;
+        Multiqueue mTaskQueue;
         std::multimap<uintptr_t, TaskPtr> mActivePool;
         std::mutex mTaskQueueMutex;
         std::condition_variable mTaskSubmitted;
