@@ -33,13 +33,13 @@ const WorldId& WorldManagerSingleton::CreateWorld(const std::string& worldName)
     auto worldItr = mNamedWorlds.find(worldName);
     if (worldItr != mNamedWorlds.end())
     {
-        return worldItr->second->Id.cref();
+        return worldItr->second->mId;
     }
     
     auto world = std::make_shared<WorldProvider>();
-    world->Id.set((WorldId)world.get());
+    world->mId = (WorldId)world.get();
     mNamedWorlds[worldName] = world;
     AddWorld(world);
     
-    return world->Id.cref();
+    return world->mId;
 }

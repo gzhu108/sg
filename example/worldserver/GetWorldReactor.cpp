@@ -31,8 +31,5 @@ bool GetWorldReactor::Process()
         return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), ResultCode::ErrorBadRequest, InputMessage()->Id.cref(), "World not found");
     }
 
-    std::vector<Point<float>> items;
-    world->GetItems(items);
-
-    return mResponder->SendGetWorldResponse(InputMessage()->TrackId.cref(), ResultCode::Success, world->Id.cref(), world->GetWorldBoundary(), items);
+    return mResponder->SendGetWorldResponse(InputMessage()->TrackId.cref(), ResultCode::Success, *world);
 }

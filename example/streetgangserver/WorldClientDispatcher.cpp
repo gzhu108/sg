@@ -1,5 +1,6 @@
 #include "WorldClientDispatcher.h"
 #include "BinarySerializer.h"
+#include "WorldClient.h"
 
 #include "ResponseErrorReactor.h"
 #include "ResponseCreateWorldReactor.h"
@@ -95,6 +96,11 @@ std::shared_ptr<Reactor> WorldClientDispatcher::CreateCreateWorldResponseReactor
     auto message = std::make_shared<ResponseCreateWorld>();
     if (message->Decode(stream))
     {
+        if (WorldClient::GetInstance().GetWorldCache() != nullptr)
+        {
+            WorldClient::GetInstance().GetWorldCache()->AddWorldId(message->WorldName.cref(), message->WorldId.cref());
+        }
+
         return std::make_shared<ResponseCreateWorldReactor>(connection, message);
     }
 
@@ -106,6 +112,11 @@ std::shared_ptr<Reactor> WorldClientDispatcher::CreateGetWorldResponseReactor(st
     auto message = std::make_shared<ResponseGetWorld>();
     if (message->Decode(stream))
     {
+        if (WorldClient::GetInstance().GetWorldCache() != nullptr)
+        {
+            WorldClient::GetInstance().GetWorldCache()->AddWorld(message->World->mId, message->World.cref());
+        }
+
         return std::make_shared<ResponseGetWorldReactor>(connection, message);
     }
     

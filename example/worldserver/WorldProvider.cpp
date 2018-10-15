@@ -6,7 +6,6 @@ using namespace worldserver;
 
 
 WorldProvider::WorldProvider()
-    : mWorldBoundary(0.0, 0.0, 0.0, 0.0)
 {
     if (mItems.empty())
     {

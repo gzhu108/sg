@@ -1,4 +1,6 @@
+#include "TaskManagerSingleton.h"
 #include "RequestCreateWorldReactor.h"
+#include "ResponseCreateWorldReactor.h"
 #include "WorldRequester.h"
 #include "WorldClient.h"
 
@@ -19,8 +21,14 @@ RequestCreateWorldReactor::~RequestCreateWorldReactor()
 
 bool RequestCreateWorldReactor::Process()
 {
-    worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection());
-    return requester.CreateWorld(InputMessage()->WorldName.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
+    worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection(), WorldClient::GetInstance().GetWorldCache());
+    auto message = requester.CreateWorld(InputMessage()->WorldName.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
+    if (message != nullptr)
+    {
+        return SendResponse(message->WorldId.cref(), message->WorldName.cref());
+    }
+
+    return true;
 }
 
 bool RequestCreateWorldReactor::SendResponse(const SessionId& sessionId, const std::string& worldName)

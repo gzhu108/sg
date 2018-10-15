@@ -3,9 +3,7 @@
 #define worldapi_WorldResponder
 
 #include "MessageResponder.h"
-#include "Rectangle.h"
-#include "Point.h"
-#include "WorldId.h"
+#include "World.h"
 #include "WorldMessage.h"
 
 
@@ -20,7 +18,7 @@ namespace worldapi
     public:
         virtual bool SendErrorResponse(const std::string& trackId, ResultCode result, const int32_t& requestId, const std::string& errorMessage);
         virtual bool SendCreateWorldResponse(const std::string& trackId, ResultCode result, const worldapi::WorldId& worldId, const std::string& worldName);
-        virtual bool SendGetWorldResponse(const std::string& trackId, ResultCode result, const worldapi::WorldId& worldId, const worldapi::Rectangle<float>& rect, const std::vector<worldapi::Point<float>>& items);
+        virtual bool SendGetWorldResponse(const std::string& trackId, ResultCode result, const worldapi::World& world);
     
     protected:
         virtual bool SendMessage(std::shared_ptr<WorldMessage> message);

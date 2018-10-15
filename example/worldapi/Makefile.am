@@ -21,6 +21,8 @@ nobase_include_HEADERS = \
     ResponseCreateWorld.h \
     ResponseError.h \
     ResponseGetWorld.h \
+    World.h \
+    WorldCache.h \
     WorldId.h \
     WorldRequester.h \
     WorldResponder.h
@@ -32,5 +34,6 @@ __top_builddir__lib_libworldapi_a_SOURCES = \
     ResponseCreateWorld.cpp \
     ResponseError.cpp \
     ResponseGetWorld.cpp \
+    WorldCache.cpp \
     WorldRequester.cpp \
     WorldResponder.cpp

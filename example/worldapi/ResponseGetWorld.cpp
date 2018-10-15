@@ -21,9 +21,7 @@ bool ResponseGetWorld::Encode(std::ostream& stream) const
     return serializer.Write(TrackId.cref(), stream)
         && serializer.Write(ResponseTimeout.cref(), stream)
         && serializer.Write(Result.cref(), stream)
-        && serializer.Write(WorldId.cref(), stream)
-        && serializer.Write(Rect.cref(), stream)
-        && SerializerWrite(serializer, Items.cref(), stream);
+        && serializer.Write(World.cref(), stream);
 }
 
 bool ResponseGetWorld::Decode(std::istream& stream)
@@ -33,9 +31,7 @@ bool ResponseGetWorld::Decode(std::istream& stream)
     serializer.ReadProperty(stream, TrackId);
     serializer.ReadProperty(stream, ResponseTimeout);
     serializer.ReadProperty(stream, Result);
-    serializer.ReadProperty(stream, WorldId);
-    serializer.ReadProperty(stream, Rect);
-    SerializerRead(serializer, stream, Items.ref());
+    serializer.ReadProperty(stream, World);
 
     return true;
 }

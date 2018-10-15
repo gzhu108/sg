@@ -10,8 +10,9 @@ using namespace sg::microreactor;
 using namespace worldapi;
 
 
-WorldRequester::WorldRequester(std::shared_ptr<Connection> connection)
+WorldRequester::WorldRequester(std::shared_ptr<Connection> connection, std::shared_ptr<WorldCache> worldCache)
     : MessageRequester(connection)
+    , mWorldCache(worldCache)
 {
 }
 
@@ -19,23 +20,41 @@ WorldRequester::~WorldRequester()
 {
 }
 
-bool WorldRequester::CreateWorld(const std::string& worldName, std::shared_ptr<Reactor> reactor)
+std::shared_ptr<ResponseCreateWorld> WorldRequester::CreateWorld(const std::string& worldName, std::shared_ptr<Reactor> reactor)
 {
-    auto message = std::make_shared<RequestCreateWorld>();
-    message->TrackId.set(Uuid::GenerateUuid().ToString());
-    message->OriginalReactor.set(reactor);
-    message->WorldName.set(worldName);
-    return SendMessage(message);
+    WorldId worldId;
+    if (mWorldCache == nullptr || !mWorldCache->GetWorldId(worldName, worldId))
+    {
+        auto message = std::make_shared<RequestCreateWorld>();
+        message->TrackId.set(Uuid::GenerateUuid().ToString());
+        message->OriginalReactor.set(reactor);
+        message->WorldName.set(worldName);
+        SendMessage(message);
+        return nullptr;
+    }
+
+    auto response = std::make_shared<ResponseCreateWorld>();
+    response->WorldId.set(worldId);
+    response->WorldName.set(worldName);
+    return response;
 }
 
-bool WorldRequester::GetWorld(const WorldId& worldId, std::shared_ptr<Reactor> reactor)
+std::shared_ptr<ResponseGetWorld> WorldRequester::GetWorld(const WorldId& worldId, std::shared_ptr<Reactor> reactor)
 {
-    auto message = std::make_shared<RequestGetWorld>();
-    message->TrackId.set(Uuid::GenerateUuid().ToString());
-    message->OriginalReactor.set(reactor);
-    message->WorldId.set(worldId);
+    World world;
+    if (mWorldCache == nullptr || !mWorldCache->GetWorld(worldId, world))
+    {
+        auto message = std::make_shared<RequestGetWorld>();
+        message->TrackId.set(Uuid::GenerateUuid().ToString());
+        message->OriginalReactor.set(reactor);
+        message->WorldId.set(worldId);
+        SendMessage(message);
+        return nullptr;
+    }
 
-    return SendMessage(message);
+    auto response = std::make_shared<ResponseGetWorld>();
+    response->World.set(world);
+    return response;
 }
 
 bool WorldRequester::SendMessage(std::shared_ptr<WorldMessage> message)

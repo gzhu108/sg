@@ -38,8 +38,14 @@ namespace sg { namespace microreactor
                 auto reactor = Decode(mReceiveStream, connection);
                 if (reactor != nullptr && InitializeReactor(*reactor))
                 {
-                    // Submit shared_ptr reactor process to task queue so it's reference counted.
-                    SUBMIT(std::bind(&Reactor::Process, reactor), reactor, &connection, typeid(connection).hash_code(), "Reactor::Process");
+                    try
+                    {
+                        reactor->Process();
+                    }
+                    catch (...)
+                    {
+                        LOG("Exception: Failed to run Message Reactor's Process()");
+                    }
                 }
 
                 // If no more data CAN be read (currentSize == previousSize), 

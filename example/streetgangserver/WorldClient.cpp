@@ -13,6 +13,7 @@ using namespace streetgangserver;
 std::shared_ptr<WorldClient> WorldClient::mInstance;
 
 WorldClient::WorldClient(const std::string& protocol, const std::string& hostAddress, uint16_t port)
+    : mWorldCache(std::make_shared<WorldCache>())
 {
     auto dispatcher = std::make_shared<WorldClientDispatcher>();
 

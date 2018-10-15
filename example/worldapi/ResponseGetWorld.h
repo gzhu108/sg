@@ -4,9 +4,7 @@
 
 #include <vector>
 #include "WorldMessage.h"
-#include "Rectangle.h"
-#include "Point.h"
-#include "WorldId.h"
+#include "World.h"
 
 
 namespace worldapi
@@ -17,9 +15,7 @@ namespace worldapi
         ResponseGetWorld();
         virtual ~ResponseGetWorld();
         
-        PROPERTY(WorldId, worldapi::WorldId, worldapi::DefaultWorldId);
-        PROPERTY(Rect, worldapi::Rectangle<float>, {0.0, 0.0, 0.0, 0.0});
-        PROPERTY(Items, std::vector<worldapi::Point<float>>);
+        PROPERTY(World, worldapi::World);
 
     public:
         virtual bool Encode(std::ostream& stream) const override;

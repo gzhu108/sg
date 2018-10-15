@@ -1,4 +1,6 @@
+#include "TaskManagerSingleton.h"
 #include "RequestGetSceneReactor.h"
+#include "ResponseGetWorldReactor.h"
 #include "WorldRequester.h"
 #include "WorldClient.h"
 
@@ -19,8 +21,14 @@ RequestGetSceneReactor::~RequestGetSceneReactor()
 
 bool RequestGetSceneReactor::Process()
 {
-    worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection());
-    return requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
+    worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection(), WorldClient::GetInstance().GetWorldCache());
+    auto message = requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
+    if (message != nullptr)
+    {
+        return SendResponse(InputMessage()->WorldId.cref(), message->World->mItems);
+    }
+
+    return true;
 }
 
 bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items)

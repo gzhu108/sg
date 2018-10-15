@@ -15,8 +15,8 @@ namespace worldserver
         worldapi::WorldId AddWorld(std::shared_ptr<WorldType> world)
         {
             sg::microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
-            mWorldCollection[world->Id.cref()] = world;
-            return world->Id.cref();
+            mWorldCollection[world->mId] = world;
+            return world->mId;
         }
 
         bool RemoveWorld(const worldapi::WorldId& worldId)

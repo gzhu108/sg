@@ -17,9 +17,9 @@ ResponseGetWorldReactor::~ResponseGetWorldReactor()
 
 bool ResponseGetWorldReactor::Process()
 {
-    auto& worldId = InputMessage()->WorldId.cref();
-    auto& worldRect = InputMessage()->Rect.cref();
-    auto& worldItems = InputMessage()->Items.cref();
+    auto& worldId = InputMessage()->World->mId;
+    auto& worldRect = InputMessage()->World->mWorldBoundary;
+    auto& worldItems = InputMessage()->World->mItems;
 
     if (mOriginalMessage == nullptr)
     {
@@ -44,7 +44,5 @@ bool ResponseGetWorldReactor::Process()
         static_cast<const int32_t>(worldItems.size()));
 
     auto reactor = std::static_pointer_cast<RequestGetSceneReactor>(mOriginalMessage->OriginalReactor.get());
-    SUBMIT(std::bind(&RequestGetSceneReactor::SendResponse, reactor, worldId, worldItems), reactor, this, typeid(*reactor).hash_code(), "RequestGetSceneReactor::SendResponse");
-
-    return true;
+    return reactor->SendResponse(worldId, worldItems);
 }

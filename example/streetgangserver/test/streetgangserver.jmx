@@ -40,7 +40,7 @@
           </CounterConfig>
           <hashTree/>
           <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="Random Variable" enabled="true">
-            <stringProp name="maximumValue">100000</stringProp>
+            <stringProp name="maximumValue">1000</stringProp>
             <stringProp name="minimumValue">1</stringProp>
             <stringProp name="outputFormat"></stringProp>
             <boolProp name="perThread">false</boolProp>

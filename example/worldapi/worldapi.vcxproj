@@ -39,6 +39,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="WorldCache.cpp" />
     <ClCompile Include="WorldRequester.cpp" />
     <ClCompile Include="WorldResponder.cpp" />
     <ClCompile Include="WorldMessage.cpp" />
@@ -49,6 +50,8 @@
     <ClCompile Include="ResponseGetWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="World.h" />
+    <ClInclude Include="WorldCache.h" />
     <ClInclude Include="WorldMessage.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />

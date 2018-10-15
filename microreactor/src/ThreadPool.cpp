@@ -5,8 +5,8 @@ using namespace sg::microreactor;
 
 ThreadPool::ThreadPool(std::shared_ptr<TaskQueue> taskQueue)
     : mTaskQueue(taskQueue)
-    , mStop(false)
     , mRemoveCount(0)
+    , mStop(false)
 {
     if (mTaskQueue == nullptr)
     {
@@ -23,8 +23,8 @@ ThreadPool::ThreadPool(std::shared_ptr<TaskQueue> taskQueue)
 
 ThreadPool::ThreadPool(std::shared_ptr<TaskQueue> taskQueue, uint64_t poolSize)
     : mTaskQueue(taskQueue)
-    , mStop(false)
     , mRemoveCount(0)
+    , mStop(false)
 {
     if (mTaskQueue == nullptr)
     {

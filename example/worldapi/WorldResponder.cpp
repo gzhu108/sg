@@ -37,14 +37,12 @@ bool WorldResponder::SendCreateWorldResponse(const std::string& trackId, ResultC
     return SendMessage(message);
 }
 
-bool WorldResponder::SendGetWorldResponse(const std::string& trackId, ResultCode result, const worldapi::WorldId& worldId, const worldapi::Rectangle<float>& rect, const std::vector<worldapi::Point<float>>& items)
+bool WorldResponder::SendGetWorldResponse(const std::string& trackId, ResultCode result, const worldapi::World& world)
 {
     auto message = std::make_shared<ResponseGetWorld>();
     message->TrackId.set(trackId);
     message->Result.set(static_cast<int32_t>(result));
-    message->WorldId.set(worldId);
-    message->Rect.set(rect);
-    message->Items.set(items);
+    message->World.set(world);
     return SendMessage(message);
 }
 
