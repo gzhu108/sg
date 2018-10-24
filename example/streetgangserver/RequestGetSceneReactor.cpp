@@ -24,9 +24,11 @@ bool RequestGetSceneReactor::Process()
     auto response = requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
     if (response != nullptr)
     {
+        // Found the world in the cache
         return ProcessGetWorldResponse(response);
     }
 
+    // Request has been sent
     return true;
 }
 
