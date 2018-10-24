@@ -435,7 +435,7 @@ std::shared_ptr<addrinfo> NetworkUtility::GetAddressInfo(const std::string& addr
     int32_t result = getaddrinfo(node, std::to_string(port).c_str(), &addrHints, &addrInfo);
     if (result != 0)
     {
-        int32_t error = GetSocketError();
+        //int32_t error = GetSocketError();
         return nullptr;
     }
 
