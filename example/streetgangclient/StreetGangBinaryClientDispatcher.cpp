@@ -1,7 +1,6 @@
 #include "StreetGangBinaryClientDispatcher.h"
 #include "BinarySerializer.h"
 
-#include "ResponseErrorReactor.h"
 #include "ResponseGetVersionReactor.h"
 #include "ResponseCreateWorldReactor.h"
 #include "ResponseGetSceneReactor.h"
@@ -18,10 +17,10 @@ using namespace streetgangclient;
 
 StreetGangBinaryClientDispatcher::StreetGangBinaryClientDispatcher()
 {
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::Error), std::bind(&StreetGangBinaryClientDispatcher::CreateErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionResponse), std::bind(&StreetGangBinaryClientDispatcher::CreateGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldResponse), std::bind(&StreetGangBinaryClientDispatcher::CreateCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneResponse), std::bind(&StreetGangBinaryClientDispatcher::CreateGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::Error), std::bind(&StreetGangBinaryClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangBinaryClientDispatcher::~StreetGangBinaryClientDispatcher()
@@ -89,45 +88,69 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::Decode(std::istream& 
     return factory(stream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateErrorResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleErrorResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseError>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseErrorReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = trackedMessage->Client.cref();
+            client->ProcessError(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetVersionResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleGetVersionResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseGetVersion>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseGetVersionReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<ResponseGetVersionReactor>(trackedMessage->Client.cref());
+            client->Process(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateCreateWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleCreateWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseCreateWorld>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseCreateWorldReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<ResponseCreateWorldReactor>(trackedMessage->Client.cref());
+            client->Process(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::CreateGetSceneResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleGetSceneResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<BinaryResponseGetScene>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseGetSceneReactor>(connection, message, std::make_shared<streetgangapi::BinaryStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<ResponseGetSceneReactor>(trackedMessage->Client.cref());
+            client->Process(message);
+        }
     }
     
     return nullptr;

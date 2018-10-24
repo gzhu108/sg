@@ -18,5 +18,5 @@ bool MetricatorRequester::WriteMetrics(const std::vector<Metric>& metrics)
 {
     std::shared_ptr<MetricatorRequest> request = std::make_shared<MetricatorRequest>();
     request->SetMetrics(metrics);
-    return SendMessage(request);
+    return SendMessage(request, nullptr);
 }

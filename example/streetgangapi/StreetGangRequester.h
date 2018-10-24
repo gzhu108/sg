@@ -16,10 +16,10 @@ namespace streetgangapi
         virtual ~StreetGangRequester() {}
 
     public:
-        virtual bool Byebye() = 0;
-        virtual bool GetVersion() = 0;
-        virtual bool CreateWorld(const std::string& worldName) = 0;
-        virtual bool GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect) = 0;
+        virtual bool Byebye(std::shared_ptr<sg::microreactor::Reactor> client) = 0;
+        virtual bool GetVersion(std::shared_ptr<sg::microreactor::Reactor> client) = 0;
+        virtual bool CreateWorld(const std::string& worldName, std::shared_ptr<sg::microreactor::Reactor> client) = 0;
+        virtual bool GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect, std::shared_ptr<sg::microreactor::Reactor> client) = 0;
    };
 }
 

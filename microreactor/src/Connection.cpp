@@ -38,10 +38,11 @@ Connection::~Connection()
     CancelAllTasks(ReceiveTimeout.cref() + SendTimeout.cref());
 }
 
-void Connection::RegisterMessage(std::shared_ptr<Message> message)
+void Connection::RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client)
 {
     if (mProfile != nullptr && mProfile->Dispatcher.cref() != nullptr)
     {
+        message->Client.set(client);
         mProfile->Dispatcher.cref()->RegisterMessage(message);
     }
 }

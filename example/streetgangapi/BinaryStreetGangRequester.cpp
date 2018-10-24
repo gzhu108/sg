@@ -22,38 +22,38 @@ BinaryStreetGangRequester::~BinaryStreetGangRequester()
 {
 }
 
-bool BinaryStreetGangRequester::Byebye()
+bool BinaryStreetGangRequester::Byebye(std::shared_ptr<Reactor> client)
 {
     auto message = std::make_shared<BinaryRequestByebye>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
-    return SendMessage(message);
+    return SendMessage(message, client);
 }
 
-bool BinaryStreetGangRequester::GetVersion()
+bool BinaryStreetGangRequester::GetVersion(std::shared_ptr<Reactor> client)
 {
     auto message = std::make_shared<BinaryRequestGetVersion>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
-    return SendMessage(message);
+    return SendMessage(message, client);
 }
 
-bool BinaryStreetGangRequester::CreateWorld(const std::string& worldName)
+bool BinaryStreetGangRequester::CreateWorld(const std::string& worldName, std::shared_ptr<Reactor> client)
 {
     auto message = std::make_shared<BinaryRequestCreateWorld>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
     message->WorldName.set(worldName);
-    return SendMessage(message);
+    return SendMessage(message, client);
 }
 
-bool BinaryStreetGangRequester::GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect)
+bool BinaryStreetGangRequester::GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect, std::shared_ptr<Reactor> client)
 {
     auto message = std::make_shared<BinaryRequestGetScene>();
     message->TrackId.set(Uuid::GenerateUuid().ToString());
     message->WorldId.set(worldId);
     message->Rect.set(rect);
-    return SendMessage(message);
+    return SendMessage(message, client);
 }
 
-bool BinaryStreetGangRequester::SendMessage(std::shared_ptr<MessageBase> message)
+bool BinaryStreetGangRequester::SendMessage(std::shared_ptr<MessageBase> message, std::shared_ptr<Reactor> client)
 {
     if (message == nullptr || mConnection == nullptr || mConnection->IsClosed())
     {
@@ -78,7 +78,7 @@ bool BinaryStreetGangRequester::SendMessage(std::shared_ptr<MessageBase> message
             if (sent > 0)
             {
                 // Register the message with the dispatcher
-                mConnection->RegisterMessage(message);
+                mConnection->RegisterMessage(message, client);
                 return true;
             }
         }

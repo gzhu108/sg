@@ -9,17 +9,20 @@
 
 namespace streetgangclient
 {
-    class ResponseCreateWorldReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseCreateWorld>
+    class ResponseCreateWorldReactor : public sg::microreactor::Reactor
     {
     public:
-        ResponseCreateWorldReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::ResponseCreateWorld> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
+        ResponseCreateWorldReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
         virtual ~ResponseCreateWorldReactor();
         
     public:
-        virtual bool Process() override;
+        virtual bool ProcessError(std::shared_ptr<sg::microreactor::Message> errorMessage) override;
+        virtual bool ProcessTimeout(std::shared_ptr<sg::microreactor::Message> timedOutMessage) override;
+
+        bool Process(std::shared_ptr<streetgangapi::ResponseCreateWorld> response);
 
     protected:
-        void SendNextRequest();
+        void SendNextRequest(uintptr_t worldId);
 
     protected:
         std::shared_ptr<streetgangapi::StreetGangRequester> mRequester;

@@ -2,7 +2,6 @@
 #include "NetworkUtility.h"
 #include "TaskManager.h"
 #include "StreetGangPBClientDispatcher.h"
-#include "ResponseErrorReactor.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -19,18 +18,6 @@ StreetGangPBClient::StreetGangPBClient(const std::string& protocol, const std::s
     profile->Address.set(hostAddress);
     profile->Port.set(port);
     profile->Dispatcher.set(dispatcher);
-
-    profile->Dispatcher.cref()->MessageTimedOut.Connect([](const Dispatcher::TimedOutMessage& timedOutMessage)
-    {
-        auto responseError = std::make_shared<ResponseError>();
-        responseError->Result.set((int32_t)ResultCode::ErrorTimeout);
-        responseError->RequestId.set(std::static_pointer_cast<MessageBase>(timedOutMessage.mMessage)->Id.cref());
-
-        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(std::static_pointer_cast<Connection>(timedOutMessage.mConnection.shared_from_this()), responseError, nullptr);
-        responseErrorReactor->SetOriginalMessage(timedOutMessage.mMessage);
-        
-        responseErrorReactor->Process();
-    });
 
     auto connection = NetworkUtility::CreateConnection(profile);
     Initialize(connection, std::chrono::milliseconds(30));

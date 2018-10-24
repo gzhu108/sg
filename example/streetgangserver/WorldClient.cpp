@@ -3,7 +3,6 @@
 #include "ConfigurationSingleton.h"
 #include "WorldClientDispatcher.h"
 #include "worldapi/ResponseError.h"
-#include "ResponseErrorReactor.h"
 
 using namespace sg::microreactor;
 using namespace worldapi;
@@ -23,20 +22,6 @@ WorldClient::WorldClient(const std::string& protocol, const std::string& hostAdd
     profile->Address.set(hostAddress);
     profile->Port.set(port);
     profile->Dispatcher.set(dispatcher);
-
-    profile->Dispatcher.cref()->MessageTimedOut.Connect([&](const Dispatcher::TimedOutMessage& timedOutMessage)
-    {
-        auto responseError = std::make_shared<ResponseError>();
-        responseError->TrackId.set(timedOutMessage.mMessage->TrackId.cref());
-        responseError->Result.set((int32_t)ResultCode::ErrorTimeout);
-        responseError->RequestId.set(std::static_pointer_cast<WorldMessage>(timedOutMessage.mMessage)->Id.cref());
-        responseError->ErrorMessage.set("WorldServer timeout");
-
-        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(std::static_pointer_cast<Connection>(timedOutMessage.mConnection.shared_from_this()), responseError);
-        responseErrorReactor->SetOriginalMessage(timedOutMessage.mMessage);
-        
-        responseErrorReactor->Process();
-    });
 
     auto connection = NetworkUtility::CreateConnection(profile);
     Initialize(connection, std::chrono::milliseconds(30));

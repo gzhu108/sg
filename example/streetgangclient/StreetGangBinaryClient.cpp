@@ -3,7 +3,6 @@
 #include "TcpConnection.h"
 #include "StreetGangBinaryClientDispatcher.h"
 #include "BinaryResponseError.h"
-#include "ResponseErrorReactor.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -111,18 +110,6 @@ StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, cons
     profile->Address.set(hostAddress);
     profile->Port.set(port);
     profile->Dispatcher.set(dispatcher);
-
-    profile->Dispatcher.cref()->MessageTimedOut.Connect([](const Dispatcher::TimedOutMessage& timedOutMessage)
-    {
-        auto responseError = std::make_shared<BinaryResponseError>();
-        responseError->Result.set((int32_t)ResultCode::ErrorTimeout);
-        responseError->RequestId.set(std::static_pointer_cast<MessageBase>(timedOutMessage.mMessage)->Id.cref());
-
-        auto responseErrorReactor = std::make_shared<ResponseErrorReactor>(std::static_pointer_cast<Connection>(timedOutMessage.mConnection.shared_from_this()), responseError, nullptr);
-        responseErrorReactor->SetOriginalMessage(timedOutMessage.mMessage);
-        
-        responseErrorReactor->Process();
-    });
 
     auto socket = std::make_shared<SecureTcpSocket>();
     socket->ConfigureSslContext(SSLv23_client_method(), "cert/Client.key", "cert/Client.cer", VerifyPeer);

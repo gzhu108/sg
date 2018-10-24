@@ -19,12 +19,12 @@ namespace sg { namespace microreactor
 
         PROPERTY(TrackId, std::string);
         PROPERTY(ResponseTimeout, int64_t, 0);
-        PROPERTY(OriginalReactor, std::shared_ptr<Reactor>);
+        PROPERTY(Client, std::shared_ptr<Reactor>);
 
     public:
         const std::chrono::time_point<std::chrono::high_resolution_clock>& GetCreationTime() { return mCreationTime; }
         const std::chrono::time_point<std::chrono::high_resolution_clock>& GetRequestTime() { return mRequestTime; }
-        void SetRequestTime() { mRequestTime = std::chrono::high_resolution_clock::now(); }
+        void SetRequestTime(std::chrono::time_point<std::chrono::high_resolution_clock> requestTime = std::chrono::high_resolution_clock::now()) { mRequestTime = requestTime; }
 
         bool HasTimedOut();
 

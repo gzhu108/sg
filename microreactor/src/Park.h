@@ -2,6 +2,7 @@
 #ifndef sg_microreactor_Park
 #define sg_microreactor_Park
 
+#include <iterator>
 #include <unordered_map>
 #include "Parkable.h"
 
@@ -69,13 +70,10 @@ namespace sg { namespace microreactor
             ScopeLock<decltype(mLock)> scopeLock(mLock);
 
             parkables.clear();
-            if (!mParkables.empty())
+            std::transform(mParkables.begin(), mParkables.end(), std::back_inserter(parkables), [](const auto& parkable)
             {
-                for (const auto& parking : mParkables)
-                {
-                    parkables.push_back(parking.second);
-                }
-            }
+                return parkable.second;
+            });
 
             return !parkables.empty();
         }

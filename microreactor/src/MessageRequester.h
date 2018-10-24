@@ -15,7 +15,7 @@ namespace sg { namespace microreactor
         virtual ~MessageRequester();
 
     public:
-        virtual bool SendMessage(std::shared_ptr<Message> message);
+        virtual bool SendMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client);
 
     protected:
         std::shared_ptr<Connection> mConnection;

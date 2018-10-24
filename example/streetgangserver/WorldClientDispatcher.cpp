@@ -2,9 +2,8 @@
 #include "BinarySerializer.h"
 #include "WorldClient.h"
 
-#include "ResponseErrorReactor.h"
-#include "ResponseCreateWorldReactor.h"
-#include "ResponseGetWorldReactor.h"
+#include "RequestCreateWorldReactor.h"
+#include "RequestGetSceneReactor.h"
 
 #include "worldapi/ResponseError.h"
 #include "worldapi/ResponseCreateWorld.h"
@@ -17,9 +16,9 @@ using namespace streetgangserver;
 
 WorldClientDispatcher::WorldClientDispatcher()
 {
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::Error), std::bind(&WorldClientDispatcher::CreateErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::CreateWorldResponse), std::bind(&WorldClientDispatcher::CreateCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::GetWorldResponse), std::bind(&WorldClientDispatcher::CreateGetWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::Error), std::bind(&WorldClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::CreateWorldResponse), std::bind(&WorldClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::GetWorldResponse), std::bind(&WorldClientDispatcher::HandleGetWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 WorldClientDispatcher::~WorldClientDispatcher()
@@ -80,18 +79,24 @@ std::shared_ptr<Reactor> WorldClientDispatcher::Decode(std::istream& stream, Con
     return factory(stream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
 }
 
-std::shared_ptr<Reactor> WorldClientDispatcher::CreateErrorResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldClientDispatcher::HandleErrorResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<ResponseError>();
     if (message->Decode(stream))
     {
-        return std::make_shared<ResponseErrorReactor>(connection, message);
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = trackedMessage->Client.cref();
+            client->ProcessError(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> WorldClientDispatcher::CreateCreateWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldClientDispatcher::HandleCreateWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<ResponseCreateWorld>();
     if (message->Decode(stream))
@@ -101,13 +106,19 @@ std::shared_ptr<Reactor> WorldClientDispatcher::CreateCreateWorldResponseReactor
             WorldClient::GetInstance().GetWorldCache()->AddWorldId(message->WorldName.cref(), message->WorldId.cref());
         }
 
-        return std::make_shared<ResponseCreateWorldReactor>(connection, message);
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<RequestCreateWorldReactor>(trackedMessage->Client.cref());
+            client->ProcessCreateWorldResponse(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> WorldClientDispatcher::CreateGetWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldClientDispatcher::HandleGetWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<ResponseGetWorld>();
     if (message->Decode(stream))
@@ -117,7 +128,13 @@ std::shared_ptr<Reactor> WorldClientDispatcher::CreateGetWorldResponseReactor(st
             WorldClient::GetInstance().GetWorldCache()->AddWorld(message->World->mId, message->World.cref());
         }
 
-        return std::make_shared<ResponseGetWorldReactor>(connection, message);
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<RequestGetSceneReactor>(trackedMessage->Client.cref());
+            client->ProcessGetWorldResponse(message);
+        }
     }
     
     return nullptr;

@@ -9,14 +9,17 @@
 
 namespace streetgangclient
 {
-    class ResponseGetSceneReactor : public sg::microreactor::MessageReactor<streetgangapi::ResponseGetScene>
+    class ResponseGetSceneReactor : public sg::microreactor::Reactor
     {
     public:
-        ResponseGetSceneReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::ResponseGetScene> message, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
+        ResponseGetSceneReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
         virtual ~ResponseGetSceneReactor();
         
     public:
-        virtual bool Process() override;
+        virtual bool ProcessError(std::shared_ptr<sg::microreactor::Message> errorMessage) override;
+        virtual bool ProcessTimeout(std::shared_ptr<sg::microreactor::Message> timedOutMessage) override;
+
+        bool Process(std::shared_ptr<streetgangapi::ResponseGetScene> response);
         void SendNextRequest();
 
     protected:

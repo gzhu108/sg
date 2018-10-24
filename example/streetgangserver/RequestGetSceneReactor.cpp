@@ -1,6 +1,5 @@
 #include "TaskManagerSingleton.h"
 #include "RequestGetSceneReactor.h"
-#include "ResponseGetWorldReactor.h"
 #include "WorldRequester.h"
 #include "WorldClient.h"
 
@@ -22,13 +21,62 @@ RequestGetSceneReactor::~RequestGetSceneReactor()
 bool RequestGetSceneReactor::Process()
 {
     worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection(), WorldClient::GetInstance().GetWorldCache());
-    auto message = requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
-    if (message != nullptr)
+    auto response = requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
+    if (response != nullptr)
     {
-        return SendResponse(InputMessage()->WorldId.cref(), message->World->mItems);
+        return ProcessGetWorldResponse(response);
     }
 
     return true;
+}
+
+bool RequestGetSceneReactor::ProcessError(std::shared_ptr<Message> errorMessage)
+{
+    if (errorMessage == nullptr)
+    {
+        LOG("RequestCreateWorldReactor() ERROR: Invalid error message");
+        return false;
+    }
+
+    auto responseMessage = std::static_pointer_cast<worldapi::ResponseError>(errorMessage);
+    auto& errorCode = responseMessage->Result.cref();
+    auto& requestId = responseMessage->RequestId.cref();
+
+    LOG("ResponseErrorReactor() [Error=%d] [TrackId=%s] [RequestId=%d]",
+        errorCode,
+        InputMessage()->TrackId->c_str(),
+        requestId);
+
+    return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), (streetgangapi::ResultCode)errorCode, InputMessage()->Id.cref(), responseMessage->ErrorMessage.cref());
+}
+
+bool RequestGetSceneReactor::ProcessTimeout(std::shared_ptr<Message> timedOutMessage)
+{
+    return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), streetgangapi::ResultCode::ErrorTimeout, InputMessage()->Id.cref(), "StreetGangServer timeout");
+}
+
+bool RequestGetSceneReactor::ProcessGetWorldResponse(std::shared_ptr<worldapi::ResponseGetWorld> response)
+{
+    if (response == nullptr)
+    {
+        LOG("ProcessGetWorldResponse() ERROR: Invalid response");
+        return false;
+    }
+
+    auto& worldId = response->World->mId;
+    auto& worldRect = response->World->mWorldBoundary;
+    auto& worldItems = response->World->mItems;
+    auto latency = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - response->GetRequestTime()).count();
+
+    LOG("ResponseGetWorldReactor() INFO: [TrackId=%s] [Latency=" FMT_INT64 "] [Result=%d] [WorldId=" FMT_INT64 "] Rect(%f, %f, %f, %f), Items = %d",
+        response->TrackId->c_str(),
+        latency,
+        response->Result.cref(),
+        worldId,
+        worldRect.mX, worldRect.mY, worldRect.mW, worldRect.mH,
+        static_cast<const int32_t>(worldItems.size()));
+
+    return SendResponse(worldId, worldItems);
 }
 
 bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items)

@@ -4,6 +4,8 @@
 
 #include "MessageReactor.h"
 #include "StreetGangResponder.h"
+#include "worldapi/ResponseCreateWorld.h"
+#include "worldapi/ResponseError.h"
 #include "streetgangapi/RequestCreateWorld.h"
 #include "StreetGangReactor.h"
 
@@ -20,7 +22,11 @@ namespace streetgangserver
         
     public:
         virtual bool Process() override;
-        virtual bool SendResponse(const streetgangapi::SessionId& sessionId, const std::string& worldName);
+        virtual bool ProcessError(std::shared_ptr<sg::microreactor::Message> errorMessage) override;
+        virtual bool ProcessTimeout(std::shared_ptr<sg::microreactor::Message> timedOutMessage) override;
+
+        bool ProcessCreateWorldResponse(std::shared_ptr<worldapi::ResponseCreateWorld> response);
+        bool SendResponse(const streetgangapi::SessionId& sessionId, const std::string& worldName);
     };
 }
 

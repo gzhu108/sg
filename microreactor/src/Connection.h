@@ -26,7 +26,7 @@ namespace sg { namespace microreactor
         
     public:
         virtual std::shared_ptr<Profile> GetProfile() { return mProfile; }
-        virtual void RegisterMessage(std::shared_ptr<Message> message);
+        virtual void RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client);
 
         virtual std::string GetPeerAddress() const = 0;
         virtual uint16_t GetPeerPort() const = 0;

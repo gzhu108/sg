@@ -41,7 +41,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ResponseCreateWorldReactor.cpp" />
-    <ClCompile Include="ResponseErrorReactor.cpp" />
     <ClCompile Include="ResponseGetSceneReactor.cpp" />
     <ClCompile Include="ResponseGetVersionReactor.cpp" />
     <ClCompile Include="StreetGangBinaryClient.cpp" />
@@ -51,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ResponseCreateWorldReactor.h" />
-    <ClInclude Include="ResponseErrorReactor.h" />
     <ClInclude Include="ResponseGetSceneReactor.h" />
     <ClInclude Include="ResponseGetVersionReactor.h" />
     <ClInclude Include="StreetGangBinaryClient.h" />

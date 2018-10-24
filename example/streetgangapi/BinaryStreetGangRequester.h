@@ -15,13 +15,13 @@ namespace streetgangapi
         virtual ~BinaryStreetGangRequester();
 
     public:
-        virtual bool Byebye() override;
-        virtual bool GetVersion() override;
-        virtual bool CreateWorld(const std::string& worldName) override;
-        virtual bool GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect) override;
+        virtual bool Byebye(std::shared_ptr<sg::microreactor::Reactor> client) override;
+        virtual bool GetVersion(std::shared_ptr<sg::microreactor::Reactor> client) override;
+        virtual bool CreateWorld(const std::string& worldName, std::shared_ptr<sg::microreactor::Reactor> client) override;
+        virtual bool GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect, std::shared_ptr<sg::microreactor::Reactor> client) override;
 
     protected:
-        virtual bool SendMessage(std::shared_ptr<MessageBase> message);
+        virtual bool SendMessage(std::shared_ptr<MessageBase> message, std::shared_ptr<sg::microreactor::Reactor> client);
    };
 }
 

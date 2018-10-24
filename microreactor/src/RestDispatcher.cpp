@@ -23,7 +23,7 @@ RestDispatcher::~RestDispatcher()
 void RestDispatcher::Dispatch(Connection& connection)
 {
     auto reactor = Decode(connection);
-    if (reactor != nullptr && InitializeReactor(*reactor))
+    if (reactor != nullptr)
     {
         try
         {

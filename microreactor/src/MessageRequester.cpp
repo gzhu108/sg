@@ -12,7 +12,7 @@ MessageRequester::~MessageRequester()
 {
 }
 
-bool MessageRequester::SendMessage(std::shared_ptr<Message> message)
+bool MessageRequester::SendMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client)
 {
     if (message == nullptr || mConnection == nullptr || mConnection->IsClosed())
     {
@@ -30,7 +30,7 @@ bool MessageRequester::SendMessage(std::shared_ptr<Message> message)
         if (sent > 0)
         {
             // Register the message with the dispatcher
-            mConnection->RegisterMessage(message);
+            mConnection->RegisterMessage(message, client);
             return true;
         }
     }

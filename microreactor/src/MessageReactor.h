@@ -8,7 +8,7 @@
 
 namespace sg { namespace microreactor
 {
-    template <typename T>
+    template <typename T = Message>
     class MessageReactor : public Reactor
     {
     public:

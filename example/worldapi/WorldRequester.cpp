@@ -20,44 +20,46 @@ WorldRequester::~WorldRequester()
 {
 }
 
-std::shared_ptr<ResponseCreateWorld> WorldRequester::CreateWorld(const std::string& worldName, std::shared_ptr<Reactor> reactor)
+std::shared_ptr<ResponseCreateWorld> WorldRequester::CreateWorld(const std::string& worldName, std::shared_ptr<Reactor> client)
 {
     WorldId worldId;
     if (mWorldCache == nullptr || !mWorldCache->GetWorldId(worldName, worldId))
     {
         auto message = std::make_shared<RequestCreateWorld>();
         message->TrackId.set(Uuid::GenerateUuid().ToString());
-        message->OriginalReactor.set(reactor);
         message->WorldName.set(worldName);
-        SendMessage(message);
+        SendMessage(message, client);
         return nullptr;
     }
 
     auto response = std::make_shared<ResponseCreateWorld>();
+    response->SetRequestTime();
+    response->Result.set((int32_t)ResultCode::Success);
     response->WorldId.set(worldId);
     response->WorldName.set(worldName);
     return response;
 }
 
-std::shared_ptr<ResponseGetWorld> WorldRequester::GetWorld(const WorldId& worldId, std::shared_ptr<Reactor> reactor)
+std::shared_ptr<ResponseGetWorld> WorldRequester::GetWorld(const WorldId& worldId, std::shared_ptr<Reactor> client)
 {
     World world;
     if (mWorldCache == nullptr || !mWorldCache->GetWorld(worldId, world))
     {
         auto message = std::make_shared<RequestGetWorld>();
         message->TrackId.set(Uuid::GenerateUuid().ToString());
-        message->OriginalReactor.set(reactor);
         message->WorldId.set(worldId);
-        SendMessage(message);
+        SendMessage(message, client);
         return nullptr;
     }
 
     auto response = std::make_shared<ResponseGetWorld>();
+    response->SetRequestTime();
+    response->Result.set((int32_t)ResultCode::Success);
     response->World.set(world);
     return response;
 }
 
-bool WorldRequester::SendMessage(std::shared_ptr<WorldMessage> message)
+bool WorldRequester::SendMessage(std::shared_ptr<WorldMessage> message, std::shared_ptr<Reactor> client)
 {
     if (message == nullptr || mConnection == nullptr || mConnection->IsClosed())
     {
@@ -82,7 +84,7 @@ bool WorldRequester::SendMessage(std::shared_ptr<WorldMessage> message)
             if (sent > 0)
             {
                 // Register the message with the dispatcher
-                mConnection->RegisterMessage(message);
+                mConnection->RegisterMessage(message, client);
                 return true;
             }
         }

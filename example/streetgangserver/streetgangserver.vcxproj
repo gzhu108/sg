@@ -44,9 +44,6 @@
     <ClCompile Include="RequestCreateWorldReactor.cpp" />
     <ClCompile Include="RequestGetSceneReactor.cpp" />
     <ClCompile Include="RequestGetVersionReactor.cpp" />
-    <ClCompile Include="ResponseCreateWorldReactor.cpp" />
-    <ClCompile Include="ResponseErrorReactor.cpp" />
-    <ClCompile Include="ResponseGetWorldReactor.cpp" />
     <ClCompile Include="StreetGangBinaryDispatcher.cpp" />
     <ClCompile Include="StreetGangBinaryService.cpp" />
     <ClCompile Include="StreetGangPBDispatcher.cpp" />
@@ -61,9 +58,6 @@
     <ClInclude Include="RequestCreateWorldReactor.h" />
     <ClInclude Include="RequestGetSceneReactor.h" />
     <ClInclude Include="RequestGetVersionReactor.h" />
-    <ClInclude Include="ResponseCreateWorldReactor.h" />
-    <ClInclude Include="ResponseErrorReactor.h" />
-    <ClInclude Include="ResponseGetWorldReactor.h" />
     <ClInclude Include="StreetGangBinaryDispatcher.h" />
     <ClInclude Include="StreetGangBinaryService.h" />
     <ClInclude Include="StreetGangPBDispatcher.h" />

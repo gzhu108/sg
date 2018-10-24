@@ -13,17 +13,6 @@ Dispatcher::~Dispatcher()
 {
 }
 
-bool Dispatcher::InitializeReactor(Reactor& reactor)
-{
-    if (reactor.Input() != nullptr)
-    {
-        auto message = GetTrackedMessage(reactor.Input()->TrackId.cref());
-        reactor.SetOriginalMessage(message);
-    }
-    
-    return true;
-}
-
 void Dispatcher::RegisterMessage(std::shared_ptr<Message> message)
 {
     // Only register the message that expects a response
@@ -49,7 +38,12 @@ void Dispatcher::RemoveTimedOutMessages(Connection& connection)
                     std::chrono::high_resolution_clock::now().time_since_epoch().count(),
                     message->TrackId->c_str());
 
-                mMessageTimedOut(TimedOutMessage(message, connection));
+                auto client = message->Client.cref();
+                if (client != nullptr)
+                {
+                    client->ProcessTimeout(message);
+                }
+
                 mTrackedMessages.Remove(message->TrackId.cref());
             }
         }

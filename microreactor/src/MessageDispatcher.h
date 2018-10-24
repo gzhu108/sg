@@ -36,7 +36,7 @@ namespace sg { namespace microreactor
                 previousSize = currentSize;
 
                 auto reactor = Decode(mReceiveStream, connection);
-                if (reactor != nullptr && InitializeReactor(*reactor))
+                if (reactor != nullptr)
                 {
                     try
                     {

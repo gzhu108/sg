@@ -11,7 +11,6 @@
 
 #include "StreetGangPBClientDispatcher.h"
 
-#include "ResponseErrorReactor.h"
 #include "ResponseGetVersionReactor.h"
 #include "ResponseCreateWorldReactor.h"
 #include "ResponseGetSceneReactor.h"
@@ -40,10 +39,10 @@ using namespace streetgangclient;
 
 StreetGangPBClientDispatcher::StreetGangPBClientDispatcher()
 {
-    RegisterMessageReactorFactory("ErrorResponse", std::bind(&StreetGangPBClientDispatcher::CreateErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("GetVersionResponse", std::bind(&StreetGangPBClientDispatcher::CreateGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("CreateWorldResponse", std::bind(&StreetGangPBClientDispatcher::CreateCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("GetSceneResponse", std::bind(&StreetGangPBClientDispatcher::CreateGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("ErrorResponse", std::bind(&StreetGangPBClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("GetVersionResponse", std::bind(&StreetGangPBClientDispatcher::HandleGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("CreateWorldResponse", std::bind(&StreetGangPBClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterMessageReactorFactory("GetSceneResponse", std::bind(&StreetGangPBClientDispatcher::HandleGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangPBClientDispatcher::~StreetGangPBClientDispatcher()
@@ -74,45 +73,69 @@ std::shared_ptr<Reactor> StreetGangPBClientDispatcher::Decode(std::istream& stre
     return factory(codedInputStream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
 }
 
-std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateErrorResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::HandleErrorResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBResponseError>();
     if (message->Decode(codedInputStream))
     {
-        return std::make_shared<ResponseErrorReactor>(connection, message, std::make_shared<streetgangapi::PBStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = trackedMessage->Client.cref();
+            client->ProcessError(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateGetVersionResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::HandleGetVersionResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBResponseGetVersion>();
     if (message->Decode(codedInputStream))
     {
-        return std::make_shared<ResponseGetVersionReactor>(connection, message, std::make_shared<streetgangapi::PBStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<ResponseGetVersionReactor>(trackedMessage->Client.cref());
+            client->Process(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateCreateWorldResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::HandleCreateWorldResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBResponseCreateWorld>();
     if (message->Decode(codedInputStream))
     {
-        return std::make_shared<ResponseCreateWorldReactor>(connection, message, std::make_shared<streetgangapi::PBStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<ResponseCreateWorldReactor>(trackedMessage->Client.cref());
+            client->Process(message);
+        }
     }
 
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangPBClientDispatcher::CreateGetSceneResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangPBClientDispatcher::HandleGetSceneResponseReactor(google::protobuf::io::CodedInputStream& codedInputStream, std::shared_ptr<Connection> connection)
 {
     auto message = std::make_shared<PBResponseGetScene>();
     if (message->Decode(codedInputStream))
     {
-        return std::make_shared<ResponseGetSceneReactor>(connection, message, std::make_shared<streetgangapi::PBStreetGangRequester>(connection));
+        auto trackedMessage = GetTrackedMessage(message->TrackId.cref());
+        if (trackedMessage != nullptr && trackedMessage->Client.cref() != nullptr)
+        {
+            message->SetRequestTime(trackedMessage->GetRequestTime());
+            auto client = std::static_pointer_cast<ResponseGetSceneReactor>(trackedMessage->Client.cref());
+            client->Process(message);
+        }
     }
     
     return nullptr;

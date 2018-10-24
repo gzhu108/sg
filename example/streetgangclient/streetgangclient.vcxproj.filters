@@ -21,9 +21,6 @@
     <ClCompile Include="ResponseCreateWorldReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResponseErrorReactor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ResponseGetSceneReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,9 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ResponseCreateWorldReactor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResponseErrorReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ResponseGetSceneReactor.h">
