@@ -95,8 +95,16 @@ bool Connection::Start()
     if (!IsClosed() && ReceiveTimeout->count())
     {
         // Push to the queue to receive connection data.
-        SUBMIT_MEMBER(Connection::ReceiveMessage, "Connection::ReceiveMessage");
-        return true;
+        auto task = SUBMIT_MEMBER(Connection::ReceiveMessage, "Connection::ReceiveMessage");
+        if (task != nullptr)
+        {
+            task->Completed.Connect([&, task]()
+            {
+                task->Schedule();
+            });
+
+            return true;
+        }
     }
 
     return false;
@@ -130,12 +138,6 @@ void Connection::ReceiveMessage()
             LogTps();
             mProfile->Dispatcher.cref()->Dispatch(*this);
         }
-    }
-
-    if (!IsClosed())
-    {
-        // Push to the queue to receive connection data.
-        SUBMIT_MEMBER(Connection::ReceiveMessage, "Connection::ReceiveMessage");
     }
 }
 

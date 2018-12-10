@@ -20,8 +20,18 @@ Endpoint::~Endpoint()
 bool Endpoint::Start()
 {
     // Start listening on the endpoint
-    SUBMIT_MEMBER(Endpoint::AcceptConnection, "Endpoint::AcceptConnection");
-    return true;
+    auto task = SUBMIT_MEMBER(Endpoint::AcceptConnection, "Endpoint::AcceptConnection");
+    if (task != nullptr)
+    {
+        task->Completed.Connect([&, task]()
+        {
+            task->Schedule();
+        });
+
+        return true;
+    }
+
+    return false;
 }
 
 bool Endpoint::Stop()
@@ -55,11 +65,6 @@ void Endpoint::AcceptConnection()
 
         // Push to the queue to receive messages.
         connection->Start();
-    }
-
-    if (!IsClosed())
-    {
-        SUBMIT_MEMBER(Endpoint::AcceptConnection, "Endpoint::AcceptConnection");
     }
 }
 

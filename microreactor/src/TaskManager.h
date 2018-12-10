@@ -81,17 +81,27 @@ namespace sg { namespace microreactor
 
 #else // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
         template <typename TaskFunc, typename OwnerType>
-        bool Submit(TaskFunc&& taskFunc, OwnerType owner, void* activeId, int64_t category = 0, const std::string& taskName = {})
+        TaskPtr Submit(TaskFunc&& taskFunc, OwnerType owner, void* activeId, int64_t category = 0, const std::string& taskName = {})
         {
             auto task = std::make_shared<Task>(taskFunc);
-            return Submit(task, owner, reinterpret_cast<uintptr_t>(activeId), category, taskName);
+            if (Submit(task, owner, reinterpret_cast<uintptr_t>(activeId), category, taskName))
+            {
+                return task;
+            }
+
+            return nullptr;
         }
 
         template <typename TaskFunc, typename OwnerType>
-        bool Submit(std::function<void ()> run, OwnerType owner, void* activeId, int64_t category = 0, const std::string& taskName = {})
+        TaskPtr Submit(std::function<void ()> run, OwnerType owner, void* activeId, int64_t category = 0, const std::string& taskName = {})
         {
             auto task = std::make_shared<Task>(run);
-            return Submit(task, owner, reinterpret_cast<uintptr_t>(activeId), category, taskName);
+            if (Submit(task, owner, reinterpret_cast<uintptr_t>(activeId), category, taskName))
+            {
+                return task;
+            }
+
+            return nullptr;
         }
 
 #endif // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
