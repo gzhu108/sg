@@ -98,9 +98,10 @@ bool Connection::Start()
         auto task = SUBMIT_MEMBER(Connection::ReceiveMessage, "Connection::ReceiveMessage");
         if (task != nullptr)
         {
-            task->Completed.Connect([&, task]()
+            auto taskRawPtr = task.get();
+            task->Completed.Connect([&, taskRawPtr]()
             {
-                task->Schedule();
+                taskRawPtr->Schedule();
             });
 
             return true;

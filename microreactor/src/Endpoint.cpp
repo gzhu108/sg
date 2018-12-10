@@ -23,9 +23,10 @@ bool Endpoint::Start()
     auto task = SUBMIT_MEMBER(Endpoint::AcceptConnection, "Endpoint::AcceptConnection");
     if (task != nullptr)
     {
-        task->Completed.Connect([&, task]()
+        auto taskRawPtr = task.get();
+        task->Completed.Connect([&, taskRawPtr]()
         {
-            task->Schedule();
+            taskRawPtr->Schedule();
         });
 
         return true;
