@@ -85,10 +85,10 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::Decode(std::istream& 
         return nullptr;
     }
 
-    return factory(stream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+    return factory(stream, connection);
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleErrorResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleErrorResponseReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryResponseError>();
     if (message->Decode(stream))
@@ -105,7 +105,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleErrorResponseRe
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleGetVersionResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleGetVersionResponseReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryResponseGetVersion>();
     if (message->Decode(stream))
@@ -122,7 +122,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleGetVersionRespo
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleCreateWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleCreateWorldResponseReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryResponseCreateWorld>();
     if (message->Decode(stream))
@@ -139,7 +139,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleCreateWorldResp
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleGetSceneResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::HandleGetSceneResponseReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryResponseGetScene>();
     if (message->Decode(stream))

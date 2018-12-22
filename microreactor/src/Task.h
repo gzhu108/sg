@@ -29,15 +29,13 @@ namespace sg { namespace microreactor
         explicit Task(std::function<void ()> run);
         virtual ~Task();
 
-        PROPERTY(Owner, std::shared_ptr<Shareable>);
         PROPERTY(Name, std::string);
-        PROPERTY(ActiveId, uintptr_t, 0);
 
     public:
         virtual void SetExecuteTime(const std::chrono::time_point<std::chrono::high_resolution_clock>& executeTime);
         virtual TaskStatus GetStatus() const { return mStatus; }
         virtual void Schedule() { mStatus = TaskStatus::Scheduled; }
-        virtual void Cancel() override { mStatus = TaskStatus::Canceled; }
+        virtual void Cancel() override;
         virtual bool Execute();
         
     protected:

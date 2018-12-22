@@ -95,7 +95,7 @@ void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const s
     }
 }
 
-std::shared_ptr<Reactor> DiscoveryClient::CreateNotifyReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> DiscoveryClient::CreateNotifyReactor(std::shared_ptr<RestMessage> message, Connection& connection)
 {
     auto request = std::static_pointer_cast<RestRequest>(message);
     if (request->mUri.length() < std::string("*").length())
@@ -113,7 +113,7 @@ std::shared_ptr<Reactor> DiscoveryClient::CreateNotifyReactor(std::shared_ptr<Re
     return reactor;
 }
 
-std::shared_ptr<Reactor> DiscoveryClient::CreateMSearchResponseReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> DiscoveryClient::CreateMSearchResponseReactor(std::shared_ptr<RestMessage> message, Connection& connection)
 {
     auto response = std::static_pointer_cast<RestResponse>(message);
     auto reactor = std::make_shared<MSearchResponseReactor>(connection, response);

@@ -32,8 +32,8 @@ TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<
         Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
     }
 
+    mReceiveBufferSize = DEFAULT_TCP_CONNECTION_BUFFER_SIZE;
     mSocket->SetReceiveBufferSize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);
-    mReceiveBuffer.resize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);
 }
 
 TcpConnection::~TcpConnection()
@@ -198,8 +198,8 @@ bool TcpConnection::EnsureConnection()
 
         Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
 
-        mSocket->SetReceiveBufferSize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);
-        mReceiveBuffer.resize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);
+        mReceiveBufferSize = DEFAULT_TCP_CONNECTION_BUFFER_SIZE;
+        mSocket->SetReceiveBufferSize(mReceiveBufferSize);
 
         // Start receiving data from the connected socket
         Start();
@@ -212,8 +212,8 @@ void TcpConnection::SetReceiveBufferSize(PROPERTY_TYPE(ReceiveBufferSize)& prope
 {
     if (mSocket != nullptr && propertyValue != value)
     {
+        mReceiveBufferSize = value;
         mSocket->SetReceiveBufferSize(value);
-        mReceiveBuffer.resize(value);
         propertyValue = value;
     }
 }

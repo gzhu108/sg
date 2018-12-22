@@ -17,7 +17,7 @@ namespace simplewebserver
         virtual bool Initialize() override;
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetFileReactor(std::shared_ptr<sg::microreactor::RestMessage> request, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetFileReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection);
     };
 }
 

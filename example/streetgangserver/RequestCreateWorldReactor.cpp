@@ -9,7 +9,7 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestCreateWorldReactor::RequestCreateWorldReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RequestCreateWorld> message, std::shared_ptr<StreetGangResponder> responder)
+RequestCreateWorldReactor::RequestCreateWorldReactor(Connection& connection, std::shared_ptr<RequestCreateWorld> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
     , StreetGangReactor(responder)
 {
@@ -21,7 +21,7 @@ RequestCreateWorldReactor::~RequestCreateWorldReactor()
 
 bool RequestCreateWorldReactor::Process()
 {
-    worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection(), WorldClient::GetInstance().GetWorldCache());
+    worldapi::WorldRequester requester(*WorldClient::GetInstance().GetConnection(), WorldClient::GetInstance().GetWorldCache());
     auto response = requester.CreateWorld(InputMessage()->WorldName.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
     if (response != nullptr)
     {
@@ -58,11 +58,22 @@ bool RequestCreateWorldReactor::ProcessTimeout(std::shared_ptr<Message> timedOut
     return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), streetgangapi::ResultCode::ErrorTimeout, InputMessage()->Id.cref(), "StreetGangServer timeout");
 }
 
+void RequestCreateWorldReactor::CheckComplete()
+{
+    if (mSendComplete)
+    {
+        mCompleted();
+        mSendComplete = false;
+    }
+}
+
 bool RequestCreateWorldReactor::ProcessCreateWorldResponse(std::shared_ptr<ResponseCreateWorld> response)
 {
     if (response == nullptr)
     {
         LOG("ProcessCreateWorldResponse() ERROR: Invalid response");
+        mSendComplete = true;
+        CheckComplete();
         return false;
     }
 
@@ -82,5 +93,8 @@ bool RequestCreateWorldReactor::ProcessCreateWorldResponse(std::shared_ptr<Respo
 
 bool RequestCreateWorldReactor::SendResponse(const SessionId& sessionId, const std::string& worldName)
 {
-    return mResponder->SendCreateWorldResponse(InputMessage()->TrackId.cref(), streetgangapi::ResultCode::Success, sessionId, worldName);
+    bool result = mResponder->SendCreateWorldResponse(InputMessage()->TrackId.cref(), streetgangapi::ResultCode::Success, sessionId, worldName);
+    mSendComplete = true;
+    CheckComplete();
+    return result;
 }

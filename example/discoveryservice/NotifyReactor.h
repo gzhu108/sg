@@ -12,7 +12,7 @@ namespace sg { namespace service
     class NotifyReactor : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
     {
     public:
-        NotifyReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        NotifyReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~NotifyReactor();
 
         PROPERTY(ServiceType, std::string);

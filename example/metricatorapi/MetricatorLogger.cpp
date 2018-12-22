@@ -34,6 +34,6 @@ void MetricatorLogger::Log(const std::string& text)
     log.mValue = text;
     metrics.emplace_back(log);
 
-    MetricatorRequester requester(mConnection);
+    MetricatorRequester requester(*mConnection);
     requester.WriteMetrics(metrics);
 }

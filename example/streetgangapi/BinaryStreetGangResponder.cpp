@@ -9,7 +9,7 @@ using namespace sg::microreactor;
 using namespace streetgangapi;
 
 
-BinaryStreetGangResponder::BinaryStreetGangResponder(std::shared_ptr<Connection> connection)
+BinaryStreetGangResponder::BinaryStreetGangResponder(Connection& connection)
     : StreetGangResponder(connection)
 {
 }
@@ -60,10 +60,10 @@ bool BinaryStreetGangResponder::SendGetSceneResponse(const std::string& trackId,
 
 bool BinaryStreetGangResponder::SendMessage(std::shared_ptr<MessageBase> message)
 {
-    if (message == nullptr || mConnection->IsClosed())
+    if (message == nullptr || mConnection.IsClosed())
     {
-        auto peerAddress = mConnection->GetPeerAddress();
-        auto peerPort = mConnection->GetPeerPort();
+        auto peerAddress = mConnection.GetPeerAddress();
+        auto peerPort = mConnection.GetPeerPort();
         LOG("Fail to send response [Connection=%s:%u]", peerAddress.c_str(), peerPort);
         return false;
     }
@@ -79,7 +79,7 @@ bool BinaryStreetGangResponder::SendMessage(std::shared_ptr<MessageBase> message
             serializer.Write(messageStream, stream))
         {
             // Send message
-            uint64_t sent = mConnection->Send(stream);
+            uint64_t sent = mConnection.Send(stream);
             if (sent > 0)
             {
                 return true;
@@ -87,8 +87,8 @@ bool BinaryStreetGangResponder::SendMessage(std::shared_ptr<MessageBase> message
         }
     }
 
-    auto peerAddress = mConnection->GetPeerAddress();
-    auto peerPort = mConnection->GetPeerPort();
+    auto peerAddress = mConnection.GetPeerAddress();
+    auto peerPort = mConnection.GetPeerPort();
     LOG("[Message=%d] [TrackId=%s] Fail to send response [Connection=%s:%u]", message->Id.cref(), message->TrackId->c_str(), peerAddress.c_str(), peerPort);
     return false;
 }

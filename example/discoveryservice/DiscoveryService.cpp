@@ -151,7 +151,7 @@ void DiscoveryService::RegisterDescriptionReactorFactory(const std::string& uri,
     mDescriptionReactorFactory = factory;
 }
 
-std::shared_ptr<Reactor> DiscoveryService::CreateMSearchReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> DiscoveryService::CreateMSearchReactor(std::shared_ptr<RestMessage> message, Connection& connection)
 {
     auto request = std::static_pointer_cast<RestRequest>(message);
     if (request->mUri.length() < std::string("*").length())

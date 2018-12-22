@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace metricator;
 
 
-GetDescriptionReactor::GetDescriptionReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
+GetDescriptionReactor::GetDescriptionReactor(Connection& connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }
@@ -39,5 +39,5 @@ bool GetDescriptionReactor::Process()
 
     RestFileResponse response(path);
     response.mHeaders.emplace_back(HttpHeader("Content-Type", "application/xml"));
-    return response.Send(*mConnection);
+    return response.Send(mConnection);
 }

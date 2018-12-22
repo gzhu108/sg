@@ -114,15 +114,15 @@ int32_t main(int32_t argc, const char* argv[])
     {
         client = std::make_shared<StreetGangPBClient>(protocol, serverAddress, serverPort);
 
-        auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(client->GetConnection(), std::make_shared<PBStreetGangRequester>(client->GetConnection()));
-        SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), responseGetSceneReactor, 0, 0, "ResponseGetSceneReactor::SendNextRequest");
+        auto responseGetSceneReactor = std::make_shared<ResponseGetSceneReactor>(*client->GetConnection(), std::make_shared<PBStreetGangRequester>(*client->GetConnection()));
+        SUBMIT(std::bind(&ResponseGetSceneReactor::SendNextRequest, responseGetSceneReactor), "ResponseGetSceneReactor::SendNextRequest");
     }
     else
     {
         client = std::make_shared<StreetGangBinaryClient>(protocol, serverAddress, serverPort);
 
-        auto requester = std::make_shared<BinaryStreetGangRequester>(client->GetConnection());
-        requester->GetVersion(std::make_shared<ResponseGetSceneReactor>(client->GetConnection(), requester));
+        auto requester = std::make_shared<BinaryStreetGangRequester>(*client->GetConnection());
+        requester->GetVersion(std::make_shared<ResponseGetSceneReactor>(*client->GetConnection(), requester));
     }
 
     START_BLOCKING_TASK_LOOP();

@@ -14,7 +14,7 @@ namespace streetgangapi
     class StreetGangResponder : public sg::microreactor::MessageResponder
     {
     public:
-        StreetGangResponder(std::shared_ptr<sg::microreactor::Connection> connection) : sg::microreactor::MessageResponder(connection) {}
+        StreetGangResponder(sg::microreactor::Connection& connection) : sg::microreactor::MessageResponder(connection) {}
         virtual ~StreetGangResponder() {}
 
     public:

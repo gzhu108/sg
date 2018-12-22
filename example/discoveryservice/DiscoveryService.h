@@ -30,7 +30,7 @@ namespace sg { namespace service
         virtual void RegisterDescriptionReactorFactory(const std::string& uri, sg::microreactor::RestDispatcher::Factory factory);
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestMessage> message, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
     
     protected:
         std::string mInterfaceAddress;

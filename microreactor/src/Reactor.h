@@ -12,8 +12,10 @@ namespace sg { namespace microreactor
     class Reactor : public Parkable<std::string>
     {
     public:
-        explicit Reactor(std::shared_ptr<Connection> connection);
+        explicit Reactor(Connection& connection);
         virtual ~Reactor();
+
+        Signal<void>& Completed = mCompleted;
 
     public:
         virtual bool Process() { return false; }
@@ -21,8 +23,18 @@ namespace sg { namespace microreactor
         virtual bool ProcessTimeout(std::shared_ptr<Message> timedOutMessage) { return false; }
         virtual std::shared_ptr<Message> Input() { return mInput; }
 
+        virtual void Stop();
+
+        virtual void CheckComplete();
+        virtual void AddTask(TaskPtr task);
+        virtual void RemoveTask(TaskPtr task);
+        virtual void RemoveAllTasks();
+
     protected:
-        std::shared_ptr<Connection> mConnection;
+        Emittable<void> mCompleted;
+        std::recursive_mutex mLock;
+        std::set<TaskPtr> mActiveTasks;
+        Connection& mConnection;
         std::shared_ptr<Message> mInput;
     };
 }}

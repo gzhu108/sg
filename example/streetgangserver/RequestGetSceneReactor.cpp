@@ -8,7 +8,7 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-RequestGetSceneReactor::RequestGetSceneReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RequestGetScene> message, std::shared_ptr<StreetGangResponder> responder)
+RequestGetSceneReactor::RequestGetSceneReactor(Connection& connection, std::shared_ptr<RequestGetScene> message, std::shared_ptr<StreetGangResponder> responder)
     : MessageReactor(connection, message)
     , StreetGangReactor(responder)
 {
@@ -20,7 +20,7 @@ RequestGetSceneReactor::~RequestGetSceneReactor()
 
 bool RequestGetSceneReactor::Process()
 {
-    worldapi::WorldRequester requester(WorldClient::GetInstance().GetConnection(), WorldClient::GetInstance().GetWorldCache());
+    worldapi::WorldRequester requester(*WorldClient::GetInstance().GetConnection(), WorldClient::GetInstance().GetWorldCache());
     auto response = requester.GetWorld(InputMessage()->WorldId.cref(), std::static_pointer_cast<Reactor>(shared_from_this()));
     if (response != nullptr)
     {
@@ -57,11 +57,22 @@ bool RequestGetSceneReactor::ProcessTimeout(std::shared_ptr<Message> timedOutMes
     return mResponder->SendErrorResponse(InputMessage()->TrackId.cref(), streetgangapi::ResultCode::ErrorTimeout, InputMessage()->Id.cref(), "StreetGangServer timeout");
 }
 
+void RequestGetSceneReactor::CheckComplete()
+{
+    if (mSendComplete)
+    {
+        mCompleted();
+        mSendComplete = false;
+    }
+}
+
 bool RequestGetSceneReactor::ProcessGetWorldResponse(std::shared_ptr<worldapi::ResponseGetWorld> response)
 {
     if (response == nullptr)
     {
         LOG("ProcessGetWorldResponse() ERROR: Invalid response");
+        mSendComplete = true;
+        CheckComplete();
         return false;
     }
 
@@ -99,7 +110,10 @@ bool RequestGetSceneReactor::SendResponse(const streetgangapi::SessionId& sessio
             InputMessage()->Rect->mH);
     }
 
-    return mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->Rect.cref(), targetItems);
+    bool result = mResponder->SendGetSceneResponse(InputMessage()->TrackId.cref(), ResultCode::Success, sessionId, InputMessage()->Rect.cref(), targetItems);
+    mSendComplete = true;
+    CheckComplete();
+    return result;
 }
 
 uint64_t RequestGetSceneReactor::GetItemsInRect(const streetgangapi::Rectangle<float>& rect, const std::vector<worldapi::Point<float>>& sourceItems, std::vector<streetgangapi::Point<float>>& targetItems)

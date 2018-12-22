@@ -212,6 +212,7 @@
     <ClCompile Include="src\StringSerializer.cpp" />
     <ClCompile Include="src\StringUtility.cpp" />
     <ClCompile Include="src\Task.cpp" />
+    <ClCompile Include="src\TaskCategorizedQueue.cpp" />
     <ClCompile Include="src\TaskManager.cpp" />
     <ClCompile Include="src\TaskManagerSingleton.cpp" />
     <ClCompile Include="src\TaskQueue.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="src\StringSerializer.h" />
     <ClInclude Include="src\StringUtility.h" />
     <ClInclude Include="src\Task.h" />
+    <ClInclude Include="src\TaskCategorizedQueue.h" />
     <ClInclude Include="src\TaskFuture.h" />
     <ClInclude Include="src\TaskManager.h" />
     <ClInclude Include="src\TaskManagerSingleton.h" />

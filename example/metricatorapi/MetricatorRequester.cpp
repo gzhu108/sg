@@ -5,7 +5,7 @@ using namespace sg::microreactor;
 using namespace metricatorapi;
 
 
-MetricatorRequester::MetricatorRequester(std::shared_ptr<Connection> connection)
+MetricatorRequester::MetricatorRequester(Connection& connection)
     : MessageRequester(connection)
 {
 }

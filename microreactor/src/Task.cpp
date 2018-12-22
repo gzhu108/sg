@@ -21,6 +21,12 @@ void Task::SetExecuteTime(const std::chrono::time_point<std::chrono::high_resolu
     mExecuteTime = executeTime;
 }
 
+void Task::Cancel()
+{ 
+    mStatus = TaskStatus::Canceled;
+    mCanceled();
+}
+
 bool Task::Execute()
 {
     if (mStatus != TaskStatus::Created && mStatus != TaskStatus::Scheduled)

@@ -25,7 +25,7 @@ void SingalHandler(int type)
     STOP_TASK_MANAGER();
 }
 
-std::shared_ptr<Reactor> CreateGetDescriptionReactor(std::shared_ptr<RestMessage> message, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> CreateGetDescriptionReactor(std::shared_ptr<RestMessage> message, Connection& connection)
 {
     auto request = std::static_pointer_cast<RestRequest>(message);
     if (request->mUri == "/servicedescription.xml")

@@ -54,8 +54,8 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
         Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
     }
 
+    mReceiveBufferSize = DEFAULT_UDP_CONNECTION_BUFFER_SIZE;
     mSocket->SetReceiveBufferSize(DEFAULT_UDP_CONNECTION_BUFFER_SIZE);
-    mReceiveBuffer.resize(DEFAULT_UDP_CONNECTION_BUFFER_SIZE);
 }
 
 UdpConnection::~UdpConnection()

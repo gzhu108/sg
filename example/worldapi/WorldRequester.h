@@ -14,7 +14,7 @@ namespace worldapi
     class WorldRequester : protected sg::microreactor::MessageRequester
     {
     public:
-        WorldRequester(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<WorldCache> worldCache = nullptr);
+        WorldRequester(sg::microreactor::Connection& connection, std::shared_ptr<WorldCache> worldCache = nullptr);
         virtual ~WorldRequester();
 
     public:

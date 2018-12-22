@@ -19,7 +19,7 @@ namespace streetgangserver
         , public StreetGangReactor
     {
     public:
-        RequestGetSceneReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
+        RequestGetSceneReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
         virtual ~RequestGetSceneReactor();
         
     public:
@@ -27,11 +27,16 @@ namespace streetgangserver
         virtual bool ProcessError(std::shared_ptr<sg::microreactor::Message> errorMessage) override;
         virtual bool ProcessTimeout(std::shared_ptr<sg::microreactor::Message> timedOutMessage) override;
 
+        virtual void CheckComplete() override;
+
         bool ProcessGetWorldResponse(std::shared_ptr<worldapi::ResponseGetWorld> response);
         bool SendResponse(const streetgangapi::SessionId& sessionId, const std::vector<worldapi::Point<float>>& items);
 
     protected:
         virtual uint64_t GetItemsInRect(const streetgangapi::Rectangle<float>& rect, const std::vector<worldapi::Point<float>>& sourceItems, std::vector<streetgangapi::Point<float>>& targetItems);
+
+    protected:
+        bool mSendComplete = false;
     };
 }
 

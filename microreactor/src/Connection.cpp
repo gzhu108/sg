@@ -1,9 +1,10 @@
 #include "Connection.h"
+#include <mutex>
+#include <chrono>
 #include "Serializer.h"
 #include "Dispatcher.h"
 #include "TaskManagerSingleton.h"
-#include <mutex>
-#include <chrono>
+#include "Reactor.h"
 
 using namespace sg::microreactor;
 
@@ -30,37 +31,54 @@ static void LogTps()
 
 Connection::Connection(std::shared_ptr<Profile> profile)
     : mProfile(profile)
+    , mReceiveBufferSize(0)
 {
 }
 
 Connection::~Connection()
 {
-    CancelAllTasks(ReceiveTimeout.cref() + SendTimeout.cref());
+    mReceiveTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mReceiveTask->Cancel();
+
+    RemoveAllReactors();
+}
+
+std::shared_ptr<Dispatcher> Connection::GetDispatcher()
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+    if (mProfile != nullptr && mProfile->Dispatcher.cref() != nullptr)
+    {
+        return mProfile->Dispatcher.cref();
+    }
+
+    return nullptr;
 }
 
 void Connection::RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client)
 {
-    if (mProfile != nullptr && mProfile->Dispatcher.cref() != nullptr)
+    message->Client.set(client);
+
+    auto dispatcher = GetDispatcher();
+    if (dispatcher != nullptr)
     {
-        message->Client.set(client);
-        mProfile->Dispatcher.cref()->RegisterMessage(message);
+        dispatcher->RegisterMessage(message);
     }
 }
 
 bool Connection::Receive(std::iostream& stream)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-    int32_t length = (int32_t)mReceiveBuffer.size();
-    if (length == 0)
+    if (mReceiveBufferSize == 0)
     {
         return false;
     }
 
-    int32_t received = (int32_t)Receive(&mReceiveBuffer[0], length);
+    std::vector<char> receiveBuffer(mReceiveBufferSize);
+    int32_t received = (int32_t)Receive(&receiveBuffer[0], mReceiveBufferSize);
     if (received > 0)
     {
         stream.clear();
-        stream.write(&mReceiveBuffer[0], received);
+        stream.write(&receiveBuffer[0], received);
 
         if (!stream.eof() && !stream.fail() && !stream.bad())
         {
@@ -73,36 +91,37 @@ bool Connection::Receive(std::iostream& stream)
 
 bool Connection::Send(std::iostream& stream)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
     int32_t length = (int32_t)GetStreamSize(stream);
     if (length == 0)
     {
         return false;
     }
 
-    mSendBuffer.resize(length);
-    stream.read(&mSendBuffer[0], length);
+    std::vector<char> sendBuffer(length);
+    stream.read(&sendBuffer[0], length);
     if (stream.eof() || stream.fail() || stream.bad())
     {
         return false;
     }
 
-    return Send(&mSendBuffer[0], length) > 0;
+    return Send(&sendBuffer[0], length) > 0;
 }
 
 bool Connection::Start()
 {
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
     if (!IsClosed() && ReceiveTimeout->count())
     {
         // Push to the queue to receive connection data.
-        auto task = SUBMIT_MEMBER(Connection::ReceiveMessage, "Connection::ReceiveMessage");
-        if (task != nullptr)
+        mReceiveTask = SUBMIT(std::bind(&Connection::ReceiveMessage, this), "Connection::ReceiveMessage");
+        if (mReceiveTask != nullptr)
         {
-            auto taskRawPtr = task.get();
-            task->Completed.Connect([&, taskRawPtr]()
+            auto taskRawPtr = mReceiveTask.get();
+            mReceiveTask->Completed.Connect([&, taskRawPtr]()
             {
                 taskRawPtr->Schedule();
-            });
+            }, reinterpret_cast<uintptr_t>(this));
 
             return true;
         }
@@ -113,12 +132,17 @@ bool Connection::Start()
 
 bool Connection::Stop()
 {
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
     if (!IsClosed())
     {
         Close();
     }
 
-    CancelAllTasks(ReceiveTimeout.cref());
+    mReceiveTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mReceiveTask->Cancel();
+
+    RemoveAllReactors();
     mClosed();
 
     return true;
@@ -126,31 +150,62 @@ bool Connection::Stop()
 
 void Connection::ReceiveMessage()
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-
-    if (mProfile->Dispatcher.cref() != nullptr)
+    auto dispatcher = GetDispatcher();
+    if (dispatcher != nullptr)
     {
         // Remove timed out messages
-        mProfile->Dispatcher.cref()->RemoveTimedOutMessages(*this);
+        dispatcher->RemoveTimedOutMessages(*this);
 
         // Receive data from the connection
         if (!IsClosed() && DataReady())
         {
             LogTps();
-            mProfile->Dispatcher.cref()->Dispatch(*this);
+            dispatcher->Dispatch(*this);
         }
     }
 }
 
-void Connection::CancelAllTasks(const std::chrono::microseconds& waitTime)
+void Connection::AddReactor(std::shared_ptr<Reactor> reactor)
 {
-    uint64_t cancelCount = CANCEL_TASKS(this);
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    if (waitTime.count() > 0 && cancelCount > 0)
+    if (reactor != nullptr)
     {
-        while (GET_ACTIVE_TASK_COUNT(this) > 0)
+        mActiveReactors.emplace(reactor);
+        reactor->Completed.Connect([=]()
         {
-            std::this_thread::sleep_for(waitTime);
+            RemoveReactor(reactor);
+        }, reinterpret_cast<uintptr_t>(this));
+    }
+}
+
+void Connection::RemoveReactor(std::shared_ptr<Reactor> reactor)
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+    if (reactor != nullptr)
+    {
+        auto found = mActiveReactors.find(reactor);
+        if (found != mActiveReactors.end())
+        {
+            reactor->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+
+            // The order of the calls is important
+            mActiveReactors.erase(reactor);
+            reactor->Stop();
         }
     }
+}
+
+void Connection::RemoveAllReactors()
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+    for (auto& reactor : mActiveReactors)
+    {
+        reactor->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+        reactor->Stop();
+    }
+
+    mActiveReactors.clear();
 }

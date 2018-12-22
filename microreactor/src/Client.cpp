@@ -23,7 +23,7 @@ void Client::Initialize(std::shared_ptr<Connection> connection, const std::chron
 {
     mConnection = connection;
 
-    if (mConnection == nullptr || mConnection->IsClosed())
+    if (mConnection->IsClosed())
     {
         ClientName->clear();
     }

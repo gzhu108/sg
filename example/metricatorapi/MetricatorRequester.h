@@ -12,7 +12,7 @@ namespace metricatorapi
     class MetricatorRequester : public sg::microreactor::MessageRequester
     {
     public:
-        MetricatorRequester(std::shared_ptr<sg::microreactor::Connection> connection);
+        MetricatorRequester(sg::microreactor::Connection& connection);
         virtual ~MetricatorRequester();
         
     public:

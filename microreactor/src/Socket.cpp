@@ -202,7 +202,7 @@ bool Socket::Receive(char* buffer, int32_t length, int32_t& bytesReceived)
     }
 
     // Set the socket into blocking mode
-    SetNonblocking(false);
+    //SetNonblocking(false);
 
     bytesReceived = recv(mSocket, buffer, length, 0);
     if (bytesReceived == SOCKET_ERROR)
@@ -290,7 +290,7 @@ bool Socket::Send(const char* buffer, int32_t length, int32_t& bytesSent)
     }
 
     // Set the socket into blocking mode
-    SetNonblocking(false);
+    //SetNonblocking(false);
 
     int32_t bytesToSend = length;
     const char* ptrBuf = buffer;

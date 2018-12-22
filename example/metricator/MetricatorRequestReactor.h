@@ -11,7 +11,7 @@ namespace metricator
     class MetricatorRequestReactor : public sg::microreactor::MessageReactor<metricatorapi::MetricatorRequest>
     {
     public:
-        MetricatorRequestReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<metricatorapi::MetricatorRequest> message);
+        MetricatorRequestReactor(sg::microreactor::Connection& connection, std::shared_ptr<metricatorapi::MetricatorRequest> message);
         virtual ~MetricatorRequestReactor();
 
     public:

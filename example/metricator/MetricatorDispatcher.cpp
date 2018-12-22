@@ -28,5 +28,5 @@ std::shared_ptr<sg::microreactor::Reactor> MetricatorMessageDispatcher::Decode(s
         return nullptr;
     }
 
-    return std::make_shared<MetricatorRequestReactor>(std::static_pointer_cast<Connection>(connection.shared_from_this()), message);
+    return std::make_shared<MetricatorRequestReactor>(connection, message);
 }

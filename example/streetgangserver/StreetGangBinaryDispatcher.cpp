@@ -64,15 +64,15 @@ std::shared_ptr<Reactor> StreetGangBinaryDispatcher::Decode(std::istream& stream
     auto factory = GetMessageReactorFactory(id);
     if (factory == nullptr)
     {
-        auto responder = std::make_shared<BinaryStreetGangResponder>(std::static_pointer_cast<Connection>(connection.shared_from_this()));
+        auto responder = std::make_shared<BinaryStreetGangResponder>(connection);
         responder->SendErrorResponse("Unknown", ResultCode::ErrorNotImplemented, id, "Unknown request");
         return nullptr;
     }
 
-    return factory(stream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+    return factory(stream, connection);
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateByebyeReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateByebyeReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryRequestByebye>();
     if (message->Decode(stream))
@@ -83,7 +83,7 @@ std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateByebyeReactor(std::is
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetVersionReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetVersionReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryRequestGetVersion>();
     if (message->Decode(stream))
@@ -94,7 +94,7 @@ std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetVersionReactor(std
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateCreateWorldReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateCreateWorldReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryRequestCreateWorld>();
     if (message->Decode(stream))
@@ -105,7 +105,7 @@ std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateCreateWorldReactor(st
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetSceneReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> StreetGangBinaryDispatcher::CreateGetSceneReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<BinaryRequestGetScene>();
     if (message->Decode(stream))

@@ -166,8 +166,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     auto timedTask = std::make_shared<MSearchTask>(discoveryClient, std::chrono::milliseconds(2000));
     timedTask->Name.set("MSearch");
-    timedTask->ActiveId.set(reinterpret_cast<uintptr_t>(&discoveryClient));
-    SUBMIT(std::static_pointer_cast<Task>(timedTask));
+    SUBMIT_TASK(std::static_pointer_cast<Task>(timedTask));
 
     discoveryClient.ServiceFound.Connect([](const ServiceDescription& description)
     {
@@ -218,11 +217,11 @@ int32_t main(int32_t argc, const char* argv[])
         LOG("Failed to start the streetgangserver");
     }
 
-    // Cancell all tasks
-    CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER();
-
     // Reset the world client
     WorldClient::ResetWorldClient();
+
+    // Cancell all tasks
+    CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER();
 
     // Optional: Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();

@@ -25,9 +25,12 @@ void RestDispatcher::Dispatch(Connection& connection)
     auto reactor = Decode(connection);
     if (reactor != nullptr)
     {
+        connection.AddReactor(reactor);
+
         try
         {
             reactor->Process();
+            reactor->CheckComplete();
         }
         catch (...)
         {
@@ -113,7 +116,7 @@ std::shared_ptr<Reactor> RestDispatcher::CreateReactor(std::shared_ptr<RestMessa
             return nullptr;
         }
 
-        auto reactor = restReactorFactory(restMessage, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+        auto reactor = restReactorFactory(restMessage, connection);
         if (reactor == nullptr)
         {
             SendBadMessageResponse(connection);
@@ -130,7 +133,7 @@ std::shared_ptr<Reactor> RestDispatcher::CreateReactor(std::shared_ptr<RestMessa
             return nullptr;
         }
 
-        auto reactor = restReactorFactory(restMessage, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+        auto reactor = restReactorFactory(restMessage, connection);
         if (reactor == nullptr)
         {
             return nullptr;

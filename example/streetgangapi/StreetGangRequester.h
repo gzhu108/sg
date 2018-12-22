@@ -12,7 +12,7 @@ namespace streetgangapi
     class StreetGangRequester : protected sg::microreactor::MessageRequester
     {
     public:
-        StreetGangRequester(std::shared_ptr<sg::microreactor::Connection> connection) : sg::microreactor::MessageRequester(connection) {}
+        StreetGangRequester(sg::microreactor::Connection& connection) : sg::microreactor::MessageRequester(connection) {}
         virtual ~StreetGangRequester() {}
 
     public:

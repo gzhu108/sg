@@ -12,7 +12,7 @@ namespace worldapi
     class WorldResponder : public sg::microreactor::MessageResponder
     {
     public:
-        WorldResponder(std::shared_ptr<sg::microreactor::Connection> connection);
+        WorldResponder(sg::microreactor::Connection& connection);
         virtual ~WorldResponder();
 
     public:

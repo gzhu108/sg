@@ -12,7 +12,7 @@ namespace worldserver
     class CreateWorldReactor : public sg::microreactor::MessageReactor<worldapi::RequestCreateWorld>
     {
     public:
-        CreateWorldReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<worldapi::RequestCreateWorld> message, std::shared_ptr<worldapi::WorldResponder> responder);
+        CreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<worldapi::RequestCreateWorld> message, std::shared_ptr<worldapi::WorldResponder> responder);
         virtual ~CreateWorldReactor();
         
     public:

@@ -76,10 +76,10 @@ std::shared_ptr<Reactor> WorldClientDispatcher::Decode(std::istream& stream, Con
         return nullptr;
     }
 
-    return factory(stream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+    return factory(stream, connection);
 }
 
-std::shared_ptr<Reactor> WorldClientDispatcher::HandleErrorResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldClientDispatcher::HandleErrorResponseReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<ResponseError>();
     if (message->Decode(stream))
@@ -96,7 +96,7 @@ std::shared_ptr<Reactor> WorldClientDispatcher::HandleErrorResponseReactor(std::
     return nullptr;
 }
 
-std::shared_ptr<Reactor> WorldClientDispatcher::HandleCreateWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldClientDispatcher::HandleCreateWorldResponseReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<ResponseCreateWorld>();
     if (message->Decode(stream))
@@ -118,7 +118,7 @@ std::shared_ptr<Reactor> WorldClientDispatcher::HandleCreateWorldResponseReactor
     return nullptr;
 }
 
-std::shared_ptr<Reactor> WorldClientDispatcher::HandleGetWorldResponseReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldClientDispatcher::HandleGetWorldResponseReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<ResponseGetWorld>();
     if (message->Decode(stream))

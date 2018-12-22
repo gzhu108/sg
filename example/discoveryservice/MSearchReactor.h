@@ -12,7 +12,7 @@ namespace sg { namespace service
     class MSearchReactor : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
     {
     public:
-        MSearchReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        MSearchReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~MSearchReactor();
 
         PROPERTY(Description, ServiceDescription);

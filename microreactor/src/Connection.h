@@ -8,11 +8,14 @@
 #include "Parkable.h"
 #include "Profile.h"
 #include "Message.h"
+#include "Task.h"
 
 
 namespace sg { namespace microreactor
 {
-    class Connection : public Parkable<uintptr_t>
+    class Reactor;
+
+    class Connection
     {
     public:
         explicit Connection(std::shared_ptr<Profile> profile);
@@ -45,17 +48,23 @@ namespace sg { namespace microreactor
         virtual bool Stop();
         virtual bool IsClosed() = 0;
 
+        virtual void AddReactor(std::shared_ptr<Reactor> reactor);
+
     protected:
         virtual bool Close() = 0;
+        virtual std::shared_ptr<Dispatcher> GetDispatcher();
         virtual void ReceiveMessage();
-        virtual void CancelAllTasks(const std::chrono::microseconds& waitTime);
+
+        virtual void RemoveReactor(std::shared_ptr<Reactor> reactor);
+        virtual void RemoveAllReactors();
         
     protected:
         Emittable<void> mClosed;
         std::recursive_mutex mLock;
+        std::set<std::shared_ptr<Reactor>> mActiveReactors;
         std::shared_ptr<Profile> mProfile;
-        std::vector<char> mReceiveBuffer;
-        std::vector<char> mSendBuffer;
+        TaskPtr mReceiveTask;
+        std::atomic<uint32_t> mReceiveBufferSize;
     };
 } }
 

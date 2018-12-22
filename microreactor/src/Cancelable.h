@@ -11,15 +11,17 @@ namespace sg { namespace microreactor
     {
     public:
         Cancelable() {}
-        virtual ~Cancelable() { mCompleted(); }
+        virtual ~Cancelable() {}
 
         Signal<void>& Completed = mCompleted;
+        Signal<void>& Canceled = mCanceled;
 
     public:
         virtual void Cancel() = 0;
 
     protected:
         Emittable<void> mCompleted;
+        Emittable<void> mCanceled;
     };
 } }
 

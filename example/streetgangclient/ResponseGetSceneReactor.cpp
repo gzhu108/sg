@@ -10,7 +10,7 @@ using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-ResponseGetSceneReactor::ResponseGetSceneReactor(std::shared_ptr<Connection> connection, std::shared_ptr<StreetGangRequester> requester)
+ResponseGetSceneReactor::ResponseGetSceneReactor(Connection& connection, std::shared_ptr<StreetGangRequester> requester)
     : Reactor(connection)
     , mRequester(requester)
 {

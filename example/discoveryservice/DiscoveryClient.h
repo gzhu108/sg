@@ -30,8 +30,8 @@ namespace sg { namespace service
     protected:
         virtual void Initialize(std::shared_ptr<sg::microreactor::Connection> connection, const std::chrono::milliseconds& timeout) override;
         
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateNotifyReactor(std::shared_ptr<sg::microreactor::RestMessage> message, std::shared_ptr<sg::microreactor::Connection> connection);
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchResponseReactor(std::shared_ptr<sg::microreactor::RestMessage> message, std::shared_ptr<sg::microreactor::Connection> connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateNotifyReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchResponseReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
 
     protected:
         sg::microreactor::Emittable<ServiceDescription> mServiceFound;

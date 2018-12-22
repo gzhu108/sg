@@ -3,7 +3,7 @@
 using namespace sg::microreactor;
 
 
-MessageResponder::MessageResponder(std::shared_ptr<Connection> connection)
+MessageResponder::MessageResponder(Connection& connection)
     : mConnection(connection)
 {
 }
@@ -14,10 +14,10 @@ MessageResponder::~MessageResponder()
 
 bool MessageResponder::SendMessage(std::shared_ptr<Message> message)
 {
-    if (message == nullptr || mConnection == nullptr || mConnection->IsClosed())
+    if (message == nullptr || mConnection.IsClosed())
     {
-        auto peerAddress = mConnection->GetPeerAddress();
-        auto peerPort = mConnection->GetPeerPort();
+        auto peerAddress = mConnection.GetPeerAddress();
+        auto peerPort = mConnection.GetPeerPort();
         LOG("Fail to send response [Connection=%s:%u]", peerAddress.c_str(), peerPort);
         return false;
     }
@@ -26,15 +26,15 @@ bool MessageResponder::SendMessage(std::shared_ptr<Message> message)
     if (message->Encode(stream))
     {
         // Send message
-        uint64_t sent = mConnection->Send(stream);
+        uint64_t sent = mConnection.Send(stream);
         if (sent > 0)
         {
             return true;
         }
     }
 
-    auto peerAddress = mConnection->GetPeerAddress();
-    auto peerPort = mConnection->GetPeerPort();
+    auto peerAddress = mConnection.GetPeerAddress();
+    auto peerPort = mConnection.GetPeerPort();
     LOG("[TrackId=%s] Fail to send response [Connection=%s:%u]", message->TrackId->c_str(), peerAddress.c_str(), peerPort);
     return false;
 }

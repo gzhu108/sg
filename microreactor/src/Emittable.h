@@ -16,7 +16,7 @@
 namespace sg { namespace microreactor
 {
     // Signal<SignalType>& SignalName = mEmittableMember;
-
+    // typedef std::remove_reference<decltype(SignalName)>::type::SignalId SignalNameId
     template<typename T>
     class Signal
     {
@@ -25,7 +25,7 @@ namespace sg { namespace microreactor
         typedef std::list<SignalType> SignalStore;  // Use std::list, because it's iterator won't move.
         typedef typename SignalStore::const_iterator SignalId;
         typedef std::map<uintptr_t, SignalId> SignalIdMap;
-        
+
         SignalId Connect(SignalType signal)
         {
             mSignals.emplace_back(std::move(signal));
@@ -98,7 +98,7 @@ namespace sg { namespace microreactor
         SignalStore mSignals;
         SignalIdMap mSignalIdMap;
     };
-    
+
     template<typename T>
     class Emittable : public Signal<T>
     {

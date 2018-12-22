@@ -10,7 +10,7 @@ using namespace sg::microreactor;
 using namespace worldapi;
 
 
-WorldRequester::WorldRequester(std::shared_ptr<Connection> connection, std::shared_ptr<WorldCache> worldCache)
+WorldRequester::WorldRequester(Connection& connection, std::shared_ptr<WorldCache> worldCache)
     : MessageRequester(connection)
     , mWorldCache(worldCache)
 {
@@ -61,10 +61,10 @@ std::shared_ptr<ResponseGetWorld> WorldRequester::GetWorld(const WorldId& worldI
 
 bool WorldRequester::SendMessage(std::shared_ptr<WorldMessage> message, std::shared_ptr<Reactor> client)
 {
-    if (message == nullptr || mConnection == nullptr || mConnection->IsClosed())
+    if (message == nullptr || mConnection.IsClosed())
     {
-        auto peerAddress = mConnection->GetPeerAddress();
-        auto peerPort = mConnection->GetPeerPort();
+        auto peerAddress = mConnection.GetPeerAddress();
+        auto peerPort = mConnection.GetPeerPort();
         LOG("Fail to send response [Connection=%s:%u]", peerAddress.c_str(), peerPort);
         return false;
     }
@@ -80,18 +80,18 @@ bool WorldRequester::SendMessage(std::shared_ptr<WorldMessage> message, std::sha
             serializer.Write(messageStream, stream))
         {
             // Send message
-            uint64_t sent = mConnection->Send(stream);
+            uint64_t sent = mConnection.Send(stream);
             if (sent > 0)
             {
                 // Register the message with the dispatcher
-                mConnection->RegisterMessage(message, client);
+                mConnection.RegisterMessage(message, client);
                 return true;
             }
         }
     }
 
-    auto peerAddress = mConnection->GetPeerAddress();
-    auto peerPort = mConnection->GetPeerPort();
+    auto peerAddress = mConnection.GetPeerAddress();
+    auto peerPort = mConnection.GetPeerPort();
     LOG("[Message=%d] [TrackId=%s] Fail to send response [Connection=%s:%u]", message->Id.cref(), message->TrackId->c_str(), peerAddress.c_str(), peerPort);
     return false;
 }

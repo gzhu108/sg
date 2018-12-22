@@ -6,7 +6,7 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-MSearchResponseReactor::MSearchResponseReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestResponse> response)
+MSearchResponseReactor::MSearchResponseReactor(Connection& connection, std::shared_ptr<RestResponse> response)
     : RestReactor(connection, response)
 {
 }
@@ -23,7 +23,7 @@ bool MSearchResponseReactor::Process()
         return false;
     }
 
-    LOG("M-SEARCH response received from %s:%u", mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
+    LOG("M-SEARCH response received from %s:%u", mConnection.GetPeerAddress().c_str(), mConnection.GetPeerPort());
 
     ServiceDescription description;
     for (const auto& header : response->mHeaders)

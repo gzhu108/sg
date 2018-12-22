@@ -11,7 +11,7 @@ namespace streetgangapi
     class BinaryStreetGangRequester : public StreetGangRequester
     {
     public:
-        BinaryStreetGangRequester(std::shared_ptr<sg::microreactor::Connection> connection);
+        BinaryStreetGangRequester(sg::microreactor::Connection& connection);
         virtual ~BinaryStreetGangRequester();
 
     public:

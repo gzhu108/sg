@@ -8,7 +8,7 @@ using namespace sg::microreactor;
 using namespace streetgangapi;
 
 
-RestStreetGangResponder::RestStreetGangResponder(std::shared_ptr<Connection> connection)
+RestStreetGangResponder::RestStreetGangResponder(Connection& connection)
     : StreetGangResponder(connection)
 {
 }

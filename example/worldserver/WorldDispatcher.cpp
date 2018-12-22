@@ -52,15 +52,15 @@ std::shared_ptr<Reactor> WorldDispatcher::Decode(std::istream& stream, Connectio
     auto factory = GetMessageReactorFactory(id);
     if (factory == nullptr)
     {
-        auto responder = std::make_shared<WorldResponder>(std::static_pointer_cast<Connection>(connection.shared_from_this()));
+        auto responder = std::make_shared<WorldResponder>(connection);
         responder->SendErrorResponse("Unknown", ResultCode::ErrorNotImplemented, id, "Unknown request");
         return nullptr;
     }
 
-    return factory(stream, std::static_pointer_cast<Connection>(connection.shared_from_this()));
+    return factory(stream, connection);
 }
 
-std::shared_ptr<Reactor> WorldDispatcher::CreateCreateWorldReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldDispatcher::CreateCreateWorldReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<RequestCreateWorld>();
     if (message->Decode(stream))
@@ -71,7 +71,7 @@ std::shared_ptr<Reactor> WorldDispatcher::CreateCreateWorldReactor(std::istream&
     return nullptr;
 }
 
-std::shared_ptr<Reactor> WorldDispatcher::CreateGetWorldReactor(std::istream& stream, std::shared_ptr<Connection> connection)
+std::shared_ptr<Reactor> WorldDispatcher::CreateGetWorldReactor(std::istream& stream, Connection& connection)
 {
     auto message = std::make_shared<RequestGetWorld>();
     if (message->Decode(stream))

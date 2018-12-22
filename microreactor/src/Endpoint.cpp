@@ -11,23 +11,25 @@ Endpoint::Endpoint(std::shared_ptr<Profile> profile)
 
 Endpoint::~Endpoint()
 {
-    CancelAllTasks(ListenTimeout.cref());
-    
-    // Do not clear connections as the mActiveConnections is shared with all endpoint.
-    //mActiveConnections.clear();
+    mAcceptTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mAcceptTask->Cancel();
+
+    CloseAllConnections();
 }
 
 bool Endpoint::Start()
 {
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
     // Start listening on the endpoint
-    auto task = SUBMIT_MEMBER(Endpoint::AcceptConnection, "Endpoint::AcceptConnection");
-    if (task != nullptr)
+    mAcceptTask = SUBMIT(std::bind(&Endpoint::AcceptConnection, this), "Endpoint::AcceptConnection");
+    if (mAcceptTask != nullptr)
     {
-        auto taskRawPtr = task.get();
-        task->Completed.Connect([&, taskRawPtr]()
+        auto taskRawPtr = mAcceptTask.get();
+        mAcceptTask->Completed.Connect([&, taskRawPtr]()
         {
             taskRawPtr->Schedule();
-        });
+        }, reinterpret_cast<uintptr_t>(this));
 
         return true;
     }
@@ -37,18 +39,25 @@ bool Endpoint::Start()
 
 bool Endpoint::Stop()
 {
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
     if (!IsClosed())
     {
         Close();
     }
 
-    CancelAllTasks(ListenTimeout.cref());
+    mAcceptTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mAcceptTask->Cancel();
+
+    CloseAllConnections();
 
     return true;
 }
 
 void Endpoint::AcceptConnection()
 {
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
     if (IsClosed())
     {
         return;
@@ -61,6 +70,8 @@ void Endpoint::AcceptConnection()
         connection->ReceiveTimeout.set(ReceiveTimeout.cref());
         connection->SendTimeout.set(SendTimeout.cref());
 
+        AddConnection(connection);
+
         // Signal a connection is made
         mConnectionMade(connection);
 
@@ -69,15 +80,48 @@ void Endpoint::AcceptConnection()
     }
 }
 
-void Endpoint::CancelAllTasks(const std::chrono::microseconds& waitTime)
+void Endpoint::AddConnection(std::shared_ptr<Connection> connection)
 {
-    uint64_t cancelCount = CANCEL_TASKS(this);
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    if (waitTime.count() > 0 && cancelCount > 0)
+    if (connection != nullptr)
     {
-        while (GET_ACTIVE_TASK_COUNT(this) > 0)
+        connection->Closed.Connect([=]()
         {
-            std::this_thread::sleep_for(waitTime);
+            RemoveConnection(connection);
+        }, reinterpret_cast<uintptr_t>(this));
+
+        mActiveConnections.emplace(connection);
+    }
+}
+
+void Endpoint::RemoveConnection(std::shared_ptr<Connection> connection)
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+    if (connection != nullptr)
+    {
+        auto found = mActiveConnections.find(connection);
+        if (found != mActiveConnections.end())
+        {
+            connection->Closed.Disconnect(reinterpret_cast<uintptr_t>(this));
+
+            // The order of the calls is important
+            mActiveConnections.erase(found);
+            connection->Stop();
         }
     }
+}
+
+void Endpoint::CloseAllConnections()
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+    for (auto& connection : mActiveConnections)
+    {
+        connection->Closed.Disconnect(reinterpret_cast<uintptr_t>(this));
+        connection->Stop();
+    }
+
+    mActiveConnections.clear();
 }

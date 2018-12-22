@@ -12,7 +12,7 @@ using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-ResponseCreateWorldReactor::ResponseCreateWorldReactor(std::shared_ptr<Connection> connection, std::shared_ptr<StreetGangRequester> requester)
+ResponseCreateWorldReactor::ResponseCreateWorldReactor(Connection& connection, std::shared_ptr<StreetGangRequester> requester)
     : Reactor(connection)
     , mRequester(requester)
 {
@@ -95,6 +95,6 @@ void ResponseCreateWorldReactor::SendNextRequest(uintptr_t worldId)
     {
         LOG("Failed to get scenen");
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        SUBMIT(std::bind(&ResponseCreateWorldReactor::SendNextRequest, this, worldId), this, this, typeid(*this).hash_code(), "ResponseCreateWorldReactor::SendNextRequest");
+        AddTask(SUBMIT(std::bind(&ResponseCreateWorldReactor::SendNextRequest, this, worldId), "ResponseCreateWorldReactor::SendNextRequest"));
     }
 }

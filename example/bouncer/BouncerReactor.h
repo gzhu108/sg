@@ -11,7 +11,7 @@ namespace bouncer
     class BouncerReactor : public sg::microreactor::Reactor
     {
     public:
-        BouncerReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::Connection> target, std::istream& stream);
+        BouncerReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::Connection> target, std::istream& stream);
         virtual ~BouncerReactor();
 
     public:

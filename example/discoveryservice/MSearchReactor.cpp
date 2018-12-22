@@ -7,7 +7,7 @@ using namespace sg::microreactor;
 using namespace sg::service;
 
 
-MSearchReactor::MSearchReactor(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
+MSearchReactor::MSearchReactor(Connection& connection, std::shared_ptr<RestRequest> request)
     : RestReactor(connection, request)
 {
 }
@@ -30,7 +30,7 @@ bool MSearchReactor::Process()
         return false;
     }
 
-    LOG("M-SEARCH received from %s:%u", mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
+    LOG("M-SEARCH received from %s:%u", mConnection.GetPeerAddress().c_str(), mConnection.GetPeerPort());
 
     std::string man;
     std::string mx;
@@ -67,7 +67,7 @@ bool MSearchReactor::Process()
         response.mHeaders.emplace_back(HttpHeader("ST", Description->ServiceType.cref()));
         response.mHeaders.emplace_back(HttpHeader("DATE", StringUtility::GetHttpTimeString()));
 
-        return response.Send(*mConnection);
+        return response.Send(mConnection);
     }
 
     return true;

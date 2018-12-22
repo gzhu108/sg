@@ -13,7 +13,7 @@ namespace worldserver
     class GetWorldReactor : public sg::microreactor::MessageReactor<worldapi::RequestGetWorld>
     {
     public:
-        GetWorldReactor(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<worldapi::RequestGetWorld> message, std::shared_ptr<worldapi::WorldResponder> responder);
+        GetWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<worldapi::RequestGetWorld> message, std::shared_ptr<worldapi::WorldResponder> responder);
         virtual ~GetWorldReactor();
         
     public:
