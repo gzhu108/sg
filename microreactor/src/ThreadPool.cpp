@@ -93,15 +93,13 @@ void ThreadPool::TaskLoop()
             break;
         }
 
-        TaskPtr task = nullptr;
-        if (GetPoolSize() == 0)
+        if (GetPoolSize() > 0)
         {
-            task = mTaskQueue->GetTask(std::chrono::milliseconds(0));
+            // Yield if multithreaded
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
-        else
-        {
-            task = mTaskQueue->GetTask(std::chrono::milliseconds(10));
-        }
+
+        TaskPtr task = mTaskQueue->GetTask(std::chrono::milliseconds(0));
 
         if (task != nullptr)
         {

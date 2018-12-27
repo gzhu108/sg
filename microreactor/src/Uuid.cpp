@@ -21,7 +21,7 @@ Uuid::Uuid(const std::string& uuid)
 {
 #ifdef _MSC_VER
     unsigned char uuidString[64] = { 0 };
-    uuid.copy(reinterpret_cast<char*>(uuidString), uuid.length());
+    uuid.copy(reinterpret_cast<char*>(uuidString), uuid.length() < sizeof(uuidString) ? uuid.length() : sizeof(uuidString) - 1);
     UuidFromStringA(uuidString, &mUuid);
 #else
     uuid_parse(uuid.c_str(), mUuid);
