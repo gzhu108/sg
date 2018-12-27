@@ -56,6 +56,7 @@ nobase_include_HEADERS = \
     src/StringUtility.h \
     src/TaskFuture.h \
     src/Task.h \
+    src/TaskCategorizedQueue.h \
     src/TaskManager.h \
     src/TaskManagerSingleton.h \
     src/TaskProcessHook.h \
@@ -100,6 +101,7 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/StringSerializer.cpp \
     src/StringUtility.cpp \
     src/Task.cpp \
+    src/TaskCategorizedQueue.cpp \
     src/TaskManager.cpp \
     src/TaskManagerSingleton.cpp \
     src/TaskQueue.cpp \
