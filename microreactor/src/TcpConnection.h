@@ -31,12 +31,11 @@ namespace sg { namespace microreactor
 
     protected:
         virtual bool Close() override;
-        virtual bool EnsureConnection();
+        virtual bool EnsureClientConnection();
         void SetReceiveBufferSize(PROPERTY_TYPE(ReceiveBufferSize)& propertyValue, const uint32_t& value);
         
     protected:
         std::shared_ptr<TcpSocket> mSocket;
-        bool mServerConnection;
     };
 }}
 

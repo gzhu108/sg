@@ -118,10 +118,10 @@ bool Connection::Start()
         if (mReceiveTask != nullptr)
         {
             auto taskRawPtr = mReceiveTask.get();
-            mReceiveTask->Completed.Connect([&, taskRawPtr]()
+            mReceiveTask->Completed.Connect(std::bind([](Task* task)
             {
-                taskRawPtr->Schedule();
-            }, reinterpret_cast<uintptr_t>(this));
+                task->Schedule();
+            }, taskRawPtr), reinterpret_cast<uintptr_t>(this));
 
             return true;
         }

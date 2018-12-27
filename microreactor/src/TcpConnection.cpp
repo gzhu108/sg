@@ -9,22 +9,16 @@ using namespace sg::microreactor;
 TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<Profile> profile)
     : Connection(profile)
     , mSocket(socket)
-    , mServerConnection(false)
 {
-    if (mSocket != nullptr && mSocket->IsValid())
+    if (mSocket == nullptr || !mSocket->IsValid())
     {
-        // Server connection received from a client
-        mServerConnection = true;
-    }
-    else
-    {
+        // Only for client connection
         if (mSocket == nullptr)
         {
             mSocket = std::make_shared<TcpSocket>();
         }
 
-        // Client connection to a server
-        mServerConnection = false;
+        EnsureClientConnection();
     }
 
     if (!mSocket->HostAddress->empty())
@@ -104,7 +98,7 @@ uint64_t TcpConnection::Receive(char* buffer, int32_t length)
 
 uint64_t TcpConnection::Send(const char* buffer, int32_t length)
 {
-    if (!EnsureConnection())
+    if (mSocket == nullptr || !mSocket->IsValid())
     {
         return 0;
     }
@@ -152,20 +146,13 @@ bool TcpConnection::Close()
             mSocket->Detach();
         }
         
-        if (mServerConnection)
-        {
-            mSocket = nullptr;
-        }
-        else
-        {
-            mSocket = std::make_shared<TcpSocket>();
-        }
+        mSocket = nullptr;
     }
 
     return true;
 }
 
-bool TcpConnection::EnsureConnection()
+bool TcpConnection::EnsureClientConnection()
 {
     if (mSocket == nullptr)
     {
@@ -175,12 +162,6 @@ bool TcpConnection::EnsureConnection()
 
     if (!mSocket->IsValid())
     {
-        // Only try to reconnect in client connection.
-        if (mServerConnection)
-        {
-            return false;
-        }
-
         try
         {
             mSocket->Connect(mProfile->Address.cref(), mProfile->Port.cref(), SendTimeout.cref());
@@ -200,9 +181,6 @@ bool TcpConnection::EnsureConnection()
 
         mReceiveBufferSize = DEFAULT_TCP_CONNECTION_BUFFER_SIZE;
         mSocket->SetReceiveBufferSize(mReceiveBufferSize);
-
-        // Start receiving data from the connected socket
-        Start();
     }
 
     return true;
