@@ -26,7 +26,7 @@ namespace sg { namespace microreactor
         virtual void Stop();
 
         virtual void CheckComplete();
-        virtual void AddTask(TaskPtr task);
+        virtual TaskPtr AddTask(TaskPtr task);
         virtual void RemoveTask(TaskPtr task);
         virtual void RemoveAllTasks();
 

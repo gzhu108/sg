@@ -26,7 +26,7 @@ void Reactor::CheckComplete()
     }
 }
 
-void Reactor::AddTask(TaskPtr task)
+TaskPtr Reactor::AddTask(TaskPtr task)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -44,6 +44,8 @@ void Reactor::AddTask(TaskPtr task)
             RemoveTask(task);
         }, reinterpret_cast<uintptr_t>(this));
     }
+
+    return task;
 }
 
 void Reactor::RemoveTask(TaskPtr task)
