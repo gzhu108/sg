@@ -4,7 +4,6 @@
 
 #include "google/protobuf/io/coded_stream.h"
 #include "MessageDispatcher.h"
-#include "PBStreetGangRequester.h"
 
 
 namespace streetgangclient

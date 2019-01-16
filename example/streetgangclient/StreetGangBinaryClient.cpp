@@ -1,8 +1,11 @@
 #include "StreetGangBinaryClient.h"
 #include "SecureTcpSocket.h"
 #include "TcpConnection.h"
+#include "BinarySerializer.h"
+#include "Uuid.h"
 #include "StreetGangBinaryClientDispatcher.h"
 #include "BinaryResponseError.h"
+#include "BinaryRequestByebye.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -122,4 +125,24 @@ StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, cons
 
 StreetGangBinaryClient::~StreetGangBinaryClient()
 {
+    if (mConnection != nullptr && !mConnection->IsClosed())
+    {
+        auto message = std::make_shared<BinaryRequestByebye>();
+        message->TrackId.set(Uuid::GenerateUuid().ToString());
+
+        std::stringstream messageStream;
+        if (message->Encode(messageStream))
+        {
+            BinarySerializer serializer;
+            std::stringstream stream;
+            uint64_t length = GetStreamSize(messageStream);
+            if (serializer.Write(message->Id.cref(), stream) &&
+                serializer.Write(length, stream) &&
+                serializer.Write(messageStream, stream))
+            {
+                // Send byebye message
+                mConnection->Send(stream);
+            }
+        }
+    }
 }

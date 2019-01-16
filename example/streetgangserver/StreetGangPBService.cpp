@@ -1,8 +1,10 @@
+#include "PBRequestByebye.h"
 #include "StreetGangPBService.h"
 #include "NetworkUtility.h"
 #include "ConfigurationSingleton.h"
 #include "StreetGangPBDispatcher.h"
 #include "DiscoveryClient.h"
+#include "Uuid.h"
 
 using namespace sg::microreactor;
 using namespace streetgangapi;
@@ -31,6 +33,16 @@ StreetGangPBService::StreetGangPBService()
 
 StreetGangPBService::~StreetGangPBService()
 {
+    auto message = std::make_shared<PBRequestByebye>();
+    message->TrackId.set(Uuid::GenerateUuid().ToString());
+
+    std::stringstream stream;
+    if (message->Encode(stream))
+    {
+        // Send byebye message
+        SendAllConnections(stream);
+    }
+
     Stop();
 
     // Disable hot-config

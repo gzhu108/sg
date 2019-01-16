@@ -4,7 +4,6 @@
 #include "PBRequestGetScene.h"
 #include "PBResponseError.h"
 #include "PBStreetGangRequester.h"
-#include "BinarySerializer.h"
 #include "Uuid.h"
 
 using namespace sg::microreactor;

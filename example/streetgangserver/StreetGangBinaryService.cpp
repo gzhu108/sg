@@ -2,8 +2,11 @@
 #include "SecureTcpSocket.h"
 #include "TcpEndpoint.h"
 #include "ConfigurationSingleton.h"
+#include "BinarySerializer.h"
+#include "BinaryRequestByebye.h"
 #include "StreetGangBinaryDispatcher.h"
 #include "DiscoveryClient.h"
+#include "Uuid.h"
 
 //CHECK_MEMORY_INIT
 
@@ -123,6 +126,24 @@ StreetGangBinaryService::StreetGangBinaryService()
 
 StreetGangBinaryService::~StreetGangBinaryService()
 {
+    auto message = std::make_shared<BinaryRequestByebye>();
+    message->TrackId.set(Uuid::GenerateUuid().ToString());
+
+    std::stringstream messageStream;
+    if (message->Encode(messageStream))
+    {
+        BinarySerializer serializer;
+        std::stringstream stream;
+        uint64_t length = GetStreamSize(messageStream);
+        if (serializer.Write(message->Id.cref(), stream) &&
+            serializer.Write(length, stream) &&
+            serializer.Write(messageStream, stream))
+        {
+            // Send byebye message
+            SendAllConnections(stream);
+        }
+    }
+
     Stop();
 
     // Disable hot-config
