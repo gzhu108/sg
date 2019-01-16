@@ -1,5 +1,6 @@
 #include "Microservice.h"
 #include "NetworkUtility.h"
+#include "Serializer.h"
 
 using namespace sg::microreactor;
 
@@ -58,6 +59,50 @@ bool Microservice::Stop()
     }
 
     return false;
+}
+
+uint64_t Microservice::SendAllConnections(std::iostream& stream)
+{
+    int32_t length = (int32_t)GetStreamSize(stream);
+    if (length == 0)
+    {
+        return false;
+    }
+
+    std::vector<char> sendBuffer(length);
+    stream.read(&sendBuffer[0], length);
+    if (stream.eof() || stream.fail() || stream.bad())
+    {
+        return false;
+    }
+
+    return SendAllConnections(&sendBuffer[0], length);
+}
+
+uint64_t Microservice::SendAllConnections(const char* buffer, int32_t length)
+{
+    if (mEndpoint == nullptr || buffer == nullptr || length <= 0)
+    {
+        return 0;
+    }
+
+    std::set<std::shared_ptr<Connection>> activeConnections;
+    if (!mEndpoint->GetAllConnections(activeConnections))
+    {
+        // No connection to send data
+        return 0;
+    }
+
+    uint64_t connectionSent = 0;
+    for (auto& connection : activeConnections)
+    {
+        if (connection->Send(buffer, length) > 0)
+        {
+            connectionSent++;
+        }
+    }
+
+    return connectionSent;
 }
 
 bool Microservice::Initialize()

@@ -125,3 +125,10 @@ void Endpoint::CloseAllConnections()
 
     mActiveConnections.clear();
 }
+
+bool Endpoint::GetAllConnections(std::set<std::shared_ptr<Connection>>& connections)
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+    connections = mActiveConnections;
+    return !connections.empty();
+}

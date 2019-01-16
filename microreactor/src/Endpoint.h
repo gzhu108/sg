@@ -28,6 +28,7 @@ namespace sg { namespace microreactor
         virtual bool IsClosed() = 0;
 
         virtual std::shared_ptr<Profile> GetProfile() { return mProfile; }
+        virtual bool GetAllConnections(std::set<std::shared_ptr<Connection>>& connections);
 
     protected:
         virtual bool Close() = 0;
