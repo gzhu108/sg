@@ -21,8 +21,8 @@ namespace sg { namespace microreactor
         virtual bool Start() override;
         virtual bool Stop() override;
 
-        virtual uint64_t SendAllConnections(std::iostream& stream);
-        virtual uint64_t SendAllConnections(const char* buffer, int32_t length);
+        virtual int64_t SendAllConnections(std::iostream& stream);
+        virtual int64_t SendAllConnections(const char* buffer, int32_t length);
 
     protected:
         virtual bool Initialize();
