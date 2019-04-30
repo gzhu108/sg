@@ -9,6 +9,7 @@
 #include "StreetGangBinaryClient.h"
 #include "StreetGangPBClient.h"
 #include "ConfigurationXml.h"
+#include "ResponseGetVersionReactor.h"
 #include "ResponseGetSceneReactor.h"
 #include "BinaryStreetGangRequester.h"
 #include "PBStreetGangRequester.h"
@@ -122,7 +123,7 @@ int32_t main(int32_t argc, const char* argv[])
         client = std::make_shared<StreetGangBinaryClient>(protocol, serverAddress, serverPort);
 
         auto requester = std::make_shared<BinaryStreetGangRequester>(*client->GetConnection());
-        requester->GetVersion(std::make_shared<ResponseGetSceneReactor>(*client->GetConnection(), requester));
+        requester->GetVersion(std::make_shared<ResponseGetVersionReactor>(*client->GetConnection(), requester));
     }
 
     START_BLOCKING_TASK_LOOP();
