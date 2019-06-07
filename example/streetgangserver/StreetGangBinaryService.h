@@ -3,14 +3,14 @@
 #define streetgangserver_StreetGangBinaryService
 
 #include "TaskManagerSingleton.h"
-#include "Microservice.h"
+#include "Service.h"
 #include "Client.h"
 #include "MessageBase.h"
 
 
 namespace streetgangserver
 {
-    class StreetGangBinaryService : public sg::microreactor::Microservice
+    class StreetGangBinaryService : public sg::microreactor::Service
     {
     public:
         StreetGangBinaryService();

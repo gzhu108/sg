@@ -45,9 +45,6 @@
     <ClCompile Include="src\Message.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Microservice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\NetworkUtility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,9 +70,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Serializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Service.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Socket.cpp">
@@ -153,6 +147,9 @@
     <ClCompile Include="src\TaskCategorizedQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Service.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BinarySerializer.h">
@@ -215,9 +212,6 @@
     <ClInclude Include="src\Microreactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Microservice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\NetworkUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -258,9 +252,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Serializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Service.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Shareable.h">
@@ -339,6 +330,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\TaskCategorizedQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Service.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,13 +3,13 @@
 #define worldserver_WorldService
 
 #include "TaskManagerSingleton.h"
-#include "Microservice.h"
+#include "Service.h"
 #include "Client.h"
 
 
 namespace worldserver
 {
-    class WorldService : public sg::microreactor::Microservice
+    class WorldService : public sg::microreactor::Service
     {
     public:
         WorldService();

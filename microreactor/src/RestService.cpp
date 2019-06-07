@@ -10,43 +10,46 @@ RestService::RestService()
 RestService::RestService(const std::string& hostName, uint16_t port)
     : mRestDispatcher(std::make_shared<RestDispatcher>())
 {
-    mProfile = std::make_shared<Profile>();
-    mProfile->Protocol.set("tcp");
-    mProfile->Address.set(hostName);
-    mProfile->Port.set(port);
-    mProfile->Dispatcher.set(mRestDispatcher);
+    std::shared_ptr<Profile> profile = std::make_shared<Profile>();
+    profile->Protocol.set("tcp");
+    profile->Address.set(hostName);
+    profile->Port.set(port);
+    profile->Dispatcher.set(mRestDispatcher);
+    mEndpoint = NetworkUtility::CreateEndpoint(profile);
 }
 
 RestService::RestService(std::shared_ptr<Profile> profile)
-    : Microservice(profile)
+    : Service()
 {
-    if (mProfile != nullptr)
+    if (profile != nullptr)
     {
-        if (mProfile->Dispatcher.cref() == nullptr)
+        if (profile->Dispatcher.cref() == nullptr)
         {
             mRestDispatcher = std::make_shared<RestDispatcher>();
-            mProfile->Dispatcher.set(mRestDispatcher);
+            profile->Dispatcher.set(mRestDispatcher);
         }
         else
         {
-            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(mProfile->Dispatcher.cref());
+            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(profile->Dispatcher.cref());
         }
     }
+
+    mEndpoint = NetworkUtility::CreateEndpoint(profile);
 }
 
 RestService::RestService(std::shared_ptr<Endpoint> endpoint)
-    : Microservice(endpoint)
+    : Service(endpoint)
 {
-    if (mProfile != nullptr)
+    if (endpoint != nullptr && endpoint->GetProfile() != nullptr)
     {
-        if (mProfile->Dispatcher.cref() == nullptr)
+        if (endpoint->GetProfile()->Dispatcher.cref() == nullptr)
         {
             mRestDispatcher = std::make_shared<RestDispatcher>();
-            mProfile->Dispatcher.set(mRestDispatcher);
+            endpoint->GetProfile()->Dispatcher.set(mRestDispatcher);
         }
         else
         {
-            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(mProfile->Dispatcher.cref());
+            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(endpoint->GetProfile()->Dispatcher.cref());
         }
     }
 }
@@ -62,7 +65,7 @@ bool RestService::Initialize()
         return false;
     }
 
-    return Microservice::Initialize();
+    return Service::Initialize();
 }
 
 void RestService::OnConnectionMade(const std::shared_ptr<Connection>& connection)

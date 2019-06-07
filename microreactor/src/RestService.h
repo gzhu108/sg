@@ -2,13 +2,13 @@
 #ifndef sg_microreactor_RestService
 #define sg_microreactor_RestService
 
-#include "Microservice.h"
+#include "Service.h"
 #include "RestDispatcher.h"
 
 
 namespace sg { namespace microreactor
 {
-    class RestService : public Microservice
+    class RestService : public Service
     {
     public:
         RestService();

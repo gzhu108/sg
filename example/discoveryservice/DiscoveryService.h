@@ -20,7 +20,7 @@ namespace sg { namespace service
 
     public:
         std::string GetMulticastAddress() { return mMulticastAddress; }
-        uint16_t GetMulticastPort() { return mProfile->Port.cref(); }
+        uint16_t GetMulticastPort() { return mEndpoint->GetProfile()->Port.cref(); }
 
         virtual bool Initialize() override;
 

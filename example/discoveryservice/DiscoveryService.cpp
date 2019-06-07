@@ -27,11 +27,15 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
     }
 
     // Create service profile
-    mProfile = std::make_shared<Profile>();
-    mProfile->Protocol.set("udp");
-    mProfile->Address.set(address);
-    mProfile->Port.set(mMulticastPort);
-    mProfile->Dispatcher.set(mRestDispatcher);
+    std::shared_ptr<Profile> profile = std::make_shared<Profile>();
+    profile->Protocol.set("udp");
+    profile->Address.set(address);
+    profile->Port.set(mMulticastPort);
+    profile->Dispatcher.set(mRestDispatcher);
+
+    // Create UDP socket
+    mSocket = std::make_shared<UdpSocket>();
+    mEndpoint = std::make_shared<UdpEndpoint>(mSocket, profile);
     
     // Register M-SEARCH
     if (mRestDispatcher)
@@ -51,11 +55,6 @@ DiscoveryService::~DiscoveryService()
 
 bool DiscoveryService::Initialize()
 {
-    // Create UDP socket
-    mSocket = std::make_shared<UdpSocket>();
-
-    // Create UDP endpoint
-    mEndpoint = std::make_shared<UdpEndpoint>(mSocket, mProfile);
     if (!mSocket->IsValid() || mDescriptionReactorFactory == nullptr)
     {
         return false;
@@ -106,7 +105,7 @@ bool DiscoveryService::AdvertiseAlive()
     request.mMethod = "NOTIFY";
     request.mUri = "*";
     request.mVersion = "HTTP/1.1";
-    request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(mProfile->Port.cref())));
+    request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(GetMulticastPort())));
     request.mHeaders.emplace_back(HttpHeader("CACHE-CONTROL", std::string("max-age = ") + std::to_string(Description->NotifyMaxAge.cref())));
     request.mHeaders.emplace_back(HttpHeader("LOCATION", Description->Location.cref()));
     request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:alive"));
@@ -118,7 +117,7 @@ bool DiscoveryService::AdvertiseAlive()
     if (request.FlushToBuffer(buffer))
     {
         int32_t bytesSent = 0;
-        return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, mProfile->Port.cref(), bytesSent);
+        return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, GetMulticastPort(), bytesSent);
     }
 
     return false;
@@ -130,7 +129,7 @@ bool DiscoveryService::AdvertiseByebye()
     request.mMethod = "NOTIFY";
     request.mUri = "*";
     request.mVersion = "HTTP/1.1";
-    request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(mProfile->Port.cref())));
+    request.mHeaders.emplace_back(HttpHeader("HOST", mMulticastAddress + ":" + std::to_string(GetMulticastPort())));
     request.mHeaders.emplace_back(HttpHeader("NTS", "ssdp:byebye"));
     request.mHeaders.emplace_back(HttpHeader("USN", Description->Usn.cref()));
     request.mHeaders.emplace_back(HttpHeader("NT", Description->ServiceType.cref()));
@@ -139,7 +138,7 @@ bool DiscoveryService::AdvertiseByebye()
     if (request.FlushToBuffer(buffer))
     {
         int32_t bytesSent = 0;
-        return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, mProfile->Port.cref(), bytesSent);
+        return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, GetMulticastPort(), bytesSent);
     }
 
     return false;

@@ -1,6 +1,10 @@
 #pragma once
-#ifndef sg_microreactor_Server
-#define sg_microreactor_Server
+#ifndef sg_microreactor_Microservice
+#define sg_microreactor_Microservice
+
+#include "Profile.h"
+#include "Endpoint.h"
+#include "NetworkUtility.h"
 
 
 namespace sg { namespace microreactor
@@ -9,14 +13,30 @@ namespace sg { namespace microreactor
     {
     public:
         Service();
+        explicit Service(std::shared_ptr<Endpoint> endpoint);
         virtual ~Service();
-        
+
     public:
-        virtual bool Start() = 0;
-        virtual bool Stop() = 0;
+        virtual bool Start();
+        virtual bool Stop();
         virtual void Restart();
+
+        virtual int64_t SendAllConnections(std::iostream& stream);
+        virtual int64_t SendAllConnections(const char* buffer, int32_t length);
+
+    protected:
+        virtual bool Initialize();
+        virtual void OnConnectionMade(const std::shared_ptr<Connection>& connection);
+
+    protected:
+        std::shared_ptr<Endpoint> mEndpoint;
     };
+
+    template<typename T>
+    std::shared_ptr<T> CreateServiceFromProfile(std::shared_ptr<Profile> profile)
+    {
+        return std::make_shared<T>(NetworkUtility::CreateEndpoint(profile));
+    }
 }}
 
-
-#endif // sg_microreactor_Server
+#endif // sg_microreactor_Microservice

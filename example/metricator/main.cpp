@@ -8,7 +8,7 @@
 #include "Microreactor.h"
 #include "UdpSocket.h"
 #include "ConfigurationXml.h"
-#include "Microservice.h"
+#include "Service.h"
 #include "MetricatorDispatcher.h"
 #include "DiscoveryService.h"
 #include "GetDescriptionReactor.h"
@@ -168,8 +168,8 @@ int32_t main(int32_t argc, const char* argv[])
     profile->Dispatcher.set(messageDecoder);
 
     // Create metricatorService
-    Microservice metricatorService(profile);
-    if (metricatorService.Start())
+    auto metricatorService = CreateServiceFromProfile<Service>(profile);
+    if (metricatorService->Start())
     {
         START_BLOCKING_TASK_LOOP();
         
@@ -180,7 +180,7 @@ int32_t main(int32_t argc, const char* argv[])
         //}
         
         // Stop metricatorService
-        metricatorService.Stop();
+        metricatorService->Stop();
     }
     else
     {

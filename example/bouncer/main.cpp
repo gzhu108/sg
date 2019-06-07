@@ -142,13 +142,13 @@ int32_t main(int32_t argc, const char* argv[])
         profile->Port.set(hostPort);
 
         // Create a microservice
-        Microservice service(profile);
-        if (service.Start())
+        auto service = CreateServiceFromProfile<Service>(profile);
+        if (service->Start())
         {
             START_BLOCKING_TASK_LOOP();
 
             // Stop the microservice
-            service.Stop();
+            service->Stop();
         }
         else
         {

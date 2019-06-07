@@ -38,7 +38,6 @@ nobase_include_HEADERS = \
     src/MessageRequester.h \
     src/MessageResponder.h \
     src/Microreactor.h \
-    src/Microservice.h \
     src/NetworkUtility.h \
     src/Park.h \
     src/Parkable.h \
@@ -91,7 +90,6 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/Message.cpp \
     src/MessageRequester.cpp \
     src/MessageResponder.cpp \
-    src/Microservice.cpp \
     src/NetworkUtility.cpp \
     src/Profile.cpp \
     src/Reactor.cpp \
