@@ -29,9 +29,8 @@ static void LogTps()
     gConnectionMutex.unlock();
 }
 
-Connection::Connection(std::shared_ptr<Profile> profile)
-    : mProfile(profile)
-    , mReceiveBufferSize(0)
+Connection::Connection()
+    : mReceiveBufferSize(0)
 {
 }
 
@@ -43,23 +42,11 @@ Connection::~Connection()
     RemoveAllReactors();
 }
 
-std::shared_ptr<Dispatcher> Connection::GetDispatcher()
-{
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-
-    if (mProfile != nullptr && mProfile->Dispatcher.cref() != nullptr)
-    {
-        return mProfile->Dispatcher.cref();
-    }
-
-    return nullptr;
-}
-
 void Connection::RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client)
 {
     message->Client.set(client);
 
-    auto dispatcher = GetDispatcher();
+    auto dispatcher = Dispatcher.cref();
     if (dispatcher != nullptr)
     {
         dispatcher->RegisterMessage(message);
@@ -150,7 +137,7 @@ bool Connection::Stop()
 
 void Connection::ReceiveMessage()
 {
-    auto dispatcher = GetDispatcher();
+    auto dispatcher = Dispatcher.cref();
     if (dispatcher != nullptr)
     {
         // Remove timed out messages

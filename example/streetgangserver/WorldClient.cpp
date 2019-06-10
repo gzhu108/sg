@@ -15,15 +15,11 @@ WorldClient::WorldClient(const std::string& protocol, const std::string& hostAdd
     : mWorldCache(std::make_shared<WorldCache>())
 {
     auto dispatcher = std::make_shared<WorldClientDispatcher>();
+    dispatcher->Protocol.set(protocol);
+    dispatcher->Address.set(hostAddress);
+    dispatcher->Port.set(port);
 
-    // Create client profile
-    auto profile = std::make_shared<Profile>();
-    profile->Protocol.set(protocol);
-    profile->Address.set(hostAddress);
-    profile->Port.set(port);
-    profile->Dispatcher.set(dispatcher);
-
-    auto connection = NetworkUtility::CreateConnection(profile);
+    auto connection = NetworkUtility::CreateConnection(dispatcher);
     Initialize(connection, std::chrono::milliseconds(30));
 }
 

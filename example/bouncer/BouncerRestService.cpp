@@ -1,6 +1,6 @@
 #include "BouncerRestService.h"
 #include "Microreactor.h"
-#include "BouncerProfile.h"
+#include "BouncerDispatcher.h"
 #include "BouncerReactor.h"
 
 #ifdef new
@@ -25,8 +25,8 @@ BouncerRestService::~BouncerRestService()
 
 bool BouncerRestService::Initialize()
 {
-    mRestDispatcher->RegisterRestReactorFactory("GET", "/", std::bind(&BouncerRestService::CreateBouncerReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mRestDispatcher->RegisterRestReactorFactory("POST", "/settings", std::bind(&BouncerRestService::CreateSettingsReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterRestReactorFactory("GET", "/", std::bind(&BouncerRestService::CreateBouncerReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterRestReactorFactory("POST", "/settings", std::bind(&BouncerRestService::CreateSettingsReactor, this, std::placeholders::_1, std::placeholders::_2));
 
     return RestService::Initialize();
 }
@@ -40,15 +40,15 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
         return nullptr;
     }
 
-    auto bouncerProfile = std::static_pointer_cast<BouncerProfile>(connection.GetProfile());
-    std::string protocol = bouncerProfile->Protocol.cref();
-    std::string targetName = bouncerProfile->TargetName.cref();
-    uint16_t targetPort = bouncerProfile->TargetPort.cref();
+    auto bouncerDispatcher = mEndpoint->GetDispatcher<BouncerDispatcher>();
+    std::string protocol = bouncerDispatcher->Protocol.cref();
+    std::string targetName = bouncerDispatcher->TargetName.cref();
+    uint16_t targetPort = bouncerDispatcher->TargetPort.cref();
 
-    auto targetProfile = std::make_shared<Profile>();
-    targetProfile->Protocol.set(protocol);
-    targetProfile->Address.set(targetName);
-    targetProfile->Port.set(targetPort);
+    auto targetDispatcher = std::make_shared<Dispatcher>();
+    targetDispatcher->Protocol.set(protocol);
+    targetDispatcher->Address.set(targetName);
+    targetDispatcher->Port.set(targetPort);
 
     std::stringstream stream;
     stream << request->mMethod << " " << request->mUri << " " << request->mVersion << "\r\n";
@@ -70,7 +70,7 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
 
     LOG("Send Request:\n%s\n", stream.str().c_str());
 
-    std::shared_ptr<Connection> target = NetworkUtility::CreateConnection(targetProfile);
+    std::shared_ptr<Connection> target = NetworkUtility::CreateConnection(targetDispatcher);
     return std::make_shared<BouncerReactor>(connection, target, stream);
 }
 
@@ -82,9 +82,9 @@ std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_p
         return nullptr;
     }
 
-    auto bouncerProfile = std::static_pointer_cast<BouncerProfile>(connection.GetProfile());
-    std::string targetName = bouncerProfile->TargetName.cref();
-    uint16_t targetPort = bouncerProfile->TargetPort.cref();
+    auto bouncerDispatcher = connection.GetDispatcher<BouncerDispatcher>();
+    std::string targetName = bouncerDispatcher->TargetName.cref();
+    uint16_t targetPort = bouncerDispatcher->TargetPort.cref();
 
     try
     {
@@ -113,8 +113,8 @@ std::shared_ptr<Reactor> BouncerRestService::CreateSettingsReactor(std::shared_p
         }
 
         // Update the target name and port
-        bouncerProfile->TargetName.set(targetName);
-        bouncerProfile->TargetPort.set(targetPort);
+        bouncerDispatcher->TargetName.set(targetName);
+        bouncerDispatcher->TargetPort.set(targetPort);
 
         // Respond with OK
         RestResponse ok;

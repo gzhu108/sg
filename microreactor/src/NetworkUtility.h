@@ -13,8 +13,8 @@ namespace sg { namespace microreactor
 {
     namespace NetworkUtility
     {
-        std::shared_ptr<Connection> CreateConnection(std::shared_ptr<Profile> profile);
-        std::shared_ptr<Endpoint> CreateEndpoint(std::shared_ptr<Profile> profile);
+        std::shared_ptr<Connection> CreateConnection(std::shared_ptr<Dispatcher> dispatcher);
+        std::shared_ptr<Endpoint> CreateEndpoint(std::shared_ptr<Dispatcher> dispatcher);
 
         struct NetworkInterfaceInfo
         {

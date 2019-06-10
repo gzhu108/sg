@@ -106,19 +106,15 @@ static int VerifyPeer(int preverifyOk, X509_STORE_CTX* context)
 StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, const std::string& hostAddress, uint16_t port)
 {
     auto dispatcher = std::make_shared<StreetGangBinaryClientDispatcher>();
-
-    // Create client profile
-    auto profile = std::make_shared<Profile>();
-    profile->Protocol.set(protocol);
-    profile->Address.set(hostAddress);
-    profile->Port.set(port);
-    profile->Dispatcher.set(dispatcher);
+    dispatcher->Protocol.set(protocol);
+    dispatcher->Address.set(hostAddress);
+    dispatcher->Port.set(port);
 
     auto socket = std::make_shared<SecureTcpSocket>();
     socket->ConfigureSslContext(SSLv23_client_method(), "cert/Client.key", "cert/Client.cer", VerifyPeer);
     socket->LoadSslContextVerifyLocations("cert/ChainCA.cer", "");
     //auto socket = std::make_shared<TcpSocket>();
-    auto connection = std::make_shared<TcpConnection>(socket, profile);
+    auto connection = std::make_shared<TcpConnection>(socket, dispatcher);
 
     Initialize(connection, std::chrono::milliseconds(30));
 }

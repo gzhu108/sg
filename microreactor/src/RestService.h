@@ -17,14 +17,8 @@ namespace sg { namespace microreactor
         explicit RestService(std::shared_ptr<Endpoint> endpoint);
         virtual ~RestService();
 
-    public:
-        virtual bool Initialize() override;
-
     protected:
         virtual void OnConnectionMade(const std::shared_ptr<Connection>& connection) override;
-
-    protected:
-        std::shared_ptr<RestDispatcher> mRestDispatcher;
     };
 }}
 

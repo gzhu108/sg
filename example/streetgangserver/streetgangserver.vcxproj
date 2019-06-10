@@ -49,7 +49,7 @@
     <ClCompile Include="StreetGangPBDispatcher.cpp" />
     <ClCompile Include="StreetGangPBService.cpp" />
     <ClCompile Include="StreetGangReactor.cpp" />
-    <ClCompile Include="StreetGangRestService.cpp" />
+    <ClCompile Include="StreetGangRestDispatcher.cpp" />
     <ClCompile Include="WorldClient.cpp" />
     <ClCompile Include="WorldClientDispatcher.cpp" />
   </ItemGroup>
@@ -63,7 +63,7 @@
     <ClInclude Include="StreetGangPBDispatcher.h" />
     <ClInclude Include="StreetGangPBService.h" />
     <ClInclude Include="StreetGangReactor.h" />
-    <ClInclude Include="StreetGangRestService.h" />
+    <ClInclude Include="StreetGangRestDispatcher.h" />
     <ClInclude Include="WorldClient.h" />
     <ClInclude Include="WorldClientDispatcher.h" />
   </ItemGroup>

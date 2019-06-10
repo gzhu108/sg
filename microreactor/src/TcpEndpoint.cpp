@@ -6,16 +6,17 @@
 using namespace sg::microreactor;
 
 
-TcpEndpoint::TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<Profile> profile)
-    : Endpoint(profile)
-    , mSocket(socket)
+TcpEndpoint::TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
+    : mSocket(socket)
 {
+    Dispatcher.set(dispatcher);
+
     if (mSocket == nullptr)
     {
         mSocket = std::make_shared<TcpSocket>();
     }
 
-    if (mProfile == nullptr)
+    if (dispatcher == nullptr)
     {
         LOG("Failed to listen: invalid profile");
         Close();
@@ -25,7 +26,7 @@ TcpEndpoint::TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<Prof
     {
         try
         {
-            mSocket->Listen(mProfile->Address->c_str(), mProfile->Port.cref());
+            mSocket->Listen(dispatcher->Address->c_str(), dispatcher->Port.cref());
         }
         catch (SocketException& e)
         {
@@ -73,7 +74,7 @@ std::shared_ptr<Connection> TcpEndpoint::Listen(const std::chrono::milliseconds&
         std::shared_ptr<TcpSocket> clientSocket = mSocket->Accept(timeout);
         if (clientSocket != nullptr)
         {
-            std::shared_ptr<TcpConnection> connection = std::make_shared<TcpConnection>(clientSocket, mProfile);
+            std::shared_ptr<TcpConnection> connection = std::make_shared<TcpConnection>(clientSocket, Dispatcher.cref());
             return connection;
         }
     }

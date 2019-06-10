@@ -6,10 +6,11 @@
 using namespace sg::microreactor;
 
 
-TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<Profile> profile)
-    : Connection(profile)
-    , mSocket(socket)
+TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
+    : mSocket(socket)
 {
+    Dispatcher.set(dispatcher);
+
     if (mSocket == nullptr || !mSocket->IsValid())
     {
         // Only for client connection
@@ -164,10 +165,10 @@ bool TcpConnection::EnsureClientConnection()
     {
         try
         {
-            mSocket->Connect(mProfile->Address.cref(), mProfile->Port.cref(), SendTimeout.cref());
+            mSocket->Connect(Dispatcher.cref()->Address.cref(), Dispatcher.cref()->Port.cref(), SendTimeout.cref());
             if (!mSocket->IsValid())
             {
-                LOG("Failed to connect to [%s]:%u", mProfile->Address->c_str(), mProfile->Port.cref());
+                LOG("Failed to connect to [%s]:%u", Dispatcher.cref()->Address->c_str(), Dispatcher.cref()->Port.cref());
                 return false;
             }
         }

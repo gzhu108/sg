@@ -13,6 +13,11 @@ Dispatcher::~Dispatcher()
 {
 }
 
+void Dispatcher::Dispatch(Connection& connection)
+{
+    // Default implementation does nothing
+}
+
 void Dispatcher::RegisterMessage(std::shared_ptr<Message> message)
 {
     // Only register the message that expects a response

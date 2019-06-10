@@ -12,7 +12,7 @@ namespace sg { namespace microreactor
     class Endpoint
     {
     public:
-        explicit Endpoint(std::shared_ptr<Profile> profile);
+        explicit Endpoint();
         virtual ~Endpoint();
 
         Signal<std::shared_ptr<Connection>>& ConnectionMade = mConnectionMade;
@@ -21,13 +21,19 @@ namespace sg { namespace microreactor
         PROPERTY(ListenTimeout, std::chrono::milliseconds, std::chrono::milliseconds(1));
         PROPERTY(ReceiveTimeout, std::chrono::milliseconds, std::chrono::milliseconds(1));
         PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
+        PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
         
     public:
+        template<typename T>
+        std::shared_ptr<T> GetDispatcher()
+        {
+            return std::static_pointer_cast<T>(Dispatcher.get());
+        }
+
         virtual bool Start();
         virtual bool Stop();
         virtual bool IsClosed() = 0;
 
-        virtual std::shared_ptr<Profile> GetProfile() { return mProfile; }
         virtual bool GetAllConnections(std::set<std::shared_ptr<Connection>>& connections);
 
     protected:
@@ -44,7 +50,6 @@ namespace sg { namespace microreactor
         std::recursive_mutex mLock;
         Emittable<std::shared_ptr<Connection>> mConnectionMade;
         std::set<std::shared_ptr<Connection>> mActiveConnections;
-        std::shared_ptr<Profile> mProfile;
         TaskPtr mAcceptTask;
     };
 }}

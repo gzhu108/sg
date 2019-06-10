@@ -21,7 +21,7 @@
     <ClCompile Include="GetFileReactor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleWebService.cpp">
+    <ClCompile Include="SimpleWebDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="GetFileReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleWebService.h">
+    <ClInclude Include="SimpleWebDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

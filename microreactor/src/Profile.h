@@ -2,7 +2,7 @@
 #ifndef sg_microreactor_Profile
 #define sg_microreactor_Profile
 
-#include "Dispatcher.h"
+#include "Property.h"
 
 
 namespace sg { namespace microreactor
@@ -16,7 +16,6 @@ namespace sg { namespace microreactor
         PROPERTY(Protocol, std::string);
         PROPERTY(Address, std::string);
         PROPERTY(Port, uint16_t);
-        PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
     };
 }}
 

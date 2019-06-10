@@ -14,7 +14,7 @@ namespace sg { namespace microreactor
     class UdpConnection : public Connection
     {
     public:
-        UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Profile> profile);
+        UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
         virtual ~UdpConnection();
         
     public:

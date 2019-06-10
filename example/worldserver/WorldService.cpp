@@ -42,23 +42,21 @@ bool WorldService::Initialize()
     configuration->GetValue("ReceiveTimeout", receiveTimeout);
     configuration->GetValue("SendTimeout", sendTimeout);
 
-    auto profile = std::make_shared<Profile>();
+    auto dispatcher = std::make_shared<WorldDispatcher>();
 
     std::string protocol = "tcp";
     configuration->GetValue("Protocol", protocol);
-    profile->Protocol.set(protocol);
+    dispatcher->Protocol.set(protocol);
 
     std::string address = ANY_HOST;
     configuration->GetValue("ServiceAddress", address);
-    profile->Address.set(address);
+    dispatcher->Address.set(address);
 
     uint16_t port = 8390;
     configuration->GetValue("ServicePort", port);
-    profile->Port.set(port);
+    dispatcher->Port.set(port);
 
-    profile->Dispatcher.set(std::make_shared<WorldDispatcher>());
-
-    mEndpoint = NetworkUtility::CreateEndpoint(profile);
+    mEndpoint = NetworkUtility::CreateEndpoint(dispatcher);
     mEndpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
     mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
     mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));

@@ -6,9 +6,8 @@
 using namespace sg::microreactor;
 
 
-UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Profile> profile)
-    : Connection(profile)
-    , mSocket(socket)
+UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
+    : mSocket(socket)
     , mServerConnection(false)
     , mDataRetrieved(false)
 {
@@ -24,26 +23,29 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
             mSocket = std::make_shared<UdpSocket>();
         }
 
-        std::string address = LOCAL_HOST;
-        std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(mProfile->Address.cref(), mProfile->Port.cref(), SOCK_DGRAM, IPPROTO_UDP, false);
-        if (addrInfo != nullptr && addrInfo->ai_addr->sa_family == AF_INET6)
+        if (dispatcher != nullptr)
         {
-            address = LOCAL_HOST_IPV6;
-        }
+            std::string address = LOCAL_HOST;
+            std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(dispatcher->Address.cref(), dispatcher->Port.cref(), SOCK_DGRAM, IPPROTO_UDP, false);
+            if (addrInfo != nullptr && addrInfo->ai_addr->sa_family == AF_INET6)
+            {
+                address = LOCAL_HOST_IPV6;
+            }
 
-        try
-        {
-            mSocket->Bind(address, 0);
-        }
-        catch (SocketException& e)
-        {
-            // Socket exception received.
-            LOG("Failed to bind: exception(%d): %s [%s]:%u", e.mError, e.what(), e.mName.c_str(), e.mPort);
-            Close();
-        }
+            try
+            {
+                mSocket->Bind(address, 0);
+            }
+            catch (SocketException& e)
+            {
+                // Socket exception received.
+                LOG("Failed to bind: exception(%d): %s [%s]:%u", e.mError, e.what(), e.mName.c_str(), e.mPort);
+                Close();
+            }
 
-        mSocket->PeerAddress.set(mProfile->Address.cref());
-        mSocket->PeerPort.set(mProfile->Port.cref());
+            mSocket->PeerAddress.set(dispatcher->Address.cref());
+            mSocket->PeerPort.set(dispatcher->Port.cref());
+        }
 
         // Client connection to a server
         mServerConnection = false;

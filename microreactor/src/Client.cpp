@@ -54,7 +54,7 @@ std::shared_ptr<Connection> Client::GetConnection()
     }
     else if (mConnection->IsClosed())
     {
-        mConnection = NetworkUtility::CreateConnection(mConnection->GetProfile());
+        mConnection = NetworkUtility::CreateConnection(mConnection->Dispatcher.cref());
     }
 
     return mConnection;

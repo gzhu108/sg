@@ -4,8 +4,7 @@
 using namespace sg::microreactor;
 
 
-Endpoint::Endpoint(std::shared_ptr<Profile> profile)
-    : mProfile(profile)
+Endpoint::Endpoint()
 {
 }
 

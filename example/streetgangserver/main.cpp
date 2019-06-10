@@ -9,7 +9,7 @@
 #include "NetworkUtility.h"
 #include "StreetGangBinaryService.h"
 #include "StreetGangPBService.h"
-#include "StreetGangRestService.h"
+#include "StreetGangRestDispatcher.h"
 #include "WorldClient.h"
 #include "ConfigurationXml.h"
 #include "MetricatorLogger.h"
@@ -69,7 +69,7 @@ void SingalHandler(int type)
     STOP_TASK_MANAGER();
 }
 
-static std::shared_ptr<StreetGangRestService> CreateRestService()
+static std::shared_ptr<Service> CreateRestService()
 {
     auto configuration = ConfigurationSingleton::GetConfiguration();
     if (configuration == nullptr)
@@ -90,17 +90,17 @@ static std::shared_ptr<StreetGangRestService> CreateRestService()
     configuration->GetValue("ServiceAddress", serviceAddress);
     configuration->GetValue("RestPort", restPort);
 
-    auto profile = std::make_shared<Profile>();
-    profile->Protocol.set("tcp");
-    profile->Address.set(serviceAddress);
-    profile->Port.set(restPort);
+    auto dispatcher = std::make_shared<StreetGangRestDispatcher>();
+    dispatcher->Protocol.set("tcp");
+    dispatcher->Address.set(serviceAddress);
+    dispatcher->Port.set(restPort);
 
-    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(profile);
+    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(dispatcher);
     endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
     endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
     endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
-    return std::make_shared<StreetGangRestService>(endpoint);
+    return std::make_shared<Service>(endpoint);
 }
 
 int32_t main(int32_t argc, const char* argv[])
@@ -194,7 +194,7 @@ int32_t main(int32_t argc, const char* argv[])
 
     StreetGangBinaryService streetGangBinaryService;
     StreetGangPBService streetGangPBService;
-    std::shared_ptr<StreetGangRestService> streetGangRestService = CreateRestService();
+    std::shared_ptr<Service> streetGangRestService = CreateRestService();
 
     if (streetGangBinaryService.Start() &&
         streetGangPBService.Start() &&
@@ -209,7 +209,7 @@ int32_t main(int32_t argc, const char* argv[])
         // Stop StreetGangPBService
         streetGangPBService.Stop();
 
-        // Stop StreetGangRestService
+        // Stop StreetGangRestDispatcher
         streetGangRestService->Stop();
     }
     else

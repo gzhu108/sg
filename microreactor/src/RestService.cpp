@@ -1,4 +1,5 @@
 #include "RestService.h"
+#include "TcpEndpoint.h"
 
 using namespace sg::microreactor;
 
@@ -8,64 +9,45 @@ RestService::RestService()
 }
 
 RestService::RestService(const std::string& hostName, uint16_t port)
-    : mRestDispatcher(std::make_shared<RestDispatcher>())
 {
-    std::shared_ptr<Profile> profile = std::make_shared<Profile>();
-    profile->Protocol.set("tcp");
-    profile->Address.set(hostName);
-    profile->Port.set(port);
-    profile->Dispatcher.set(mRestDispatcher);
-    mEndpoint = NetworkUtility::CreateEndpoint(profile);
+    auto dispatcher = std::make_shared<RestDispatcher>();
+    dispatcher->Protocol.set("tcp");
+    dispatcher->Address.set(hostName);
+    dispatcher->Port.set(port);
+    mEndpoint = std::make_shared<TcpEndpoint>(nullptr, dispatcher);
 }
 
 RestService::RestService(std::shared_ptr<Profile> profile)
-    : Service()
 {
-    if (profile != nullptr)
+    auto dispatcher = std::make_shared<RestDispatcher>();
+
+    if (profile == nullptr)
     {
-        if (profile->Dispatcher.cref() == nullptr)
-        {
-            mRestDispatcher = std::make_shared<RestDispatcher>();
-            profile->Dispatcher.set(mRestDispatcher);
-        }
-        else
-        {
-            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(profile->Dispatcher.cref());
-        }
+        dispatcher->Protocol.set("tcp");
+        dispatcher->Address.set(ANY_HOST);
+        dispatcher->Port.set(80);
+    }
+    else
+    {
+        dispatcher->Protocol.set(profile->Protocol.cref());
+        dispatcher->Address.set(profile->Address.cref());
+        dispatcher->Port.set(profile->Port.cref());
     }
 
-    mEndpoint = NetworkUtility::CreateEndpoint(profile);
+    mEndpoint = std::make_shared<TcpEndpoint>(nullptr, dispatcher);
 }
 
 RestService::RestService(std::shared_ptr<Endpoint> endpoint)
     : Service(endpoint)
 {
-    if (endpoint != nullptr && endpoint->GetProfile() != nullptr)
+    if (endpoint != nullptr && endpoint->Dispatcher.cref() == nullptr)
     {
-        if (endpoint->GetProfile()->Dispatcher.cref() == nullptr)
-        {
-            mRestDispatcher = std::make_shared<RestDispatcher>();
-            endpoint->GetProfile()->Dispatcher.set(mRestDispatcher);
-        }
-        else
-        {
-            mRestDispatcher = std::static_pointer_cast<RestDispatcher>(endpoint->GetProfile()->Dispatcher.cref());
-        }
+        endpoint->Dispatcher.set(std::make_shared<RestDispatcher>());
     }
 }
 
 RestService::~RestService()
 {
-}
-
-bool RestService::Initialize()
-{
-    if (mRestDispatcher == nullptr)
-    {
-        return false;
-    }
-
-    return Service::Initialize();
 }
 
 void RestService::OnConnectionMade(const std::shared_ptr<Connection>& connection)

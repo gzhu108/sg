@@ -76,23 +76,21 @@ bool StreetGangPBService::Initialize()
     configuration->GetValue("ReceiveTimeout", receiveTimeout);
     configuration->GetValue("SendTimeout", sendTimeout);
 
-    auto profile = std::make_shared<Profile>();
+    auto dispatcher = std::make_shared<StreetGangPBDispatcher>();
 
     std::string protocol = "tcp";
     configuration->GetValue("Protocol", protocol);
-    profile->Protocol.set(protocol);
+    dispatcher->Protocol.set(protocol);
 
     std::string address = LOCAL_HOST;
     configuration->GetValue("ServiceAddress", address);
-    profile->Address.set(address);
+    dispatcher->Address.set(address);
 
     uint16_t port = 7390;
     configuration->GetValue("PBPort", port);
-    profile->Port.set(port);
+    dispatcher->Port.set(port);
 
-    profile->Dispatcher.set(std::make_shared<StreetGangPBDispatcher>());
-
-    mEndpoint = NetworkUtility::CreateEndpoint(profile);
+    mEndpoint = NetworkUtility::CreateEndpoint(dispatcher);
     mEndpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
     mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
     mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));

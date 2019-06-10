@@ -7,20 +7,20 @@
 using namespace sg::microreactor;
 
 
-std::shared_ptr<Connection> NetworkUtility::CreateConnection(std::shared_ptr<Profile> profile)
+std::shared_ptr<Connection> NetworkUtility::CreateConnection(std::shared_ptr<Dispatcher> dispatcher)
 {
-    if (profile == nullptr)
+    if (dispatcher == nullptr)
     {
         return nullptr;
     }
 
-    if (profile->Protocol.cref() == "tcp")
+    if (dispatcher->Protocol.cref() == "tcp")
     {
-        return std::make_shared<TcpConnection>(nullptr, profile);
+        return std::make_shared<TcpConnection>(nullptr, dispatcher);
     }
-    else if (profile->Protocol.cref() == "udp")
+    else if (dispatcher->Protocol.cref() == "udp")
     {
-        return std::make_shared<UdpConnection>(nullptr, profile);
+        return std::make_shared<UdpConnection>(nullptr, dispatcher);
     }
     else
     {
@@ -29,22 +29,22 @@ std::shared_ptr<Connection> NetworkUtility::CreateConnection(std::shared_ptr<Pro
 }
 
 
-std::shared_ptr<Endpoint> NetworkUtility::CreateEndpoint(std::shared_ptr<Profile> profile)
+std::shared_ptr<Endpoint> NetworkUtility::CreateEndpoint(std::shared_ptr<Dispatcher> dispatcher)
 {
-    if (profile == nullptr)
+    if (dispatcher == nullptr)
     {
         return nullptr;
     }
 
-    if (profile->Protocol.cref() == "tcp")
+    if (dispatcher->Protocol.cref() == "tcp")
     {
-        auto endpoint = std::make_shared<TcpEndpoint>(nullptr, profile);
+        auto endpoint = std::make_shared<TcpEndpoint>(nullptr, dispatcher);
         LOG("TCP HOST: %s", endpoint->Name->c_str());
         return endpoint;
     }
-    else if (profile->Protocol.cref() == "udp")
+    else if (dispatcher->Protocol.cref() == "udp")
     {
-        auto endpoint = std::make_shared<UdpEndpoint>(nullptr, profile);
+        auto endpoint = std::make_shared<UdpEndpoint>(nullptr, dispatcher);
         LOG("UDP HOST: %s", endpoint->Name->c_str());
         return endpoint;
     }

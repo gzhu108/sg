@@ -6,6 +6,7 @@
 #include "Common.h"
 #include "Park.h"
 #include "Message.h"
+#include "Profile.h"
 
 
 namespace sg { namespace microreactor
@@ -13,14 +14,14 @@ namespace sg { namespace microreactor
     class Connection;
     class Reactor;
 
-    class Dispatcher
+    class Dispatcher : public Profile
     {
     public:
         Dispatcher();
         virtual ~Dispatcher();
 
     public:
-        virtual void Dispatch(Connection& connection) = 0;
+        virtual void Dispatch(Connection& connection);
         virtual void RegisterMessage(std::shared_ptr<Message> message);
         virtual void RemoveTimedOutMessages(Connection& connection);
 

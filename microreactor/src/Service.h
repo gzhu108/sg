@@ -31,12 +31,6 @@ namespace sg { namespace microreactor
     protected:
         std::shared_ptr<Endpoint> mEndpoint;
     };
-
-    template<typename T>
-    std::shared_ptr<T> CreateServiceFromProfile(std::shared_ptr<Profile> profile)
-    {
-        return std::make_shared<T>(NetworkUtility::CreateEndpoint(profile));
-    }
 }}
 
 #endif // sg_microreactor_Microservice

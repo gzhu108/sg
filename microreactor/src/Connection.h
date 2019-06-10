@@ -6,7 +6,7 @@
 #include <set>
 #include <mutex>
 #include "Parkable.h"
-#include "Profile.h"
+#include "Dispatcher.h"
 #include "Message.h"
 #include "Task.h"
 
@@ -18,7 +18,7 @@ namespace sg { namespace microreactor
     class Connection
     {
     public:
-        explicit Connection(std::shared_ptr<Profile> profile);
+        explicit Connection();
         virtual ~Connection();
         
         Signal<void>& Closed = mClosed;
@@ -26,9 +26,15 @@ namespace sg { namespace microreactor
         PROPERTY(Name, std::string);
         PROPERTY(ReceiveTimeout, std::chrono::milliseconds, std::chrono::milliseconds(1));
         PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
+        PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
         
     public:
-        virtual std::shared_ptr<Profile> GetProfile() { return mProfile; }
+        template<typename T>
+        std::shared_ptr<T> GetDispatcher()
+        {
+            return std::static_pointer_cast<T>(Dispatcher.get());
+        }
+
         virtual void RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client);
 
         virtual std::string GetPeerAddress() const = 0;
@@ -52,7 +58,6 @@ namespace sg { namespace microreactor
 
     protected:
         virtual bool Close() = 0;
-        virtual std::shared_ptr<Dispatcher> GetDispatcher();
         virtual void ReceiveMessage();
 
         virtual void RemoveReactor(std::shared_ptr<Reactor> reactor);
@@ -62,7 +67,6 @@ namespace sg { namespace microreactor
         Emittable<void> mClosed;
         std::recursive_mutex mLock;
         std::set<std::shared_ptr<Reactor>> mActiveReactors;
-        std::shared_ptr<Profile> mProfile;
         TaskPtr mReceiveTask;
         std::atomic<uint32_t> mReceiveBufferSize;
     };

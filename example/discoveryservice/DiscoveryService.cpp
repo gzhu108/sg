@@ -13,8 +13,6 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
     , mMulticastAddress(multicastAddress)
     , mMulticastPort(multicastPort)
 {
-    mRestDispatcher = std::make_shared<DiscoveryDispatcher>();
-
     std::string address = mInterfaceAddress;
     if (address.empty())
     {
@@ -26,22 +24,18 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
         }
     }
 
-    // Create service profile
-    std::shared_ptr<Profile> profile = std::make_shared<Profile>();
-    profile->Protocol.set("udp");
-    profile->Address.set(address);
-    profile->Port.set(mMulticastPort);
-    profile->Dispatcher.set(mRestDispatcher);
+    // Create service dispatcher
+    auto dispatcher = std::make_shared<DiscoveryDispatcher>();
+    dispatcher->Protocol.set("udp");
+    dispatcher->Address.set(address);
+    dispatcher->Port.set(mMulticastPort);
 
     // Create UDP socket
     mSocket = std::make_shared<UdpSocket>();
-    mEndpoint = std::make_shared<UdpEndpoint>(mSocket, profile);
+    mEndpoint = std::make_shared<UdpEndpoint>(mSocket, dispatcher);
     
     // Register M-SEARCH
-    if (mRestDispatcher)
-    {
-        mRestDispatcher->RegisterRestReactorFactory("M-SEARCH", "*", std::bind(&DiscoveryService::CreateMSearchReactor, this, std::placeholders::_1, std::placeholders::_2));
-    }
+    dispatcher->RegisterRestReactorFactory("M-SEARCH", "*", std::bind(&DiscoveryService::CreateMSearchReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 DiscoveryService::~DiscoveryService()
@@ -80,13 +74,11 @@ bool DiscoveryService::Initialize()
                 auto descriptionServiceDispatcher = std::make_shared<RestDispatcher>();
                 descriptionServiceDispatcher->RegisterRestReactorFactory("GET", mDescriptionUri, mDescriptionReactorFactory);
 
-                auto descriptionServiceProfile = std::make_shared<Profile>();
-                descriptionServiceProfile->Protocol.set("tcp");
-                descriptionServiceProfile->Address.set(mInterfaceAddress);
-                descriptionServiceProfile->Port.set(mSocket->HostPort.cref());
-                descriptionServiceProfile->Dispatcher.set(descriptionServiceDispatcher);
+                descriptionServiceDispatcher->Protocol.set("tcp");
+                descriptionServiceDispatcher->Address.set(mInterfaceAddress);
+                descriptionServiceDispatcher->Port.set(mSocket->HostPort.cref());
 
-                mDescriptionService = std::make_shared<RestService>(descriptionServiceProfile);
+                mDescriptionService = std::make_shared<RestService>(descriptionServiceDispatcher);
                 return mDescriptionService->Start();
             }
         }

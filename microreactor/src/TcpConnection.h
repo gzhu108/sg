@@ -14,7 +14,7 @@ namespace sg { namespace microreactor
     class TcpConnection : public Connection
     {
     public:
-        TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<Profile> profile);
+        TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
         virtual ~TcpConnection();
         
         PROPERTY_SET(ReceiveBufferSize, uint32_t, DEFAULT_TCP_CONNECTION_BUFFER_SIZE, TcpConnection::SetReceiveBufferSize);

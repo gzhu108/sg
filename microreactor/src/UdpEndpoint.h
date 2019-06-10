@@ -11,7 +11,7 @@ namespace sg { namespace microreactor
     class UdpEndpoint : public Endpoint
     {
     public:
-        UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<Profile> profile);
+        UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
         virtual ~UdpEndpoint();
         
         virtual bool IsClosed() override;

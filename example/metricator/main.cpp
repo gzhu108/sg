@@ -161,14 +161,12 @@ int32_t main(int32_t argc, const char* argv[])
 #endif
 
     auto messageDecoder = std::make_shared<MetricatorMessageDispatcher>();
-    auto profile = std::make_shared<Profile>();
-    profile->Protocol.set(protocol);
-    profile->Address.set(hostAddress);
-    profile->Port.set(hostPort);
-    profile->Dispatcher.set(messageDecoder);
+    messageDecoder->Protocol.set(protocol);
+    messageDecoder->Address.set(hostAddress);
+    messageDecoder->Port.set(hostPort);
 
     // Create metricatorService
-    auto metricatorService = CreateServiceFromProfile<Service>(profile);
+    auto metricatorService = std::make_shared<Service>(NetworkUtility::CreateEndpoint(messageDecoder));
     if (metricatorService->Start())
     {
         START_BLOCKING_TASK_LOOP();

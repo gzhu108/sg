@@ -8,12 +8,12 @@ using namespace metricatorapi;
 
 MetricatorLogger::MetricatorLogger(const std::string& protocol, const std::string& address, uint16_t port)
 {
-    auto profile = std::make_shared<Profile>();
-    profile->Protocol.set(protocol);
-    profile->Address.set(address);
-    profile->Port.set(port);
+    auto dispatcher = std::make_shared<Dispatcher>();
+    dispatcher->Protocol.set(protocol);
+    dispatcher->Address.set(address);
+    dispatcher->Port.set(port);
 
-    mConnection = NetworkUtility::CreateConnection(profile);
+    mConnection = NetworkUtility::CreateConnection(dispatcher);
 }
 
 MetricatorLogger::~MetricatorLogger()

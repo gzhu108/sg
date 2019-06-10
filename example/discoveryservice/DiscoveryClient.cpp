@@ -16,14 +16,10 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     if (dispatcher == nullptr)
     {
         dispatcher = std::make_shared<DiscoveryDispatcher>();
+        dispatcher->Protocol.set("udp");
+        dispatcher->Address.set(mMulticastAddress);
+        dispatcher->Port.set(mMulticastPort);
     }
-
-    // Create client profile
-    auto profile = std::make_shared<Profile>();
-    profile->Protocol.set("udp");
-    profile->Address.set(mMulticastAddress);
-    profile->Port.set(mMulticastPort);
-    profile->Dispatcher.set(dispatcher);
 
     std::string address = mInterfaceAddress;
     if (address.empty())
@@ -45,7 +41,7 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     mSocket->PeerPort.set(mMulticastPort);
 
     // Create UDP connection
-    auto connection = std::make_shared<UdpConnection>(mSocket, profile);
+    auto connection = std::make_shared<UdpConnection>(mSocket, dispatcher);
     Initialize(connection, std::chrono::milliseconds(30));
 
     dispatcher->RegisterRestReactorFactory("NOTIFY", "*", std::bind(&DiscoveryClient::CreateNotifyReactor, this, std::placeholders::_1, std::placeholders::_2));

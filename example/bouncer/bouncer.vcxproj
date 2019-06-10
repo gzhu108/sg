@@ -194,14 +194,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BouncerDispatcher.cpp" />
-    <ClCompile Include="BouncerProfile.cpp" />
     <ClCompile Include="BouncerReactor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BouncerRestService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BouncerDispatcher.h" />
-    <ClInclude Include="BouncerProfile.h" />
     <ClInclude Include="BouncerReactor.h" />
     <ClInclude Include="BouncerRestService.h" />
   </ItemGroup>

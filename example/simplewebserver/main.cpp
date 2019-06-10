@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include "Microreactor.h"
-#include "SimpleWebService.h"
+#include "SimpleWebDispatcher.h"
 
 using namespace sg::microreactor;
 using namespace simplewebserver;
@@ -93,30 +93,28 @@ int32_t main(int32_t argc, const char* argv[])
     ConfigurationSingleton::InitializeConfiguration(configuration);
 
     // Create the simple REST service
-    auto simpleProfile = std::make_shared<Profile>();
-    simpleProfile->Protocol.set("tcp");
-    simpleProfile->Address.set(hostAddress);
-    simpleProfile->Port.set(hostPort);
+    auto simpleDispatcher = std::make_shared<SimpleWebDispatcher>();
+    simpleDispatcher->Protocol.set("tcp");
+    simpleDispatcher->Address.set(hostAddress);
+    simpleDispatcher->Port.set(hostPort);
 
-    auto simpleSocket = std::make_shared<TcpSocket>();
-    auto simpleEndpoint = std::make_shared<TcpEndpoint>(simpleSocket, simpleProfile);
-    simpleSocket = nullptr;
-
-    SimpleWebService simpleWebService(simpleEndpoint);
+    //auto simpleSocket = std::make_shared<TcpSocket>();
+    auto simpleEndpoint = std::make_shared<TcpEndpoint>(std::make_shared<TcpSocket>(), simpleDispatcher);
+    Service simpleWebService(simpleEndpoint);
     simpleEndpoint = nullptr;
 
     // Create the secure REST service
-    auto secureProfile = std::make_shared<Profile>();
-    simpleProfile->Protocol.set("tcp");
-    secureProfile->Address.set(hostAddress);
-    secureProfile->Port.set(securePort);
+    auto secureDispatcher = std::make_shared<SimpleWebDispatcher>();
+    secureDispatcher->Protocol.set("tcp");
+    secureDispatcher->Address.set(hostAddress);
+    secureDispatcher->Port.set(securePort);
 
     auto secureSocket = std::make_shared<SecureTcpSocket>();
     secureSocket->ConfigureSslContext(SSLv23_server_method(), "selfsigned.key", "cert.pem", SecureTcpSocket::VerifyPeer);
-    auto secureEndpoint = std::make_shared<TcpEndpoint>(secureSocket, secureProfile);
+    auto secureEndpoint = std::make_shared<TcpEndpoint>(secureSocket, secureDispatcher);
     secureSocket = nullptr;
 
-    SimpleWebService secureWebService(secureEndpoint);
+    Service secureWebService(secureEndpoint);
     secureEndpoint = nullptr;
 
     // Start the REST services

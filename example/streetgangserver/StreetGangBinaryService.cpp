@@ -177,27 +177,25 @@ bool StreetGangBinaryService::Initialize()
     configuration->GetValue("ReceiveTimeout", receiveTimeout);
     configuration->GetValue("SendTimeout", sendTimeout);
 
-    auto profile = std::make_shared<Profile>();
+    auto dispatcher = std::make_shared<StreetGangBinaryDispatcher>();
 
     std::string protocol = "tcp";
     configuration->GetValue("Protocol", protocol);
-    profile->Protocol.set(protocol);
+    dispatcher->Protocol.set(protocol);
 
     std::string address = ANY_HOST;
     configuration->GetValue("ServiceAddress", address);
-    profile->Address.set(address);
+    dispatcher->Address.set(address);
 
     uint16_t port = 8390;
     configuration->GetValue("ServicePort", port);
-    profile->Port.set(port);
-
-    profile->Dispatcher.set(std::make_shared<StreetGangBinaryDispatcher>());
+    dispatcher->Port.set(port);
 
     auto socket = std::make_shared<SecureTcpSocket>();
     socket->ConfigureSslContext(SSLv23_server_method(), "cert/Server.key", "cert/Server.cer", VerifyPeer);
     socket->LoadSslContextVerifyLocations("cert/ChainCA.cer", "");
     //auto socket = std::make_shared<TcpSocket>();
-    mEndpoint = std::make_shared<TcpEndpoint>(socket, profile);
+    mEndpoint = std::make_shared<TcpEndpoint>(socket, dispatcher);
     LOG("SECURE TCP HOST: %s", mEndpoint->Name->c_str());
 
     mEndpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));

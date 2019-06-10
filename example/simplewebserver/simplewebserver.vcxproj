@@ -41,11 +41,11 @@
   <ItemGroup>
     <ClCompile Include="GetFileReactor.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SimpleWebService.cpp" />
+    <ClCompile Include="SimpleWebDispatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GetFileReactor.h" />
-    <ClInclude Include="SimpleWebService.h" />
+    <ClInclude Include="SimpleWebDispatcher.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1354265D-CEC7-4B71-9D56-1978F779432F}</ProjectGuid>

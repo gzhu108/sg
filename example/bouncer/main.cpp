@@ -7,7 +7,6 @@
 #include <functional>
 #include "Microreactor.h"
 #include "BouncerRestService.h"
-#include "BouncerProfile.h"
 #include "BouncerDispatcher.h"
 
 using namespace sg::microreactor;
@@ -125,24 +124,22 @@ int32_t main(int32_t argc, const char* argv[])
 
     ConfigurationSingleton::InitializeConfiguration(configuration);
 
-    auto bouncerDecoder = std::make_shared<BouncerDecoder>();
-    auto profile = std::make_shared<BouncerProfile>();
-    profile->Protocol.set(protocol);
-    profile->Address.set(ANY_HOST);
-    profile->Port.set(443);
-    profile->Dispatcher.set(bouncerDecoder);
-    profile->TargetName.set(targetName);
-    profile->TargetPort.set(targetPort);
+    auto bouncerDecoder = std::make_shared<BouncerDispatcher>();
+    bouncerDecoder->Protocol.set(protocol);
+    bouncerDecoder->Address.set(ANY_HOST);
+    bouncerDecoder->Port.set(443);
+    bouncerDecoder->TargetName.set(targetName);
+    bouncerDecoder->TargetPort.set(targetPort);
 
     // Create a REST service for settings
-    BouncerRestService restService(profile);
+    BouncerRestService restService(bouncerDecoder);
     if (restService.Start())
     {
-        profile->Address.set(hostAddress);
-        profile->Port.set(hostPort);
+        bouncerDecoder->Address.set(hostAddress);
+        bouncerDecoder->Port.set(hostPort);
 
         // Create a microservice
-        auto service = CreateServiceFromProfile<Service>(profile);
+        auto service = std::make_shared<Service>(NetworkUtility::CreateEndpoint(bouncerDecoder));
         if (service->Start())
         {
             START_BLOCKING_TASK_LOOP();

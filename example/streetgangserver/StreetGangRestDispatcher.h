@@ -1,20 +1,17 @@
 #pragma once
-#ifndef streetgangserver_StreetGangRestService
-#define streetgangserver_StreetGangRestService
+#ifndef streetgangserver_StreetGangRestDispatcher
+#define streetgangserver_StreetGangRestDispatcher
 
-#include "RestService.h"
+#include "RestDispatcher.h"
 
 
 namespace streetgangserver
 {
-    class StreetGangRestService : public sg::microreactor::RestService
+    class StreetGangRestDispatcher : public sg::microreactor::RestDispatcher
     {
     public:
-        explicit StreetGangRestService(std::shared_ptr<sg::microreactor::Endpoint> endpoint);
-        virtual ~StreetGangRestService();
-
-    public:
-        virtual bool Initialize() override;
+        explicit StreetGangRestDispatcher();
+        virtual ~StreetGangRestDispatcher();
 
     protected:
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetVersionReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
@@ -24,4 +21,4 @@ namespace streetgangserver
 }
 
 
-#endif // streetgangserver_StreetGangRestService
+#endif // streetgangserver_StreetGangRestDispatcher

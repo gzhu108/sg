@@ -1,4 +1,4 @@
-#include "StreetGangRestService.h"
+#include "StreetGangRestDispatcher.h"
 #include "RequestGetVersionReactor.h"
 #include "RequestCreateWorldReactor.h"
 #include "RequestGetSceneReactor.h"
@@ -13,25 +13,18 @@ using namespace streetgangapi;
 using namespace streetgangserver;
 
 
-StreetGangRestService::StreetGangRestService(std::shared_ptr<Endpoint> endpoint)
-    : RestService(endpoint)
+StreetGangRestDispatcher::StreetGangRestDispatcher()
+{
+    RegisterRestReactorFactory("GET", "/version", std::bind(&StreetGangRestDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterRestReactorFactory("POST", "/createworld", std::bind(&StreetGangRestDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterRestReactorFactory("POST", "/getscene", std::bind(&StreetGangRestDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
+}
+
+StreetGangRestDispatcher::~StreetGangRestDispatcher()
 {
 }
 
-StreetGangRestService::~StreetGangRestService()
-{
-}
-
-bool StreetGangRestService::Initialize()
-{
-    mRestDispatcher->RegisterRestReactorFactory("GET", "/version", std::bind(&StreetGangRestService::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mRestDispatcher->RegisterRestReactorFactory("POST", "/createworld", std::bind(&StreetGangRestService::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mRestDispatcher->RegisterRestReactorFactory("POST", "/getscene", std::bind(&StreetGangRestService::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
-    
-    return RestService::Initialize();
-}
-
-std::shared_ptr<Reactor> StreetGangRestService::CreateGetVersionReactor(std::shared_ptr<RestMessage> message, Connection& connection)
+std::shared_ptr<Reactor> StreetGangRestDispatcher::CreateGetVersionReactor(std::shared_ptr<RestMessage> message, Connection& connection)
 {
     auto request = std::static_pointer_cast<RestRequest>(message);
     if (request == nullptr || request->mUri.length() != std::string("/version").length())
@@ -56,7 +49,7 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateGetVersionReactor(std::sha
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangRestService::CreateCreateWorldReactor(std::shared_ptr<RestMessage> message, Connection& connection)
+std::shared_ptr<Reactor> StreetGangRestDispatcher::CreateCreateWorldReactor(std::shared_ptr<RestMessage> message, Connection& connection)
 {
     std::string path = "/createworld";
     auto request = std::static_pointer_cast<RestRequest>(message);
@@ -82,7 +75,7 @@ std::shared_ptr<Reactor> StreetGangRestService::CreateCreateWorldReactor(std::sh
     return nullptr;
 }
 
-std::shared_ptr<Reactor> StreetGangRestService::CreateGetSceneReactor(std::shared_ptr<RestMessage> message, Connection& connection)
+std::shared_ptr<Reactor> StreetGangRestDispatcher::CreateGetSceneReactor(std::shared_ptr<RestMessage> message, Connection& connection)
 {
     auto request = std::static_pointer_cast<RestRequest>(message);
     if (request == nullptr || request->mUri.length() < std::string("/getscene").length())

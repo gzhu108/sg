@@ -10,7 +10,7 @@ namespace sg { namespace microreactor
     class TcpEndpoint : public Endpoint
     {
     public:
-        TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<Profile> profile);
+        TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
         virtual ~TcpEndpoint();
 
         virtual bool IsClosed() override;
