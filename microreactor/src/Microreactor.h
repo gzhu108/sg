@@ -51,5 +51,6 @@
 #include "UdpEndpoint.h"
 #include "UdpSocket.h"
 #include "Uuid.h"
+#include "Application.h"
 
 #endif // sg_microreactor_Microreactor

@@ -9,14 +9,7 @@ using namespace sg::microreactor;
 using namespace simplewebserver;
 
 
-volatile bool terminateSignal = false;
-void SingalHandler(int type)
-{
-    terminateSignal = true;
-    DESTROY_TASK_MANAGER();
-}
-
-int32_t main(int32_t argc, const char* argv[])
+std::vector<std::shared_ptr<Endpoint>>::size_type Initialize(int32_t argc, const char* argv[], std::vector<std::shared_ptr<Endpoint>>& endpoints)
 {
     GET_LOGGER().AddLogger([](const std::string& text)
     {
@@ -26,24 +19,15 @@ int32_t main(int32_t argc, const char* argv[])
     LOG("simplewebserver (%s)", sg::microreactor::StringUtility::GetHttpTimeString().c_str());
     LOG("press ctrl+c to terminate");
 
-    // Set signal handlers for graceful termination
-    signal(SIGABRT, SingalHandler);
-    signal(SIGINT, SingalHandler);
-    signal(SIGTERM, SingalHandler);
-
-#ifndef _MSC_VER
-    signal(SIGPIPE, SIG_IGN);
-#endif
-
     std::string configFilePath;
     std::string hostAddress;
     uint16_t hostPort = 0;
     uint16_t securePort = 0;
 
-    const char* configArgs[] = {"--config", "-c"};
-    const char* hostArgs[] = {"--host", "-h"};
-    const char* portArgs[] = {"--port", "-p"};
-    const char* securePortArgs[] = {"--secure-port", "-s"};
+    const char* configArgs[] = { "--config", "-c" };
+    const char* hostArgs[] = { "--host", "-h" };
+    const char* portArgs[] = { "--port", "-p" };
+    const char* securePortArgs[] = { "--secure-port", "-s" };
 
     for (int32_t i = 1; i < argc; i++)
     {
@@ -72,9 +56,9 @@ int32_t main(int32_t argc, const char* argv[])
             LOG("Unknown command line argument: %s", argv[i]);
         }
     }
-    
+
     LOG("Configuration file: %s", configFilePath.c_str());
-        
+
     // Create metricator service profile
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Service");
     if (hostAddress.empty())
@@ -98,10 +82,8 @@ int32_t main(int32_t argc, const char* argv[])
     simpleDispatcher->Address.set(hostAddress);
     simpleDispatcher->Port.set(hostPort);
 
-    //auto simpleSocket = std::make_shared<TcpSocket>();
     auto simpleEndpoint = std::make_shared<TcpEndpoint>(std::make_shared<TcpSocket>(), simpleDispatcher);
-    Service simpleWebService(simpleEndpoint);
-    simpleEndpoint = nullptr;
+    endpoints.emplace_back(simpleEndpoint);
 
     // Create the secure REST service
     auto secureDispatcher = std::make_shared<SimpleWebDispatcher>();
@@ -112,31 +94,31 @@ int32_t main(int32_t argc, const char* argv[])
     auto secureSocket = std::make_shared<SecureTcpSocket>();
     secureSocket->ConfigureSslContext(SSLv23_server_method(), "selfsigned.key", "cert.pem", SecureTcpSocket::VerifyPeer);
     auto secureEndpoint = std::make_shared<TcpEndpoint>(secureSocket, secureDispatcher);
-    secureSocket = nullptr;
+    endpoints.emplace_back(secureEndpoint);
 
-    Service secureWebService(secureEndpoint);
-    secureEndpoint = nullptr;
+    return endpoints.size();
+}
 
-    // Start the REST services
-    if (simpleWebService.Start() && secureWebService.Start())
+int32_t main(int32_t argc, const char* argv[])
+{
+    std::vector<std::shared_ptr<Endpoint>> endpoints;
+    if (Initialize(argc, argv, endpoints) == 0)
     {
-        START_BLOCKING_TASK_LOOP();
-
-        // Stop REST services
-        simpleWebService.Stop();
-        secureWebService.Stop();
+        LOG("Failed to initialize the simplewebserver");
     }
     else
     {
-        LOG("Failed to start the simplewebserver");
+        // Start the REST services
+        if (!Application::Context().Run(endpoints))
+        {
+            LOG("Failed to start the simplewebserver");
+        }
+
+        // Clean up OpenSSL
+        EVP_cleanup();
+
+        LOG("All done...");
     }
 
-    // Cancell all tasks
-    CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER();
-
-    // Clean up OpenSSL
-    EVP_cleanup();
-
-    LOG("All done...");
     return 0;
 }

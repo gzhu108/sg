@@ -19,14 +19,7 @@ using namespace streetgangapi;
 using namespace streetgangclient;
 
 
-volatile bool terminateSignal = false;
-void SingalHandler(int type)
-{
-    terminateSignal = true;
-    STOP_TASK_MANAGER();
-}
-
-int32_t main(int32_t argc, const char* argv[])
+void Initialize(int32_t argc, const char* argv[])
 {
 #if defined(_MSC_VER)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -44,24 +37,15 @@ int32_t main(int32_t argc, const char* argv[])
     LOG("Street Gang Client Started");
     LOG("press ctrl+c to terminate");
 
-    // Set signal handlers for graceful termination
-    signal(SIGABRT, SingalHandler);
-    signal(SIGINT, SingalHandler);
-    signal(SIGTERM, SingalHandler);
-
-#ifndef _MSC_VER
-    signal(SIGPIPE, SIG_IGN);
-#endif
-
     std::string configFilePath;
     std::string protocol;
     std::string serverAddress;
     uint16_t serverPort = 0;
 
-    const char* configArgs[] = {"--config", "-c"};
-    const char* protocolArgs[] = {"--protocol", "-l"};
-    const char* serverArgs[] = {"--server", "-s"};
-    const char* portArgs[] = {"--port", "-p"};
+    const char* configArgs[] = { "--config", "-c" };
+    const char* protocolArgs[] = { "--protocol", "-l" };
+    const char* serverArgs[] = { "--server", "-s" };
+    const char* portArgs[] = { "--port", "-p" };
 
     for (int32_t i = 1; i < argc; i++)
     {
@@ -90,9 +74,9 @@ int32_t main(int32_t argc, const char* argv[])
             LOG("Unknown command line argument: %s", argv[i]);
         }
     }
-    
+
     LOG("Configuration file: %s", configFilePath.c_str());
-        
+
     // Create metricator service profile
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Client");
     if (protocol.empty())
@@ -107,7 +91,7 @@ int32_t main(int32_t argc, const char* argv[])
     {
         configuration->GetValue("ServerPort", serverPort);
     }
-    
+
     LOG("server address: %s, server port: %d", serverAddress.c_str(), serverPort);
 
     std::shared_ptr<Client> client;
@@ -125,11 +109,15 @@ int32_t main(int32_t argc, const char* argv[])
         auto requester = std::make_shared<BinaryStreetGangRequester>(*client->GetConnection());
         requester->GetVersion(std::make_shared<ResponseGetVersionReactor>(*client->GetConnection(), requester));
     }
+}
 
-    START_BLOCKING_TASK_LOOP();
-
-    // Cancell all tasks
-    CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER();
+int32_t main(int32_t argc, const char* argv[])
+{
+    Initialize(argc, argv);
+    if (!Application::Context().Run(std::vector<std::shared_ptr<Endpoint>>()))
+    {
+        LOG("Failed to start the streetgangclient");
+    }
 
     // Optional: Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();

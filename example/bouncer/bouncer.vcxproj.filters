@@ -21,10 +21,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BouncerRestService.cpp">
+    <ClCompile Include="BouncerDispatcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BouncerDispatcher.cpp">
+    <ClCompile Include="BouncerRestService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="BouncerReactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BouncerRestService.h">
+    <ClInclude Include="BouncerDispatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BouncerDispatcher.h">
+    <ClInclude Include="BouncerRestService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -30,7 +30,7 @@ __top_builddir__bin_streetgangserver_SOURCES = \
     StreetGangPBDispatcher.cpp \
     StreetGangBinaryService.cpp \
     StreetGangPBService.cpp \
-    StreetGangRestService.cpp \
+    StreetGangRestDispatcher.cpp \
     StreetGangReactor.cpp \
     WorldClient.cpp \
     WorldClientDispatcher.cpp

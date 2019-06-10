@@ -16,7 +16,6 @@ bin_PROGRAMS = \
 
 __top_builddir__bin_bouncer_SOURCES = \
     main.cpp \
-    BouncerProfile.cpp \
     BouncerDispatcher.cpp \
     BouncerReactor.cpp \
     BouncerRestService.cpp

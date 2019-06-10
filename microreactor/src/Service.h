@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Microservice
-#define sg_microreactor_Microservice
+#ifndef sg_microreactor_Service
+#define sg_microreactor_Service
 
 #include "Profile.h"
 #include "Endpoint.h"
@@ -33,4 +33,4 @@ namespace sg { namespace microreactor
     };
 }}
 
-#endif // sg_microreactor_Microservice
+#endif // sg_microreactor_Service

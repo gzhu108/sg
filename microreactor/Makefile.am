@@ -16,6 +16,7 @@ AM_LDFLAGS = -static-libstdc++
 lib_LIBRARIES = $(top_builddir)/lib/libmicroreactor.a
 
 nobase_include_HEADERS = \
+    src/Application.h \
     src/BinarySerializer.h \
     src/Cancelable.h \
     src/Client.h \
@@ -79,6 +80,7 @@ nobase_include_HEADERS = \
     src/UriCodec.h
 
 __top_builddir__lib_libmicroreactor_a_SOURCES = \
+    src/Application.cpp \
     src/BinarySerializer.cpp \
     src/Client.cpp \
     src/ConfigurationXml.cpp \
