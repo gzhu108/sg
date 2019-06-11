@@ -3,14 +3,14 @@
 #define sg_service_DiscoveryService
 
 #include "UdpSocket.h"
-#include "RestService.h"
+#include "Service.h"
 #include "DiscoveryDispatcher.h"
 #include "ServiceDescription.h"
 
 
 namespace sg { namespace service
 {
-    class DiscoveryService : public sg::microreactor::RestService
+    class DiscoveryService : public sg::microreactor::Service
     {
     public:
         explicit DiscoveryService(const std::string& interfaceAddress = {}, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS, uint16_t multicastPort = DEFAULT_MULTICAST_PORT);
@@ -37,7 +37,7 @@ namespace sg { namespace service
         std::string mMulticastAddress;
         uint16_t mMulticastPort;
         std::shared_ptr<sg::microreactor::UdpSocket> mSocket;
-        std::shared_ptr<sg::microreactor::RestService> mDescriptionService;
+        std::shared_ptr<sg::microreactor::Service> mDescriptionService;
         std::string mDescriptionUri;
         sg::microreactor::RestDispatcher::Factory mDescriptionReactorFactory;
     };

@@ -3,8 +3,8 @@
 #define sg_microreactor_NetworkUtility
 
 #include <vector>
-#include "Profile.h"
 #include "Socket.h"
+#include "Dispatcher.h"
 #include "Connection.h"
 #include "Endpoint.h"
 

@@ -2,7 +2,6 @@
 #ifndef sg_microreactor_Service
 #define sg_microreactor_Service
 
-#include "Profile.h"
 #include "Endpoint.h"
 #include "NetworkUtility.h"
 

@@ -18,7 +18,7 @@ namespace sg { namespace microreactor
     class Connection
     {
     public:
-        explicit Connection();
+        Connection();
         virtual ~Connection();
         
         Signal<void>& Closed = mClosed;

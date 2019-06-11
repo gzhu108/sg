@@ -12,7 +12,7 @@ namespace sg { namespace microreactor
     class Endpoint
     {
     public:
-        explicit Endpoint();
+        Endpoint();
         virtual ~Endpoint();
 
         Signal<std::shared_ptr<Connection>>& ConnectionMade = mConnectionMade;

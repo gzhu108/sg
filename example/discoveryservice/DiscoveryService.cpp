@@ -2,6 +2,7 @@
 #include "NetworkUtility.h"
 #include "TcpEndpoint.h"
 #include "UdpEndpoint.h"
+#include "RestService.h"
 #include "MSearchReactor.h"
 
 using namespace sg::microreactor;
@@ -63,7 +64,7 @@ bool DiscoveryService::Initialize()
         // Initialize multicasting
         if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))
         {
-            if (RestService::Initialize())
+            if (Service::Initialize())
             {
                 LOG("Discovery server endpoint: [%s]:%d on interface %s", mSocket->HostAddress->c_str(), mSocket->HostPort.cref(), mInterfaceAddress.c_str());
                 
@@ -78,7 +79,7 @@ bool DiscoveryService::Initialize()
                 descriptionServiceDispatcher->Address.set(mInterfaceAddress);
                 descriptionServiceDispatcher->Port.set(mSocket->HostPort.cref());
 
-                mDescriptionService = std::make_shared<RestService>(descriptionServiceDispatcher);
+                mDescriptionService = std::make_shared<Service>(NetworkUtility::CreateEndpoint(descriptionServiceDispatcher));
                 return mDescriptionService->Start();
             }
         }

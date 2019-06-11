@@ -1,12 +1,8 @@
 #include "RestService.h"
-#include "TcpEndpoint.h"
+#include "NetworkUtility.h"
 
 using namespace sg::microreactor;
 
-
-RestService::RestService()
-{
-}
 
 RestService::RestService(const std::string& hostName, uint16_t port)
 {
@@ -14,7 +10,7 @@ RestService::RestService(const std::string& hostName, uint16_t port)
     dispatcher->Protocol.set("tcp");
     dispatcher->Address.set(hostName);
     dispatcher->Port.set(port);
-    mEndpoint = std::make_shared<TcpEndpoint>(nullptr, dispatcher);
+    mEndpoint = NetworkUtility::CreateEndpoint(dispatcher);
 }
 
 RestService::RestService(std::shared_ptr<Profile> profile)
@@ -34,16 +30,7 @@ RestService::RestService(std::shared_ptr<Profile> profile)
         dispatcher->Port.set(profile->Port.cref());
     }
 
-    mEndpoint = std::make_shared<TcpEndpoint>(nullptr, dispatcher);
-}
-
-RestService::RestService(std::shared_ptr<Endpoint> endpoint)
-    : Service(endpoint)
-{
-    if (endpoint != nullptr && endpoint->Dispatcher.cref() == nullptr)
-    {
-        endpoint->Dispatcher.set(std::make_shared<RestDispatcher>());
-    }
+    mEndpoint = NetworkUtility::CreateEndpoint(dispatcher);
 }
 
 RestService::~RestService()
