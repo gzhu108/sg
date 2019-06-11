@@ -14,9 +14,6 @@ namespace sg { namespace microreactor
         RestService(const std::string& hostAddress, uint16_t port);
         explicit RestService(std::shared_ptr<Profile> profile);
         virtual ~RestService();
-
-    protected:
-        virtual void OnConnectionMade(const std::shared_ptr<Connection>& connection) override;
     };
 }}
 

@@ -114,7 +114,7 @@ void Initialize(int32_t argc, const char* argv[])
 int32_t main(int32_t argc, const char* argv[])
 {
     Initialize(argc, argv);
-    if (!Application::Context().Run(std::vector<std::shared_ptr<Endpoint>>()))
+    if (!Application::Context().Run())
     {
         LOG("Failed to start the streetgangclient");
     }

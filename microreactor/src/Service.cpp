@@ -25,6 +25,8 @@ bool Service::Start()
     {
         if (mEndpoint->Start())
         {
+            LOG("Service started on %s", mEndpoint->Name->c_str());
+
             // Connection to the ConnectonMade signal
             mEndpoint->ConnectionMade.Connect(std::bind(&Service::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
             return true;

@@ -44,12 +44,10 @@ Application::~Application()
 {
 }
 
-bool Application::Run(std::vector<std::shared_ptr<Endpoint>> endpoints)
+bool Application::Run()
 {
-    for (auto& endpoint : endpoints)
+    for (auto& service : mServices)
     {
-        auto service = std::make_shared<Service>(endpoint);
-        mServices.emplace_back(service);
         if (!service->Start())
         {
             return false;
@@ -68,4 +66,16 @@ bool Application::Run(std::vector<std::shared_ptr<Endpoint>> endpoints)
     CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER();
 
     return true;
+}
+
+bool Application::Run(const std::vector<std::shared_ptr<Endpoint>>& endpoints)
+{
+    mServices.clear();
+
+    for (auto& endpoint : endpoints)
+    {
+        mServices.emplace_back(std::make_shared<Service>(endpoint));
+    }
+
+    return Run();
 }
