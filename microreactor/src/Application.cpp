@@ -79,3 +79,10 @@ bool Application::Run(const std::vector<std::shared_ptr<Endpoint>>& endpoints)
 
     return Run();
 }
+
+bool Application::Run(const std::vector<std::shared_ptr<Service>>& services)
+{
+    mServices.clear();
+    std::copy(services.begin(), services.end(), std::back_inserter(mServices));
+    return Run();
+}

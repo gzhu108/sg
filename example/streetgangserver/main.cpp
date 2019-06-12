@@ -6,7 +6,7 @@
 #include <thread>
 #include <functional>
 #include <vector>
-#include "NetworkUtility.h"
+#include "Microreactor.h"
 #include "StreetGangBinaryService.h"
 #include "StreetGangPBService.h"
 #include "StreetGangRestDispatcher.h"
@@ -62,13 +62,6 @@ namespace
     };
 }
 
-volatile bool terminateSignal = false;
-void SingalHandler(int type)
-{
-    terminateSignal = true;
-    STOP_TASK_MANAGER();
-}
-
 static std::shared_ptr<Service> CreateRestService()
 {
     auto configuration = ConfigurationSingleton::GetConfiguration();
@@ -120,15 +113,6 @@ int32_t main(int32_t argc, const char* argv[])
 
     LOG("Street Gang Server Started");
     LOG("press ctrl+c to terminate");
-
-    // Set signal handlers for graceful termination
-    signal(SIGABRT, SingalHandler);
-    signal(SIGINT, SingalHandler);
-    signal(SIGTERM, SingalHandler);
-
-#ifndef _MSC_VER
-    signal(SIGPIPE, SIG_IGN);
-#endif
 
     std::string configFilePath;
     const char* configArgs[] = {"--config", "-c"};
@@ -192,36 +176,18 @@ int32_t main(int32_t argc, const char* argv[])
     //MetricatorLogger metricatorLogger(metricatorProtocol, metricatorHost, metricatorPort);
     //GET_LOGGER().AddLogger(std::bind(&MetricatorLogger::Log, &metricatorLogger, std::placeholders::_1));
 
-    StreetGangBinaryService streetGangBinaryService;
-    StreetGangPBService streetGangPBService;
-    std::shared_ptr<Service> streetGangRestService = CreateRestService();
+    std::vector<std::shared_ptr<Service>> services;
+    services.emplace_back(std::make_shared<StreetGangBinaryService>());
+    services.emplace_back(std::make_shared<StreetGangPBService>());
+    services.emplace_back(CreateRestService());
 
-    if (streetGangBinaryService.Start() &&
-        streetGangPBService.Start() &&
-        streetGangRestService->Start())
-    {
-        // Create StreetGangService
-        START_BLOCKING_TASK_LOOP();
-
-        // Stop StreetGangBinaryService
-        streetGangBinaryService.Stop();
-
-        // Stop StreetGangPBService
-        streetGangPBService.Stop();
-
-        // Stop StreetGangRestDispatcher
-        streetGangRestService->Stop();
-    }
-    else
+    if (!Application::Context().Run(services))
     {
         LOG("Failed to start the streetgangserver");
     }
 
     // Reset the world client
     WorldClient::ResetWorldClient();
-
-    // Cancell all tasks
-    CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER();
 
     // Optional: Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();
