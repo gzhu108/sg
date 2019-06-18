@@ -1,0 +1,3 @@
+// the configured options and settings for StreetGangApi 
+#define StreetGangApi_VERSION_MAJOR @StreetGangApi_VERSION_MAJOR@
+#define StreetGangApi_VERSION_MINOR @StreetGangApi_VERSION_MINOR@

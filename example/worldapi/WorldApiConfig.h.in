@@ -1,0 +1,3 @@
+// the configured options and settings for WorldApi 
+#define WorldApi_VERSION_MAJOR @WorldApi_VERSION_MAJOR@
+#define WorldApi_VERSION_MINOR @WorldApi_VERSION_MINOR@

@@ -1,0 +1,3 @@
+// the configured options and settings for StreetGangServer 
+#define StreetGangServer_VERSION_MAJOR @StreetGangServer_VERSION_MAJOR@
+#define StreetGangServer_VERSION_MINOR @StreetGangServer_VERSION_MINOR@

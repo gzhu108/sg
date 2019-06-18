@@ -1,0 +1,3 @@
+// the configured options and settings for Metricator 
+#define Metricator_VERSION_MAJOR @Metricator_VERSION_MAJOR@
+#define Metricator_VERSION_MINOR @Metricator_VERSION_MINOR@

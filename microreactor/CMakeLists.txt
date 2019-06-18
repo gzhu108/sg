@@ -15,25 +15,23 @@ configure_file(
   )
  
 # add the binary tree to the search path for include files
-# so that we will find TutorialConfig.h
 include_directories(
-  "${PROJECT_BINARY_DIR}"
-  "src"
-  "test"
-  "../tools/rapidxml"
-  "../tools/http-parser"
+  "${PROJECT_SOURCE_DIR}/src"
+  "${PROJECT_SOURCE_DIR}/test"
+  "${PROJECT_SOURCE_DIR}/../tools/rapidxml"
+  "${PROJECT_SOURCE_DIR}/../tools/http-parser"
   )
 
 file(GLOB BUILD_INC
-  "src/*.h"
+  "${PROJECT_SOURCE_DIR}/src/*.h"
   )
 
 file(GLOB BUILD_SRC
-  "src/*.cpp"
+  "${PROJECT_SOURCE_DIR}/src/*.cpp"
   )
 
 set(ADDITIONAL_SRC
-  "../tools/http-parser/http_parser.c"
+  "${PROJECT_SOURCE_DIR}/../tools/http-parser/http_parser.c"
   )
 
 add_library(microreactor STATIC ${BUILD_INC} ${BUILD_SRC} ${ADDITIONAL_SRC})
@@ -47,7 +45,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 
 file(GLOB TEST_SRC
-  "test/*.cpp"
+  "${PROJECT_SOURCE_DIR}/test/*.cpp"
   )
 
 link_directories(

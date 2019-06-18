@@ -3,4 +3,13 @@ project (sg)
 
 add_subdirectory(microreactor)
 add_subdirectory(example/simplewebserver)
+add_subdirectory(example/discoveryservice)
+add_subdirectory(example/metricatorapi)
+add_subdirectory(example/metricator)
+add_subdirectory(example/bouncer)
+add_subdirectory(example/worldapi)
+add_subdirectory(example/worldserver)
+add_subdirectory(example/streetgangapi)
+add_subdirectory(example/streetgangclient)
+add_subdirectory(example/streetgangserver)
 

@@ -1,0 +1,3 @@
+// the configured options and settings for WorldServer 
+#define WorldServer_VERSION_MAJOR @WorldServer_VERSION_MAJOR@
+#define WorldServer_VERSION_MINOR @WorldServer_VERSION_MINOR@

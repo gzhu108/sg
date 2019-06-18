@@ -1,0 +1,3 @@
+// the configured options and settings for DiscoveryService 
+#define DiscoveryService_VERSION_MAJOR @DiscoveryService_VERSION_MAJOR@
+#define DiscoveryService_VERSION_MINOR @DiscoveryService_VERSION_MINOR@
