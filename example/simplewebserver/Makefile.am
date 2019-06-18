@@ -4,7 +4,6 @@ AUTOMAKE_OPTIONS = foreign
 AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -g -fno-omit-frame-pointer -pthread -pipe
 AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++17 \
     -I../../tools/json \
-    -I../../tools/openssl/linux/include \
     -I../../microreactor/src
 
 AM_LDFLAGS = -static-libstdc++ -L/usr/lib
@@ -21,7 +20,7 @@ __top_builddir__bin_simplewebserver_SOURCES = \
 
 __top_builddir__bin_simplewebserver_LDADD = \
     ../../microreactor/lib/libmicroreactor.a \
-    ../../tools/openssl/linux/lib/libssl.a \
-    ../../tools/openssl/linux/lib/libcrypto.a \
+    -lssl \
+    -lcrypto \
     -luuid \
     -ldl

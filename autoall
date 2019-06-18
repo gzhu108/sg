@@ -1,12 +1,15 @@
 #!/bin/bash
 
-sudo apt-get update -y
-sudo apt-get install g++ -y
-sudo apt-get install automake -y
-sudo apt-get install pkg-config -y
-sudo apt-get install cmake -y
-sudo apt-get install uuid-dev -y
-sudo apt-get install openssl libssl-dev -y
+sudo apt update -y
+sudo apt install g++ -y
+sudo apt install automake -y
+sudo apt install pkg-config -y
+sudo apt install cmake -y
+sudo apt install uuid-dev -y
+sudo apt install openssl libssl-dev -y
+sudo apt install libprotobuf-dev -y
+sudo apt install protobuf-compiler -y
+sudo apt install google-mock -y
 
 echo "Compiler = $1"
 if [ "$1" == "gcc" ] ; then
@@ -48,23 +51,23 @@ fi
 echo "BUILD_TYPE=$BUILD_TYPE"
 
 
-pushd tools/googletest
-cmake CMakeLists.txt
-make
-popd
+#pushd tools/googletest
+#cmake CMakeLists.txt
+#make
+#popd
 
-pushd tools/protobuf
-./build-linux.sh
-if [ ! -d linux ] ; then
-    tar -xzvf linux.tar.gz
-fi
-popd
+#pushd tools/protobuf
+#./build-linux.sh
+#if [ ! -d linux ] ; then
+#    tar -xzvf linux.tar.gz
+#fi
+#popd
 
-pushd tools/openssl
-if [ ! -d linux ] ; then
-    tar -xzvf linux.tar.gz
-fi
-popd
+#pushd tools/openssl
+#if [ ! -d linux ] ; then
+#    tar -xzvf linux.tar.gz
+#fi
+#popd
 
 pushd microreactor
 echo Configuring: $PWD
@@ -105,13 +108,12 @@ autoheader
 automake --add-missing
 autoconf
 pushd protobuf
-export LD_LIBRARY_PATH=%LD_LIBRARY_PATH:../../../tools/protobuf/linux/lib
 rm -rf cpp
 mkdir cpp
-../../../tools/protobuf/linux/bin/protoc --cpp_out=cpp *.proto
+protoc --cpp_out=cpp *.proto
 rm -rf java
 mkdir java
-../../../tools/protobuf/linux/bin/protoc --java_out=java *.proto
+protoc --java_out=java *.proto
 popd
 popd
 

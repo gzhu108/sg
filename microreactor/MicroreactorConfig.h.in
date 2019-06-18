@@ -1,0 +1,3 @@
+// the configured options and settings for Microreactor 
+#define Microreactor_VERSION_MAJOR @Microreactor_VERSION_MAJOR@
+#define Microreactor_VERSION_MINOR @Microreactor_VERSION_MINOR@

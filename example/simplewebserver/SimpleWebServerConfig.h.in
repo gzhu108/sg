@@ -1,0 +1,3 @@
+// the configured options and settings for SimpleWebServer 
+#define SimpleWebServer_VERSION_MAJOR @SimpleWebServer_VERSION_MAJOR@
+#define SimpleWebServer_VERSION_MINOR @SimpleWebServer_VERSION_MINOR@

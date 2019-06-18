@@ -16,7 +16,6 @@
 *.opendb
 *.log
 *.tlog
-*.in
 *.log
 *.kdev4
 *.m4

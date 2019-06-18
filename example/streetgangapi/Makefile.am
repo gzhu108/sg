@@ -3,7 +3,6 @@ AUTOMAKE_OPTIONS = foreign
 # what flags you want to pass to the C compiler & linker
 AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -g -fno-omit-frame-pointer -pthread -pipe
 AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++17 \
-    -I../../tools/protobuf/linux/include \
     -I../../tools/json \
     -I../../microreactor/src
 

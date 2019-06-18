@@ -5,8 +5,6 @@ AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -g -fno-omit-frame-poi
 AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++17 \
     -Isrc \
     -I../tools/rapidxml \
-    -I../tools/googletest/googletest/include \
-    -I../tools/openssl/linux/include \
     -I../tools/http-parser
 
 AM_LDFLAGS = -static-libstdc++
@@ -131,8 +129,8 @@ __top_builddir__test_bin_microreactor_test_SOURCES = \
     
 __top_builddir__test_bin_microreactor_test_LDADD = \
     lib/libmicroreactor.a \
-    ../tools/googletest/googlemock/libgmock.a \
-    ../tools/googletest/googlemock/gtest/libgtest.a \
+    -lgmock_main \
+    -lgtest_main \
     -luuid
 
 TESTS = $(check_PROGRAMS)
