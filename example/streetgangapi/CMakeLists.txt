@@ -13,7 +13,7 @@ configure_file(
   "${PROJECT_SOURCE_DIR}/StreetGangApiConfig.h.in"
   "${PROJECT_BINARY_DIR}/StreetGangApiConfig.h"
   )
- 
+
 # add the binary tree to the search path for include files
 include_directories(
   "${PROJECT_SOURCE_DIR}/../../microreactor/src"
@@ -25,19 +25,13 @@ file(GLOB BUILD_INC
   )
 
 file(GLOB BUILD_SRC
-  "${PROJECT_SOURCE_DIR}/protobuf/cpp/*.pb.cc"
   "${PROJECT_SOURCE_DIR}/*.cpp"
-  )
-
-file(GLOB PB_SRC
-  "${PROJECT_SOURCE_DIR}/protobuf/*.proto"
   )
 
 find_package(Protobuf REQUIRED)
 include_directories(${Protobuf_INCLUDE_DIRS})
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PB_SRC})
 
-add_library(streetgangapi STATIC ${BUILD_INC} ${BUILD_SRC} ${PROTO_SRCS} ${PROTO_HDRS})
+add_library(streetgangapi STATIC ${BUILD_INC} ${BUILD_SRC})
 
 # add the install targets
 install(TARGETS streetgangapi DESTINATION bin)
