@@ -38,7 +38,7 @@ __top_builddir__bin_streetgangserver_SOURCES = \
 __top_builddir__bin_streetgangserver_LDADD = \
     ../metricatorapi/lib/libmetricatorapi.a \
     ../streetgangapi/lib/libstreetgangapi.a \
-    ../streetgangprot/lib/libstreetgangproto.a \
+    ../streetgangproto/lib/libstreetgangproto.a \
     ../worldapi/lib/libworldapi.a \
     ../discoveryservice/lib/libdiscoveryservice.a \
     ../../microreactor/lib/libmicroreactor.a \

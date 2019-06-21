@@ -12,15 +12,15 @@ lib_LIBRARIES = \
     $(top_builddir)/lib/libstreetgangproto.a
 
 __top_builddir__lib_libstreetgangproto_a_SOURCES = \
-    protobuf/cpp/ByebyeRequest.pb.cc \
-    protobuf/cpp/CreateWorldRequest.pb.cc \
-    protobuf/cpp/CreateWorldResponse.pb.cc \
-    protobuf/cpp/ErrorResponse.pb.cc \
-    protobuf/cpp/GetSceneRequest.pb.cc \
-    protobuf/cpp/GetSceneResponse.pb.cc \
-    protobuf/cpp/GetVersionRequest.pb.cc \
-    protobuf/cpp/GetVersionResponse.pb.cc \
-    protobuf/cpp/MessageHeader.pb.cc \
-    protobuf/cpp/Point.pb.cc \
-    protobuf/cpp/Rectangle.pb.cc
+    cpp/ByebyeRequest.pb.cc \
+    cpp/CreateWorldRequest.pb.cc \
+    cpp/CreateWorldResponse.pb.cc \
+    cpp/ErrorResponse.pb.cc \
+    cpp/GetSceneRequest.pb.cc \
+    cpp/GetSceneResponse.pb.cc \
+    cpp/GetVersionRequest.pb.cc \
+    cpp/GetVersionResponse.pb.cc \
+    cpp/MessageHeader.pb.cc \
+    cpp/Point.pb.cc \
+    cpp/Rectangle.pb.cc
 

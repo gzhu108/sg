@@ -4,7 +4,8 @@ AUTOMAKE_OPTIONS = foreign
 AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -g -fno-omit-frame-pointer -pthread -pipe
 AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++17 \
     -I../../tools/json \
-    -I../../microreactor/src
+    -I../../microreactor/src \
+    -I../streetgangproto/cpp
 
 AM_LDFLAGS = -static-libstdc++
 
@@ -14,17 +15,6 @@ lib_LIBRARIES = \
     $(top_builddir)/lib/libstreetgangapi.a
 
 __top_builddir__lib_libstreetgangapi_a_SOURCES = \
-    protobuf/cpp/ByebyeRequest.pb.cc \
-    protobuf/cpp/CreateWorldRequest.pb.cc \
-    protobuf/cpp/CreateWorldResponse.pb.cc \
-    protobuf/cpp/ErrorResponse.pb.cc \
-    protobuf/cpp/GetSceneRequest.pb.cc \
-    protobuf/cpp/GetSceneResponse.pb.cc \
-    protobuf/cpp/GetVersionRequest.pb.cc \
-    protobuf/cpp/GetVersionResponse.pb.cc \
-    protobuf/cpp/MessageHeader.pb.cc \
-    protobuf/cpp/Point.pb.cc \
-    protobuf/cpp/Rectangle.pb.cc \
     BinaryRequestByebye.cpp \
     BinaryRequestCreateWorld.cpp \
     BinaryRequestGetScene.cpp \
