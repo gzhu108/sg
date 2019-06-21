@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Proto Files">
+      <UniqueIdentifier>{9e53c875-de34-4477-9b9e-358f96d6f981}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ByebyeRequest.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="CreateWorldRequest.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="CreateWorldResponse.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ErrorResponse.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GetSceneRequest.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GetSceneResponse.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GetVersionRequest.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GetVersionResponse.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MessageHeader.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Point.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Rectangle.proto">
+      <Filter>Proto Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\ByebyeRequest.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\CreateWorldRequest.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\CreateWorldResponse.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ErrorResponse.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\GetSceneRequest.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\GetSceneResponse.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\GetVersionRequest.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\GetVersionResponse.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\MessageHeader.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Point.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\Rectangle.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cpp\ByebyeRequest.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\CreateWorldRequest.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\CreateWorldResponse.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\ErrorResponse.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\GetSceneRequest.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\GetSceneResponse.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\GetVersionRequest.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\GetVersionResponse.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\MessageHeader.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\Point.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cpp\Rectangle.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StreetGangPBService.proto">
+      <Filter>Proto Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

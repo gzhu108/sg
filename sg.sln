@@ -34,6 +34,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "streetgangapi", "example\streetgangapi\streetgangapi.vcxproj", "{4759B4AB-DCD8-443E-91BA-BE9E5E15A106}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A9A1B3AB-570F-46A3-BE5B-4B5551E90E6B} = {A9A1B3AB-570F-46A3-BE5B-4B5551E90E6B}
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00} = {D59745CE-32F9-4BDB-B91B-12FBFDC17D00}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "streetgangclient", "example\streetgangclient\streetgangclient.vcxproj", "{ED091D45-4D22-420D-A0DA-C8CCD97AFB33}"
@@ -58,6 +59,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "worldserver", "example\worl
 	ProjectSection(ProjectDependencies) = postProject
 		{AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA} = {AF019657-B45E-4FA0-B7AC-83CCDA7AAAEA}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "streetgangproto", "example\streetgangproto\streetgangproto.vcxproj", "{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -265,6 +268,24 @@ Global
 		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|x64.Build.0 = Release|x64
 		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|x86.ActiveCfg = Release|Win32
 		{C8FDD90F-36A8-4720-8FA3-A7787F38C4CE}.Release|x86.Build.0 = Release|Win32
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Check|ARM.ActiveCfg = Check|ARM
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Check|ARM.Build.0 = Check|ARM
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Check|x64.ActiveCfg = Check|x64
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Check|x64.Build.0 = Check|x64
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Check|x86.ActiveCfg = Check|Win32
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Check|x86.Build.0 = Check|Win32
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Debug|ARM.ActiveCfg = Debug|ARM
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Debug|ARM.Build.0 = Debug|ARM
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Debug|x64.ActiveCfg = Debug|x64
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Debug|x64.Build.0 = Debug|x64
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Debug|x86.ActiveCfg = Debug|Win32
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Debug|x86.Build.0 = Debug|Win32
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Release|ARM.ActiveCfg = Release|ARM
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Release|ARM.Build.0 = Release|ARM
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Release|x64.ActiveCfg = Release|x64
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Release|x64.Build.0 = Release|x64
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Release|x86.ActiveCfg = Release|Win32
+		{D59745CE-32F9-4BDB-B91B-12FBFDC17D00}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

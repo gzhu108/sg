@@ -174,7 +174,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -184,12 +184,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Check|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -199,12 +199,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -213,12 +213,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -228,12 +228,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Check|ARM'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -243,12 +243,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -257,12 +257,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -272,12 +272,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Check|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -287,12 +287,12 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tools\protobuf\$(Platform)\include;$(SolutionDir)tools\openssl\x64\include;$(SolutionDir)tools\json;$(SolutionDir)microreactor\src;$(SolutionDir)example;$(SolutionDir)example\metricatorapi;$(SolutionDir)example\discoveryservice;$(SolutionDir)example\worldapi;$(SolutionDir)example\streetgangapi;$(SolutionDir)example\streetgangproto\cpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DisableSpecificWarnings>4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -301,7 +301,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)tools\openssl\x64\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libssl.lib;libcrypto.lib;microreactor.lib;discoveryservice.lib;streetgangproto.lib;streetgangapi.lib;metricatorapi.lib;worldapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

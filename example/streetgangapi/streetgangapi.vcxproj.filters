@@ -13,41 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="protobuf">
-      <UniqueIdentifier>{9e53c875-de34-4477-9b9e-358f96d6f981}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="protobuf\cpp">
-      <UniqueIdentifier>{b4e0fae3-37e2-4bc6-afb5-a098d79bea0b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="protobuf\cpp\CreateWorldRequest.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\CreateWorldResponse.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\ErrorResponse.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\GetSceneRequest.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\GetSceneResponse.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\GetVersionResponse.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\MessageHeader.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\Point.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\Rectangle.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
     <ClCompile Include="BinaryRequestByebye.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,12 +102,6 @@
     <ClCompile Include="PBStreetGangResponder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="protobuf\cpp\ByebyeRequest.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
-    <ClCompile Include="protobuf\cpp\GetVersionRequest.pb.cc">
-      <Filter>protobuf\cpp</Filter>
-    </ClCompile>
     <ClCompile Include="RestResponseCreateWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -170,33 +131,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="protobuf\cpp\CreateWorldRequest.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\CreateWorldResponse.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\ErrorResponse.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\GetSceneRequest.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\GetSceneResponse.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\GetVersionResponse.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\MessageHeader.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\Point.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\Rectangle.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
     <ClInclude Include="BinaryRequestByebye.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -302,12 +236,6 @@
     <ClInclude Include="PBStreetGangResponder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="protobuf\cpp\ByebyeRequest.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
-    <ClInclude Include="protobuf\cpp\GetVersionRequest.pb.h">
-      <Filter>protobuf\cpp</Filter>
-    </ClInclude>
     <ClInclude Include="RestResponseCreateWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -338,45 +266,5 @@
     <ClInclude Include="PBMessage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="protobuf\CreateWorldRequest.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\CreateWorldResponse.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\ErrorResponse.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\GetSceneRequest.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\GetSceneResponse.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\GetVersionResponse.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\MessageHeader.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\Point.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\Rectangle.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\ByebyeRequest.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-    <CustomBuild Include="protobuf\GetVersionRequest.proto">
-      <Filter>protobuf</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="protobuf\StreetGangPBService.proto">
-      <Filter>protobuf</Filter>
-    </None>
   </ItemGroup>
 </Project>
