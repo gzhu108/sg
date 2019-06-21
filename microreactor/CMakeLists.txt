@@ -57,13 +57,22 @@ add_executable(microreactor_test ${TEST_SRC})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(microreactor_test Threads::Threads)
 
-target_link_libraries(microreactor_test
-  "microreactor"  
-  "uuid"
+set(DEPENDENCY_LIBS
+  "microreactor"
+  )
+  
+# add this command to scan dependencies of target
+add_dependencies(microreactor_test ${DEPENDENCY_LIBS})
+
+set(EXTRA_LIBS ${EXTRA_LIBS}
+  "${DEPENDENCY_LIBS}"
   "${GTEST_LIBRARIES}"
-  ) 
+  "Threads::Threads"
+  "uuid"
+  )
+  
+target_link_libraries(microreactor_test ${EXTRA_LIBS})
 
 gtest_discover_tests(microreactor_test)
 

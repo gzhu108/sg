@@ -29,6 +29,13 @@ file(GLOB BUILD_SRC
 
 add_library(discoveryservice STATIC ${BUILD_INC} ${BUILD_SRC})
 
+set(DEPENDENCY_LIBS
+  "microreactor"
+  )
+  
+# add this command to scan dependencies of target
+add_dependencies(discoveryservice ${DEPENDENCY_LIBS})
+
 # add the install targets
 install(TARGETS discoveryservice DESTINATION bin)
 install(FILES ${BUILD_INC} DESTINATION include)

@@ -34,6 +34,14 @@ include_directories(${Protobuf_INCLUDE_DIRS})
 
 add_library(streetgangapi STATIC ${BUILD_INC} ${BUILD_SRC})
 
+set(DEPENDENCY_LIBS
+  "streetgangproto"
+  "microreactor"
+  )
+
+# add this command to scan dependencies of target
+add_dependencies(streetgangapi ${DEPENDENCY_LIBS})
+
 # add the install targets
 install(TARGETS streetgangapi DESTINATION bin)
 install(FILES ${BUILD_INC} DESTINATION include)

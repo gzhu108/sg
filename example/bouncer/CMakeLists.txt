@@ -32,11 +32,19 @@ link_directories(
   "${PROJECT_BINARY_DIR}/../../microreactor"
   )
 
-set(EXTRA_LIBS ${EXTRA_LIBS}
-  "microreactor"
-)
-
 add_executable(bouncer ${BUILD_INC} ${BUILD_SRC})
+
+set(DEPENDENCY_LIBS
+  "microreactor"
+  )
+  
+# add this command to scan dependencies of target
+add_dependencies(bouncer ${DEPENDENCY_LIBS})
+
+set(EXTRA_LIBS ${EXTRA_LIBS}
+  "${DEPENDENCY_LIBS}"
+  )
+
 target_link_libraries(bouncer ${EXTRA_LIBS})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)

@@ -29,6 +29,13 @@ file(GLOB BUILD_SRC
 
 add_library(worldapi STATIC ${BUILD_INC} ${BUILD_SRC})
 
+set(DEPENDENCY_LIBS
+  "microreactor"
+  )
+
+# add this command to scan dependencies of target
+add_dependencies(worldapi ${DEPENDENCY_LIBS})
+
 # add the install targets
 install(TARGETS worldapi DESTINATION bin)
 install(FILES ${BUILD_INC} DESTINATION include)

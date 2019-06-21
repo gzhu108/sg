@@ -35,14 +35,22 @@ link_directories(
   "${PROJECT_BINARY_DIR}/../../microreactor"
   )
 
-set(EXTRA_LIBS ${EXTRA_LIBS}
+add_executable(metricator ${BUILD_INC} ${BUILD_SRC})
+
+set(DEPENDENCY_LIBS
   "metricatorapi"
   "discoveryservice"
   "microreactor"
-  "uuid"
-)
+  )
 
-add_executable(metricator ${BUILD_INC} ${BUILD_SRC})
+# add this command to scan dependencies of target
+add_dependencies(metricator ${DEPENDENCY_LIBS})
+
+set(EXTRA_LIBS ${EXTRA_LIBS}
+  "${DEPENDENCY_LIBS}"
+  "uuid"
+  )
+
 target_link_libraries(metricator ${EXTRA_LIBS})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)

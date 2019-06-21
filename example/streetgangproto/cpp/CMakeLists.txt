@@ -16,4 +16,3 @@ add_library(streetgangproto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 # add the install targets
 install(TARGETS streetgangproto DESTINATION bin)
 install(FILES ${PROTO_HDRS} DESTINATION include)
-

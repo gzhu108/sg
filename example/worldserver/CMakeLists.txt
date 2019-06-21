@@ -33,12 +33,20 @@ link_directories(
   "${PROJECT_BINARY_DIR}/../../microreactor"
   )
 
-set(EXTRA_LIBS ${EXTRA_LIBS}
+add_executable(worldserver ${BUILD_INC} ${BUILD_SRC})
+
+set(DEPENDENCY_LIBS
   "worldapi"
   "microreactor"
-)
+  )
 
-add_executable(worldserver ${BUILD_INC} ${BUILD_SRC})
+# add this command to scan dependencies of target
+add_dependencies(worldserver ${DEPENDENCY_LIBS})
+
+set(EXTRA_LIBS ${EXTRA_LIBS}
+  "${DEPENDENCY_LIBS}"
+  )
+  
 target_link_libraries(worldserver ${EXTRA_LIBS})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)

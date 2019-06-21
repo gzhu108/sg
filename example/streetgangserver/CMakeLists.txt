@@ -49,20 +49,28 @@ link_directories(
   "${PROJECT_BINARY_DIR}/../../microreactor"
   )
 
-set(EXTRA_LIBS ${EXTRA_LIBS}
+add_executable(streetgangserver ${BUILD_INC} ${BUILD_SRC})
+
+set(DEPENDENCY_LIBS
   "streetgangapi"
   "streetgangproto"
   "metricatorapi"
   "worldapi"
   "discoveryservice"
   "microreactor"
+  )
+
+# add this command to scan dependencies of target
+add_dependencies(streetgangserver ${DEPENDENCY_LIBS})
+
+set(EXTRA_LIBS ${EXTRA_LIBS}
+  "${DEPENDENCY_LIBS}"
   "${Protobuf_LIBRARIES}"
   "${OPENSSL_LIBRARIES}"
   "uuid"
   "dl"
-)
+  )
 
-add_executable(streetgangserver ${BUILD_INC} ${BUILD_SRC})
 target_link_libraries(streetgangserver ${EXTRA_LIBS})
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
