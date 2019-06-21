@@ -1,4 +1,4 @@
-#include "protobuf/cpp/CreateWorldResponse.pb.h"
+#include "CreateWorldResponse.pb.h"
 #include "PBResponseCreateWorld.h"
 
 using namespace sg::microreactor;

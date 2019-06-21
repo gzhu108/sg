@@ -9,6 +9,7 @@ AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++17 \
     -I../discoveryservice \
     -I../worldapi \
     -I../streetgangapi \
+    -I../streetgangproto/cpp \
     -I../metricatorapi
 
 AM_LDFLAGS = -static-libstdc++
@@ -37,6 +38,7 @@ __top_builddir__bin_streetgangserver_SOURCES = \
 __top_builddir__bin_streetgangserver_LDADD = \
     ../metricatorapi/lib/libmetricatorapi.a \
     ../streetgangapi/lib/libstreetgangapi.a \
+    ../streetgangprot/lib/libstreetgangproto.a \
     ../worldapi/lib/libworldapi.a \
     ../discoveryservice/lib/libdiscoveryservice.a \
     ../../microreactor/lib/libmicroreactor.a \

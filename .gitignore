@@ -30,6 +30,7 @@ config.h
 confdefs.h
 configure.scan
 config.status
+*Config.h
 Makefile
 missing
 stamp-h1

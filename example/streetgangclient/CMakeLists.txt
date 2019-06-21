@@ -17,6 +17,7 @@ configure_file(
 # add the binary tree to the search path for include files
 include_directories(
   "${PROJECT_SOURCE_DIR}/../../microreactor/src"
+  "${PROJECT_SOURCE_DIR}/../streetgangproto/cpp"
   "${PROJECT_SOURCE_DIR}/../streetgangapi"
   )
 
@@ -35,12 +36,14 @@ find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
 link_directories(
+  "${PROJECT_BINARY_DIR}/../streetgangproto/cpp"
   "${PROJECT_BINARY_DIR}/../streetgangapi"
   "${PROJECT_BINARY_DIR}/../../microreactor"
   )
 
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "streetgangapi"
+  "streetgangproto"
   "microreactor"
   "${Protobuf_LIBRARIES}"
   "${OPENSSL_LIBRARIES}"

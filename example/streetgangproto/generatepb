@@ -1,11 +1,8 @@
 #!/bin/bash
 
-pushd protobuf
-rm -rf cpp
-mkdir cpp
 protoc --cpp_out=cpp *.proto
+
 rm -rf java
 mkdir java
 protoc --java_out=java *.proto
-popd
 

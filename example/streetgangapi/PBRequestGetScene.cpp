@@ -1,4 +1,4 @@
-#include "protobuf/cpp/GetSceneRequest.pb.h"
+#include "GetSceneRequest.pb.h"
 #include "PBRequestGetScene.h"
 
 using namespace sg::microreactor;

@@ -17,6 +17,7 @@ configure_file(
 # add the binary tree to the search path for include files
 include_directories(
   "${PROJECT_SOURCE_DIR}/../../microreactor/src"
+  "${PROJECT_SOURCE_DIR}/../streetgangproto/cpp"
   "${PROJECT_SOURCE_DIR}/../../tools/json"
   )
 

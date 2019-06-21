@@ -4,6 +4,7 @@ AUTOMAKE_OPTIONS = foreign
 AM_CFLAGS = -Wall -Wno-unknown-pragmas -Wno-unused-result -g -fno-omit-frame-pointer -pthread -pipe
 AM_CXXFLAGS = $(AM_CFLAGS) -Wno-reorder -std=c++17 \
     -I../../microreactor/src \
+    -I../streetgangproto/cpp \
     -I../streetgangapi
 
 AM_LDFLAGS = -static-libstdc++
@@ -25,6 +26,7 @@ __top_builddir__bin_streetgangclient_SOURCES = \
 
 __top_builddir__bin_streetgangclient_LDADD = \
     ../streetgangapi/lib/libstreetgangapi.a \
+    ../streetgangproto/lib/libstreetgangproto.a \
     ../../microreactor/lib/libmicroreactor.a \
     -lprotobuf \
     -lssl \

@@ -18,6 +18,7 @@ configure_file(
 include_directories(
   "${PROJECT_SOURCE_DIR}/../../microreactor/src"
   "${PROJECT_SOURCE_DIR}/.."
+  "${PROJECT_SOURCE_DIR}/../streetgangproto/cpp"
   "${PROJECT_SOURCE_DIR}/../streetgangapi"
   "${PROJECT_SOURCE_DIR}/../discoveryservice"
   "${PROJECT_SOURCE_DIR}/../worldapi"
@@ -40,6 +41,7 @@ find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
 link_directories(
+  "${PROJECT_BINARY_DIR}/../streetgangproto/cpp"
   "${PROJECT_BINARY_DIR}/../streetgangapi"
   "${PROJECT_BINARY_DIR}/../metricatorapi"
   "${PROJECT_BINARY_DIR}/../worldapi"
@@ -49,6 +51,7 @@ link_directories(
 
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "streetgangapi"
+  "streetgangproto"
   "metricatorapi"
   "worldapi"
   "discoveryservice"

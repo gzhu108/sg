@@ -1,4 +1,4 @@
-#include "protobuf/cpp/GetVersionResponse.pb.h"
+#include "GetVersionResponse.pb.h"
 #include "PBResponseGetVersion.h"
 
 using namespace sg::microreactor;

@@ -1,4 +1,4 @@
-#include "protobuf/cpp/ByebyeRequest.pb.h"
+#include "ByebyeRequest.pb.h"
 #include "PBRequestByebye.h"
 
 using namespace sg::microreactor;

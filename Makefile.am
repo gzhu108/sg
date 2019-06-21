@@ -4,10 +4,12 @@ SUBDIRS = \
     example/discoveryservice \
     example/metricatorapi \
     example/metricator \
+    example/streetgangproto \
     example/streetgangapi \
-	example/worldapi \
+    example/worldapi \
     example/worldserver \
     example/streetgangserver \
     example/streetgangclient \
     example/simplewebserver \
     example/bouncer
+

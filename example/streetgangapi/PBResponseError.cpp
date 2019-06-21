@@ -1,4 +1,4 @@
-#include "protobuf/cpp/ErrorResponse.pb.h"
+#include "ErrorResponse.pb.h"
 #include "PBResponseError.h"
 
 using namespace sg::microreactor;

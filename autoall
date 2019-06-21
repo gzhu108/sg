@@ -101,13 +101,21 @@ automake --add-missing
 autoconf
 popd
 
+pushd example/streetgangproto
+echo Configuring: $PWD
+./generatepb
+aclocal
+autoheader
+automake --add-missing
+autoconf
+popd
+
 pushd example/streetgangapi
 echo Configuring: $PWD
 aclocal
 autoheader
 automake --add-missing
 autoconf
-./generatepb
 popd
 
 pushd example/worldapi
@@ -176,3 +184,4 @@ make
 make check
 
 ./example/bin/mkdist.sh
+
