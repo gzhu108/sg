@@ -9,7 +9,19 @@ sudo apt install uuid-dev -y
 sudo apt install openssl libssl-dev -y
 sudo apt install libprotobuf-dev -y
 sudo apt install protobuf-compiler -y
-sudo apt install google-mock -y
+
+sudo apt install cmake libgtest-dev -y
+pushd /usr/src/gtest
+sudo cmake CMakeLists.txt
+sudo make
+sudo cp *.a /usr/lib/
+popd
+pushd /usr/src/gmock
+sudo cmake CMakeLists.txt
+sudo make
+sudo cp *.a /usr/lib/
+popd
+
 
 echo "Compiler = $1"
 if [ "$1" == "gcc" ] ; then
