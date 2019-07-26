@@ -121,32 +121,6 @@ StreetGangBinaryService::StreetGangBinaryService()
 
 StreetGangBinaryService::~StreetGangBinaryService()
 {
-    auto message = std::make_shared<BinaryRequestByebye>();
-    message->TrackId.set(Uuid::GenerateUuid().ToString());
-
-    std::stringstream messageStream;
-    if (message->Encode(messageStream))
-    {
-        BinarySerializer serializer;
-        std::stringstream stream;
-        uint64_t length = GetStreamSize(messageStream);
-        if (serializer.Write(message->Id.cref(), stream) &&
-            serializer.Write(length, stream) &&
-            serializer.Write(messageStream, stream))
-        {
-            // Send byebye message
-            SendAllConnections(stream);
-        }
-    }
-
-    Stop();
-
-    // Disable hot-config
-    auto configuration = ConfigurationSingleton::GetConfiguration();
-    if (configuration != nullptr)
-    {
-        configuration->ValueUpdated.Disconnect(mConfigurationConnectionId);
-    }
 }
 
 bool StreetGangBinaryService::Start()
@@ -163,10 +137,35 @@ bool StreetGangBinaryService::Stop()
 {
     if (mEndpoint != nullptr)
     {
+        auto message = std::make_shared<BinaryRequestByebye>();
+        message->TrackId.set(Uuid::GenerateUuid().ToString());
+
+        std::stringstream messageStream;
+        if (message->Encode(messageStream))
+        {
+            BinarySerializer serializer;
+            std::stringstream stream;
+            uint64_t length = GetStreamSize(messageStream);
+            if (serializer.Write(message->Id.cref(), stream) &&
+                serializer.Write(length, stream) &&
+                serializer.Write(messageStream, stream))
+            {
+                // Send byebye message
+                SendAllConnections(stream);
+            }
+        }
+
         // Disconnect to task process
         //auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
         //taskProcessHook.Preprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
         //taskProcessHook.Postprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
+
+        // Disable hot-config
+        auto configuration = ConfigurationSingleton::GetConfiguration();
+        if (configuration != nullptr)
+        {
+            configuration->ValueUpdated.Disconnect(mConfigurationConnectionId);
+        }
     }
 
     return Service::Stop();

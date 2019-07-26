@@ -16,7 +16,6 @@ Service::Service(std::shared_ptr<Endpoint> endpoint)
 
 Service::~Service()
 {
-    Stop();
 }
 
 bool Service::Start()

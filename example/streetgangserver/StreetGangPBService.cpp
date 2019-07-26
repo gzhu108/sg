@@ -28,24 +28,6 @@ StreetGangPBService::StreetGangPBService()
 
 StreetGangPBService::~StreetGangPBService()
 {
-    auto message = std::make_shared<PBRequestByebye>();
-    message->TrackId.set(Uuid::GenerateUuid().ToString());
-
-    std::stringstream stream;
-    if (message->Encode(stream))
-    {
-        // Send byebye message
-        SendAllConnections(stream);
-    }
-
-    Stop();
-
-    // Disable hot-config
-    auto configuration = ConfigurationSingleton::GetConfiguration();
-    if (configuration != nullptr)
-    {
-        configuration->ValueUpdated.Disconnect(mConfigurationConnectionId);
-    }
 }
 
 bool StreetGangPBService::Start()
@@ -62,10 +44,27 @@ bool StreetGangPBService::Stop()
 {
     if (mEndpoint != nullptr)
     {
+        auto message = std::make_shared<PBRequestByebye>();
+        message->TrackId.set(Uuid::GenerateUuid().ToString());
+
+        std::stringstream stream;
+        if (message->Encode(stream))
+        {
+            // Send byebye message
+            SendAllConnections(stream);
+        }
+
         // Disconnect to task process
         //auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
         //taskProcessHook.Preprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
         //taskProcessHook.Postprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
+
+        // Disable hot-config
+        auto configuration = ConfigurationSingleton::GetConfiguration();
+        if (configuration != nullptr)
+        {
+            configuration->ValueUpdated.Disconnect(mConfigurationConnectionId);
+        }
     }
 
     return Service::Stop();
