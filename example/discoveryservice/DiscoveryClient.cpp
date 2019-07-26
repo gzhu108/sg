@@ -44,8 +44,8 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
     auto connection = std::make_shared<UdpConnection>(mSocket, dispatcher);
     Initialize(connection, std::chrono::milliseconds(30));
 
-    dispatcher->RegisterRestReactorFactory("NOTIFY", "*", std::bind(&DiscoveryClient::CreateNotifyReactor, this, std::placeholders::_1, std::placeholders::_2));
-    dispatcher->RegisterRestReactorFactory("", "", std::bind(&DiscoveryClient::CreateMSearchResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    dispatcher->RegisterResource("NOTIFY", "*", std::bind(&DiscoveryClient::CreateNotifyReactor, this, std::placeholders::_1, std::placeholders::_2));
+    dispatcher->RegisterResource("", "", std::bind(&DiscoveryClient::CreateMSearchResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 DiscoveryClient::~DiscoveryClient()

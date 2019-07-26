@@ -7,7 +7,7 @@ using namespace simplewebserver;
 
 SimpleWebDispatcher::SimpleWebDispatcher()
 {
-    RegisterRestReactorFactory("GET", "/", std::bind(&SimpleWebDispatcher::CreateGetFileReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterResource("GET", "/", std::bind(&SimpleWebDispatcher::CreateGetFileReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 SimpleWebDispatcher::~SimpleWebDispatcher()

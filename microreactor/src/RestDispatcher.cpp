@@ -39,7 +39,7 @@ void RestDispatcher::Dispatch(Connection& connection)
     }
 }
 
-void RestDispatcher::RegisterRestReactorFactory(const std::string& method, const std::string& uri, Factory factory)
+void RestDispatcher::RegisterResource(const std::string& method, const std::string& uri, Factory factory)
 {
     if (factory == nullptr)
     {

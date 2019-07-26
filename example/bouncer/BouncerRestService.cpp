@@ -25,8 +25,8 @@ BouncerRestService::~BouncerRestService()
 
 bool BouncerRestService::Initialize()
 {
-    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterRestReactorFactory("GET", "/", std::bind(&BouncerRestService::CreateBouncerReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterRestReactorFactory("POST", "/settings", std::bind(&BouncerRestService::CreateSettingsReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterResource("GET", "/", std::bind(&BouncerRestService::CreateBouncerReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterResource("POST", "/settings", std::bind(&BouncerRestService::CreateSettingsReactor, this, std::placeholders::_1, std::placeholders::_2));
 
     return RestService::Initialize();
 }

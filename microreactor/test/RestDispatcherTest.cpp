@@ -27,8 +27,8 @@ TEST(RestDispatcherTest, RegisterRestFactoryNormal)
 {
     ReactorFactoryMock factory;   
     RestRequestDispatcherMock decoder;
-    decoder.RegisterRestReactorFactory("GET", "/api_1/data", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
-    decoder.RegisterRestReactorFactory("POST", "/api_2/save", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
+    decoder.RegisterResource("GET", "/api_1/data", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
+    decoder.RegisterResource("POST", "/api_2/save", std::bind(&ReactorFactoryMock::CreateReactor, &factory, std::placeholders::_1, std::placeholders::_2));
 
     auto restRequest_1 = std::make_shared<RestRequest>();
     restRequest_1->mMethod = "GET";

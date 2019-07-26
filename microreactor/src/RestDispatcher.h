@@ -18,7 +18,7 @@ namespace sg { namespace microreactor
 
     public:
         virtual void Dispatch(Connection& connection) override;
-        virtual void RegisterRestReactorFactory(const std::string& method, const std::string& uri, Factory factory);
+        virtual void RegisterResource(const std::string& method, const std::string& uri, Factory factory);
 
     protected:
         virtual std::shared_ptr<Reactor> Decode(std::istream& stream, Connection& connection) override { return nullptr; }

@@ -15,9 +15,9 @@ using namespace streetgangserver;
 
 StreetGangRestDispatcher::StreetGangRestDispatcher()
 {
-    RegisterRestReactorFactory("GET", "/version", std::bind(&StreetGangRestDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterRestReactorFactory("POST", "/createworld", std::bind(&StreetGangRestDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterRestReactorFactory("POST", "/getscene", std::bind(&StreetGangRestDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterResource("GET", "/version", std::bind(&StreetGangRestDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterResource("POST", "/createworld", std::bind(&StreetGangRestDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterResource("POST", "/getscene", std::bind(&StreetGangRestDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangRestDispatcher::~StreetGangRestDispatcher()

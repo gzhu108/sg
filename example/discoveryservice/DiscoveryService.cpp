@@ -36,7 +36,7 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
     mEndpoint = std::make_shared<UdpEndpoint>(mSocket, dispatcher);
     
     // Register M-SEARCH
-    dispatcher->RegisterRestReactorFactory("M-SEARCH", "*", std::bind(&DiscoveryService::CreateMSearchReactor, this, std::placeholders::_1, std::placeholders::_2));
+    dispatcher->RegisterResource("M-SEARCH", "*", std::bind(&DiscoveryService::CreateMSearchReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 DiscoveryService::~DiscoveryService()
@@ -73,7 +73,7 @@ bool DiscoveryService::Initialize()
                 Description->Location.set(location);
 
                 auto descriptionServiceDispatcher = std::make_shared<RestDispatcher>();
-                descriptionServiceDispatcher->RegisterRestReactorFactory("GET", mDescriptionUri, mDescriptionReactorFactory);
+                descriptionServiceDispatcher->RegisterResource("GET", mDescriptionUri, mDescriptionReactorFactory);
 
                 descriptionServiceDispatcher->Protocol.set("tcp");
                 descriptionServiceDispatcher->Address.set(mInterfaceAddress);
