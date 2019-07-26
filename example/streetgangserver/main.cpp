@@ -186,9 +186,6 @@ int32_t main(int32_t argc, const char* argv[])
         LOG("Failed to start the streetgangserver");
     }
 
-    // Shutdown all services
-    services.clear();
-
     // Reset the world client
     WorldClient::ResetWorldClient();
 

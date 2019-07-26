@@ -17,6 +17,8 @@ namespace streetgangserver
         virtual ~StreetGangPBService();
         
     protected:
+        virtual bool Start() override;
+        virtual bool Stop() override;
         virtual bool Initialize() override;
         
         void SetResponseTime(std::shared_ptr<streetgangapi::MessageBase> response);

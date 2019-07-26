@@ -24,11 +24,6 @@ StreetGangPBService::StreetGangPBService()
     {
         configuration->GetValue("TaskLatencyThreshold", mTaskLatencyThreshold);
     }
-
-    // Hook to task process
-    //auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
-    //taskProcessHook.Preprocess.Connect(std::bind(&StreetGangPBService::OnTaskPreprocess, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
-    //taskProcessHook.Postprocess.Connect(std::bind(&StreetGangPBService::OnTaskPostprocess, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
 }
 
 StreetGangPBService::~StreetGangPBService()
@@ -51,11 +46,29 @@ StreetGangPBService::~StreetGangPBService()
     {
         configuration->ValueUpdated.Disconnect(mConfigurationConnectionId);
     }
+}
 
-    // Disconnect to task process
-    auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
-    taskProcessHook.Preprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
-    taskProcessHook.Postprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
+bool StreetGangPBService::Start()
+{
+    // Hook to task process
+    //auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
+    //taskProcessHook.Preprocess.Connect(std::bind(&StreetGangPBService::OnTaskPreprocess, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
+    //taskProcessHook.Postprocess.Connect(std::bind(&StreetGangPBService::OnTaskPostprocess, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
+
+    return Service::Start();
+}
+
+bool StreetGangPBService::Stop()
+{
+    if (mEndpoint != nullptr)
+    {
+        // Disconnect to task process
+        //auto& taskProcessHook = GET_TASK_PROCESS_HOOK();
+        //taskProcessHook.Preprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
+        //taskProcessHook.Postprocess.Disconnect(reinterpret_cast<uintptr_t>(this));
+    }
+
+    return Service::Stop();
 }
 
 bool StreetGangPBService::Initialize()
