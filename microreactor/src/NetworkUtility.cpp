@@ -1,8 +1,8 @@
 #include "NetworkUtility.h"
 #include "TcpConnection.h"
 #include "UdpConnection.h"
-#include "TcpEndpoint.h"
-#include "UdpEndpoint.h"
+#include "TcpListener.h"
+#include "UdpListener.h"
 
 using namespace sg::microreactor;
 
@@ -29,7 +29,7 @@ std::shared_ptr<Connection> NetworkUtility::CreateConnection(std::shared_ptr<Dis
 }
 
 
-std::shared_ptr<Endpoint> NetworkUtility::CreateEndpoint(std::shared_ptr<Dispatcher> dispatcher)
+std::shared_ptr<Listener> NetworkUtility::CreateListener(std::shared_ptr<Dispatcher> dispatcher)
 {
     if (dispatcher == nullptr)
     {
@@ -38,15 +38,15 @@ std::shared_ptr<Endpoint> NetworkUtility::CreateEndpoint(std::shared_ptr<Dispatc
 
     if (dispatcher->Protocol.cref() == "tcp")
     {
-        auto endpoint = std::make_shared<TcpEndpoint>(nullptr, dispatcher);
-        LOG("TCP HOST: %s", endpoint->Name->c_str());
-        return endpoint;
+        auto listener = std::make_shared<TcpListener>(nullptr, dispatcher);
+        LOG("TCP HOST: %s", listener->Name->c_str());
+        return listener;
     }
     else if (dispatcher->Protocol.cref() == "udp")
     {
-        auto endpoint = std::make_shared<UdpEndpoint>(nullptr, dispatcher);
-        LOG("UDP HOST: %s", endpoint->Name->c_str());
-        return endpoint;
+        auto listener = std::make_shared<UdpListener>(nullptr, dispatcher);
+        LOG("UDP HOST: %s", listener->Name->c_str());
+        return listener;
     }
     else
     {

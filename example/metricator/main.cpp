@@ -166,7 +166,7 @@ int32_t main(int32_t argc, const char* argv[])
     messageDecoder->Port.set(hostPort);
 
     // Create metricatorService
-    auto metricatorService = std::make_shared<Service>(NetworkUtility::CreateEndpoint(messageDecoder));
+    auto metricatorService = std::make_shared<Service>(NetworkUtility::CreateListener(messageDecoder));
     if (metricatorService->Start())
     {
         START_BLOCKING_TASK_LOOP();

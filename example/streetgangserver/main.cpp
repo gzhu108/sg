@@ -88,12 +88,12 @@ static std::shared_ptr<Service> CreateRestService()
     dispatcher->Address.set(serviceAddress);
     dispatcher->Port.set(restPort);
 
-    std::shared_ptr<Endpoint> endpoint = NetworkUtility::CreateEndpoint(dispatcher);
-    endpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    endpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    endpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+    std::shared_ptr<Listener> listener = NetworkUtility::CreateListener(dispatcher);
+    listener->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    listener->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    listener->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
-    return std::make_shared<Service>(endpoint);
+    return std::make_shared<Service>(listener);
 }
 
 int32_t main(int32_t argc, const char* argv[])

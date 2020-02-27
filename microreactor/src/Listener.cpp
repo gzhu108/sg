@@ -1,14 +1,14 @@
-#include "Endpoint.h"
+#include "Listener.h"
 #include "TaskManagerSingleton.h"
 
 using namespace sg::microreactor;
 
 
-Endpoint::Endpoint()
+Listener::Listener()
 {
 }
 
-Endpoint::~Endpoint()
+Listener::~Listener()
 {
     mAcceptTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
     mAcceptTask->Cancel();
@@ -16,12 +16,12 @@ Endpoint::~Endpoint()
     CloseAllConnections();
 }
 
-bool Endpoint::Start()
+bool Listener::Start()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    // Start listening on the endpoint
-    mAcceptTask = SUBMIT(std::bind(&Endpoint::AcceptConnection, this), "Endpoint::AcceptConnection");
+    // Start listening on the listener
+    mAcceptTask = SUBMIT(std::bind(&Listener::AcceptConnection, this), "Listener::AcceptConnection");
     if (mAcceptTask != nullptr)
     {
         auto taskRawPtr = mAcceptTask.get();
@@ -36,7 +36,7 @@ bool Endpoint::Start()
     return false;
 }
 
-bool Endpoint::Stop()
+bool Listener::Stop()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -53,7 +53,7 @@ bool Endpoint::Stop()
     return true;
 }
 
-void Endpoint::AcceptConnection()
+void Listener::AcceptConnection()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -79,7 +79,7 @@ void Endpoint::AcceptConnection()
     }
 }
 
-void Endpoint::AddConnection(std::shared_ptr<Connection> connection)
+void Listener::AddConnection(std::shared_ptr<Connection> connection)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -94,7 +94,7 @@ void Endpoint::AddConnection(std::shared_ptr<Connection> connection)
     }
 }
 
-void Endpoint::RemoveConnection(std::shared_ptr<Connection> connection)
+void Listener::RemoveConnection(std::shared_ptr<Connection> connection)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -112,7 +112,7 @@ void Endpoint::RemoveConnection(std::shared_ptr<Connection> connection)
     }
 }
 
-void Endpoint::CloseAllConnections()
+void Listener::CloseAllConnections()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -125,7 +125,7 @@ void Endpoint::CloseAllConnections()
     mActiveConnections.clear();
 }
 
-bool Endpoint::GetAllConnections(std::set<std::shared_ptr<Connection>>& connections)
+bool Listener::GetAllConnections(std::set<std::shared_ptr<Connection>>& connections)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     connections = mActiveConnections;

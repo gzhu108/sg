@@ -1,4 +1,4 @@
-#include "UdpEndpoint.h"
+#include "UdpListener.h"
 #include "UdpSocket.h"
 #include "UdpConnection.h"
 #include "Exception.h"
@@ -6,7 +6,7 @@
 using namespace sg::microreactor;
 
 
-UdpEndpoint::UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
+UdpListener::UdpListener(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
     : mSocket(socket)
 {
     Dispatcher.set(dispatcher);
@@ -41,17 +41,17 @@ UdpEndpoint::UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::
     }
 }
 
-UdpEndpoint::~UdpEndpoint()
+UdpListener::~UdpListener()
 {
     Close();
 }
 
-bool UdpEndpoint::IsClosed()
+bool UdpListener::IsClosed()
 {
     return mSocket == nullptr;
 }
 
-bool UdpEndpoint::Close()
+bool UdpListener::Close()
 {
     if (mSocket != nullptr)
     {
@@ -62,7 +62,7 @@ bool UdpEndpoint::Close()
     return true;
 }
 
-std::shared_ptr<Connection> UdpEndpoint::Listen(const std::chrono::milliseconds& timeout)
+std::shared_ptr<Connection> UdpListener::Listen(const std::chrono::milliseconds& timeout)
 {
     if (mSocket == nullptr || !mSocket->IsValid() || mConnection == nullptr)
     {

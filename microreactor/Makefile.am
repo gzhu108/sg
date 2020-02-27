@@ -27,7 +27,7 @@ nobase_include_HEADERS = \
     src/Emittable.h \
     src/Endianness.h \
     src/Exception.h \
-    src/Endpoint.h \
+    src/Listener.h \
     src/ConfigurationSingleton.h \
     src/LoggerSingleton.h \
     src/MemoryTrack.h \
@@ -60,11 +60,11 @@ nobase_include_HEADERS = \
     src/TaskProcessHook.h \
     src/TaskQueue.h \
     src/TcpConnection.h \
-    src/TcpEndpoint.h \
+    src/TcpListener.h \
     src/TcpSocket.h \
     src/ThreadPool.h \
     src/UdpConnection.h \
-    src/UdpEndpoint.h \
+    src/UdpListener.h \
     src/UdpSocket.h \
     src/Uuid.h \
     src/HttpHeader.h \
@@ -84,7 +84,7 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/ConfigurationXml.cpp \
     src/Connection.cpp \
     src/Dispatcher.cpp \
-    src/Endpoint.cpp \
+    src/Listener.cpp \
     src/ConfigurationSingleton.cpp \
     src/LoggerSingleton.cpp \
     src/Message.cpp \
@@ -104,12 +104,12 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/TaskManagerSingleton.cpp \
     src/TaskQueue.cpp \
     src/TcpConnection.cpp \
-    src/TcpEndpoint.cpp \
+    src/TcpListener.cpp \
     src/TcpSocket.cpp \
     src/SecureTcpSocket.cpp \
     src/ThreadPool.cpp \
     src/UdpConnection.cpp \
-    src/UdpEndpoint.cpp \
+    src/UdpListener.cpp \
     src/UdpSocket.cpp \
     src/Uuid.cpp \
     src/RestMessage.cpp \

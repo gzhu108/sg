@@ -6,7 +6,7 @@
 #include "Socket.h"
 #include "Dispatcher.h"
 #include "Connection.h"
-#include "Endpoint.h"
+#include "Listener.h"
 
 
 namespace sg { namespace microreactor
@@ -14,7 +14,7 @@ namespace sg { namespace microreactor
     namespace NetworkUtility
     {
         std::shared_ptr<Connection> CreateConnection(std::shared_ptr<Dispatcher> dispatcher);
-        std::shared_ptr<Endpoint> CreateEndpoint(std::shared_ptr<Dispatcher> dispatcher);
+        std::shared_ptr<Listener> CreateListener(std::shared_ptr<Dispatcher> dispatcher);
 
         struct NetworkInterfaceInfo
         {

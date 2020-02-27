@@ -25,8 +25,8 @@ BouncerRestService::~BouncerRestService()
 
 bool BouncerRestService::Initialize()
 {
-    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterResource("GET", "/", std::bind(&BouncerRestService::CreateBouncerReactor, this, std::placeholders::_1, std::placeholders::_2));
-    mEndpoint->GetDispatcher<RestDispatcher>()->RegisterResource("POST", "/settings", std::bind(&BouncerRestService::CreateSettingsReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mListener->GetDispatcher<RestDispatcher>()->RegisterResource("GET", "/", std::bind(&BouncerRestService::CreateBouncerReactor, this, std::placeholders::_1, std::placeholders::_2));
+    mListener->GetDispatcher<RestDispatcher>()->RegisterResource("POST", "/settings", std::bind(&BouncerRestService::CreateSettingsReactor, this, std::placeholders::_1, std::placeholders::_2));
 
     return RestService::Initialize();
 }
@@ -40,7 +40,7 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
         return nullptr;
     }
 
-    auto bouncerDispatcher = mEndpoint->GetDispatcher<BouncerDispatcher>();
+    auto bouncerDispatcher = mListener->GetDispatcher<BouncerDispatcher>();
     std::string protocol = bouncerDispatcher->Protocol.cref();
     std::string targetName = bouncerDispatcher->TargetName.cref();
     uint16_t targetPort = bouncerDispatcher->TargetPort.cref();
@@ -55,9 +55,9 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
 
     for (const auto& header : request->mHeaders)
     {
-        if (header.mName == "Endpoint")
+        if (header.mName == "Listener")
         {
-            stream << "Endpoint" << ": " << targetName << "\r\n";
+            stream << "Listener" << ": " << targetName << "\r\n";
         }
         else
         {

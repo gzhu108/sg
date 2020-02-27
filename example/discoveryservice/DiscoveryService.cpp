@@ -1,7 +1,7 @@
 #include "DiscoveryService.h"
 #include "NetworkUtility.h"
-#include "TcpEndpoint.h"
-#include "UdpEndpoint.h"
+#include "TcpListener.h"
+#include "UdpListener.h"
 #include "RestService.h"
 #include "MSearchReactor.h"
 
@@ -33,7 +33,7 @@ DiscoveryService::DiscoveryService(const std::string& interfaceAddress, const st
 
     // Create UDP socket
     mSocket = std::make_shared<UdpSocket>();
-    mEndpoint = std::make_shared<UdpEndpoint>(mSocket, dispatcher);
+    mListener = std::make_shared<UdpListener>(mSocket, dispatcher);
     
     // Register M-SEARCH
     dispatcher->RegisterResource("M-SEARCH", "*", std::bind(&DiscoveryService::CreateMSearchReactor, this, std::placeholders::_1, std::placeholders::_2));
@@ -55,9 +55,9 @@ bool DiscoveryService::Initialize()
         return false;
     }
 
-    mEndpoint->ListenTimeout.set(std::chrono::milliseconds(30));
-    mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(30));
-    mEndpoint->SendTimeout.set(std::chrono::milliseconds(1000));
+    mListener->ListenTimeout.set(std::chrono::milliseconds(30));
+    mListener->ReceiveTimeout.set(std::chrono::milliseconds(30));
+    mListener->SendTimeout.set(std::chrono::milliseconds(1000));
 
     try
     {
@@ -66,7 +66,7 @@ bool DiscoveryService::Initialize()
         {
             if (Service::Initialize())
             {
-                LOG("Discovery server endpoint: [%s]:%d on interface %s", mSocket->HostAddress->c_str(), mSocket->HostPort.cref(), mInterfaceAddress.c_str());
+                LOG("Discovery server listener: [%s]:%d on interface %s", mSocket->HostAddress->c_str(), mSocket->HostPort.cref(), mInterfaceAddress.c_str());
                 
                 std::string location = "http://";
                 location += mInterfaceAddress + ":" + std::to_string(mSocket->HostPort.cref()) + mDescriptionUri;
@@ -79,7 +79,7 @@ bool DiscoveryService::Initialize()
                 descriptionServiceDispatcher->Address.set(mInterfaceAddress);
                 descriptionServiceDispatcher->Port.set(mSocket->HostPort.cref());
 
-                mDescriptionService = std::make_shared<Service>(NetworkUtility::CreateEndpoint(descriptionServiceDispatcher));
+                mDescriptionService = std::make_shared<Service>(NetworkUtility::CreateListener(descriptionServiceDispatcher));
                 return mDescriptionService->Start();
             }
         }

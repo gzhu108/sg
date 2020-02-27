@@ -1,6 +1,6 @@
 #include "StreetGangBinaryService.h"
 #include "SecureTcpSocket.h"
-#include "TcpEndpoint.h"
+#include "TcpListener.h"
 #include "ConfigurationSingleton.h"
 #include "BinarySerializer.h"
 #include "BinaryRequestByebye.h"
@@ -135,7 +135,7 @@ bool StreetGangBinaryService::Start()
 
 bool StreetGangBinaryService::Stop()
 {
-    if (mEndpoint != nullptr)
+    if (mListener != nullptr)
     {
         auto message = std::make_shared<BinaryRequestByebye>();
         message->TrackId.set(Uuid::GenerateUuid().ToString());
@@ -207,12 +207,12 @@ bool StreetGangBinaryService::Initialize()
     socket->ConfigureSslContext(SSLv23_server_method(), "cert/Server.key", "cert/Server.cer", VerifyPeer);
     socket->LoadSslContextVerifyLocations("cert/ChainCA.cer", "");
     //auto socket = std::make_shared<TcpSocket>();
-    mEndpoint = std::make_shared<TcpEndpoint>(socket, dispatcher);
-    LOG("SECURE TCP HOST: %s", mEndpoint->Name->c_str());
+    mListener = std::make_shared<TcpListener>(socket, dispatcher);
+    LOG("SECURE TCP HOST: %s", mListener->Name->c_str());
 
-    mEndpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+    mListener->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    mListener->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    mListener->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
     return true;
 }

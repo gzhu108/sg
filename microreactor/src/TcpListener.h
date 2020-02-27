@@ -1,17 +1,17 @@
 #pragma once
-#ifndef sg_microreactor_TcpEndpoint
-#define sg_microreactor_TcpEndpoint
+#ifndef sg_microreactor_TcpListener
+#define sg_microreactor_TcpListener
 
-#include "Endpoint.h"
+#include "Listener.h"
 #include "TcpSocket.h"
 
 namespace sg { namespace microreactor
 {
-    class TcpEndpoint : public Endpoint
+    class TcpListener : public Listener
     {
     public:
-        TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
-        virtual ~TcpEndpoint();
+        TcpListener(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
+        virtual ~TcpListener();
 
         virtual bool IsClosed() override;
         
@@ -25,4 +25,4 @@ namespace sg { namespace microreactor
 }}
 
 
-#endif // sg_microreactor_TcpEndpoint
+#endif // sg_microreactor_TcpListener

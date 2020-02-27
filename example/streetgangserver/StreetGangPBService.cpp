@@ -42,7 +42,7 @@ bool StreetGangPBService::Start()
 
 bool StreetGangPBService::Stop()
 {
-    if (mEndpoint != nullptr)
+    if (mListener != nullptr)
     {
         auto message = std::make_shared<PBRequestByebye>();
         message->TrackId.set(Uuid::GenerateUuid().ToString());
@@ -102,10 +102,10 @@ bool StreetGangPBService::Initialize()
     configuration->GetValue("PBPort", port);
     dispatcher->Port.set(port);
 
-    mEndpoint = NetworkUtility::CreateEndpoint(dispatcher);
-    mEndpoint->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
-    mEndpoint->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
-    mEndpoint->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
+    mListener = NetworkUtility::CreateListener(dispatcher);
+    mListener->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
+    mListener->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
+    mListener->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
     
     return true;
 }

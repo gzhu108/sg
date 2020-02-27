@@ -1,5 +1,5 @@
 #include "DiscoveryClient.h"
-#include "UdpEndpoint.h"
+#include "UdpListener.h"
 #include "DiscoveryDispatcher.h"
 #include "NotifyReactor.h"
 #include "MSearchResponseReactor.h"

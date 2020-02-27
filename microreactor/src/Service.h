@@ -2,7 +2,7 @@
 #ifndef sg_microreactor_Service
 #define sg_microreactor_Service
 
-#include "Endpoint.h"
+#include "Listener.h"
 #include "NetworkUtility.h"
 
 
@@ -12,7 +12,7 @@ namespace sg { namespace microreactor
     {
     public:
         Service();
-        explicit Service(std::shared_ptr<Endpoint> endpoint);
+        explicit Service(std::shared_ptr<Listener> listener);
         virtual ~Service();
 
     public:
@@ -28,7 +28,7 @@ namespace sg { namespace microreactor
         virtual void OnConnectionMade(const std::shared_ptr<Connection>& connection);
 
     protected:
-        std::shared_ptr<Endpoint> mEndpoint;
+        std::shared_ptr<Listener> mListener;
     };
 }}
 

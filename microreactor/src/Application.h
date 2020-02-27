@@ -16,7 +16,7 @@ namespace sg { namespace microreactor
     public:
         static Application& Context();
         virtual bool Run();
-        virtual bool Run(const std::vector<std::shared_ptr<Endpoint>>& endpoints);
+        virtual bool Run(const std::vector<std::shared_ptr<Listener>>& listeners);
         virtual bool Run(const std::vector<std::shared_ptr<Service>>& services);
 
     protected:

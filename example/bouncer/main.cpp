@@ -139,7 +139,7 @@ int32_t main(int32_t argc, const char* argv[])
         bouncerDecoder->Port.set(hostPort);
 
         // Create a microservice
-        auto service = std::make_shared<Service>(NetworkUtility::CreateEndpoint(bouncerDecoder));
+        auto service = std::make_shared<Service>(NetworkUtility::CreateListener(bouncerDecoder));
         if (service->Start())
         {
             START_BLOCKING_TASK_LOOP();

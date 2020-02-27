@@ -68,13 +68,13 @@ bool Application::Run()
     return true;
 }
 
-bool Application::Run(const std::vector<std::shared_ptr<Endpoint>>& endpoints)
+bool Application::Run(const std::vector<std::shared_ptr<Listener>>& listeners)
 {
     mServices.clear();
 
-    for (auto& endpoint : endpoints)
+    for (auto& listener : listeners)
     {
-        mServices.emplace_back(std::make_shared<Service>(endpoint));
+        mServices.emplace_back(std::make_shared<Service>(listener));
     }
 
     return Run();

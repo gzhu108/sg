@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Endpoint
-#define sg_microreactor_Endpoint
+#ifndef sg_microreactor_Listener
+#define sg_microreactor_Listener
 
 #include <chrono>
 #include "Connection.h"
@@ -9,11 +9,11 @@
 
 namespace sg { namespace microreactor
 {
-    class Endpoint
+    class Listener
     {
     public:
-        Endpoint();
-        virtual ~Endpoint();
+        Listener();
+        virtual ~Listener();
 
         Signal<std::shared_ptr<Connection>>& ConnectionMade = mConnectionMade;
 
@@ -55,4 +55,4 @@ namespace sg { namespace microreactor
 }}
 
 
-#endif // sg_microreactor_Endpoint
+#endif // sg_microreactor_Listener

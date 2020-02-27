@@ -114,15 +114,6 @@
     <ClCompile Include="..\tools\http-parser\http_parser.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Endpoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UdpEndpoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TcpEndpoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\MessageRequester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -151,6 +142,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Listener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TcpListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UdpListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -186,9 +186,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Endianness.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Endpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Exception.h">
@@ -290,9 +287,6 @@
     <ClInclude Include="src\TcpConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TcpEndpoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\TcpSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -300,9 +294,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\UdpConnection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UdpEndpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\UdpSocket.h">
@@ -339,6 +330,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Listener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TcpListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UdpListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

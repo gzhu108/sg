@@ -1,4 +1,4 @@
-#include "TcpEndpoint.h"
+#include "TcpListener.h"
 #include "TcpSocket.h"
 #include "TcpConnection.h"
 #include "Exception.h"
@@ -6,7 +6,7 @@
 using namespace sg::microreactor;
 
 
-TcpEndpoint::TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
+TcpListener::TcpListener(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
     : mSocket(socket)
 {
     Dispatcher.set(dispatcher);
@@ -40,28 +40,28 @@ TcpEndpoint::TcpEndpoint(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::
     Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
 }
 
-TcpEndpoint::~TcpEndpoint()
+TcpListener::~TcpListener()
 {
     Close();
 }
 
-bool TcpEndpoint::IsClosed()
+bool TcpListener::IsClosed()
 {
     return mSocket == nullptr;
 }
 
-bool TcpEndpoint::Close()
+bool TcpListener::Close()
 {
     if (mSocket != nullptr)
     {
-        LOG("Close endpoint: %s:%u", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
+        LOG("Close listener: %s:%u", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
         mSocket->Detach();
         mSocket = nullptr;
     }
     return true;
 }
 
-std::shared_ptr<Connection> TcpEndpoint::Listen(const std::chrono::milliseconds& timeout)
+std::shared_ptr<Connection> TcpListener::Listen(const std::chrono::milliseconds& timeout)
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {

@@ -1,18 +1,18 @@
 #pragma once
-#ifndef sg_microreactor_UdpEndpoint
-#define sg_microreactor_UdpEndpoint
+#ifndef sg_microreactor_UdpListener
+#define sg_microreactor_UdpListener
 
-#include "Endpoint.h"
+#include "Listener.h"
 #include "UdpConnection.h"
 
 
 namespace sg { namespace microreactor
 {
-    class UdpEndpoint : public Endpoint
+    class UdpListener : public Listener
     {
     public:
-        UdpEndpoint(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
-        virtual ~UdpEndpoint();
+        UdpListener(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
+        virtual ~UdpListener();
         
         virtual bool IsClosed() override;
 
@@ -27,4 +27,4 @@ namespace sg { namespace microreactor
 }}
 
 
-#endif // sg_microreactor_UdpEndpoint
+#endif // sg_microreactor_UdpListener

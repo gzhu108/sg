@@ -9,7 +9,7 @@ using namespace sg::microreactor;
 using namespace simplewebserver;
 
 
-std::vector<std::shared_ptr<Endpoint>>::size_type Initialize(int32_t argc, const char* argv[], std::vector<std::shared_ptr<Endpoint>>& endpoints)
+std::vector<std::shared_ptr<Listener>>::size_type Initialize(int32_t argc, const char* argv[], std::vector<std::shared_ptr<Listener>>& listeners)
 {
     GET_LOGGER().AddLogger([](const std::string& text)
     {
@@ -82,8 +82,8 @@ std::vector<std::shared_ptr<Endpoint>>::size_type Initialize(int32_t argc, const
     simpleDispatcher->Address.set(hostAddress);
     simpleDispatcher->Port.set(hostPort);
 
-    auto simpleEndpoint = std::make_shared<TcpEndpoint>(std::make_shared<TcpSocket>(), simpleDispatcher);
-    endpoints.emplace_back(simpleEndpoint);
+    auto simpleListener = std::make_shared<TcpListener>(std::make_shared<TcpSocket>(), simpleDispatcher);
+    listeners.emplace_back(simpleListener);
 
     // Create the secure REST service
     auto secureDispatcher = std::make_shared<SimpleWebDispatcher>();
@@ -93,23 +93,23 @@ std::vector<std::shared_ptr<Endpoint>>::size_type Initialize(int32_t argc, const
 
     auto secureSocket = std::make_shared<SecureTcpSocket>();
     secureSocket->ConfigureSslContext(SSLv23_server_method(), "selfsigned.key", "cert.pem", SecureTcpSocket::VerifyPeer);
-    auto secureEndpoint = std::make_shared<TcpEndpoint>(secureSocket, secureDispatcher);
-    endpoints.emplace_back(secureEndpoint);
+    auto secureListener = std::make_shared<TcpListener>(secureSocket, secureDispatcher);
+    listeners.emplace_back(secureListener);
 
-    return endpoints.size();
+    return listeners.size();
 }
 
 int32_t main(int32_t argc, const char* argv[])
 {
-    std::vector<std::shared_ptr<Endpoint>> endpoints;
-    if (Initialize(argc, argv, endpoints) == 0)
+    std::vector<std::shared_ptr<Listener>> listeners;
+    if (Initialize(argc, argv, listeners) == 0)
     {
         LOG("Failed to initialize the simplewebserver");
     }
     else
     {
         // Start the REST services
-        if (!Application::Context().Run(endpoints))
+        if (!Application::Context().Run(listeners))
         {
             LOG("Failed to start the simplewebserver");
         }

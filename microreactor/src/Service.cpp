@@ -9,8 +9,8 @@ Service::Service()
 {
 }
 
-Service::Service(std::shared_ptr<Endpoint> endpoint)
-    : mEndpoint(endpoint)
+Service::Service(std::shared_ptr<Listener> listener)
+    : mListener(listener)
 {
 }
 
@@ -20,14 +20,14 @@ Service::~Service()
 
 bool Service::Start()
 {
-    if (Initialize() && mEndpoint != nullptr)
+    if (Initialize() && mListener != nullptr)
     {
-        if (mEndpoint->Start())
+        if (mListener->Start())
         {
-            LOG("Service started on %s", mEndpoint->Name->c_str());
+            LOG("Service started on %s", mListener->Name->c_str());
 
             // Connection to the ConnectonMade signal
-            mEndpoint->ConnectionMade.Connect(std::bind(&Service::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
+            mListener->ConnectionMade.Connect(std::bind(&Service::OnConnectionMade, this, std::placeholders::_1), reinterpret_cast<uintptr_t>(this));
             return true;
         }
     }
@@ -37,16 +37,16 @@ bool Service::Start()
 
 bool Service::Stop()
 {
-    if (mEndpoint != nullptr)
+    if (mListener != nullptr)
     {
-        if (!mEndpoint->Stop())
+        if (!mListener->Stop())
         {
             return false;
         }
 
         // Disconnect the ConnectonMade signal
-        mEndpoint->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
-        mEndpoint = nullptr;
+        mListener->ConnectionMade.Disconnect(reinterpret_cast<uintptr_t>(this));
+        mListener = nullptr;
         return true;
     }
 
@@ -79,13 +79,13 @@ int64_t Service::SendAllConnections(std::iostream& stream)
 
 int64_t Service::SendAllConnections(const char* buffer, int32_t length)
 {
-    if (mEndpoint == nullptr || buffer == nullptr || length <= 0)
+    if (mListener == nullptr || buffer == nullptr || length <= 0)
     {
         return -1;
     }
 
     std::set<std::shared_ptr<Connection>> activeConnections;
-    if (!mEndpoint->GetAllConnections(activeConnections))
+    if (!mListener->GetAllConnections(activeConnections))
     {
         // No connection to send data
         return -1;
@@ -105,7 +105,7 @@ int64_t Service::SendAllConnections(const char* buffer, int32_t length)
 
 bool Service::Initialize()
 {
-    return mEndpoint != nullptr;
+    return mListener != nullptr;
 }
 
 void Service::OnConnectionMade(const std::shared_ptr<Connection>& connection)

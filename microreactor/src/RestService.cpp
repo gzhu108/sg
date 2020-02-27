@@ -10,7 +10,7 @@ RestService::RestService(const std::string& hostName, uint16_t port)
     dispatcher->Protocol.set("tcp");
     dispatcher->Address.set(hostName);
     dispatcher->Port.set(port);
-    mEndpoint = NetworkUtility::CreateEndpoint(dispatcher);
+    mListener = NetworkUtility::CreateListener(dispatcher);
 }
 
 RestService::RestService(std::shared_ptr<Profile> profile)
@@ -30,7 +30,7 @@ RestService::RestService(std::shared_ptr<Profile> profile)
         dispatcher->Port.set(profile->Port.cref());
     }
 
-    mEndpoint = NetworkUtility::CreateEndpoint(dispatcher);
+    mListener = NetworkUtility::CreateListener(dispatcher);
 }
 
 RestService::~RestService()
