@@ -41,6 +41,8 @@ build/**
 **/linux/**
 **/java/**
 **/dist/**
+**/.vc/**
+**/.vscode/**
 compile
 CMakeCache.txt
 cmake_install.cmake

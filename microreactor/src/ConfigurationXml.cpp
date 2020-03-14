@@ -1,4 +1,4 @@
-#include <rapidxml.hpp>
+#include <rapidxml/rapidxml.hpp>
 #include "ConfigurationXml.h"
 #include <fstream>
 #include <functional>

@@ -1,7 +1,0 @@
-- simple:
-    get:
-        description: super
-- complex:
-    post:
-        description: not super
-    put: !!null

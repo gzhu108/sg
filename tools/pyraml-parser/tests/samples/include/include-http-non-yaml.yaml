@@ -1,7 +1,0 @@
-#%RAML 0.8
----
-title: Foo
-baseUri: http://example.com
-documentation:
-    - title: Home
-      content: !include https://raw.github.com/mulesoft/mule/mule-3.x/README.md

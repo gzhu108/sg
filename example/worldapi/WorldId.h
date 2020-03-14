@@ -33,7 +33,7 @@ namespace worldapi
         ErrorTimeout = 504,
     };
 
-    static const char MARKER = 0xbc;
+    static const char MARKER = (char)0xbc;
 
     typedef uint64_t WorldId;
     static const WorldId DefaultWorldId = (WorldId)(0);

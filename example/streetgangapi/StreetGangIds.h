@@ -34,7 +34,7 @@ namespace streetgangapi
         ErrorTimeout = 504,
     };
 
-    static const char MARKER = 0xbc;
+    static const char MARKER = (char)0xbc;
 }
 
 #endif // streetgangapi_StreetGangIds

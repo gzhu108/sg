@@ -1,4 +1,14 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.9)
+
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+  message(" [INFO] VCPKG CMAKE_TOOLCHAIN_FILE = ${CMAKE_TOOLCHAIN_FILE}")
+endif()
+
+if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+  set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+endif()
+
 project(Metricator)
 
 # The version number.
@@ -13,6 +23,12 @@ configure_file(
   "${PROJECT_SOURCE_DIR}/MetricatorConfig.h.in"
   "${PROJECT_BINARY_DIR}/MetricatorConfig.h"
   )
+
+# To find and use dependency header files
+find_path(DEPENDENCY_INCLUDE_DIR PATH_SUFFIXES openssl)
+include_directories(${DEPENDENCY_INCLUDE_DIR})
+
+find_package(unofficial-http-parser CONFIG REQUIRED)
  
 # add the binary tree to the search path for include files
 include_directories(
@@ -48,6 +64,7 @@ add_dependencies(metricator ${DEPENDENCY_LIBS})
 
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "${DEPENDENCY_LIBS}"
+  unofficial::http_parser::http_parser
   "uuid"
   )
 

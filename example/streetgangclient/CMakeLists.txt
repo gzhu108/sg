@@ -1,4 +1,14 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.9)
+
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+  message(" [INFO] VCPKG CMAKE_TOOLCHAIN_FILE = ${CMAKE_TOOLCHAIN_FILE}")
+endif()
+
+if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+  set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+endif()
+
 project(StreetGangClient)
 
 # The version number.
@@ -17,7 +27,7 @@ configure_file(
 # add the binary tree to the search path for include files
 include_directories(
   "${PROJECT_SOURCE_DIR}/../../microreactor/src"
-  "${PROJECT_SOURCE_DIR}/../streetgangproto/cpp"
+  "${CMAKE_CURRENT_BINARY_DIR}/../streetgangproto"
   "${PROJECT_SOURCE_DIR}/../streetgangapi"
   )
 
@@ -29,14 +39,17 @@ file(GLOB BUILD_SRC
   "${PROJECT_SOURCE_DIR}/*.cpp"
   )
 
-find_package(Protobuf REQUIRED)
-include_directories(${Protobuf_INCLUDE_DIRS})
+find_package(Protobuf CONFIG REQUIRED)
 
+# To find and use dependency header files
+find_path(DEPENDENCY_INCLUDE_DIR PATH_SUFFIXES openssl)
+include_directories(${DEPENDENCY_INCLUDE_DIR})
+
+find_package(unofficial-http-parser CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
-include_directories(${OPENSSL_INCLUDE_DIR})
 
 link_directories(
-  "${PROJECT_BINARY_DIR}/../streetgangproto/cpp"
+  "${PROJECT_BINARY_DIR}/../streetgangproto"
   "${PROJECT_BINARY_DIR}/../streetgangapi"
   "${PROJECT_BINARY_DIR}/../../microreactor"
   )
@@ -54,10 +67,10 @@ add_dependencies(streetgangclient ${DEPENDENCY_LIBS})
 
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "${DEPENDENCY_LIBS}"
-  "${Protobuf_LIBRARIES}"
-  "${OPENSSL_LIBRARIES}"
+  protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite
+  OpenSSL::SSL OpenSSL::Crypto
+  unofficial::http_parser::http_parser
   "uuid"
-  "dl"
   )
 
 target_link_libraries(streetgangclient ${EXTRA_LIBS})

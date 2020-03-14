@@ -1,4 +1,14 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.9)
+
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+  message(" [INFO] VCPKG CMAKE_TOOLCHAIN_FILE = ${CMAKE_TOOLCHAIN_FILE}")
+endif()
+
+if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
+  set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+endif()
+
 project(Microreactor)
 
 # The version number.
@@ -13,13 +23,15 @@ configure_file(
   "${PROJECT_SOURCE_DIR}/MicroreactorConfig.h.in"
   "${PROJECT_BINARY_DIR}/MicroreactorConfig.h"
   )
+
+# To find and use dependency header files
+find_path(DEPENDENCY_INCLUDE_DIR NAMES http_parser.h PATH_SUFFIXES rapidxml openssl)
+include_directories(${DEPENDENCY_INCLUDE_DIR})
  
 # add the binary tree to the search path for include files
 include_directories(
   "${PROJECT_SOURCE_DIR}/src"
   "${PROJECT_SOURCE_DIR}/test"
-  "${PROJECT_SOURCE_DIR}/../tools/rapidxml"
-  "${PROJECT_SOURCE_DIR}/../tools/http-parser"
   )
 
 file(GLOB BUILD_INC
@@ -30,11 +42,7 @@ file(GLOB BUILD_SRC
   "${PROJECT_SOURCE_DIR}/src/*.cpp"
   )
 
-set(ADDITIONAL_SRC
-  "${PROJECT_SOURCE_DIR}/../tools/http-parser/http_parser.c"
-  )
-
-add_library(microreactor STATIC ${BUILD_INC} ${BUILD_SRC} ${ADDITIONAL_SRC})
+add_library(microreactor STATIC ${BUILD_INC} ${BUILD_SRC})
 
 # add the install targets
 install(TARGETS microreactor DESTINATION bin)
@@ -42,7 +50,7 @@ install(FILES ${BUILD_INC} DESTINATION include)
 
 # Enable testing
 enable_testing()
-find_package(GTest REQUIRED)
+find_package(GTest CONFIG REQUIRED)
 
 file(GLOB TEST_SRC
   "${PROJECT_SOURCE_DIR}/test/*.cpp"
@@ -58,6 +66,8 @@ add_executable(microreactor_test ${TEST_SRC})
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+find_package(unofficial-http-parser CONFIG REQUIRED)
+
 set(DEPENDENCY_LIBS
   "microreactor"
   )
@@ -65,9 +75,12 @@ set(DEPENDENCY_LIBS
 # add this command to scan dependencies of target
 add_dependencies(microreactor_test ${DEPENDENCY_LIBS})
 
+set(GTEST_LIBRARIES GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "${DEPENDENCY_LIBS}"
   "${GTEST_LIBRARIES}"
+  unofficial::http_parser::http_parser
   "Threads::Threads"
   "uuid"
   )
