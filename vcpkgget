@@ -1,0 +1,3 @@
+#!/bin/bash
+
+vcpkg install gtest http-parser openssl protobuf rapidjson rapidxml libuuid
