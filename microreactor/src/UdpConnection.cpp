@@ -104,23 +104,6 @@ void UdpConnection::SetPeerPort(uint16_t peerPort)
     mSocket->PeerPort.set(peerPort);
 }
 
-bool UdpConnection::DataReady()
-{
-    if (mSocket == nullptr || !mSocket->IsValid())
-    {
-        Close();
-        return false;
-    }
-
-    bool result = mSocket->ReceiveWait(ReceiveTimeout.cref());
-    if (result)
-    {
-        mDataRetrieved = false;
-    }
-
-    return result;
-}
-
 uint64_t UdpConnection::Receive(char* buffer, int32_t length)
 {
     if (buffer == nullptr || length <= 0)

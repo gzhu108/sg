@@ -62,13 +62,10 @@ void Listener::AcceptConnection()
         return;
     }
 
-    auto listenTimeout = ListenTimeout.cref();
-    std::shared_ptr<Connection> connection = Listen(listenTimeout);
+    std::shared_ptr<Connection> connection = Listen();
     if (connection != nullptr)
     {
-        connection->ReceiveTimeout.set(ReceiveTimeout.cref());
         connection->SendTimeout.set(SendTimeout.cref());
-
         AddConnection(connection);
 
         // Signal a connection is made

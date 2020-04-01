@@ -32,7 +32,7 @@ SecureTcpSocket::~SecureTcpSocket()
     }
 }
 
-std::shared_ptr<TcpSocket> SecureTcpSocket::Accept(const std::chrono::milliseconds& timeout)
+std::shared_ptr<TcpSocket> SecureTcpSocket::Accept()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -41,7 +41,7 @@ std::shared_ptr<TcpSocket> SecureTcpSocket::Accept(const std::chrono::millisecon
         return nullptr;
     }
 
-    std::shared_ptr<TcpSocket> client = TcpSocket::Accept(timeout);
+    std::shared_ptr<TcpSocket> client = TcpSocket::Accept();
     if (client == nullptr)
     {
         return nullptr;
@@ -71,7 +71,7 @@ bool SecureTcpSocket::Connect(const std::string& address, uint16_t port, const s
         return false;
     }
 
-    if (!TcpSocket::Connect(address, port, timeout))
+    if (!TcpSocket::Connect(address, port))
     {
         return false;
     }
@@ -90,12 +90,6 @@ bool SecureTcpSocket::Connect(const std::string& address, uint16_t port, const s
 
         if (result == SSL_ERROR_WANT_READ)
         {
-            if (!ReceiveWait(timeout))
-            {
-                LOG("SSL_connect() read timeout\n");
-                Detach();
-                return false;
-            }
         }
         else if (result == SSL_ERROR_WANT_WRITE)
         {

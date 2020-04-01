@@ -135,63 +135,6 @@ int32_t Socket::SetNonblocking(bool nonblocking)
     return result;
 }
 
-bool Socket::ReceiveWait(const std::chrono::milliseconds& timeout)
-{
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-
-    // Set the socket into non-blocking mode
-    SetNonblocking(true);
-
-    std::unique_ptr<timeval> tv;
-    if (timeout.count() != 0)
-    {
-        std::chrono::seconds timeoutSeconds = std::chrono::duration_cast<std::chrono::seconds>(timeout);
-        std::chrono::milliseconds timeoutRemainder = timeout - std::chrono::duration_cast<std::chrono::milliseconds>(timeoutSeconds);
-        std::chrono::microseconds timeoutMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(timeoutRemainder);
-
-        tv.reset(new timeval());
-        tv->tv_sec = (decltype(tv->tv_sec))timeoutSeconds.count();
-        tv->tv_usec = (decltype(tv->tv_usec))timeoutMicroseconds.count();
-    }
-
-    // Select the server socket for checking incoming connection.
-    fd_set readfds;
-    FD_ZERO(&readfds);
-    FD_SET(mSocket, &readfds);
-
-    fd_set exceptfds;
-    FD_ZERO(&exceptfds);
-    FD_SET(mSocket, &exceptfds);
-
-    // Wait until timeout for reading, tv = NULL for blocking operation.
-    int32_t result = select((int32_t)mSocket + 1, &readfds, nullptr, &exceptfds, tv.get());
-    if (result == SOCKET_ERROR)
-    {
-        // select error
-        int32_t error = GetSocketError();
-        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
-    }
-    else if (result > 0)
-    {
-        if (FD_ISSET(mSocket, &readfds))
-        {
-            return true;
-        }
-
-        if (FD_ISSET(mSocket, &exceptfds))
-        {
-            // Socket exception
-            Detach();
-        }
-    }
-    else
-    {
-        // Timeout
-    }
-    
-    return false;
-}
-
 bool Socket::Receive(char* buffer, int32_t length, int32_t& bytesReceived)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
@@ -200,9 +143,6 @@ bool Socket::Receive(char* buffer, int32_t length, int32_t& bytesReceived)
     {
         THROW(InvalidArgumentException);
     }
-
-    // Set the socket into blocking mode
-    //SetNonblocking(false);
 
     bytesReceived = recv(mSocket, buffer, length, 0);
     if (bytesReceived == SOCKET_ERROR)

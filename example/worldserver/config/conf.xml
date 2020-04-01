@@ -2,8 +2,6 @@
 
 <Service>
     <Version>1.0.0.1</Version>
-    <ListenTimeout>1</ListenTimeout>
-    <ReceiveTimeout>1</ReceiveTimeout>
     <SendTimeout>100</SendTimeout>
     <ThreadPoolSize>8</ThreadPoolSize>
     <Protocol>tcp</Protocol>

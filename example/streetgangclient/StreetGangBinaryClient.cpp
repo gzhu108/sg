@@ -116,7 +116,7 @@ StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, cons
     //auto socket = std::make_shared<TcpSocket>();
     auto connection = std::make_shared<TcpConnection>(socket, dispatcher);
 
-    Initialize(connection, std::chrono::milliseconds(30));
+    Initialize(connection);
 }
 
 StreetGangBinaryClient::~StreetGangBinaryClient()

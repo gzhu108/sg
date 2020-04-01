@@ -28,7 +28,7 @@ namespace sg { namespace service
         void MulticastMSearch(const std::string& multicastAddress, uint16_t port, const std::string& mx);
 
     protected:
-        virtual void Initialize(std::shared_ptr<sg::microreactor::Connection> connection, const std::chrono::milliseconds& timeout) override;
+        virtual void Initialize(std::shared_ptr<sg::microreactor::Connection> connection) override;
         
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateNotifyReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
         virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchResponseReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);

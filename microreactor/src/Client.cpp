@@ -19,7 +19,7 @@ Client::~Client()
     }
 }
 
-void Client::Initialize(std::shared_ptr<Connection> connection, const std::chrono::milliseconds& timeout)
+void Client::Initialize(std::shared_ptr<Connection> connection)
 {
     mConnection = connection;
 
@@ -30,7 +30,6 @@ void Client::Initialize(std::shared_ptr<Connection> connection, const std::chron
     else
     {
         // Push to the queue to receive messages.
-        mConnection->ReceiveTimeout.set(timeout);
         if (mConnection->Start())
         {
             ClientName.set(mConnection->Name.cref());

@@ -17,7 +17,7 @@ namespace sg { namespace microreactor
         
     protected:
         virtual bool Close() override;
-        virtual std::shared_ptr<Connection> Listen(const std::chrono::milliseconds& timeout) override;
+        virtual std::shared_ptr<Connection> Listen() override;
         
     protected:
         std::shared_ptr<TcpSocket> mSocket;

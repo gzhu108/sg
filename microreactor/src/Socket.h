@@ -3,12 +3,20 @@
 #define sg_microreactor_Socket
 
 #ifdef _MSC_VER
+
 #include <WinSock2.h>
 #include <Ws2tcpip.h>
 #include <Mstcpip.h>
 #include <Mswsock.h>
 #pragma comment(lib, "Ws2_32.lib")
+
+#ifdef EWOULDBLOCK
+#undef EWOULDBLOCK
+#endif
+#define EWOULDBLOCK WSAEWOULDBLOCK
+
 #else
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -21,6 +29,7 @@
 #define INVALID_SOCKET (-1)
 #define SOCKET_ERROR (-1)
 typedef int32_t SOCKET;
+
 #endif
 
 #include <chrono>
@@ -64,8 +73,6 @@ namespace sg { namespace microreactor
         virtual int32_t GetSockOpt(int32_t level, int32_t optname, char* optval, socklen_t* optlen);
 
         virtual int32_t SetNonblocking(bool nonblocking);
-
-        virtual bool ReceiveWait(const std::chrono::milliseconds& timeout);
         virtual bool SendWait(const std::chrono::milliseconds& timeout);
 
         virtual bool Receive(char* buffer, int32_t length, int32_t& bytesReceived);

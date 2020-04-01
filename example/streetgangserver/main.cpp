@@ -70,11 +70,9 @@ static std::shared_ptr<Service> CreateRestService()
         return nullptr;
     }
 
-    uint32_t listenTimeout = 30;
     uint32_t receiveTimeout = 30;
     uint32_t sendTimeout = 100;
 
-    configuration->GetValue("ListenTimeout", listenTimeout);
     configuration->GetValue("ReceiveTimeout", receiveTimeout);
     configuration->GetValue("SendTimeout", sendTimeout);
 
@@ -89,7 +87,6 @@ static std::shared_ptr<Service> CreateRestService()
     dispatcher->Port.set(restPort);
 
     std::shared_ptr<Listener> listener = NetworkUtility::CreateListener(dispatcher);
-    listener->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
     listener->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
     listener->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 

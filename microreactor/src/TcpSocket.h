@@ -16,8 +16,8 @@ namespace sg { namespace microreactor
 
     public:
         virtual bool Listen(const std::string& hostAddress, uint16_t port);
-        virtual std::shared_ptr<TcpSocket> Accept(const std::chrono::milliseconds& timeout);
-        virtual bool Connect(const std::string& address, uint16_t port, const std::chrono::milliseconds& timeout);
+        virtual std::shared_ptr<TcpSocket> Accept();
+        virtual bool Connect(const std::string& address, uint16_t port);
         
     protected:
         virtual bool SetKeepalive(TcpSocket& socket, int32_t keepalive, int32_t keepaliveProbes, int32_t keepaliveIdleTime, int32_t keepaliveProbeInterval);

@@ -46,9 +46,8 @@ bool BouncerReactor::ReceiveTarget()
 {
     std::vector<char> response;
     response.resize(10240);
-    mTarget->ReceiveTimeout.set(std::chrono::milliseconds(1000));
 
-    if (!mTarget->IsClosed() && mTarget->DataReady())
+    if (!mTarget->IsClosed())
     {
         auto bytesReceived = mTarget->Receive(&response[0], (int32_t)response.size());
         LOG("%s: Recieved " FMT_UINT64 " bytes", mTarget->Name->c_str(), bytesReceived);

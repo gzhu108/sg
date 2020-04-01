@@ -18,7 +18,6 @@ namespace sg { namespace microreactor
         Signal<std::shared_ptr<Connection>>& ConnectionMade = mConnectionMade;
 
         PROPERTY(Name, std::string);
-        PROPERTY(ListenTimeout, std::chrono::milliseconds, std::chrono::milliseconds(1));
         PROPERTY(ReceiveTimeout, std::chrono::milliseconds, std::chrono::milliseconds(1));
         PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
         PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
@@ -44,7 +43,7 @@ namespace sg { namespace microreactor
         virtual void RemoveConnection(std::shared_ptr<Connection> connection);
         virtual void CloseAllConnections();
 
-        virtual std::shared_ptr<Connection> Listen(const std::chrono::milliseconds& timeout) = 0;
+        virtual std::shared_ptr<Connection> Listen() = 0;
 
     protected:
         std::recursive_mutex mLock;

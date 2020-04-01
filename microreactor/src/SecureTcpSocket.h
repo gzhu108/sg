@@ -16,8 +16,8 @@ namespace sg { namespace microreactor
         virtual ~SecureTcpSocket();
 
     public:
-        virtual std::shared_ptr<TcpSocket> Accept(const std::chrono::milliseconds& timeout) override;
-        virtual bool Connect(const std::string& address, uint16_t port, const std::chrono::milliseconds& timeout) override;
+        virtual std::shared_ptr<TcpSocket> Accept() override;
+        virtual bool Connect(const std::string& address, uint16_t port, const std::chrono::milliseconds& timeout);
     
         virtual bool Receive(char* buffer, int32_t length, int32_t& bytesReceived) override;
         virtual bool Send(const char* buffer, int32_t length, int32_t& bytesSent) override;

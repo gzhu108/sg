@@ -98,7 +98,7 @@ bool Connection::Start()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    if (!IsClosed() && ReceiveTimeout->count())
+    if (!IsClosed())
     {
         // Push to the queue to receive connection data.
         mReceiveTask = SUBMIT(std::bind(&Connection::ReceiveMessage, this), "Connection::ReceiveMessage");
@@ -144,7 +144,7 @@ void Connection::ReceiveMessage()
         dispatcher->RemoveTimedOutMessages(*this);
 
         // Receive data from the connection
-        if (!IsClosed() && DataReady())
+        if (!IsClosed())
         {
             LogTps();
             dispatcher->Dispatch(*this);

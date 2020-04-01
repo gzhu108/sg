@@ -56,17 +56,6 @@ uint16_t TcpConnection::GetPeerPort() const
     return mSocket->PeerPort.cref();
 }
 
-bool TcpConnection::DataReady()
-{
-    if (mSocket == nullptr || !mSocket->IsValid())
-    {
-        Close();
-        return false;
-    }
-
-    return mSocket->ReceiveWait(ReceiveTimeout.cref());
-}
-
 uint64_t TcpConnection::Receive(char* buffer, int32_t length)
 {
     if (mSocket == nullptr || !mSocket->IsValid())
@@ -165,7 +154,7 @@ bool TcpConnection::EnsureClientConnection()
     {
         try
         {
-            mSocket->Connect(Dispatcher.cref()->Address.cref(), Dispatcher.cref()->Port.cref(), SendTimeout.cref());
+            mSocket->Connect(Dispatcher.cref()->Address.cref(), Dispatcher.cref()->Port.cref());
             if (!mSocket->IsValid())
             {
                 LOG("Failed to connect to [%s]:%u", Dispatcher.cref()->Address->c_str(), Dispatcher.cref()->Port.cref());

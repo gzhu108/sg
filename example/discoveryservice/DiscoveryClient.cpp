@@ -42,7 +42,7 @@ DiscoveryClient::DiscoveryClient(std::shared_ptr<DiscoveryDispatcher> dispatcher
 
     // Create UDP connection
     auto connection = std::make_shared<UdpConnection>(mSocket, dispatcher);
-    Initialize(connection, std::chrono::milliseconds(30));
+    Initialize(connection);
 
     dispatcher->RegisterResource("NOTIFY", "*", std::bind(&DiscoveryClient::CreateNotifyReactor, this, std::placeholders::_1, std::placeholders::_2));
     dispatcher->RegisterResource("", "", std::bind(&DiscoveryClient::CreateMSearchResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
@@ -73,11 +73,11 @@ void DiscoveryClient::MulticastMSearch(const std::string& multicastAddress, uint
     }
 }
 
-void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection, const std::chrono::milliseconds& timeout)
+void DiscoveryClient::Initialize(std::shared_ptr<Connection> connection)
 {
     try
     {
-        Client::Initialize(connection, timeout);
+        Client::Initialize(connection);
     
         // Initialize multicasting
         if (mSocket->JoinMulticastGoup(mMulticastAddress, mInterfaceAddress, false))

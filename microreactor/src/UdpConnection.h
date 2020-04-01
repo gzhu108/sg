@@ -24,7 +24,6 @@ namespace sg { namespace microreactor
         virtual void SetPeerAddress(const std::string& peerAddress) override;
         virtual void SetPeerPort(uint16_t peerPort) override;
 
-        virtual bool DataReady() override;
         virtual uint64_t Receive(char* buffer, int32_t length) override;
         virtual uint64_t Send(const char* buffer, int32_t length) override;
         

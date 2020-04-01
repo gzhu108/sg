@@ -20,7 +20,7 @@ WorldClient::WorldClient(const std::string& protocol, const std::string& hostAdd
     dispatcher->Port.set(port);
 
     auto connection = NetworkUtility::CreateConnection(dispatcher);
-    Initialize(connection, std::chrono::milliseconds(30));
+    Initialize(connection);
 }
 
 WorldClient::~WorldClient()

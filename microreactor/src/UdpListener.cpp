@@ -62,7 +62,7 @@ bool UdpListener::Close()
     return true;
 }
 
-std::shared_ptr<Connection> UdpListener::Listen(const std::chrono::milliseconds& timeout)
+std::shared_ptr<Connection> UdpListener::Listen()
 {
     if (mSocket == nullptr || !mSocket->IsValid() || mConnection == nullptr)
     {
@@ -70,18 +70,5 @@ std::shared_ptr<Connection> UdpListener::Listen(const std::chrono::milliseconds&
         return nullptr;
     }
 
-    try
-    {
-        if (mConnection->DataReady())
-        {
-            return mConnection;
-        }
-    }
-    catch (SocketException& e)
-    {
-        // Socket exception received.
-        LOG("Failed to listen: exception(%d): %s [%s]:%u", e.mError, e.what(), e.mName.c_str(), e.mPort);
-    }
-    
-    return nullptr;
+    return mConnection;
 }

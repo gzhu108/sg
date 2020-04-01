@@ -62,55 +62,32 @@ bool TcpSocket::Listen(const std::string& hostAddress, uint16_t port)
         THROW(SocketException, error, hostAddress, port);
     }
 
+    // Set the socket into non-blocking mode
+    SetNonblocking(true);
+
     return true;
 }
 
-std::shared_ptr<TcpSocket> TcpSocket::Accept(const std::chrono::milliseconds& timeout)
+std::shared_ptr<TcpSocket> TcpSocket::Accept()
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
-    std::unique_ptr<timeval> tv;
-    if (timeout.count() != 0)
+    // Accept a client socket
+    SOCKET socket = accept(mSocket, nullptr, nullptr);
+    if (socket == INVALID_SOCKET)
     {
-        std::chrono::seconds timeoutSeconds = std::chrono::duration_cast<std::chrono::seconds>(timeout);
-        std::chrono::milliseconds timeoutRemainder = timeout - std::chrono::duration_cast<std::chrono::milliseconds>(timeoutSeconds);
-        std::chrono::microseconds timeoutMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(timeoutRemainder);
+        return nullptr;
+    }
         
-        tv.reset(new timeval());
-        tv->tv_sec = (decltype(tv->tv_sec))timeoutSeconds.count();
-        tv->tv_usec = (decltype(tv->tv_usec))timeoutMicroseconds.count();
-    }
+    std::shared_ptr<TcpSocket> clientSocket = std::make_shared<TcpSocket>(socket);
 
-    // Select the server socket for checking incoming connection.
-    fd_set readfds;
-    FD_ZERO(&readfds);
-    FD_SET(mSocket, &readfds);
-    
-    // Wait until timeout for incoming connection, tv = NULL for blocking operation.
-    int32_t result = select((int32_t)mSocket + 1, &readfds, nullptr, nullptr, tv.get());
-    if (result == SOCKET_ERROR)
-    {
-        // select error
-        int32_t error = GetSocketError();
-        THROW(SocketException, error, HostAddress.cref(), HostPort.cref());
-    }
-    else if (result > 0)
-    {
-        // Accept a client socket
-        SOCKET socket = accept(mSocket, nullptr, nullptr);
-        if (socket == INVALID_SOCKET)
-        {
-            return nullptr;
-        }
-        
-        std::shared_ptr<TcpSocket> clientSocket = std::make_shared<TcpSocket>(socket);
-        return clientSocket;
-    }
+    // Set the socket into non-blocking mode
+    clientSocket->SetNonblocking(true);
 
-    return nullptr;
+    return clientSocket;
 }
 
-bool TcpSocket::Connect(const std::string& address, uint16_t port, const std::chrono::milliseconds& timeout)
+bool TcpSocket::Connect(const std::string& address, uint16_t port)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -141,6 +118,9 @@ bool TcpSocket::Connect(const std::string& address, uint16_t port, const std::ch
             LOG("TCP [%s]:%d -> [%s]:%d", HostAddress->c_str(), HostPort.cref(), PeerAddress->c_str(), PeerPort.cref());
             mConnected();
         }
+
+        // Set the socket into non-blocking mode
+        SetNonblocking(true);
 
         return true;
     }

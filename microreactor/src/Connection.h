@@ -24,7 +24,6 @@ namespace sg { namespace microreactor
         Signal<void>& Closed = mClosed;
 
         PROPERTY(Name, std::string);
-        PROPERTY(ReceiveTimeout, std::chrono::milliseconds, std::chrono::milliseconds(1));
         PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
         PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
         
@@ -46,7 +45,6 @@ namespace sg { namespace microreactor
         virtual bool Receive(std::iostream& stream);
         virtual bool Send(std::iostream& stream);
 
-        virtual bool DataReady() = 0;
         virtual uint64_t Receive(char* buffer, int32_t length) = 0;
         virtual uint64_t Send(const char* buffer, int32_t length) = 0;
         

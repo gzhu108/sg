@@ -55,7 +55,6 @@ bool DiscoveryService::Initialize()
         return false;
     }
 
-    mListener->ListenTimeout.set(std::chrono::milliseconds(30));
     mListener->ReceiveTimeout.set(std::chrono::milliseconds(30));
     mListener->SendTimeout.set(std::chrono::milliseconds(1000));
 

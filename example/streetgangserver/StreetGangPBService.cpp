@@ -80,11 +80,9 @@ bool StreetGangPBService::Initialize()
 
     mConfigurationConnectionId = configuration->ValueUpdated.Connect(std::bind(&StreetGangPBService::Restart, this));
 
-    uint32_t listenTimeout = 30;
     uint32_t receiveTimeout = 30;
     uint32_t sendTimeout = 100;
 
-    configuration->GetValue("ListenTimeout", listenTimeout);
     configuration->GetValue("ReceiveTimeout", receiveTimeout);
     configuration->GetValue("SendTimeout", sendTimeout);
 
@@ -103,7 +101,6 @@ bool StreetGangPBService::Initialize()
     dispatcher->Port.set(port);
 
     mListener = NetworkUtility::CreateListener(dispatcher);
-    mListener->ListenTimeout.set(std::chrono::milliseconds(listenTimeout));
     mListener->ReceiveTimeout.set(std::chrono::milliseconds(receiveTimeout));
     mListener->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
     
