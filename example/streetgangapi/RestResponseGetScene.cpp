@@ -68,5 +68,5 @@ bool RestResponseGetScene::Encode(std::ostream& stream) const
     response.mHeaders.emplace_back(HttpHeader("Content-Type", "application/json"));
     SetHttpBody(buffer.GetString(), response);
 
-    return response.FlushToStream(stream);
+    return response.Encode(stream);
 }

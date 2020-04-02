@@ -15,9 +15,8 @@ namespace sg { namespace microreactor
         typedef T MessageType;
 
         MessageReactor(Connection& connection, std::shared_ptr<MessageType> input)
-            : Reactor(connection)
+            : Reactor(connection, std::static_pointer_cast<Message>(input))
         {
-            mInput = std::static_pointer_cast<Message>(input);
         }
 
         virtual ~MessageReactor() {}

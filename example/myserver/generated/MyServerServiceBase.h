@@ -10,15 +10,17 @@ namespace myserver
     class MyServerServiceBase : public sg::microreactor::RestService
     {
     public:
-        MyServerServiceBase(std::shared_ptr<sg::microreactor::Endpoint> endpoint);
+        MyServerServiceBase(const std::string& hostAddress, uint16_t port);
+        explicit MyServerServiceBase(std::shared_ptr<sg::microreactor::Profile> profile);
+        explicit MyServerServiceBase(std::shared_ptr<sg::microreactor::Listener> listener);
         virtual ~MyServerServiceBase();
 
     public:
         virtual bool Initialize() override;
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGETv1versionReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection) = 0;
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreatePOSTv1updateReactor(std::shared_ptr<sg::microreactor::RestRequest> request, std::shared_ptr<sg::microreactor::Connection> connection) = 0;
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGETv1versionReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection) = 0;
+        virtual std::shared_ptr<sg::microreactor::Reactor> CreatePOSTv1updateReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection) = 0;
     };
 }
 

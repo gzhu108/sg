@@ -1,27 +1,29 @@
 #include "GETv1versionReactorBase.h"
-#include "RestResponse.h"
-
-using namespace sg::microreactor;
-using namespace myserver;
+#include "GETv1versionMessage.h"
 
 
-GETv1versionReactorBase::GETv1versionReactorBase(std::shared_ptr<Connection> connection, std::shared_ptr<RestRequest> request)
-    : RestReactor(connection, request)
+namespace myserver
 {
-}
-
-GETv1versionReactorBase::~GETv1versionReactorBase()
-{
-}
-
-bool GETv1versionReactorBase::Process()
-{
-    if (Request() == nullptr)
+    GETv1versionReactorBase::GETv1versionReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request)
+        : RestReactor(connection, request)
     {
-        LOG("Invalid request [ReqId=%s]\n", InputMessage()->TrackId.cref().c_str());
-        return false;
     }
 
-    // Send GETv1versionResponse or error response
-    return RestResponse::SendErrorWith(*mConnection, 501, "GET [/v1/version] not Implemented");
+    GETv1versionReactorBase::~GETv1versionReactorBase()
+    {
+    }
+
+    bool GETv1versionReactorBase::Process()
+    {
+        if (InputMessage() == nullptr)
+        {
+            LOG("Invalid request [ReqId=%s]\n", InputMessage()->TrackId.cref().c_str());
+            return sg::microreactor::RestResponse::SendErrorWith(mConnection, 400, "Invalid request");
+        }
+
+        sg::microreactor::RestResponse response;
+        response.mHeaders.emplace_back(sg::microreactor::HttpHeader("Content-Type", "application/json"));
+
+        return response.Send(mConnection, GETv1versionMessage(InputMessage()));
+    }
 }

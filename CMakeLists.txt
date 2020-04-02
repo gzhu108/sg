@@ -23,4 +23,4 @@ add_subdirectory(example/streetgangproto)
 add_subdirectory(example/streetgangapi)
 add_subdirectory(example/streetgangclient)
 add_subdirectory(example/streetgangserver)
-
+add_subdirectory(example/myserver)

@@ -3,7 +3,7 @@
 using namespace sg::microreactor;
 
 
-bool RestResponse::FlushToBuffer(std::string& buffer)
+bool RestResponse::Write(std::string& buffer) const
 {
     buffer = mVersion + " " + std::to_string(mStatusCode) + " " + mStatusText + "\r\n";
 

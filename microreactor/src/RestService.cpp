@@ -33,6 +33,12 @@ RestService::RestService(std::shared_ptr<Profile> profile)
     mListener = NetworkUtility::CreateListener(dispatcher);
 }
 
+RestService::RestService(std::shared_ptr<Listener> listener)
+    : Service(listener)
+{
+    mListener->Dispatcher.set(std::make_shared<RestDispatcher>());
+}
+
 RestService::~RestService()
 {
 }

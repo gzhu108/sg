@@ -24,3 +24,22 @@ bool Message::HasTimedOut()
 
     return false;
 }
+
+bool Message::Encode(std::ostream& stream) const
+{
+    std::string buffer;
+    if (Write(buffer))
+    {
+        stream.write(buffer.data(), buffer.length());
+        return !stream.eof() && !stream.fail() && !stream.bad();
+    }
+
+    return false;
+}
+
+bool Message::Decode(std::istream& stream)
+{
+    std::string buffer;
+    stream >> buffer;
+    return Read(buffer);
+}

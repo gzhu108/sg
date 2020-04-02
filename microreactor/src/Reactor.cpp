@@ -3,8 +3,9 @@
 using namespace sg::microreactor;
 
 
-Reactor::Reactor(Connection& connection)
+Reactor::Reactor(Connection& connection, std::shared_ptr<Message> input)
     : mConnection(connection)
+    , mInput(input)
 {
 }
 

@@ -3,15 +3,14 @@
 #define myserver_GETv1versionReactorBase
 
 #include "RestReactor.h"
-#include "GETv1versionMessage.h"
 
 
 namespace myserver
 {
-    class GETv1versionReactorBase : public sg::microreactor::RestReactor<GETv1versionMessage>
+    class GETv1versionReactorBase : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
     {
     public:
-        GETv1versionReactorBase(std::shared_ptr<sg::microreactor::Connection> connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        GETv1versionReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
         virtual ~GETv1versionReactorBase();
 
     public:

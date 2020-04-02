@@ -4,22 +4,22 @@
 
 #include "Reactor.h"
 #include "Connection.h"
-#include "RestMessage.h"
+#include "RestRequest.h"
+#include "RestResponse.h"
 #include "Uuid.h"
 
 
 namespace sg { namespace microreactor
 {
-    template <typename T>
+    template <typename T = RestMessage>
     class RestReactor : public Reactor
     {
     public:
         typedef T MessageType;
 
-        RestReactor(Connection& connection, std::shared_ptr<MessageType> request)
-            : Reactor(connection)
+        RestReactor(Connection& connection, std::shared_ptr<MessageType> input)
+            : Reactor(connection, input)
         {
-            mInput = std::static_pointer_cast<Message>(request);
             mInput->TrackId.set(Uuid::GenerateUuid().ToString());
         }
 

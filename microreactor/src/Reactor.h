@@ -12,7 +12,7 @@ namespace sg { namespace microreactor
     class Reactor : public Parkable<std::string>
     {
     public:
-        explicit Reactor(Connection& connection);
+        explicit Reactor(Connection& connection, std::shared_ptr<Message> input = nullptr);
         virtual ~Reactor();
 
         Signal<void>& Completed = mCompleted;

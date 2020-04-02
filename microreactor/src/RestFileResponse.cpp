@@ -54,7 +54,7 @@ RestFileResponse::~RestFileResponse()
 bool RestFileResponse::Send(Connection& connection)
 {
     std::string buffer;
-    if (FlushToBuffer(buffer))
+    if (Write(buffer))
     {
         bool result = connection.Send(buffer.data(), (int32_t)buffer.length()) == buffer.length();
         if (!result || !mFileStream.is_open() || mBody.mLength)

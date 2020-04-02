@@ -67,7 +67,7 @@ void DiscoveryClient::MulticastMSearch(const std::string& multicastAddress, uint
     request.mHeaders.emplace_back(HttpHeader("ST", ServiceType.cref()));
 
     std::string buffer;
-    if (request.FlushToBuffer(buffer))
+    if (request.Write(buffer))
     {
         mConnection->Send(buffer.data(), buffer.length());
     }

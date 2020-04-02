@@ -3,7 +3,7 @@
 using namespace sg::microreactor;
 
 
-bool RestRequest::FlushToBuffer(std::string& buffer)
+bool RestRequest::Write(std::string& buffer) const
 {
     buffer = mMethod + " " + mUri + " " + mVersion + "\r\n";
 

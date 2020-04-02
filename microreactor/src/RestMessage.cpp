@@ -177,24 +177,24 @@ RestMessage::~RestMessage()
 {
 }
 
-std::shared_ptr<RestMessage> RestMessage::Parse(std::shared_ptr<RestMessage> parent, std::shared_ptr<std::string> message)
+std::shared_ptr<RestMessage> RestMessage::Parse(std::shared_ptr<RestMessage> parent, std::shared_ptr<std::string> buffer)
 {
-    if (message->empty())
+    if (buffer->empty())
     {
         return nullptr;
     }
 
-    LOG("HTTP raw message:\n%s\n", message->c_str());
+    LOG("HTTP raw message:\n%s\n", buffer->c_str());
     if (parent != nullptr)
     {
-        parent->mRawMessage = message;
+        parent->mRawMessage = buffer;
     }
 
     http_parser parser;
     parser.data = parent.get();
     http_parser_init(&parser, HTTP_BOTH);
-    size_t parsed = http_parser_execute(&parser, &gRestMessageSettings, message->c_str(), message->length());
-    if (parsed != message->length())
+    size_t parsed = http_parser_execute(&parser, &gRestMessageSettings, buffer->c_str(), buffer->length());
+    if (parsed != buffer->length())
     {
         return nullptr;
     }
@@ -205,7 +205,7 @@ std::shared_ptr<RestMessage> RestMessage::Parse(std::shared_ptr<RestMessage> par
         restMessage = std::shared_ptr<RestMessage>((RestMessage*)parser.data);
         if (restMessage != nullptr)
         {
-            restMessage->mRawMessage = message;
+            restMessage->mRawMessage = buffer;
         }
     }
 
@@ -215,7 +215,7 @@ std::shared_ptr<RestMessage> RestMessage::Parse(std::shared_ptr<RestMessage> par
 bool RestMessage::Send(Connection& connection)
 {
     std::string buffer;
-    if (FlushToBuffer(buffer))
+    if (Write(buffer))
     {
         LOG("\n---------------------------------------");
         LOG("%s", buffer.c_str());
@@ -241,13 +241,13 @@ bool RestMessage::Send(Connection& connection)
     return false;
 }
 
-bool RestMessage::FlushToStream(std::ostream& stream)
+bool RestMessage::Send(Connection& connection, const Message& message)
 {
     std::string buffer;
-    if (FlushToBuffer(buffer))
+    if (message.Write(buffer))
     {
-        stream.write(buffer.data(), buffer.length());
-        return !stream.eof() && !stream.fail() && !stream.bad();
+        SetHttpBody(buffer, *this);
+        return Send(connection);
     }
 
     return false;

@@ -17,7 +17,7 @@ namespace sg { namespace microreactor
         std::string mMethod;
         std::string mUri;
 
-        virtual bool FlushToBuffer(std::string& buffer) override;
+        virtual bool Write(std::string& buffer) const override;
 
         virtual std::shared_ptr<RestMessage> CreateMessage() override
         {

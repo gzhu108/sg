@@ -106,7 +106,7 @@ bool DiscoveryService::AdvertiseAlive()
     request.mHeaders.emplace_back(HttpHeader("NT", Description->ServiceType.cref()));
     
     std::string buffer;
-    if (request.FlushToBuffer(buffer))
+    if (request.Write(buffer))
     {
         int32_t bytesSent = 0;
         return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, GetMulticastPort(), bytesSent);
@@ -127,7 +127,7 @@ bool DiscoveryService::AdvertiseByebye()
     request.mHeaders.emplace_back(HttpHeader("NT", Description->ServiceType.cref()));
 
     std::string buffer;
-    if (request.FlushToBuffer(buffer))
+    if (request.Write(buffer))
     {
         int32_t bytesSent = 0;
         return mSocket->SendTo(buffer.data(), buffer.length(), mMulticastAddress, GetMulticastPort(), bytesSent);

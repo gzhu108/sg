@@ -17,7 +17,7 @@ namespace sg { namespace microreactor
         uint32_t mStatusCode = 200;
         std::string mStatusText = "OK";
 
-        virtual bool FlushToBuffer(std::string& buffer) override;
+        virtual bool Write(std::string& buffer) const override;
 
         virtual std::shared_ptr<RestMessage> CreateMessage() override
         {

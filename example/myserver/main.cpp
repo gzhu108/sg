@@ -91,12 +91,7 @@ int32_t main(int32_t argc, const char* argv[])
     simpleProfile->Address.set(hostName);
     simpleProfile->Port.set(hostPort);
 
-    auto simpleSocket = std::make_shared<TcpSocket>();
-    auto simpleEndpoint = std::make_shared<TcpEndpoint>(simpleSocket, simpleProfile);
-    simpleSocket = nullptr;
-
-    MyService service(simpleEndpoint);
-    simpleEndpoint = nullptr;
+    MyService service(simpleProfile);
 
     // Start the REST services
     if (service.Start())

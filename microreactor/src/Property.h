@@ -132,7 +132,7 @@ namespace sg { namespace microreactor
             return mGetter(mValue);
         }
 
-        void set(const T& value)
+        auto& set(const T& value)
         {
             ScopeLock<decltype(mLock)> scopeLock(mLock);
             if (Comparable<T>(mValue) != value)
@@ -149,6 +149,8 @@ namespace sg { namespace microreactor
                 // Signal property value changed
                 mValueChanged(mValue);
             }
+
+            return *this;
         }
 
     private:
