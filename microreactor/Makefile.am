@@ -43,6 +43,7 @@ nobase_include_HEADERS = \
     src/Profile.h \
     src/Property.h \
     src/Reactor.h \
+    src/ReactorFactoryContainer.h \
     src/ScopeLock.h \
     src/SecureTcpSocket.h \
     src/Serializable.h \
@@ -88,6 +89,7 @@ __top_builddir__lib_libmicroreactor_a_SOURCES = \
     src/ConfigurationSingleton.cpp \
     src/LoggerSingleton.cpp \
     src/Message.cpp \
+    src/MessageDispatcher.cpp \
     src/MessageRequester.cpp \
     src/MessageResponder.cpp \
     src/NetworkUtility.cpp \
