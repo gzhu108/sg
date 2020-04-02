@@ -7,7 +7,7 @@
 
 namespace bouncer
 {
-    class BouncerDispatcher : public sg::microreactor::MessageDispatcher<>
+    class BouncerDispatcher : public sg::microreactor::MessageDispatcher
     {
     public:
         BouncerDispatcher();

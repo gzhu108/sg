@@ -3,11 +3,14 @@
 #define streetgangserver_WorldClientDispatcher
 
 #include "MessageDispatcher.h"
+#include "ReactorFactoryContainer.h"
 
 
 namespace streetgangserver
 {
-    class WorldClientDispatcher : public sg::microreactor::MessageDispatcher<int32_t>
+    class WorldClientDispatcher
+        : public sg::microreactor::MessageDispatcher
+        , public sg::microreactor::ReactorFactoryContainer<int32_t>
     {
     public:
         WorldClientDispatcher();

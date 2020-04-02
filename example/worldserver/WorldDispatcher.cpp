@@ -15,8 +15,8 @@ using namespace worldserver;
 
 WorldDispatcher::WorldDispatcher()
 {
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::CreateWorldRequest), std::bind(&WorldDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::GetWorldRequest), std::bind(&WorldDispatcher::CreateGetWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(worldapi::ID::CreateWorldRequest), std::bind(&WorldDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(worldapi::ID::GetWorldRequest), std::bind(&WorldDispatcher::CreateGetWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 WorldDispatcher::~WorldDispatcher()
@@ -49,7 +49,7 @@ std::shared_ptr<Reactor> WorldDispatcher::Decode(std::istream& stream, Connectio
         return nullptr;
     }
 
-    auto factory = GetMessageReactorFactory(id);
+    auto factory = GetReactorFactory(id);
     if (factory == nullptr)
     {
         auto responder = std::make_shared<WorldResponder>(connection);

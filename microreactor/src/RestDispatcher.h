@@ -2,15 +2,17 @@
 #ifndef sg_microreactor_RestDispatcher
 #define sg_microreactor_RestDispatcher
 
-#include "MessageDispatcher.h"
-#include "Reactor.h"
+#include "Dispatcher.h"
+#include "ReactorFactoryContainer.h"
 #include "RestRequest.h"
 #include "RestResponse.h"
 
 
 namespace sg { namespace microreactor
 {
-    class RestDispatcher : public MessageDispatcher<std::string, std::shared_ptr<RestMessage>>
+    class RestDispatcher
+        : public Dispatcher
+        , public ReactorFactoryContainer<std::string, std::shared_ptr<RestMessage>>
     {
     public:
         RestDispatcher();
@@ -21,7 +23,6 @@ namespace sg { namespace microreactor
         virtual void RegisterResource(const std::string& method, const std::string& uri, Factory factory);
 
     protected:
-        virtual std::shared_ptr<Reactor> Decode(std::istream& stream, Connection& connection) override { return nullptr; }
         virtual std::shared_ptr<Reactor> Decode(Connection& connection);
         virtual std::shared_ptr<Reactor> CreateReactor(std::shared_ptr<RestMessage> restMessage, Connection& connection);
         virtual Factory GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest);

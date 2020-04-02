@@ -17,10 +17,10 @@ using namespace streetgangclient;
 
 StreetGangBinaryClientDispatcher::StreetGangBinaryClientDispatcher()
 {
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::Error), std::bind(&StreetGangBinaryClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::Error), std::bind(&StreetGangBinaryClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneResponse), std::bind(&StreetGangBinaryClientDispatcher::HandleGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangBinaryClientDispatcher::~StreetGangBinaryClientDispatcher()
@@ -75,7 +75,7 @@ std::shared_ptr<Reactor> StreetGangBinaryClientDispatcher::Decode(std::istream& 
         return nullptr;
     }
 
-    auto factory = GetMessageReactorFactory(id);
+    auto factory = GetReactorFactory(id);
     if (factory == nullptr)
     {
         LOG("[" FMT_INT64 "] StreetGangBinaryClientDispatcher::Decode() [ID=%d] [Error=Failed to decode message]",

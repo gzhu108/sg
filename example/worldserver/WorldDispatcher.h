@@ -3,12 +3,15 @@
 #define worldserver_WorldDispatcher
 
 #include "MessageDispatcher.h"
+#include "ReactorFactoryContainer.h"
 #include "WorldResponder.h"
 
 
 namespace worldserver
 {
-    class WorldDispatcher : public sg::microreactor::MessageDispatcher<int32_t>
+    class WorldDispatcher
+        : public sg::microreactor::MessageDispatcher
+        , public sg::microreactor::ReactorFactoryContainer<int32_t>
     {
     public:
         WorldDispatcher();

@@ -50,7 +50,7 @@ void RestDispatcher::RegisterResource(const std::string& method, const std::stri
     StringUtility::ToUpper(key);
     key += uri;
 
-    RegisterMessageReactorFactory(key, factory);
+    RegisterReactorFactory(key, factory);
 }
 
 std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
@@ -147,7 +147,7 @@ std::shared_ptr<Reactor> RestDispatcher::CreateReactor(std::shared_ptr<RestMessa
 
 RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<RestRequest> restRequest)
 {
-    if (restRequest == nullptr || restRequest->mUri.empty() || mMessageReactorFactoryTable.empty())
+    if (restRequest == nullptr || restRequest->mUri.empty() || mReactorFactoryTable.empty())
     {
         return nullptr;
     }
@@ -171,13 +171,13 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
     StringUtility::ToUpper(key);
     key += restRequest->mUri;
 
-    auto low = mMessageReactorFactoryTable.lower_bound(key);
-    auto high = mMessageReactorFactoryTable.upper_bound(key);
+    auto low = mReactorFactoryTable.lower_bound(key);
+    auto high = mReactorFactoryTable.upper_bound(key);
 
     if (low == high)
     {
         // No exact match found
-        if (high == mMessageReactorFactoryTable.begin())
+        if (high == mReactorFactoryTable.begin())
         {
             // the URI is not within the range in the API table.
             return nullptr;
@@ -212,7 +212,7 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
 
 RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<RestResponse> restResponse)
 {
-    if (restResponse == nullptr || mMessageReactorFactoryTable.empty())
+    if (restResponse == nullptr || mReactorFactoryTable.empty())
     {
         return nullptr;
     }
@@ -234,8 +234,8 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
 
     // Use an empty key for response
     std::string key;
-    auto found = mMessageReactorFactoryTable.find(key);
-    if (found == mMessageReactorFactoryTable.end())
+    auto found = mReactorFactoryTable.find(key);
+    if (found == mReactorFactoryTable.end())
     {
         return nullptr;
     }

@@ -3,12 +3,15 @@
 #define streetgangserver_StreetGangBinaryDispatcher
 
 #include "MessageDispatcher.h"
+#include "ReactorFactoryContainer.h"
 #include "BinaryStreetGangResponder.h"
 
 
 namespace streetgangserver
 {
-    class StreetGangBinaryDispatcher : public sg::microreactor::MessageDispatcher<int32_t>
+    class StreetGangBinaryDispatcher
+        : public sg::microreactor::MessageDispatcher
+        , public sg::microreactor::ReactorFactoryContainer<int32_t>
     {
     public:
         StreetGangBinaryDispatcher();

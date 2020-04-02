@@ -18,10 +18,10 @@ using namespace streetgangserver;
 
 StreetGangBinaryDispatcher::StreetGangBinaryDispatcher()
 {
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::Byebye), std::bind(&StreetGangBinaryDispatcher::CreateByebyeReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionRequest), std::bind(&StreetGangBinaryDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldRequest), std::bind(&StreetGangBinaryDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneRequest), std::bind(&StreetGangBinaryDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::Byebye), std::bind(&StreetGangBinaryDispatcher::CreateByebyeReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetVersionRequest), std::bind(&StreetGangBinaryDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::CreateWorldRequest), std::bind(&StreetGangBinaryDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(streetgangapi::ID::GetSceneRequest), std::bind(&StreetGangBinaryDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangBinaryDispatcher::~StreetGangBinaryDispatcher()
@@ -61,7 +61,7 @@ std::shared_ptr<Reactor> StreetGangBinaryDispatcher::Decode(std::istream& stream
         return nullptr;
     }
 
-    auto factory = GetMessageReactorFactory(id);
+    auto factory = GetReactorFactory(id);
     if (factory == nullptr)
     {
         auto responder = std::make_shared<BinaryStreetGangResponder>(connection);

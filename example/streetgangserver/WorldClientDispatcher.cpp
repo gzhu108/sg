@@ -16,9 +16,9 @@ using namespace streetgangserver;
 
 WorldClientDispatcher::WorldClientDispatcher()
 {
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::Error), std::bind(&WorldClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::CreateWorldResponse), std::bind(&WorldClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory(static_cast<int32_t>(worldapi::ID::GetWorldResponse), std::bind(&WorldClientDispatcher::HandleGetWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(worldapi::ID::Error), std::bind(&WorldClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(worldapi::ID::CreateWorldResponse), std::bind(&WorldClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory(static_cast<int32_t>(worldapi::ID::GetWorldResponse), std::bind(&WorldClientDispatcher::HandleGetWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 WorldClientDispatcher::~WorldClientDispatcher()
@@ -66,7 +66,7 @@ std::shared_ptr<Reactor> WorldClientDispatcher::Decode(std::istream& stream, Con
         return nullptr;
     }
 
-    auto factory = GetMessageReactorFactory(id);
+    auto factory = GetReactorFactory(id);
     if (factory == nullptr)
     {
         LOG("[" FMT_INT64 "] WorldClientDispatcher::Decode() [ID=%d] [Error=Failed to decode message]",

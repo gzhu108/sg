@@ -4,11 +4,14 @@
 
 #include "google/protobuf/io/coded_stream.h"
 #include "MessageDispatcher.h"
+#include "ReactorFactoryContainer.h"
 
 
 namespace streetgangclient
 {
-    class StreetGangPBClientDispatcher : public sg::microreactor::MessageDispatcher<std::string, google::protobuf::io::CodedInputStream>
+    class StreetGangPBClientDispatcher
+        : public sg::microreactor::MessageDispatcher
+        , public sg::microreactor::ReactorFactoryContainer<std::string, google::protobuf::io::CodedInputStream>
     {
     public:
         StreetGangPBClientDispatcher();

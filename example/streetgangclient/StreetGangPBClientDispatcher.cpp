@@ -39,10 +39,10 @@ using namespace streetgangclient;
 
 StreetGangPBClientDispatcher::StreetGangPBClientDispatcher()
 {
-    RegisterMessageReactorFactory("ErrorResponse", std::bind(&StreetGangPBClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("GetVersionResponse", std::bind(&StreetGangPBClientDispatcher::HandleGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("CreateWorldResponse", std::bind(&StreetGangPBClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("GetSceneResponse", std::bind(&StreetGangPBClientDispatcher::HandleGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("ErrorResponse", std::bind(&StreetGangPBClientDispatcher::HandleErrorResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("GetVersionResponse", std::bind(&StreetGangPBClientDispatcher::HandleGetVersionResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("CreateWorldResponse", std::bind(&StreetGangPBClientDispatcher::HandleCreateWorldResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("GetSceneResponse", std::bind(&StreetGangPBClientDispatcher::HandleGetSceneResponseReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangPBClientDispatcher::~StreetGangPBClientDispatcher()
@@ -63,7 +63,7 @@ std::shared_ptr<Reactor> StreetGangPBClientDispatcher::Decode(std::istream& stre
         return nullptr;
     }
 
-    auto factory = GetMessageReactorFactory(header.message_id());
+    auto factory = GetReactorFactory(header.message_id());
     if (factory == nullptr)
     {
         LOG("Unknown response: [Request=%s]", header.message_id().c_str());

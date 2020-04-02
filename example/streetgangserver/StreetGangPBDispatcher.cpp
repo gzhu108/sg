@@ -25,10 +25,10 @@ using namespace streetgangserver;
 
 StreetGangPBDispatcher::StreetGangPBDispatcher()
 {
-    RegisterMessageReactorFactory("ByebyeRequest", std::bind(&StreetGangPBDispatcher::CreateByebyeReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("GetVersionRequest", std::bind(&StreetGangPBDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("CreateWorldRequest", std::bind(&StreetGangPBDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
-    RegisterMessageReactorFactory("GetSceneRequest", std::bind(&StreetGangPBDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("ByebyeRequest", std::bind(&StreetGangPBDispatcher::CreateByebyeReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("GetVersionRequest", std::bind(&StreetGangPBDispatcher::CreateGetVersionReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("CreateWorldRequest", std::bind(&StreetGangPBDispatcher::CreateCreateWorldReactor, this, std::placeholders::_1, std::placeholders::_2));
+    RegisterReactorFactory("GetSceneRequest", std::bind(&StreetGangPBDispatcher::CreateGetSceneReactor, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 StreetGangPBDispatcher::~StreetGangPBDispatcher()
@@ -49,7 +49,7 @@ std::shared_ptr<Reactor> StreetGangPBDispatcher::Decode(std::istream& stream, Co
         return nullptr;
     }
 
-    auto factory = GetMessageReactorFactory(header.message_id());
+    auto factory = GetReactorFactory(header.message_id());
     if (factory == nullptr)
     {
         LOG("Unknown request: [Request=%s]", header.message_id().c_str());
