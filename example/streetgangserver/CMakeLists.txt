@@ -75,12 +75,14 @@ set(DEPENDENCY_LIBS
 # add this command to scan dependencies of target
 add_dependencies(streetgangserver ${DEPENDENCY_LIBS})
 
+find_library(LIBUUID_LIBRARY libuuid.a)
+
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "${DEPENDENCY_LIBS}"
   protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite
   OpenSSL::SSL OpenSSL::Crypto
   unofficial::http_parser::http_parser
-  "uuid"
+  "${LIBUUID_LIBRARY}"
   )
 
 target_link_libraries(streetgangserver ${EXTRA_LIBS})

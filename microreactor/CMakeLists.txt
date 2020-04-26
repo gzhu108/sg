@@ -77,12 +77,14 @@ add_dependencies(microreactor_test ${DEPENDENCY_LIBS})
 
 set(GTEST_LIBRARIES GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
 
+find_library(LIBUUID_LIBRARY libuuid.a)
+
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "${DEPENDENCY_LIBS}"
   "${GTEST_LIBRARIES}"
   unofficial::http_parser::http_parser
   "Threads::Threads"
-  "uuid"
+  "${LIBUUID_LIBRARY}"
   )
   
 target_link_libraries(microreactor_test ${EXTRA_LIBS})
