@@ -26,5 +26,5 @@ RUN ./vcpkg integrate install
 RUN ./vcpkg install gtest http-parser openssl protobuf rapidjson rapidxml libuuid
 RUN source ./scripts/vcpkg_completion.bash
 
-#ENV VCPKG_DEFAULT_TRIPLET=x64-linux
-#ENV VCPKG_ROOT=/git/vcpkg
+ENV VCPKG_DEFAULT_TRIPLET=x64-linux
+ENV VCPKG_ROOT=/git/vcpkg
