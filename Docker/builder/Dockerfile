@@ -23,10 +23,8 @@ WORKDIR /git/vcpkg
 RUN ./bootstrap-vcpkg.sh
 RUN ./vcpkg integrate install
 
-RUN ./vcpkg install gtest http-parser openssl protobuf rapidjson rapidxml libuuid
+RUN ./vcpkg install gtest http-parser openssl protobuf rapidjson rapidxml libuuid nlohmann-json
 RUN source ./scripts/vcpkg_completion.bash
-
-RUN git clone https://github.com/nlohmann/json.git -b v3.7.3
 
 ENV VCPKG_DEFAULT_TRIPLET=x64-linux
 ENV VCPKG_ROOT=/git/vcpkg
