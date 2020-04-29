@@ -26,5 +26,10 @@ RUN ./vcpkg integrate install
 RUN ./vcpkg install gtest http-parser openssl protobuf rapidjson rapidxml libuuid
 RUN source ./scripts/vcpkg_completion.bash
 
+RUN git clone https://github.com/nlohmann/json.git -b v3.7.3
+WORKDIR /git/json/build
+RUN cmake ..
+RUN cmake --build .
+
 ENV VCPKG_DEFAULT_TRIPLET=x64-linux
 ENV VCPKG_ROOT=/git/vcpkg
