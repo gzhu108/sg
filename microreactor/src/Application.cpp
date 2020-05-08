@@ -68,6 +68,18 @@ bool Application::Run()
     return true;
 }
 
+bool Application::Run(std::shared_ptr<Listener> listener)
+{
+    return Run(std::make_shared<Service>(listener));
+}
+
+bool Application::Run(std::shared_ptr<Service> service)
+{
+    mServices.clear();
+    mServices.emplace_back(service);
+    return Run();
+}
+
 bool Application::Run(const std::vector<std::shared_ptr<Listener>>& listeners)
 {
     mServices.clear();

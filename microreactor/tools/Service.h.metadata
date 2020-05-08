@@ -1,0 +1,24 @@
+#pragma once
+#ifndef $namespace_$serviceService
+#define $namespace_$serviceService
+
+#include "base/$serviceServiceBase.h"
+
+
+namespace $namespace
+{
+    class $serviceService : public $serviceServiceBase
+    {
+    public:
+        explicit $serviceService(std::shared_ptr<sg::microreactor::Profile> profile);
+        virtual ~$serviceService();
+
+    protected:
+        @repeatstart
+        virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$pathnameReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection) override;
+        @repeatend
+    };
+}
+
+
+#endif // $namespace_$serviceService

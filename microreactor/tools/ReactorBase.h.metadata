@@ -1,0 +1,27 @@
+#pragma once
+#ifndef $namespace_$method$pathnameReactorBase
+#define $namespace_$method$pathnameReactorBase
+
+#include "RestReactor.h"
+#include "$requestcontent.h"
+
+
+namespace $namespace
+{
+    class $method$pathnameReactorBase : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
+    {
+    public:
+        $method$pathnameReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        virtual ~$method$pathnameReactorBase();
+
+    public:
+        // Override Process() in the derived class
+        virtual bool Process() override;
+
+    protected:
+        $requestcontent mRequestContent;
+    };
+}
+
+
+#endif // $namespace_$method$pathnameReactorBase

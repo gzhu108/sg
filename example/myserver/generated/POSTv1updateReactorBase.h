@@ -3,6 +3,7 @@
 #define myserver_POSTv1updateReactorBase
 
 #include "RestReactor.h"
+#include "POSTv1updateRequestContent.h"
 
 
 namespace myserver
@@ -16,6 +17,9 @@ namespace myserver
     public:
         // Override Process() in the derived class
         virtual bool Process() override;
+
+    protected:
+        POSTv1updateRequestContent mRequestContent;
     };
 }
 

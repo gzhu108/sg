@@ -9,13 +9,6 @@ using namespace sg::microreactor;
 using namespace myserver;
 
 
-volatile bool terminateSignal = false;
-void SingalHandler(int type)
-{
-    terminateSignal = true;
-    STOP_TASK_MANAGER();
-}
-
 int32_t main(int32_t argc, const char* argv[])
 {
     GET_LOGGER().AddLogger([](const std::string& text)
@@ -25,15 +18,6 @@ int32_t main(int32_t argc, const char* argv[])
 
     LOG("myserver (%s)", sg::microreactor::StringUtility::GetHttpTimeString().c_str());
     LOG("press ctrl+c to terminate");
-
-    // Set signal handlers for graceful termination
-    signal(SIGABRT, SingalHandler);
-    signal(SIGINT, SingalHandler);
-    signal(SIGTERM, SingalHandler);
-
-#ifndef _MSC_VER
-    signal(SIGPIPE, SIG_IGN);
-#endif
 
     std::string configFilePath;
     std::string hostName;
@@ -91,17 +75,8 @@ int32_t main(int32_t argc, const char* argv[])
     simpleProfile->Address.set(hostName);
     simpleProfile->Port.set(hostPort);
 
-    MyService service(simpleProfile);
-
     // Start the REST services
-    if (service.Start())
-    {
-        START_BLOCKING_TASK_LOOP();
-
-        // Stop REST services
-        service.Stop();
-    }
-    else
+    if (!Application::Context().Run(std::make_shared<MyService>(simpleProfile)))
     {
         LOG("Failed to start the myserver");
     }

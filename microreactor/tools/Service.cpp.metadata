@@ -1,0 +1,28 @@
+#include "$serviceService.h"
+@repeatstart
+#include "base/$method$pathnameReactorBase.h"
+@repeatend
+
+
+namespace $namespace
+{
+
+    $serviceService::$serviceService(std::shared_ptr<sg::microreactor::Profile> profile)
+        : $serviceServiceBase(profile)
+    {
+    }
+
+    $serviceService::~$serviceService()
+    {
+    }
+
+    @repeatstart
+    std::shared_ptr<sg::microreactor::Reactor> $serviceService::Create$method$pathnameReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection)
+    {
+        auto restRequest = std::static_pointer_cast<sg::microreactor::RestRequest>(request);
+        return std::make_shared<$method$pathnameReactorBase>(connection, restRequest);
+    }
+    
+    @repeatend
+
+}

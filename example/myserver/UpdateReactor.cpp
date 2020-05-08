@@ -1,5 +1,4 @@
 #include "UpdateReactor.h"
-#include "generated/POSTv1updateMessage.h"
 
 using namespace sg::microreactor;
 using namespace myserver;
@@ -25,5 +24,11 @@ bool UpdateReactor::Process()
     RestResponse response;
     response.mHeaders.emplace_back(HttpHeader("Content-Type", "application/json"));
 
-    return response.Send(mConnection, POSTv1updateMessage(InputMessage()));
+    auto buffer = std::make_shared<std::string>();
+    if (mRequestContent.Write(*buffer))
+    {
+        SetHttpBody(buffer, response);
+    }
+
+    return response.Send(mConnection);
 }

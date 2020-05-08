@@ -240,15 +240,3 @@ bool RestMessage::Send(Connection& connection)
 
     return false;
 }
-
-bool RestMessage::Send(Connection& connection, const Message& message)
-{
-    std::string buffer;
-    if (message.Write(buffer))
-    {
-        SetHttpBody(buffer, *this);
-        return Send(connection);
-    }
-
-    return false;
-}

@@ -1,5 +1,4 @@
 #include "VersionReactor.h"
-#include "generated/GETv1versionMessage.h"
 
 using namespace sg::microreactor;
 using namespace myserver;
@@ -25,5 +24,11 @@ bool VersionReactor::Process()
     RestResponse response;
     response.mHeaders.emplace_back(HttpHeader("Content-Type", "application/json"));
 
-    return response.Send(mConnection, GETv1versionMessage(InputMessage()));
+    auto buffer = std::make_shared<std::string>();
+    if (mRequestContent.Write(*buffer))
+    {
+        SetHttpBody(buffer, response);
+    }
+
+    return response.Send(mConnection);
 }

@@ -7,6 +7,7 @@ endif()
 
 if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
   set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+  message(" [INFO] VCPKG VCPKG_TARGET_TRIPLET = ${VCPKG_TARGET_TRIPLET}")
 endif()
 
 project(StreetGangClient)
@@ -16,13 +17,6 @@ set(StreetGangClient_VERSION_MAJOR 1)
 set(StreetGangClient_VERSION_MINOR 0)
 
 set(CMAKE_CXX_STANDARD 17)
- 
-# configure a header file to pass some of the CMake settings
-# to the source code
-configure_file(
-  "${PROJECT_SOURCE_DIR}/StreetGangClientConfig.h.in"
-  "${PROJECT_BINARY_DIR}/StreetGangClientConfig.h"
-  )
  
 # add the binary tree to the search path for include files
 include_directories(
@@ -65,7 +59,11 @@ set(DEPENDENCY_LIBS
 # add this command to scan dependencies of target
 add_dependencies(streetgangclient ${DEPENDENCY_LIBS})
 
-find_library(LIBUUID_LIBRARY libuuid.a)
+if ((VCPKG_CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (VCPKG_CMAKE_SYSTEM_NAME STREQUAL "Darwin"))
+  find_library(LIBUUID_LIBRARY libuuid.a)
+else()
+  set(LIBUUID_LIBRARY "uuid")
+endif()
 
 set(EXTRA_LIBS ${EXTRA_LIBS}
   "${DEPENDENCY_LIBS}"

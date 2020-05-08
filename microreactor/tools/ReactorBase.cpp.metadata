@@ -1,20 +1,20 @@
-#include "POSTv1updateReactorBase.h"
+#include "$method$pathnameReactorBase.h"
 
 
-namespace myserver
+namespace $namespace
 {
-    POSTv1updateReactorBase::POSTv1updateReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request)
+    $method$pathnameReactorBase::$method$pathnameReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request)
         : RestReactor(connection, request)
     {
         nlohmann::json serializer(*request->mRawMessage);
         mRequestContent.Decode(serializer);
     }
 
-    POSTv1updateReactorBase::~POSTv1updateReactorBase()
+    $method$pathnameReactorBase::~$method$pathnameReactorBase()
     {
     }
 
-    bool POSTv1updateReactorBase::Process()
+    bool $method$pathnameReactorBase::Process()
     {
         if (InputMessage() == nullptr)
         {

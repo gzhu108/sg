@@ -1,0 +1,29 @@
+#pragma once
+#ifndef $namespace_$serviceServiceBase
+#define $namespace_$serviceServiceBase
+
+#include "RestService.h"
+
+
+namespace $namespace
+{
+    class $serviceServiceBase : public sg::microreactor::RestService
+    {
+    public:
+        $serviceServiceBase(const std::string& hostAddress, uint16_t port);
+        explicit $serviceServiceBase(std::shared_ptr<sg::microreactor::Profile> profile);
+        explicit $serviceServiceBase(std::shared_ptr<sg::microreactor::Listener> listener);
+        virtual ~$serviceServiceBase();
+
+    public:
+        virtual bool Initialize() override;
+
+    protected:
+        @repeatstart
+        virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$pathnameReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection) = 0;
+        @repeatend
+    };
+}
+
+
+#endif // $namespace_$serviceServiceBase

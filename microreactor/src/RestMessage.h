@@ -27,7 +27,6 @@ namespace sg { namespace microreactor
     public:
         static std::shared_ptr<RestMessage> Parse(std::shared_ptr<RestMessage> parent, std::shared_ptr<std::string> buffer);
         virtual bool Send(Connection& connection);
-        virtual bool Send(Connection& connection, const Message& message);
         virtual std::shared_ptr<RestMessage> CreateMessage() = 0;
 
     public:

@@ -25,21 +25,30 @@ bool Message::HasTimedOut()
     return false;
 }
 
-bool Message::Encode(std::ostream& stream) const
+bool Message::Read(const std::string& buffer)
 {
-    std::string buffer;
-    if (Write(buffer))
+    std::stringstream stream(buffer);
+    return Decode(stream);
+}
+
+bool Message::Write(std::string& buffer) const
+{
+    std::stringstream stream;
+    if (Encode(stream))
     {
-        stream.write(buffer.data(), buffer.length());
-        return !stream.eof() && !stream.fail() && !stream.bad();
+        buffer = stream.str();
+        return true;
     }
 
     return false;
 }
 
+bool Message::Encode(std::ostream& stream) const
+{
+    return false;
+}
+
 bool Message::Decode(std::istream& stream)
 {
-    std::string buffer;
-    stream >> buffer;
-    return Read(buffer);
+    return false;
 }

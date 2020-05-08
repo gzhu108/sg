@@ -28,8 +28,8 @@ namespace sg { namespace microreactor
 
         bool HasTimedOut();
 
-        virtual bool Read(const std::string& buffer) { return false; }
-        virtual bool Write(std::string& buffer) const { return false; }
+        virtual bool Read(const std::string& buffer);
+        virtual bool Write(std::string& buffer) const;
 
         virtual bool Encode(std::ostream& stream) const;
         virtual bool Decode(std::istream& stream);

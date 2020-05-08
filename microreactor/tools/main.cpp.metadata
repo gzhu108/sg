@@ -1,0 +1,60 @@
+#pragma warning(disable : 4512)
+
+#include <signal.h>
+#include <stdlib.h>
+#include "Microreactor.h"
+#include "$serviceService.h"
+
+using namespace sg::microreactor;
+using namespace $namespace;
+
+
+int32_t main(int32_t argc, const char* argv[])
+{
+    GET_LOGGER().AddLogger([](const std::string& text)
+    {
+        printf("%s\n", text.c_str());
+    });
+
+    LOG("$namespace (%s)", sg::microreactor::StringUtility::GetHttpTimeString().c_str());
+    LOG("press ctrl+c to terminate");
+
+    std::string configFilePath;
+    std::string hostName;
+    uint16_t hostPort = 0;
+
+    const char* hostArgs[] = {"--host", "-h"};
+    const char* portArgs[] = {"--port", "-p"};
+    
+    for (int32_t i = 1; i < argc; i++)
+    {
+        if (FIND_CMD(hostArgs, argv[i]))
+        {
+            LOG("Command line argument: %s %s", argv[i], argv[i + 1]);
+            hostName = argv[++i];
+        }
+        else if (FIND_CMD(portArgs, argv[i]))
+        {
+            LOG("Command line argument: %s %s", argv[i], argv[i + 1]);
+            hostPort = std::atoi(argv[++i]);
+        }
+        else
+        {
+            LOG("Unknown command line argument: %s", argv[i]);
+        }
+    }
+
+    // Create the simple REST service
+    auto profile = std::make_shared<Profile>();
+    profile->Address.set(hostName);
+    profile->Port.set(hostPort);
+
+    // Start the REST services
+    if (!Application::Context().Run(std::make_shared<$serviceService>(profile)))
+    {
+        LOG("Failed to start the $namespace");
+    }
+
+    LOG("All done...");
+    return 0;
+}

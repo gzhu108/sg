@@ -7,6 +7,7 @@ endif()
 
 if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
   set(VCPKG_TARGET_TRIPLET "$ENV{VCPKG_DEFAULT_TRIPLET}" CACHE STRING "")
+  message(" [INFO] VCPKG VCPKG_TARGET_TRIPLET = ${VCPKG_TARGET_TRIPLET}")
 endif()
 
 project(StreetGangApi)
@@ -16,13 +17,6 @@ set(StreetGangApi_VERSION_MAJOR 1)
 set(StreetGangApi_VERSION_MINOR 0)
 
 set(CMAKE_CXX_STANDARD 17)
- 
-# configure a header file to pass some of the CMake settings
-# to the source code
-configure_file(
-  "${PROJECT_SOURCE_DIR}/StreetGangApiConfig.h.in"
-  "${PROJECT_BINARY_DIR}/StreetGangApiConfig.h"
-  )
 
 # To find and use dependency header files
 find_path(DEPENDENCY_INCLUDE_DIR PATH_SUFFIXES openssl)

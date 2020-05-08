@@ -1,0 +1,32 @@
+#pragma once
+#ifndef $namespace_$contentname
+#define $namespace_$contentname
+
+#include <nlohmann/json.hpp>
+#include "Microreactor.h"
+@repeatstart
+#include "$propertyclass.h"
+@repeatend
+
+
+namespace $namespace
+{
+    class $contentname
+    {
+    public:
+        $contentname();
+        virtual ~$contentname();
+
+        @repeatstart
+        PROPERTY($propertyname, $propertytype, $propertydefault);
+        @repeatend
+
+    public:
+        virtual bool Encode(nlohmann::json& serializer) const override;
+        virtual bool Decode(const nlohmann::json& serializer) override;
+        virtual bool Write(std::string& buffer) const;
+    };
+}
+
+
+#endif // $namespace_$contentname

@@ -3,6 +3,7 @@
 #define myserver_GETv1versionReactorBase
 
 #include "RestReactor.h"
+#include "GETv1versionRequestContent.h"
 
 
 namespace myserver
@@ -16,6 +17,9 @@ namespace myserver
     public:
         // Override Process() in the derived class
         virtual bool Process() override;
+
+    protected:
+        GETv1versionRequestContent mRequestContent;
     };
 }
 

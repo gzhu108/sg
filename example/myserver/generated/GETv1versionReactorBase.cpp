@@ -1,5 +1,4 @@
 #include "GETv1versionReactorBase.h"
-#include "GETv1versionMessage.h"
 
 
 namespace myserver
@@ -7,6 +6,8 @@ namespace myserver
     GETv1versionReactorBase::GETv1versionReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request)
         : RestReactor(connection, request)
     {
+        nlohmann::json serializer(*request->mRawMessage);
+        mRequestContent.Decode(serializer);
     }
 
     GETv1versionReactorBase::~GETv1versionReactorBase()
@@ -24,6 +25,12 @@ namespace myserver
         sg::microreactor::RestResponse response;
         response.mHeaders.emplace_back(sg::microreactor::HttpHeader("Content-Type", "application/json"));
 
-        return response.Send(mConnection, GETv1versionMessage(InputMessage()));
+        auto buffer = std::make_shared<std::string>();
+        if (mRequestContent.Write(*buffer))
+        {
+            SetHttpBody(buffer, response);
+        }
+
+        return response.Send(mConnection);
     }
 }
