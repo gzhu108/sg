@@ -6,8 +6,8 @@ namespace $namespace
     $method$pathnameReactorBase::$method$pathnameReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request)
         : RestReactor(connection, request)
     {
-        nlohmann::json serializer(*request->mRawMessage);
-        mRequestContent.Decode(serializer);
+        nlohmann::json j(std::string(request->mBody.mOffset, request->mBody.mLength));
+        j.get_to(mRequestContent);
     }
 
     $method$pathnameReactorBase::~$method$pathnameReactorBase()

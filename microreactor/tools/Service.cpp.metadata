@@ -7,8 +7,8 @@
 namespace $namespace
 {
 
-    $serviceService::$serviceService(std::shared_ptr<sg::microreactor::Profile> profile)
-        : $serviceServiceBase(profile)
+    $serviceService::$serviceService(const std::string& hostName, uint16_t port)
+        : $serviceServiceBase(hostName, port)
     {
     }
 

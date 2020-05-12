@@ -17,17 +17,14 @@ set($serviceService_VERSION_MAJOR 1)
 set($serviceService_VERSION_MINOR 0)
 
 set(CMAKE_CXX_STANDARD 17)
- 
-# To find and use dependency header files
-find_path(DEPENDENCY_INCLUDE_DIR PATH_SUFFIXES rapidjson)
-include_directories(${DEPENDENCY_INCLUDE_DIR})
 
 find_package(unofficial-http-parser CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 # add the binary tree to the search path for include files
 include_directories(
-  "${PROJECT_SOURCE_DIR}/../../microreactor/src"
+  "${PROJECT_SOURCE_DIR}/include"
   )
 
 file(GLOB BUILD_INC
@@ -40,18 +37,9 @@ file(GLOB BUILD_SRC
   "${PROJECT_SOURCE_DIR}/*.cpp"
   )
 
-link_directories(
-  "${PROJECT_BINARY_DIR}/../../microreactor"
-  )
-
 add_executable($serviceService ${BUILD_INC} ${BUILD_SRC})
 
-set(DEPENDENCY_LIBS
-  "microreactor"
-  )
-
-# add this command to scan dependencies of target
-add_dependencies($serviceService ${DEPENDENCY_LIBS})
+find_library(DEPENDENCY_LIBS "microreactor" "${PROJECT_SOURCE_DIR}/lib")
 
 if ((VCPKG_CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (VCPKG_CMAKE_SYSTEM_NAME STREQUAL "Darwin"))
   find_library(LIBUUID_LIBRARY libuuid.a)

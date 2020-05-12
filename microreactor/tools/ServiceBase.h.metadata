@@ -2,7 +2,7 @@
 #ifndef $namespace_$serviceServiceBase
 #define $namespace_$serviceServiceBase
 
-#include "RestService.h"
+#include <microreactor/RestService.h>
 
 
 namespace $namespace

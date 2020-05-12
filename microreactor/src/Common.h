@@ -11,6 +11,10 @@
 #include <sstream>
 #include <memory>
 #include <stdio.h>
+#include <utility>
+#include <string>
+#include <vector>
+#include <map>
 #include "LoggerSingleton.h"
 #include "Property.h"
 
@@ -38,6 +42,11 @@
 #endif
 
 #define FIND_CMD(_cmds, _arg) (&_cmds[_countof(_cmds)] != std::find_if_not(_cmds, &_cmds[_countof(_cmds)], std::bind(strcmp, std::placeholders::_1, _arg)))
+
+#define ANY_HOST "0.0.0.0"
+#define ANY_HOST_IPV6 "::"
+#define LOCAL_HOST "127.0.0.1"
+#define LOCAL_HOST_IPV6 "::1"
 
 
 namespace sg { namespace microreactor

@@ -2,7 +2,7 @@
 #ifndef sg_microreactor_Profile
 #define sg_microreactor_Profile
 
-#include "Property.h"
+#include "Common.h"
 
 
 namespace sg { namespace microreactor
@@ -13,9 +13,9 @@ namespace sg { namespace microreactor
         Profile();
         virtual ~Profile();
 
-        PROPERTY(Protocol, std::string);
-        PROPERTY(Address, std::string);
-        PROPERTY(Port, uint16_t);
+        PROPERTY(Protocol, std::string, "tcp");
+        PROPERTY(Address, std::string, ANY_HOST);
+        PROPERTY(Port, uint16_t, 0);
     };
 }}
 

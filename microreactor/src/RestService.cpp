@@ -7,7 +7,6 @@ using namespace sg::microreactor;
 RestService::RestService(const std::string& hostName, uint16_t port)
 {
     auto dispatcher = std::make_shared<RestDispatcher>();
-    dispatcher->Protocol.set("tcp");
     dispatcher->Address.set(hostName);
     dispatcher->Port.set(port);
     mListener = NetworkUtility::CreateListener(dispatcher);
@@ -19,7 +18,6 @@ RestService::RestService(std::shared_ptr<Profile> profile)
 
     if (profile == nullptr)
     {
-        dispatcher->Protocol.set("tcp");
         dispatcher->Address.set(ANY_HOST);
         dispatcher->Port.set(80);
     }

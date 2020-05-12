@@ -29,9 +29,12 @@ namespace sg { namespace microreactor
     template<typename T>
     void SetHttpBody(std::shared_ptr<std::string> body, T& message)
     {
-        message.mRawMessage = body;
-        message.mBody.mOffset = message.mRawMessage->data();
-        message.mBody.mLength = message.mRawMessage->length();
+        if (body != nullptr)
+        {
+            message.mRawMessage = body;
+            message.mBody.mOffset = message.mRawMessage->data();
+            message.mBody.mLength = message.mRawMessage->length();
+        }
     }
 
     template<typename T>

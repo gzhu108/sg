@@ -35,10 +35,6 @@ typedef int32_t SOCKET;
 #include <chrono>
 #include "Common.h"
 
-#define ANY_HOST "0.0.0.0"
-#define ANY_HOST_IPV6 "::"
-#define LOCAL_HOST "127.0.0.1"
-#define LOCAL_HOST_IPV6 "::1"
 #define DEFAULT_SOCKET_BUFLEN 2048
 
 

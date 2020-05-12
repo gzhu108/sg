@@ -2,7 +2,7 @@
 #ifndef $namespace_$method$pathnameReactorBase
 #define $namespace_$method$pathnameReactorBase
 
-#include "RestReactor.h"
+#include <microreactor/RestReactor.h>
 #include "$requestcontent.h"
 
 

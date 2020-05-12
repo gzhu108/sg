@@ -2,7 +2,7 @@
 
 #include <signal.h>
 #include <stdlib.h>
-#include "Microreactor.h"
+#include <microreactor/Microreactor.h>
 #include "$serviceService.h"
 
 using namespace sg::microreactor;
@@ -20,7 +20,7 @@ int32_t main(int32_t argc, const char* argv[])
     LOG("press ctrl+c to terminate");
 
     std::string configFilePath;
-    std::string hostName;
+    std::string hostName = "0.0.0.0";
     uint16_t hostPort = 0;
 
     const char* hostArgs[] = {"--host", "-h"};
@@ -44,13 +44,8 @@ int32_t main(int32_t argc, const char* argv[])
         }
     }
 
-    // Create the simple REST service
-    auto profile = std::make_shared<Profile>();
-    profile->Address.set(hostName);
-    profile->Port.set(hostPort);
-
     // Start the REST services
-    if (!Application::Context().Run(std::make_shared<$serviceService>(profile)))
+    if (!Application::Context().Run(std::make_shared<$serviceService>(hostName, hostPort)))
     {
         LOG("Failed to start the $namespace");
     }

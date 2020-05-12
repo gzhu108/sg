@@ -10,7 +10,7 @@ namespace $namespace
     class $serviceService : public $serviceServiceBase
     {
     public:
-        explicit $serviceService(std::shared_ptr<sg::microreactor::Profile> profile);
+        $serviceService(const std::string& hostName, uint16_t port);
         virtual ~$serviceService();
 
     protected:

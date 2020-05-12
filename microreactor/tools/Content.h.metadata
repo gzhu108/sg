@@ -3,7 +3,7 @@
 #define $namespace_$contentname
 
 #include <nlohmann/json.hpp>
-#include "Microreactor.h"
+#include <microreactor/Microreactor.h>
 @repeatstart
 #include "$propertyclass.h"
 @repeatend
@@ -17,15 +17,22 @@ namespace $namespace
         $contentname();
         virtual ~$contentname();
 
+    public:
         @repeatstart
-        PROPERTY($propertyname, $propertytype, $propertydefault);
+        virtual const $propertytype& Get$propertyname() const { return m$propertyname; }
+        virtual $propertytype& Ref$propertyname() { return m$propertyname; }
         @repeatend
 
-    public:
-        virtual bool Encode(nlohmann::json& serializer) const override;
-        virtual bool Decode(const nlohmann::json& serializer) override;
         virtual bool Write(std::string& buffer) const;
+
+    protected:
+        @repeatstart
+        $propertytype m$propertyname {$propertydefault};
+        @repeatend
     };
+
+    void to_json(nlohmann::json& j, const $contentname& c);
+    void from_json(const nlohmann::json& j, $contentname& c);
 }
 
 

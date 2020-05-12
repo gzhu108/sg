@@ -1,374 +1,395 @@
 # microgen.py
-import sys, os
+import sys, os, shutil, glob
 import argparse
 import ruamel.yaml
 import json
 
 
-def getPropertyType(propertyValue):
-    propertyType = ""
-    propertyDefault = ""
-
-    if "default" in propertyValue:
-        propertyDefault = propertyValue["default"]
-
-    if "string" == propertyValue["type"]:
-        propertyType = "std::string"
-        if "default" in propertyValue:
-            propertyDefault = '"' + propertyValue["default"] + '"'
-    elif "integer" == propertyValue["type"]:
-        if "int64" == propertyValue["format"]:
-            propertyType = "std::int64_t"
-        else:
-            propertyType = "std::int32_t"
-    elif "number" == propertyValue["type"]:
-        if "float" == propertyValue["format"]:
-            propertyType = "float"
-        else:
-            propertyType = "double"
-    elif "boolean" == propertyValue["type"]:
-        propertyType = "bool"
-    elif "array" == propertyValue["type"]:
-        arrayType, propertyDefault = getPropertyType(propertyValue["items"])
-        propertyType = "std::vector<" + arrayType + ">"
-
-    return propertyType, propertyDefault
+class microgen:
+    def __init__(self, serviceName, jsonDoc):
+        self.serviceName = serviceName
+        self.namespace = serviceName.lower()
+        self.jsonDoc = jsonDoc
 
 
-def replaceContent(line, serviceName, contentName, propertyName, propertyType, propertyDefault, propertyClass):
-    namespace = serviceName.lower()
-    outText = line \
-        .replace("$namespace", namespace) \
-        .replace("$contentname", contentName) \
-        .replace("$propertyname", propertyName) \
-        .replace("$propertytype", propertyType)
-
-    if not propertyDefault:
-        outText = outText.replace(", $propertydefault", "")
-    else:
-        outText = outText.replace("$propertydefault", propertyDefault)
-
-    if (not propertyClass) and ("$propertyclass.h" in outText):
-        return ""
-    else:
-        outText = outText.replace('$propertyclass', propertyClass)
-
-    return outText + "\n"
-
-
-def replaceContentPropertyLines(metadata, serviceName, contentName, propertyItems):
-    lines = metadata.splitlines()
-    started = False
-    outText = ""
-
-    for line in lines:
-        propertyName = ""
+    def getPropertyType(self, propertyValue):
         propertyType = ""
-        propertyDefault=""
-        propertyClass=""
+        propertyDefault = ""
 
-        if started:
-            if line.find("@repeatend") >= 0:
-                started = False
+        if "string" == propertyValue["type"]:
+            propertyType = "std::string"
+            if "default" in propertyValue:
+                propertyDefault = '"' + propertyValue["default"] + '"'
+        elif "integer" == propertyValue["type"]:
+            if "int64" == propertyValue["format"]:
+                propertyType = "std::int64_t"
             else:
-                for propertyName, propertyValue in propertyItems:
-                    if "$ref" in propertyValue:
-                        propertyType = propertyValue["$ref"].replace("#/components/schemas/", "")
-                        propertyDefault=""
-                        propertyClass=propertyType
-                    elif "type" in propertyValue:
-                        propertyType, propertyDefault = getPropertyType(propertyValue)
-                        propertyClass=""
-                    outText += replaceContent(line, serviceName, contentName, propertyName, propertyType, propertyDefault, propertyClass)
-        elif line.find("@repeatstart") >= 0:
-            started = True
+                propertyType = "std::int32_t"
+            if "default" in propertyValue:
+                propertyDefault = propertyValue["default"]
+            else:
+                propertyDefault = "0"
+        elif "number" == propertyValue["type"]:
+            if "float" == propertyValue["format"]:
+                propertyType = "float"
+            else:
+                propertyType = "double"
+            if "default" in propertyValue:
+                propertyDefault = propertyValue["default"]
+            else:
+                propertyDefault = "0.0"
+        elif "boolean" == propertyValue["type"]:
+            propertyType = "bool"
+            if "default" in propertyValue:
+                propertyDefault = propertyValue["default"]
+            else:
+                propertyDefault = "false"
+        elif "array" == propertyValue["type"]:
+            arrayType, propertyDefault = self.getPropertyType(propertyValue["items"])
+            propertyType = "std::vector<" + arrayType + ">"
+
+        return propertyType, propertyDefault
+
+
+    def replaceContent(self, line, contentName, propertyName, propertyType, propertyDefault, propertyClass):
+        outText = line \
+            .replace("$namespace", self.namespace) \
+            .replace("$contentname", contentName) \
+            .replace("$propertyname", propertyName) \
+            .replace("$propertytype", propertyType)
+
+        if not propertyDefault:
+            outText = outText.replace(" {$propertydefault}", "")
         else:
-            outText += replaceContent(line, serviceName, contentName, propertyName, propertyType, propertyDefault, propertyClass)
+            outText = outText.replace("$propertydefault", propertyDefault)
 
-    return outText
-
-
-def replaceContentLines(metadata, serviceName, contentName, contentItem):
-    lines = metadata.splitlines()
-    started = False
-    outText = ""
-
-    for line in lines:
-        propertyName = ""
-        propertyType = ""
-        propertyDefault=""
-        propertyClass=""
-
-        if started:
-            if line.find("@repeatend") >= 0:
-                started = False
-            else:
-                propertyType, propertyDefault = getPropertyType(contentItem["additionalProperties"])
-                propertyType = "std::vector<std::pair<std::string, " + propertyType + ">>"
-                outText += replaceContent(line, serviceName, contentName, "keyValuePairs", propertyType, propertyDefault, propertyClass)
-        elif line.find("@repeatstart") >= 0:
-            started = True
+        if (not propertyClass) and ("$propertyclass.h" in outText):
+            return ""
         else:
-            outText += replaceContent(line, serviceName, contentName, propertyName, propertyType, propertyDefault, propertyClass)
+            outText = outText.replace('$propertyclass', propertyClass)
 
-    return outText
-
-
-def replaceMethodPath(line, serviceName, method="", path="", requestContent=""):
-    namespace = serviceName.lower()
-    pathname = path.replace("/", "")
-    outText = line \
-        .replace("$pathname", pathname) \
-        .replace("$path", path) \
-        .replace("$method", method) \
-        .replace("$namespace", namespace) \
-        .replace("$service", serviceName) \
-        .replace("$requestcontent", requestContent)
-
-    return outText + "\n"
+        return outText + "\n"
 
 
-def replacePaths(metadata, serviceName, paths):
-    lines = metadata.splitlines()
-    started = False
-    outText = ""
-    pathDict = {}
+    def replaceContentPropertyLines(self, metadata, contentName, propertyItems):
+        lines = metadata.splitlines()
+        started = False
+        outText = ""
 
-    for line in lines:
-        if started:
-            if line.find("@repeatend") >= 0:
-                started = False
-                for value in pathDict.values():
-                    outText += value
+        for line in lines:
+            propertyName = ""
+            propertyType = ""
+            propertyDefault=""
+            propertyClass=""
+
+            if started:
+                if line.find("@repeatend") >= 0:
+                    started = False
+                else:
+                    for propertyName, propertyValue in propertyItems:
+                        propertyName = propertyName[0].upper() + propertyName[1:]
+                        if "$ref" in propertyValue:
+                            propertyType = propertyValue["$ref"].replace("#/components/schemas/", "")
+                            propertyDefault=""
+                            propertyClass=propertyType
+                        elif "type" in propertyValue:
+                            propertyType, propertyDefault = self.getPropertyType(propertyValue)
+                            propertyClass=""
+                        outText += self.replaceContent(line, contentName, propertyName, propertyType, propertyDefault, propertyClass)
+            elif line.find("@repeatstart") >= 0:
+                started = True
             else:
+                outText += self.replaceContent(line, contentName, propertyName, propertyType, propertyDefault, propertyClass)
+
+        return outText
+
+
+    def replaceContentLines(self, metadata, contentName, contentItem):
+        lines = metadata.splitlines()
+        started = False
+        outText = ""
+
+        for line in lines:
+            propertyName = ""
+            propertyType = ""
+            propertyDefault=""
+            propertyClass=""
+
+            if started:
+                if line.find("@repeatend") >= 0:
+                    started = False
+                else:
+                    propertyType, propertyDefault = self.getPropertyType(contentItem["additionalProperties"])
+                    propertyType = "std::vector<std::pair<std::string, " + propertyType + ">>"
+                    outText += self.replaceContent(line, contentName, "KeyValuePairs", propertyType, propertyDefault, propertyClass)
+            elif line.find("@repeatstart") >= 0:
+                started = True
+            else:
+                outText += self.replaceContent(line, contentName, propertyName, propertyType, propertyDefault, propertyClass)
+
+        return outText
+
+
+    def replaceMethodPath(self, line, method="", path="", requestContent=""):
+        pathname = path.replace("/", "")
+        outText = line \
+            .replace("$pathname", pathname) \
+            .replace("$path", path) \
+            .replace("$method", method) \
+            .replace("$namespace", self.namespace) \
+            .replace("$service", self.serviceName) \
+            .replace("$requestcontent", requestContent)
+
+        return outText + "\n"
+
+
+    def replacePaths(self, metadata, paths):
+        lines = metadata.splitlines()
+        started = False
+        outText = ""
+        pathDict = {}
+
+        for line in lines:
+            if started:
+                if line.find("@repeatend") >= 0:
+                    started = False
+                    for value in pathDict.values():
+                        outText += value
+                else:
+                    for path, value in paths.items():
+                        if "get" in value:
+                            method = "GET"
+                            pathDict[method + path] += self.replaceMethodPath(line, method, path)
+                        if "post" in value:
+                            method = "POST"
+                            pathDict[method + path] += self.replaceMethodPath(line, method, path)
+                        if "put" in value:
+                            method = "PUT"
+                            pathDict[method + path] += self.replaceMethodPath(line, method, path)
+                        if "delete" in value:
+                            method = "DELETE"
+                            pathDict[method + path] += self.replaceMethodPath(line, method, path)
+                        if "patch" in value:
+                            method = "PATCH"
+                            pathDict[method + path] += self.replaceMethodPath(line, method, path)
+
+            elif line.find("@repeatstart") >= 0:
+                started = True
+                pathDict.clear()
                 for path, value in paths.items():
                     if "get" in value:
                         method = "GET"
-                        pathDict[method + path] += replaceMethodPath(line, serviceName, method, path)
+                        pathDict[method + path] = ""
                     if "post" in value:
                         method = "POST"
-                        pathDict[method + path] += replaceMethodPath(line, serviceName, method, path)
+                        pathDict[method + path] = ""
                     if "put" in value:
                         method = "PUT"
-                        pathDict[method + path] += replaceMethodPath(line, serviceName, method, path)
+                        pathDict[method + path] = ""
                     if "delete" in value:
                         method = "DELETE"
-                        pathDict[method + path] += replaceMethodPath(line, serviceName, method, path)
+                        pathDict[method + path] = ""
                     if "patch" in value:
                         method = "PATCH"
-                        pathDict[method + path] += replaceMethodPath(line, serviceName, method, path)
-
-        elif line.find("@repeatstart") >= 0:
-            started = True
-            pathDict.clear()
-            for path, value in paths.items():
-                if "get" in value:
-                    method = "GET"
-                    pathDict[method + path] = ""
-                if "post" in value:
-                    method = "POST"
-                    pathDict[method + path] = ""
-                if "put" in value:
-                    method = "PUT"
-                    pathDict[method + path] = ""
-                if "delete" in value:
-                    method = "DELETE"
-                    pathDict[method + path] = ""
-                if "patch" in value:
-                    method = "PATCH"
-                    pathDict[method + path] = ""
-        else:
-            outText += replaceMethodPath(line, serviceName)
-
-    return outText
-
-
-def replaceLines(metadata, serviceName, method, path, requestContent):
-    lines = metadata.splitlines()
-    started = False
-    outText = ""
-
-    for line in lines:
-        if started:
-            if line.find("@repeatend") >= 0:
-                started = False
+                        pathDict[method + path] = ""
             else:
-                outText += replaceMethodPath(line, serviceName, method, path, requestContent)
-        elif line.find("@repeatstart") >= 0:
-            started = True
-        else:
-            outText += replaceMethodPath(line, serviceName, method, path, requestContent)
+                outText += self.replaceMethodPath(line)
 
-    return outText
+        return outText
 
 
-def generateContent(serviceName, jsonDoc):
-    scriptPath = sys.path[0]
+    def replaceLines(self, metadata, method, path, requestContent):
+        lines = metadata.splitlines()
+        started = False
+        outText = ""
 
-    contentHeaderTemplate = open(scriptPath + "/Content.h.metadata").read()
-    contentSourceTemplate = open(scriptPath + "/Content.cpp.metadata").read()
+        for line in lines:
+            if started:
+                if line.find("@repeatend") >= 0:
+                    started = False
+                else:
+                    outText += self.replaceMethodPath(line, method, path, requestContent)
+            elif line.find("@repeatstart") >= 0:
+                started = True
+            else:
+                outText += self.replaceMethodPath(line, method, path, requestContent)
 
-    for contentName, value in jsonDoc["components"]["schemas"].items():
-        propertyType = ""
-        propertyDefault = ""
-        if ("type" in value) and ("object" == value["type"]):
-            for propertyName, propertyValue in value["properties"].items():
-                if "$ref" in propertyValue:
-                    propertyType = propertyValue["$ref"].replace("#/components/schemas/", "")
-                elif "type" in propertyValue:
-                    propertyType, propertyDefault = getPropertyType(propertyValue)
-                contentHeader = replaceContentPropertyLines(contentHeaderTemplate, serviceName, contentName, value["properties"].items())
-                headerFile = serviceName + "/base/" + contentName + ".h"
-                saveFile(headerFile, contentHeader)
-                contentSource = replaceContentPropertyLines(contentSourceTemplate, serviceName, contentName, value["properties"].items())
-                sourceFile = serviceName + "/base/" + contentName + ".cpp"
-                saveFile(sourceFile, contentSource)
-        elif ("additionalProperties" in value) and ("type" in value["additionalProperties"]):
-            contentHeader = replaceContentLines(contentHeaderTemplate, serviceName, contentName, value)
-            headerFile = serviceName + "/base/" + contentName + ".h"
-            saveFile(headerFile, contentHeader)
-            contentSource = replaceContentLines(contentSourceTemplate, serviceName, contentName, value)
-            sourceFile = serviceName + "/base/" + contentName + ".cpp"
-            saveFile(sourceFile, contentSource)
+        return outText
 
 
-def generateReactorBase(serviceName, jsonDoc):
-    scriptPath = sys.path[0]
+    def generateContent(self):
+        scriptPath = sys.path[0]
 
-    reactorHeaderTemplate = open(scriptPath + "/ReactorBase.h.metadata").read()
-    reactorSourceTemplate = open(scriptPath + "/ReactorBase.cpp.metadata").read()
+        contentHeaderTemplate = open(scriptPath + "/Content.h.metadata").read()
+        contentSourceTemplate = open(scriptPath + "/Content.cpp.metadata").read()
 
-    for path, value in jsonDoc["paths"].items():
-        if "get" in value:
-            method = "GET"
-            requestContent = value["get"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
-            requestContent = requestContent.replace("#/components/schemas/", "")
-
-            reactorHeader = replaceLines(reactorHeaderTemplate, serviceName, method, path, requestContent)
-            headerFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
-            saveFile(headerFile, reactorHeader)
-            reactorSource = replaceLines(reactorSourceTemplate, serviceName, method, path, requestContent)
-            sourceFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
-            saveFile(sourceFile, reactorSource)
-
-        if "post" in value:
-            method = "POST"
-            requestContent = value["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
-            requestContent = requestContent.replace("#/components/schemas/", "")
-
-            reactorHeader = replaceLines(reactorHeaderTemplate, serviceName, method, path, requestContent)
-            headerFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
-            saveFile(headerFile, reactorHeader)
-            reactorSource = replaceLines(reactorSourceTemplate, serviceName, method, path, requestContent)
-            sourceFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
-            saveFile(sourceFile, reactorSource)
-
-        if "put" in value:
-            method = "PUT"
-            requestContent = value["put"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
-            requestContent = requestContent.replace("#/components/schemas/", "")
-
-            reactorHeader = replaceLines(reactorHeaderTemplate, serviceName, method, path, requestContent)
-            headerFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
-            saveFile(headerFile, reactorHeader)
-            reactorSource = replaceLines(reactorSourceTemplate, serviceName, method, path, requestContent)
-            sourceFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
-            saveFile(sourceFile, reactorSource)
-
-        if "delete" in value:
-            method = "DELETE"
-            requestContent = value["delete"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
-            requestContent = requestContent.replace("#/components/schemas/", "")
-
-            reactorHeader = replaceLines(reactorHeaderTemplate, serviceName, method, path, requestContent)
-            headerFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
-            saveFile(headerFile, reactorHeader)
-            reactorSource = replaceLines(reactorSourceTemplate, serviceName, method, path, requestContent)
-            sourceFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
-            saveFile(sourceFile, reactorSource)
-
-        if "patch" in value:
-            method = "PATCH"
-            requestContent = value["patch"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
-            requestContent = requestContent.replace("#/components/schemas/", "")
-
-            reactorHeader = replaceLines(reactorHeaderTemplate, serviceName, method, path, requestContent)
-            headerFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
-            saveFile(headerFile, reactorHeader)
-            reactorSource = replaceLines(reactorSourceTemplate, serviceName, method, path, requestContent)
-            sourceFile = serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
-            saveFile(sourceFile, reactorSource)
+        for contentName, value in self.jsonDoc["components"]["schemas"].items():
+            if ("type" in value) and ("object" == value["type"]):
+                for propertyName, propertyValue in value["properties"].items():
+                    contentHeader = self.replaceContentPropertyLines(contentHeaderTemplate, contentName, value["properties"].items())
+                    headerFile = self.serviceName + "/base/" + contentName + ".h"
+                    self.saveFile(headerFile, contentHeader)
+                    contentSource = self.replaceContentPropertyLines(contentSourceTemplate, contentName, value["properties"].items())
+                    sourceFile = self.serviceName + "/base/" + contentName + ".cpp"
+                    self.saveFile(sourceFile, contentSource)
+            elif ("additionalProperties" in value) and ("type" in value["additionalProperties"]):
+                contentHeader = self.replaceContentLines(contentHeaderTemplate, contentName, value)
+                headerFile = self.serviceName + "/base/" + contentName + ".h"
+                self.saveFile(headerFile, contentHeader)
+                contentSource = self.replaceContentLines(contentSourceTemplate, contentName, value)
+                sourceFile = self.serviceName + "/base/" + contentName + ".cpp"
+                self.saveFile(sourceFile, contentSource)
 
 
-def generateServiceBase(serviceName, jsonDoc):
-    scriptPath = sys.path[0]
+    def generateReactorBase(self):
+        scriptPath = sys.path[0]
 
-    serviceBaseHeaderTemplate = open(scriptPath + "/ServiceBase.h.metadata").read()
-    serviceBaseHeader = replacePaths(serviceBaseHeaderTemplate, serviceName, jsonDoc["paths"])
-    headerBaseFile = serviceName + "/base/" + serviceName + "ServiceBase.h"
-    saveFile(headerBaseFile, serviceBaseHeader)
+        reactorHeaderTemplate = open(scriptPath + "/ReactorBase.h.metadata").read()
+        reactorSourceTemplate = open(scriptPath + "/ReactorBase.cpp.metadata").read()
 
-    serviceBaseSourceTemplate = open(scriptPath + "/ServiceBase.cpp.metadata").read()
-    serviceBaseSource = replacePaths(serviceBaseSourceTemplate, serviceName, jsonDoc["paths"])
-    sourceBaseFile = serviceName + "/base/" + serviceName + "ServiceBase.cpp"
-    saveFile(sourceBaseFile, serviceBaseSource)
+        for path, value in self.jsonDoc["paths"].items():
+            if "get" in value:
+                method = "GET"
+                requestContent = ""
+                if "requestBody" in value["get"]: 
+                    requestContent = value["get"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
+                    requestContent = requestContent.replace("#/components/schemas/", "")
+
+                reactorHeader = self.replaceLines(reactorHeaderTemplate, method, path, requestContent)
+                headerFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
+                self.saveFile(headerFile, reactorHeader)
+                reactorSource = self.replaceLines(reactorSourceTemplate, method, path, requestContent)
+                sourceFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
+                self.saveFile(sourceFile, reactorSource)
+
+            if "post" in value:
+                method = "POST"
+                requestContent = ""
+                if "requestBody" in value["post"]:
+                    requestContent = value["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
+                    requestContent = requestContent.replace("#/components/schemas/", "")
+
+                reactorHeader = self.replaceLines(reactorHeaderTemplate, method, path, requestContent)
+                headerFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
+                self.saveFile(headerFile, reactorHeader)
+                reactorSource = self.replaceLines(reactorSourceTemplate, method, path, requestContent)
+                sourceFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
+                self.saveFile(sourceFile, reactorSource)
+
+            if "put" in value:
+                method = "PUT"
+                requestContent = ""
+                if "requestBody" in value["put"]:
+                    requestContent = value["put"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
+                    requestContent = requestContent.replace("#/components/schemas/", "")
+
+                reactorHeader = self.replaceLines(reactorHeaderTemplate, method, path, requestContent)
+                headerFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
+                self.saveFile(headerFile, reactorHeader)
+                reactorSource = self.replaceLines(reactorSourceTemplate, method, path, requestContent)
+                sourceFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
+                self.saveFile(sourceFile, reactorSource)
+
+            if "delete" in value:
+                method = "DELETE"
+                requestContent = ""
+                if "requestBody" in value["delete"]:
+                    requestContent = value["delete"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
+                    requestContent = requestContent.replace("#/components/schemas/", "")
+
+                reactorHeader = self.replaceLines(reactorHeaderTemplate, method, path, requestContent)
+                headerFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
+                self.saveFile(headerFile, reactorHeader)
+                reactorSource = self.replaceLines(reactorSourceTemplate, method, path, requestContent)
+                sourceFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
+                self.saveFile(sourceFile, reactorSource)
+
+            if "patch" in value:
+                method = "PATCH"
+                requestContent = ""
+                if "requestBody" in value["patch"]:
+                    requestContent = value["patch"]["requestBody"]["content"]["application/json"]["schema"]["$ref"]
+                    requestContent = requestContent.replace("#/components/schemas/", "")
+
+                reactorHeader = self.replaceLines(reactorHeaderTemplate, method, path, requestContent)
+                headerFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.h"
+                self.saveFile(headerFile, reactorHeader)
+                reactorSource = self.replaceLines(reactorSourceTemplate, method, path, requestContent)
+                sourceFile = self.serviceName + "/base/" + method + path.replace("/", "") + "ReactorBase.cpp"
+                self.saveFile(sourceFile, reactorSource)
 
 
-def generateService(serviceName, jsonDoc):
-    scriptPath = sys.path[0]
+    def generateServiceBase(self):
+        scriptPath = sys.path[0]
 
-    serviceHeaderTemplate = open(scriptPath + "/Service.h.metadata").read()
-    serviceHeader = replacePaths(serviceHeaderTemplate, serviceName, jsonDoc["paths"])
-    headerFile = serviceName + "/" + serviceName + "Service.h"
-    saveFile(headerFile, serviceHeader)
+        serviceBaseHeaderTemplate = open(scriptPath + "/ServiceBase.h.metadata").read()
+        serviceBaseHeader = self.replacePaths(serviceBaseHeaderTemplate, self.jsonDoc["paths"])
+        headerBaseFile = self.serviceName + "/base/" + self.serviceName + "ServiceBase.h"
+        self.saveFile(headerBaseFile, serviceBaseHeader)
 
-    serviceSourceTemplate = open(scriptPath + "/Service.cpp.metadata").read()
-    serviceSource = replacePaths(serviceSourceTemplate, serviceName, jsonDoc["paths"])
-    sourceFile = serviceName + "/" + serviceName + "Service.cpp"
-    saveFile(sourceFile, serviceSource)
-
-
-def generateMain(serviceName, jsonDoc):
-    scriptPath = sys.path[0]
-    mainTemplate = open(scriptPath + "/main.cpp.metadata").read()
-    mainSource = replacePaths(mainTemplate, serviceName, jsonDoc["paths"])
-    mainFile = serviceName + "/main.cpp"
-    saveFile(mainFile, mainSource)
+        serviceBaseSourceTemplate = open(scriptPath + "/ServiceBase.cpp.metadata").read()
+        serviceBaseSource = self.replacePaths(serviceBaseSourceTemplate, self.jsonDoc["paths"])
+        sourceBaseFile = self.serviceName + "/base/" + self.serviceName + "ServiceBase.cpp"
+        self.saveFile(sourceBaseFile, serviceBaseSource)
 
 
-def generateCMakeLists(serviceName, jsonDoc):
-    scriptPath = sys.path[0]
-    CMakeListsTemplate = open(scriptPath + "/CMakeLists.txt.metadata").read()
-    CMakeListsSource = replacePaths(CMakeListsTemplate, serviceName, jsonDoc["paths"])
-    CMakeListsFile = serviceName + "/CMakeLists.txt"
-    saveFile(CMakeListsFile, CMakeListsSource)
+    def generateService(self):
+        scriptPath = sys.path[0]
+
+        serviceHeaderTemplate = open(scriptPath + "/Service.h.metadata").read()
+        serviceHeader = self.replacePaths(serviceHeaderTemplate, self.jsonDoc["paths"])
+        headerFile = self.serviceName + "/" + self.serviceName + "Service.h"
+        self.saveFile(headerFile, serviceHeader)
+
+        serviceSourceTemplate = open(scriptPath + "/Service.cpp.metadata").read()
+        serviceSource = self.replacePaths(serviceSourceTemplate, self.jsonDoc["paths"])
+        sourceFile = self.serviceName + "/" + self.serviceName + "Service.cpp"
+        self.saveFile(sourceFile, serviceSource)
 
 
-def saveFile(filename, data):
-    print(f"Generating {filename}")
-    f = open(filename, "w")
-    f.write(data)
-    f.close()
+    def generateMain(self):
+        scriptPath = sys.path[0]
+        mainTemplate = open(scriptPath + "/main.cpp.metadata").read()
+        mainSource = self.replacePaths(mainTemplate, self.jsonDoc["paths"])
+        mainFile = self.serviceName + "/main.cpp"
+        self.saveFile(mainFile, mainSource)
+
+
+    def generateCMakeLists(self):
+        scriptPath = sys.path[0]
+        CMakeListsTemplate = open(scriptPath + "/CMakeLists.txt.metadata").read()
+        CMakeListsSource = self.replacePaths(CMakeListsTemplate, self.jsonDoc["paths"])
+        CMakeListsFile = self.serviceName + "/CMakeLists.txt"
+        self.saveFile(CMakeListsFile, CMakeListsSource)
+
+
+    def saveFile(self, filename, data):
+        print(f"Generating {filename}")
+        f = open(filename, "w")
+        f.write(data)
+        f.close()
 
 
 def parseYaml(serviceName, fileName):
     try:
+        yaml = ruamel.yaml.YAML(typ='safe').load(open(fileName))
+        jsonString = json.dumps(yaml, indent=2)
+
         if not os.path.exists(serviceName + "/base"):
             os.makedirs(serviceName + "/base")
 
-        yaml = ruamel.yaml.YAML(typ='safe').load(open(fileName))
-
-        jsonString = json.dumps(yaml, indent=2)
-        open(serviceName + "/" + os.path.basename(fileName) + ".json", "w").write(jsonString)
+        shutil.copy2(fileName, serviceName)
+        #open(serviceName + "/" + os.path.basename(fileName) + ".json", "w").write(jsonString)
 
         jsonDoc = json.loads(jsonString)
 
-        generateCMakeLists(serviceName, jsonDoc)
-        generateMain(serviceName, jsonDoc)
-        generateService(serviceName, jsonDoc)
-        generateServiceBase(serviceName, jsonDoc)
-        generateReactorBase(serviceName, jsonDoc)
-        generateContent(serviceName, jsonDoc)
+        mg = microgen(serviceName, jsonDoc)
+        mg.generateCMakeLists()
+        mg.generateMain()
+        mg.generateService()
+        mg.generateServiceBase()
+        mg.generateReactorBase()
+        mg.generateContent()
         
     except yaml.YAMLError as e:
         print(f"Error reading yaml file {fileName}: {e}")
@@ -376,6 +397,34 @@ def parseYaml(serviceName, fileName):
         print(f"Json Error: {e}")
     except:
         print(f"Error in yaml file: {fileName}")
+
+
+def copyMicroreactor(serviceName):
+    includePath = os.path.join(os.getcwd(), serviceName + "/include/microreactor")
+    libPath = os.path.join(os.getcwd(), serviceName + "/lib")
+
+    shutil.rmtree(includePath, ignore_errors=True)
+    shutil.rmtree(libPath, ignore_errors=True)
+    os.makedirs(includePath)
+    os.makedirs(libPath)
+
+    sourcePath = os.path.realpath(os.path.dirname(__file__) + "/../src")
+    libraryPath = os.path.realpath(os.path.dirname(__file__) + "/../../build/microreactor/Debug")
+
+    includeFiles = glob.iglob(os.path.join(sourcePath, "*.h"))
+    for f in includeFiles:
+        if os.path.isfile(f):
+            shutil.copy2(f, includePath)
+
+    libFiles = glob.iglob(os.path.join(libraryPath, "*.lib"))
+    for f in libFiles:
+        if os.path.isfile(f):
+            shutil.copy2(f, libPath)
+
+    aFiles = glob.iglob(os.path.join(libraryPath, "*.a"))
+    for f in aFiles:
+        if os.path.isfile(f):
+            shutil.copy2(f, libPath)
 
 
 def parseArg():
@@ -402,6 +451,7 @@ def main(argv):
         serviceName = os.path.splitext(os.path.basename(fileName))[0]
 
     parseYaml(serviceName, fileName)
+    copyMicroreactor(serviceName)
 
 
 if __name__ == "__main__":

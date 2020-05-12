@@ -1,7 +1,7 @@
 #include "$contentname.h"
 
 
-namespace $namespace;
+namespace $namespace
 {
 
     $contentname::$contentname()
@@ -12,28 +12,26 @@ namespace $namespace;
     {
     }
 
-    bool $contentname::Encode(nlohmann::json& serializer) const
-    {
-        @repeatstart
-        serializer["$propertyname"] = $propertyname.cref();
-        @repeatend
-        return true;
-    }
-
-    bool $contentname::Decode(const nlohmann::json& serializer)
-    {
-        @repeatstart
-        serializer["$propertyname"].get_to($propertyname.ref());
-        @repeatend
-        return true;
-    }
-
     bool $contentname::Write(std::string& buffer) const
     {
-        nlohmann::json serializer;
-        Encode(serializer);
-        buffer = serializer.dump();
+        nlohmann::json j;
+        to_json(j, *this);
+        buffer = j.dump();
         return true;
+    }
+
+    void to_json(nlohmann::json& j, const $contentname& c)
+    {
+        @repeatstart
+        j["$propertyname"] = c.Get$propertyname();
+        @repeatend
+    }
+
+    void from_json(const nlohmann::json& j, $contentname& c)
+    {
+        @repeatstart
+        j["$propertyname"].get_to(c.Ref$propertyname());
+        @repeatend
     }
 
 }

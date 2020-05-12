@@ -116,30 +116,38 @@ std::shared_ptr<Reactor> RestDispatcher::CreateReactor(std::shared_ptr<RestMessa
             return nullptr;
         }
 
-        auto reactor = restReactorFactory(restMessage, connection);
-        if (reactor == nullptr)
+        try
         {
+            auto reactor = restReactorFactory(restMessage, connection);
+            return reactor;
+        }
+        catch(const std::exception& e)
+        {
+            LOG("Exception: Failed to run rest reactor factory (%s)", e.what());
             SendBadMessageResponse(connection);
             return nullptr;
         }
-
-        return reactor;
     }
     else if (restMessage->mMessageType == RestMessage::Response)
     {
         auto restReactorFactory = GetRestReactorFactory(std::static_pointer_cast<RestResponse>(restMessage));
         if (restReactorFactory == nullptr)
         {
+            SendNotFoundResponse(connection);
             return nullptr;
         }
 
-        auto reactor = restReactorFactory(restMessage, connection);
-        if (reactor == nullptr)
+        try
         {
+            auto reactor = restReactorFactory(restMessage, connection);
+            return reactor;
+        }
+        catch(const std::exception& e)
+        {
+            LOG("Exception: Failed to run rest reactor factory (%s)", e.what());
+            SendNotFoundResponse(connection);
             return nullptr;
         }
-
-        return reactor;
     }
 
     return nullptr;
