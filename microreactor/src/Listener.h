@@ -18,7 +18,6 @@ namespace sg { namespace microreactor
         Signal<std::shared_ptr<Connection>>& ConnectionMade = mConnectionMade;
 
         PROPERTY(Name, std::string);
-        PROPERTY(ReceiveTimeout, std::chrono::milliseconds, std::chrono::milliseconds(1));
         PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
         PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
         
