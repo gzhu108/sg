@@ -20,12 +20,15 @@ include_directories(${DEPENDENCY_INCLUDE_DIR})
 
 file(GLOB PB_SRC "${PROJECT_SOURCE_DIR}/*.proto")
 
+#Code Generation
+if(protobuf_MODULE_COMPATIBLE) #Legacy Suppport
+  protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PB_SRC})
+endif()
+
 add_library(streetgangproto STATIC ${PB_SRC})
 
 find_package(Protobuf CONFIG REQUIRED)
 protobuf_generate(LANGUAGE cpp TARGET streetgangproto)
-
-#protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PB_SRC})
 
 # add the install targets
 install(TARGETS streetgangproto DESTINATION bin)
