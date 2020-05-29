@@ -56,7 +56,7 @@ set(DEPENDENCY_LIBS
 # add this command to scan dependencies of target
 add_dependencies(metricator ${DEPENDENCY_LIBS})
 
-if ((VCPKG_CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (VCPKG_CMAKE_SYSTEM_NAME STREQUAL "Darwin"))
+if ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin"))
   find_library(LIBUUID_LIBRARY libuuid.a)
 else()
   set(LIBUUID_LIBRARY "uuid")
