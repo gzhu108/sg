@@ -28,3 +28,9 @@ RUN source ./scripts/vcpkg_completion.bash
 
 ENV VCPKG_DEFAULT_TRIPLET=x64-linux
 ENV VCPKG_ROOT=/git/vcpkg
+
+WORKDIR /git
+RUN git clone https://github.com/gzhu108/sg
+WORKDIR /git/sg/build
+RUN cmake ..
+RUN cmake --build .
