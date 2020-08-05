@@ -30,6 +30,11 @@ namespace sg { namespace microreactor
         {
             return std::static_pointer_cast<MessageType>(mInput);
         }
+
+        virtual bool Respond(RestResponse& response)
+        {
+            return response.Send(mConnection);
+        }
     };
 }}
 
