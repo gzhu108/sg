@@ -236,10 +236,10 @@ bool Socket::Send(const char* buffer, int32_t length, int32_t& bytesSent)
     const char* ptrBuf = buffer;
     int32_t sent = 0;
     
-#ifdef _MSC_VER
-    int32_t flag = 0;
-#else
+#ifdef __linux__
     int32_t flag = MSG_NOSIGNAL;
+#else
+    int32_t flag = 0;
 #endif
 
     while(bytesToSend > 0)
@@ -340,10 +340,10 @@ bool Socket::SendTo(const char* buffer, int32_t length, const std::string& desti
     const char* ptrBuf = buffer;
     int32_t sent = 0;
 
-#ifdef _MSC_VER
-    int32_t flag = 0;
-#else
+#ifdef __linux__
     int32_t flag = MSG_NOSIGNAL;
+#else
+    int32_t flag = 0;
 #endif
 
     while(bytesToSend > 0)

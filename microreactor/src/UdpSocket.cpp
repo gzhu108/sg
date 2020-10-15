@@ -93,6 +93,11 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, const std
             mreqv6.ipv6mr_interface = ((sockaddr_in6*)interfaceAddressInfo->ai_addr)->sin6_scope_id;
         }
 
+// Define IPV6_ADD_MEMBERSHIP for FreeBSD and Mac OS X
+#ifndef IPV6_ADD_MEMBERSHIP
+#define IPV6_ADD_MEMBERSHIP IPV6_JOIN_GROUP
+#endif
+
         optLevel = IPPROTO_IPV6;
         option   = IPV6_ADD_MEMBERSHIP;
         optVal   = (char*)&mreqv6;
@@ -256,6 +261,11 @@ bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, const s
             std::shared_ptr<addrinfo> interfaceAddressInfo = NetworkUtility::GetAddressInfo(interfaceAddress, 0, SOCK_DGRAM, IPPROTO_UDP, true);
             mreqv6.ipv6mr_interface = ((sockaddr_in6*)interfaceAddressInfo->ai_addr)->sin6_scope_id;
         }
+
+// Define IPV6_DROP_MEMBERSHIP for FreeBSD and Mac OS X
+#ifndef IPV6_DROP_MEMBERSHIP
+#define IPV6_DROP_MEMBERSHIP IPV6_LEAVE_GROUP
+#endif
 
         optLevel = IPPROTO_IPV6;
         option   = IPV6_DROP_MEMBERSHIP;

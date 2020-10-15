@@ -23,11 +23,11 @@ namespace streetgangapi
             google::protobuf::io::OstreamOutputStream ostreamOutputStream(&stream);
             google::protobuf::io::CodedOutputStream codedOutputStream(&ostreamOutputStream);
 
-            uint32_t size = (uint32_t)header.ByteSize();
+            uint32_t size = (uint32_t)header.ByteSizeLong();
             codedOutputStream.WriteVarint32(size);
             header.SerializeWithCachedSizes(&codedOutputStream);
 
-            size = (uint32_t)message.ByteSize();
+            size = (uint32_t)message.ByteSizeLong();
             codedOutputStream.WriteVarint32(size);
             message.SerializeWithCachedSizes(&codedOutputStream);
             

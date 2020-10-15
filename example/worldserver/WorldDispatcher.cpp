@@ -31,8 +31,8 @@ std::shared_ptr<Reactor> WorldDispatcher::Decode(std::istream& stream, Connectio
     if (!serializer.Read(stream, id))
     {
         // pushback the total number of characters in ID
-        auto bytes = stream.gcount();
-        auto position = stream.tellg() - bytes;
+        int64_t bytes = stream.gcount();
+        auto position = (int64_t)stream.tellg() - bytes;
         stream.seekg(position, stream.beg);
         stream.clear();
         return nullptr;
@@ -42,8 +42,8 @@ std::shared_ptr<Reactor> WorldDispatcher::Decode(std::istream& stream, Connectio
     if (!serializer.Read(stream, length) || GetStreamSize(stream) < length)
     {
         // pushback the total number of characters in ID + Length
-        auto bytes = stream.gcount() + (std::streamsize)sizeof(int32_t);
-        auto position = stream.tellg() - bytes;
+        int64_t bytes = stream.gcount() + (std::streamsize)sizeof(int32_t);
+        auto position = (int64_t)stream.tellg() - bytes;
         stream.seekg(position, stream.beg);
         stream.clear();
         return nullptr;

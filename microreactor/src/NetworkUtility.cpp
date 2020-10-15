@@ -375,7 +375,9 @@ bool NetworkUtility::GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& 
 
         LOG("%s  address family: %d%s",
             ifa->ifa_name, family,
-            (family == AF_PACKET) ? " (AF_PACKET)" :
+#ifndef __APPLE__
+            family == AF_PACKET) ? " (AF_PACKET)" :
+#endif
             (family == AF_INET) ?   " (AF_INET)" :
             (family == AF_INET6) ?  " (AF_INET6)" : "");
 
