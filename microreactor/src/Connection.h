@@ -5,6 +5,7 @@
 #include <chrono>
 #include <set>
 #include <mutex>
+#include <deque>
 #include "Parkable.h"
 #include "Dispatcher.h"
 #include "Message.h"
@@ -45,8 +46,8 @@ namespace sg { namespace microreactor
         virtual bool Receive(std::iostream& stream);
         virtual bool Send(std::iostream& stream);
 
-        virtual uint64_t Receive(char* buffer, int32_t length) = 0;
-        virtual uint64_t Send(const char* buffer, int32_t length) = 0;
+        virtual uint64_t Receive(char* buffer, int length) = 0;
+        virtual uint64_t Send(const char* buffer, int length) = 0;
         
         virtual bool Start();
         virtual bool Stop();
@@ -56,7 +57,7 @@ namespace sg { namespace microreactor
 
     protected:
         virtual bool Close() = 0;
-        virtual void ReceiveMessage();
+        virtual void ProcessMessage();
 
         virtual void RemoveReactor(std::shared_ptr<Reactor> reactor);
         virtual void RemoveAllReactors();
@@ -65,8 +66,9 @@ namespace sg { namespace microreactor
         Emittable<void> mClosed;
         std::recursive_mutex mLock;
         std::set<std::shared_ptr<Reactor>> mActiveReactors;
-        TaskPtr mReceiveTask;
+        TaskPtr mPrecessMessageTask;
         std::atomic<uint32_t> mReceiveBufferSize;
+        std::deque<std::vector<char>> mSendBuffers;
     };
 } }
 

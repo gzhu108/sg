@@ -9,6 +9,7 @@
     <PBPort>7390</PBPort>
     <ServicePort>8390</ServicePort>
     <RestPort>9390</RestPort>
+    <UseSecureSocket>0</UseSecureSocket>
     <MetricatorHost>127.0.0.1</MetricatorHost>
     <MetricatorPort>8490</MetricatorPort>
     <MetricatorProtocol>udp</MetricatorProtocol>

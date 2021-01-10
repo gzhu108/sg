@@ -23,8 +23,8 @@ namespace sg { namespace microreactor
         virtual std::string GetPeerAddress() const override;
         virtual uint16_t GetPeerPort() const override;
 
-        virtual uint64_t Receive(char* buffer, int32_t length) override;
-        virtual uint64_t Send(const char* buffer, int32_t length) override;
+        virtual uint64_t Receive(char* buffer, int length) override;
+        virtual uint64_t Send(const char* buffer, int length) override;
 
         virtual bool IsClosed() override;
 

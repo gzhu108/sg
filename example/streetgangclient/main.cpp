@@ -18,8 +18,7 @@ using namespace sg::microreactor;
 using namespace streetgangapi;
 using namespace streetgangclient;
 
-
-void Initialize(int32_t argc, const char* argv[])
+std::shared_ptr<Client> Initialize(int32_t argc, const char *argv[])
 {
 #if defined(_MSC_VER)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -79,6 +78,8 @@ void Initialize(int32_t argc, const char* argv[])
 
     // Create metricator service profile
     auto configuration = std::make_shared<ConfigurationXml>(configFilePath, "Client");
+    ConfigurationSingleton::InitializeConfiguration(configuration);
+    
     if (protocol.empty())
     {
         configuration->GetValue("Protocol", protocol);
@@ -109,11 +110,13 @@ void Initialize(int32_t argc, const char* argv[])
         auto requester = std::make_shared<BinaryStreetGangRequester>(*client->GetConnection());
         requester->GetVersion(std::make_shared<ResponseGetVersionReactor>(*client->GetConnection(), requester));
     }
+
+    return client;
 }
 
 int32_t main(int32_t argc, const char* argv[])
 {
-    Initialize(argc, argv);
+    std::shared_ptr<Client> client = Initialize(argc, argv);
     if (!Application::Context().Run())
     {
         LOG("Failed to start the streetgangclient");

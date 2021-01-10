@@ -18,7 +18,7 @@ Socket::Socket()
     memset(&mSocketInfo, 0, sizeof(mSocketInfo));
     
     // Initialize Winsock
-    int32_t result = WSAStartup(MAKEWORD(2, 2), &mSocketInfo);
+    int result = WSAStartup(MAKEWORD(2, 2), &mSocketInfo);
     mInitialized = (result == 0);
 #endif
 }
@@ -65,7 +65,7 @@ bool Socket::SetReceiveTimeout(const std::chrono::milliseconds& timeout)
     receiveTimeout.tv_usec = (decltype(receiveTimeout.tv_usec))timeoutMicroseconds.count();
 #endif
 
-    int32_t result = SetSockOpt(SOL_SOCKET, SO_RCVTIMEO, (char*)&receiveTimeout, sizeof(receiveTimeout));
+    int result = SetSockOpt(SOL_SOCKET, SO_RCVTIMEO, (char*)&receiveTimeout, sizeof(receiveTimeout));
     if (result == SOCKET_ERROR)
     {
         LOG("Failed to set receive timeout (%d)", GetSocketError());
@@ -89,7 +89,7 @@ bool Socket::SetSendTimeout(const std::chrono::milliseconds& timeout)
     sendTimeout.tv_usec = (decltype(sendTimeout.tv_usec))timeoutMicroseconds.count();
 #endif
 
-    int32_t result = SetSockOpt(SOL_SOCKET, SO_SNDTIMEO, (char*)&sendTimeout, sizeof(sendTimeout));
+    int result = SetSockOpt(SOL_SOCKET, SO_SNDTIMEO, (char*)&sendTimeout, sizeof(sendTimeout));
     if (result == SOCKET_ERROR)
     {
         LOG("Failed to set send timeout (%d)", GetSocketError());
@@ -99,22 +99,22 @@ bool Socket::SetSendTimeout(const std::chrono::milliseconds& timeout)
     return true;
 }
 
-int32_t Socket::SetSockOpt(int32_t level, int32_t optname, const char* optval, socklen_t optlen)
+int Socket::SetSockOpt(int level, int optname, const char* optval, socklen_t optlen)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     return setsockopt(mSocket, level, optname, optval, optlen);
 }
 
-int32_t Socket::GetSockOpt(int32_t level, int32_t optname, char* optval, socklen_t* optlen)
+int Socket::GetSockOpt(int level, int optname, char* optval, socklen_t* optlen)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     return getsockopt(mSocket, level, optname, optval, optlen);
 }
 
-int32_t Socket::SetNonblocking(bool nonblocking)
+int Socket::SetNonblocking(bool nonblocking)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
-    int32_t result = 0;
+    int result = 0;
 
 #ifdef _MSC_VER
     u_long argp = nonblocking ? 1 : 0;
@@ -126,7 +126,7 @@ int32_t Socket::SetNonblocking(bool nonblocking)
     }
     else
     {
-        int32_t opts = fcntl(mSocket, F_GETFL);
+        int opts = fcntl(mSocket, F_GETFL);
         opts = opts & (~O_NONBLOCK);
         result = fcntl(mSocket, F_SETFL, opts);
     }
@@ -135,7 +135,7 @@ int32_t Socket::SetNonblocking(bool nonblocking)
     return result;
 }
 
-bool Socket::Receive(char* buffer, int32_t length, int32_t& bytesReceived)
+bool Socket::Receive(char* buffer, int length, int& bytesReceived)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -147,7 +147,7 @@ bool Socket::Receive(char* buffer, int32_t length, int32_t& bytesReceived)
     bytesReceived = recv(mSocket, buffer, length, 0);
     if (bytesReceived == SOCKET_ERROR)
     {
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         if (error == EAGAIN || error == EWOULDBLOCK)
         {
             return false;
@@ -192,11 +192,11 @@ bool Socket::SendWait(const std::chrono::milliseconds& timeout)
     FD_SET(mSocket, &exceptfds);
 
     // Wait until timeout for writing, tv = NULL for blocking operation.
-    int32_t result = select((int32_t)mSocket + 1, nullptr, &writefds, &exceptfds, tv.get());
+    int result = select((int)mSocket + 1, nullptr, &writefds, &exceptfds, tv.get());
     if (result == SOCKET_ERROR)
     {
         // select error
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
     }
     else if (result > 0)
@@ -220,7 +220,7 @@ bool Socket::SendWait(const std::chrono::milliseconds& timeout)
     return false;
 }
 
-bool Socket::Send(const char* buffer, int32_t length, int32_t& bytesSent)
+bool Socket::Send(const char* buffer, int length, int& bytesSent)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -232,14 +232,14 @@ bool Socket::Send(const char* buffer, int32_t length, int32_t& bytesSent)
     // Set the socket into blocking mode
     //SetNonblocking(false);
 
-    int32_t bytesToSend = length;
+    int bytesToSend = length;
     const char* ptrBuf = buffer;
-    int32_t sent = 0;
+    int sent = 0;
     
 #ifdef __linux__
-    int32_t flag = MSG_NOSIGNAL;
+    int flag = MSG_NOSIGNAL;
 #else
-    int32_t flag = 0;
+    int flag = 0;
 #endif
 
     while(bytesToSend > 0)
@@ -247,17 +247,17 @@ bool Socket::Send(const char* buffer, int32_t length, int32_t& bytesSent)
         sent = send(mSocket, ptrBuf, bytesToSend, flag);
         if (sent == SOCKET_ERROR)
         {
-            int32_t error = GetSocketError();
+            int error = GetSocketError();
             if (error == EAGAIN || error == EWOULDBLOCK)
             {
-                bytesSent = (int32_t)(ptrBuf - buffer);
+                bytesSent = (int)(ptrBuf - buffer);
                 return false;
             }
             THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
         }
 
         ptrBuf += sent;
-        bytesToSend = length - (int32_t)(ptrBuf - buffer);
+        bytesToSend = length - (int)(ptrBuf - buffer);
 
         if (sent == 0)
         {
@@ -267,11 +267,11 @@ bool Socket::Send(const char* buffer, int32_t length, int32_t& bytesSent)
         }
     }
 
-    bytesSent = (int32_t)(ptrBuf - buffer);
+    bytesSent = (int)(ptrBuf - buffer);
     return bytesSent > 0;
 }
 
-bool Socket::ReceiveFrom(char* buffer, int32_t length, std::string& source, uint16_t& port, int32_t& bytesReceived)
+bool Socket::ReceiveFrom(char* buffer, int length, std::string& source, uint16_t& port, int& bytesReceived)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -285,7 +285,7 @@ bool Socket::ReceiveFrom(char* buffer, int32_t length, std::string& source, uint
     bytesReceived = recvfrom(mSocket, buffer, length, 0, (sockaddr*)&senderAddr, &ccbSenderAddrSize);
     if (bytesReceived == SOCKET_ERROR)
     {
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         if (error == EAGAIN || error == EWOULDBLOCK)
         {
             return false;
@@ -313,7 +313,7 @@ bool Socket::ReceiveFrom(char* buffer, int32_t length, std::string& source, uint
     return bytesReceived > 0;
 }
 
-bool Socket::SendTo(const char* buffer, int32_t length, const std::string& destination, uint16_t port, int32_t& bytesSent)
+bool Socket::SendTo(const char* buffer, int length, const std::string& destination, uint16_t port, int& bytesSent)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -329,39 +329,39 @@ bool Socket::SendTo(const char* buffer, int32_t length, const std::string& desti
     }
 
     // Get the max message size of the socket
-    int32_t maxMsgSize = length;
+    int maxMsgSize = length;
 #ifdef _MSC_VER
-    int32_t optlen = sizeof(maxMsgSize);
+    int optlen = sizeof(maxMsgSize);
     GetSockOpt(SOL_SOCKET, SO_MAX_MSG_SIZE, (char*)&maxMsgSize, &optlen);
 #endif
 
     // Make sure the message size not succeed the socket's max message size
-    int32_t bytesToSend = std::min(length, maxMsgSize);
+    int bytesToSend = std::min(length, maxMsgSize);
     const char* ptrBuf = buffer;
-    int32_t sent = 0;
+    int sent = 0;
 
 #ifdef __linux__
-    int32_t flag = MSG_NOSIGNAL;
+    int flag = MSG_NOSIGNAL;
 #else
-    int32_t flag = 0;
+    int flag = 0;
 #endif
 
     while(bytesToSend > 0)
     {
-        sent = sendto(mSocket, ptrBuf, bytesToSend, flag, addrInfo->ai_addr, (int32_t)addrInfo->ai_addrlen);
+        sent = sendto(mSocket, ptrBuf, bytesToSend, flag, addrInfo->ai_addr, (int)addrInfo->ai_addrlen);
         if (sent == SOCKET_ERROR)
         {
-            int32_t error = GetSocketError();
+            int error = GetSocketError();
             if (error == EAGAIN || error == EWOULDBLOCK)
             {
-                bytesSent = (int32_t)(ptrBuf - buffer);
+                bytesSent = (int)(ptrBuf - buffer);
                 return false;
             }
             THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
         }
 
         ptrBuf += sent;
-        bytesToSend = length - (int32_t)(ptrBuf - buffer);
+        bytesToSend = length - (int)(ptrBuf - buffer);
 
         if (sent == 0)
         {
@@ -371,7 +371,7 @@ bool Socket::SendTo(const char* buffer, int32_t length, const std::string& desti
         }
     }
 
-    bytesSent = (int32_t)(ptrBuf - buffer);
+    bytesSent = (int)(ptrBuf - buffer);
 
     return bytesSent > 0;
 }
@@ -463,7 +463,7 @@ bool Socket::GetSocketAddress()
 
     sockaddr_storage socketAddr;
     socklen_t socketAddrSize = sizeof(socketAddr);
-    int32_t result = getsockname(mSocket, (sockaddr*)&socketAddr, &socketAddrSize);
+    int result = getsockname(mSocket, (sockaddr*)&socketAddr, &socketAddrSize);
     if (result == 0)
     {
         std::string socketName;
@@ -486,7 +486,7 @@ bool Socket::GetPeerAddress()
 
     sockaddr_storage peerAddr;
     socklen_t peerAddrLength = sizeof(sockaddr_storage);
-    int32_t result = getpeername(mSocket, (sockaddr*)&peerAddr, &peerAddrLength);
+    int result = getpeername(mSocket, (sockaddr*)&peerAddr, &peerAddrLength);
     if (result == 0)
     {
         std::string peerAddress;
@@ -503,7 +503,7 @@ bool Socket::GetPeerAddress()
     return false;
 }
 
-bool Socket::CreateSocketFromAddress(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding)
+bool Socket::CreateSocketFromAddress(const std::string& address, uint16_t port, int type, int protocol, bool forBinding)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 

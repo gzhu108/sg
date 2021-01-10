@@ -20,7 +20,7 @@ namespace sg { namespace microreactor
         virtual bool Connect(const std::string& address, uint16_t port);
         
     protected:
-        virtual bool SetKeepalive(TcpSocket& socket, int32_t keepalive, int32_t keepaliveProbes, int32_t keepaliveIdleTime, int32_t keepaliveProbeInterval);
+        virtual bool SetKeepalive(TcpSocket& socket, int keepalive, int keepaliveProbes, int keepaliveIdleTime, int keepaliveProbeInterval);
     };
 }}
 

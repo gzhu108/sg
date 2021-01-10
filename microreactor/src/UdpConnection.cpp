@@ -104,14 +104,14 @@ void UdpConnection::SetPeerPort(uint16_t peerPort)
     mSocket->PeerPort.set(peerPort);
 }
 
-uint64_t UdpConnection::Receive(char* buffer, int32_t length)
+uint64_t UdpConnection::Receive(char* buffer, int length)
 {
     if (buffer == nullptr || length <= 0)
     {
         return 0;
     }
 
-    int32_t received = 0;
+    int received = 0;
     std::string source;
     uint16_t port = 0;
 
@@ -123,7 +123,7 @@ uint64_t UdpConnection::Receive(char* buffer, int32_t length)
     return received;
 }
 
-uint64_t UdpConnection::Send(const char* buffer, int32_t length)
+uint64_t UdpConnection::Send(const char* buffer, int length)
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {
@@ -139,7 +139,7 @@ uint64_t UdpConnection::Send(const char* buffer, int32_t length)
     {
         if (mSocket->SendWait(SendTimeout.cref()))
         {
-            int32_t sent = 0;
+            int sent = 0;
             if (mSocket->SendTo(&buffer[0], length, mSocket->PeerAddress.cref(), mSocket->PeerPort.cref(), sent))
             {
                 return sent;

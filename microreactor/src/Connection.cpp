@@ -36,9 +36,8 @@ Connection::Connection()
 
 Connection::~Connection()
 {
-    mReceiveTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
-    mReceiveTask->Cancel();
-
+    mPrecessMessageTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mPrecessMessageTask->Cancel();
     RemoveAllReactors();
 }
 
@@ -61,7 +60,7 @@ bool Connection::Receive(std::iostream& stream)
     }
 
     std::vector<char> receiveBuffer(mReceiveBufferSize);
-    int32_t received = (int32_t)Receive(&receiveBuffer[0], mReceiveBufferSize);
+    int received = (int)Receive(&receiveBuffer[0], mReceiveBufferSize);
     if (received > 0)
     {
         stream.clear();
@@ -78,20 +77,20 @@ bool Connection::Receive(std::iostream& stream)
 
 bool Connection::Send(std::iostream& stream)
 {
-    int32_t length = (int32_t)GetStreamSize(stream);
+    int length = (int)GetStreamSize(stream);
     if (length == 0)
     {
         return false;
     }
 
-    std::vector<char> sendBuffer(length);
-    stream.read(&sendBuffer[0], length);
+    mSendBuffers.emplace_back(std::vector<char>(length));
+    stream.read(&mSendBuffers.back()[0], length);
     if (stream.eof() || stream.fail() || stream.bad())
     {
         return false;
     }
 
-    return Send(&sendBuffer[0], length) > 0;
+    return true;
 }
 
 bool Connection::Start()
@@ -101,11 +100,11 @@ bool Connection::Start()
     if (!IsClosed())
     {
         // Push to the queue to receive connection data.
-        mReceiveTask = SUBMIT(std::bind(&Connection::ReceiveMessage, this), "Connection::ReceiveMessage");
-        if (mReceiveTask != nullptr)
+        mPrecessMessageTask = SUBMIT(std::bind(&Connection::ProcessMessage, this), "Connection::PrecessMessage");
+        if (mPrecessMessageTask != nullptr)
         {
-            auto taskRawPtr = mReceiveTask.get();
-            mReceiveTask->Completed.Connect(std::bind([](Task* task)
+            auto taskRawPtr = mPrecessMessageTask.get();
+            mPrecessMessageTask->Completed.Connect(std::bind([](Task* task)
             {
                 task->Schedule();
             }, taskRawPtr), reinterpret_cast<uintptr_t>(this));
@@ -126,8 +125,8 @@ bool Connection::Stop()
         Close();
     }
 
-    mReceiveTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
-    mReceiveTask->Cancel();
+    mPrecessMessageTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mPrecessMessageTask->Cancel();
 
     RemoveAllReactors();
     mClosed();
@@ -135,8 +134,25 @@ bool Connection::Stop()
     return true;
 }
 
-void Connection::ReceiveMessage()
+void Connection::ProcessMessage()
 {
+    if (!IsClosed())
+    {
+        // Send data from the send buffers.
+        while (!mSendBuffers.empty())
+        {
+            if (Send(&mSendBuffers[0][0], (int)mSendBuffers[0].size()) > 0)
+            {
+                mSendBuffers.pop_front();
+            }
+            else
+            {
+                // Connection closed
+                return;
+            }
+        }
+    }
+
     auto dispatcher = Dispatcher.cref();
     if (dispatcher != nullptr)
     {

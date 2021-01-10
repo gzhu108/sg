@@ -56,7 +56,7 @@ uint16_t TcpConnection::GetPeerPort() const
     return mSocket->PeerPort.cref();
 }
 
-uint64_t TcpConnection::Receive(char* buffer, int32_t length)
+uint64_t TcpConnection::Receive(char* buffer, int length)
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {
@@ -71,7 +71,7 @@ uint64_t TcpConnection::Receive(char* buffer, int32_t length)
 
     try
     {
-        int32_t received = 0;
+        int received = 0;
         if (mSocket->Receive(&buffer[0], length, received))
         {
             return received;
@@ -86,7 +86,7 @@ uint64_t TcpConnection::Receive(char* buffer, int32_t length)
     return 0;
 }
 
-uint64_t TcpConnection::Send(const char* buffer, int32_t length)
+uint64_t TcpConnection::Send(const char* buffer, int length)
 {
     if (mSocket == nullptr || !mSocket->IsValid())
     {
@@ -102,7 +102,7 @@ uint64_t TcpConnection::Send(const char* buffer, int32_t length)
     {
         if (mSocket->SendWait(SendTimeout.cref()))
         {
-            int32_t sent = 0;
+            int sent = 0;
             if (mSocket->Send(&buffer[0], length, sent))
             {
                 return sent;

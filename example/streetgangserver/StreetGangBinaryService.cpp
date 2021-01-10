@@ -198,10 +198,22 @@ bool StreetGangBinaryService::Initialize()
     configuration->GetValue("ServicePort", port);
     dispatcher->Port.set(port);
 
-    auto socket = std::make_shared<SecureTcpSocket>();
-    socket->ConfigureSslContext(SSLv23_server_method(), "cert/Server.key", "cert/Server.cer", VerifyPeer);
-    socket->LoadSslContextVerifyLocations("cert/ChainCA.cer", "");
-    //auto socket = std::make_shared<TcpSocket>();
+    bool useSecureSocket = false;
+    configuration->GetValue("UseSecureSocket", useSecureSocket);
+
+    std::shared_ptr<TcpSocket> socket;
+    if (useSecureSocket)
+    {
+        auto secureSocket = std::make_shared<SecureTcpSocket>();
+        secureSocket->ConfigureSslContext(SSLv23_server_method(), "cert/Server.key", "cert/Server.cer", VerifyPeer);
+        secureSocket->LoadSslContextVerifyLocations("cert/ChainCA.cer", "");
+        socket = std::static_pointer_cast<TcpSocket>(secureSocket);
+    }
+    else
+    {
+        socket = std::make_shared<TcpSocket>();
+    }
+
     mListener = std::make_shared<TcpListener>(socket, dispatcher);
     LOG("SECURE TCP HOST: %s", mListener->Name->c_str());
 

@@ -28,7 +28,7 @@
 #include <fcntl.h>
 #define INVALID_SOCKET (-1)
 #define SOCKET_ERROR (-1)
-typedef int32_t SOCKET;
+typedef int SOCKET;
 
 #endif
 
@@ -65,17 +65,17 @@ namespace sg { namespace microreactor
         virtual bool SetReceiveTimeout(const std::chrono::milliseconds& timeout);
         virtual bool SetSendTimeout(const std::chrono::milliseconds& timeout);
 
-        virtual int32_t SetSockOpt(int32_t level, int32_t optname, const char* optval, socklen_t optlen);
-        virtual int32_t GetSockOpt(int32_t level, int32_t optname, char* optval, socklen_t* optlen);
+        virtual int SetSockOpt(int level, int optname, const char* optval, socklen_t optlen);
+        virtual int GetSockOpt(int level, int optname, char* optval, socklen_t* optlen);
 
-        virtual int32_t SetNonblocking(bool nonblocking);
+        virtual int SetNonblocking(bool nonblocking);
         virtual bool SendWait(const std::chrono::milliseconds& timeout);
 
-        virtual bool Receive(char* buffer, int32_t length, int32_t& bytesReceived);
-        virtual bool Send(const char* buffer, int32_t length, int32_t& bytesSent);
+        virtual bool Receive(char* buffer, int length, int& bytesReceived);
+        virtual bool Send(const char* buffer, int length, int& bytesSent);
 
-        virtual bool ReceiveFrom(char* buffer, int32_t length, std::string& source, uint16_t& port, int32_t& bytesReceived);
-        virtual bool SendTo(const char* buffer, int32_t length, const std::string& destination, uint16_t port, int32_t& bytesSent);
+        virtual bool ReceiveFrom(char* buffer, int length, std::string& source, uint16_t& port, int& bytesReceived);
+        virtual bool SendTo(const char* buffer, int length, const std::string& destination, uint16_t port, int& bytesSent);
 
         virtual void Detach();
         virtual bool IsValid();
@@ -87,7 +87,7 @@ namespace sg { namespace microreactor
         virtual bool Attach(const SOCKET& socket);
         virtual bool GetSocketAddress();
         virtual bool GetPeerAddress();
-        virtual bool CreateSocketFromAddress(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding);
+        virtual bool CreateSocketFromAddress(const std::string& address, uint16_t port, int type, int protocol, bool forBinding);
 
     protected:
         std::recursive_mutex mLock;

@@ -1,4 +1,5 @@
 #include "StreetGangBinaryClient.h"
+#include "ConfigurationSingleton.h"
 #include "SecureTcpSocket.h"
 #include "TcpConnection.h"
 #include "BinarySerializer.h"
@@ -110,13 +111,29 @@ StreetGangBinaryClient::StreetGangBinaryClient(const std::string& protocol, cons
     dispatcher->Address.set(hostAddress);
     dispatcher->Port.set(port);
 
-    auto socket = std::make_shared<SecureTcpSocket>();
-    socket->ConfigureSslContext(SSLv23_client_method(), "cert/Client.key", "cert/Client.cer", VerifyPeer);
-    socket->LoadSslContextVerifyLocations("cert/ChainCA.cer", "");
-    //auto socket = std::make_shared<TcpSocket>();
-    auto connection = std::make_shared<TcpConnection>(socket, dispatcher);
+    auto configuration = ConfigurationSingleton::GetConfiguration();
+    if (configuration)
+    {
 
-    Initialize(connection);
+        bool useSecureSocket = false;
+        configuration->GetValue("UseSecureSocket", useSecureSocket);
+
+        std::shared_ptr<TcpSocket> socket;
+        if (useSecureSocket)
+        {
+            auto secureSocket = std::make_shared<SecureTcpSocket>();
+            secureSocket->ConfigureSslContext(SSLv23_client_method(), "cert/Client.key", "cert/Client.cer", VerifyPeer);
+            secureSocket->LoadSslContextVerifyLocations("cert/ChainCA.cer", "");
+            socket = std::static_pointer_cast<TcpSocket>(secureSocket);
+        }
+        else
+        {
+            socket = std::make_shared<TcpSocket>();
+        }
+
+        auto connection = std::make_shared<TcpConnection>(socket, dispatcher);
+        Initialize(connection);
+    }
 }
 
 StreetGangBinaryClient::~StreetGangBinaryClient()

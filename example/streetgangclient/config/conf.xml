@@ -4,4 +4,5 @@
     <Protocol>tcp</Protocol>
     <ServerAddress>127.0.0.1</ServerAddress>
     <ServerPort>8390</ServerPort>
+    <UseSecureSocket>0</UseSecureSocket>
 </Client>

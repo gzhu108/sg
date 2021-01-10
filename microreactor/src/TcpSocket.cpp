@@ -34,7 +34,7 @@ bool TcpSocket::Listen(const std::string& hostAddress, uint16_t port)
     }
 
     // Set SO_REUSEADDR on the socket to true (1)
-    int32_t optval = 1;
+    int optval = 1;
     SetSockOpt(SOL_SOCKET, SO_REUSEADDR, (char*)&optval, sizeof(optval));
 
     // Set SO_LINGER on the socket to false (0):
@@ -42,11 +42,11 @@ bool TcpSocket::Listen(const std::string& hostAddress, uint16_t port)
     SetSockOpt(SOL_SOCKET, SO_LINGER, (char*)&lingerval, sizeof(lingerval));
 
     // Setup the TCP listening socket
-    int32_t result = bind(mSocket, mAddrInfo->ai_addr, (int32_t)mAddrInfo->ai_addrlen);
+    int result = bind(mSocket, mAddrInfo->ai_addr, (int)mAddrInfo->ai_addrlen);
     if (result == SOCKET_ERROR)
     {
         Detach();
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         THROW(SocketException, error, hostAddress, port);
     }
 
@@ -58,7 +58,7 @@ bool TcpSocket::Listen(const std::string& hostAddress, uint16_t port)
     if (result == SOCKET_ERROR)
     {
         Detach();
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         THROW(SocketException, error, hostAddress, port);
     }
 
@@ -100,11 +100,11 @@ bool TcpSocket::Connect(const std::string& address, uint16_t port)
     }
 
     // Blocking connections
-    int32_t result = connect(mSocket, mAddrInfo->ai_addr, (int32_t)mAddrInfo->ai_addrlen);
+    int result = connect(mSocket, mAddrInfo->ai_addr, (int)mAddrInfo->ai_addrlen);
     if (result == SOCKET_ERROR)
     {
         Detach();
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         THROW(SocketException, error, address, port);
     }
     else
@@ -128,7 +128,7 @@ bool TcpSocket::Connect(const std::string& address, uint16_t port)
     return false;
 }
 
-bool TcpSocket::SetKeepalive(TcpSocket& socket, int32_t keepalive, int32_t keepaliveProbes, int32_t keepaliveIdleTime, int32_t keepaliveProbeInterval)
+bool TcpSocket::SetKeepalive(TcpSocket& socket, int keepalive, int keepaliveProbes, int keepaliveIdleTime, int keepaliveProbeInterval)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 

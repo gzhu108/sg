@@ -54,10 +54,10 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, const std
     uint32_t anyMulticastInterfaceIndex = INADDR_ANY;
 
     // Set socket multicast options
-    int32_t optLevel = 0;
-    int32_t option = 0;
+    int optLevel = 0;
+    int option = 0;
     char* optVal = NULL;
-    int32_t optLen = 0;
+    int optLen = 0;
 
 #ifdef _MSC_VER
     // Bind to adapter index to work around weak host model of TCPIP stack
@@ -106,7 +106,7 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, const std
     
     if (SetSockOpt(optLevel, option, optVal, optLen) == SOCKET_ERROR)
     {
-        //int32_t error = GetSocketError();
+        //int error = GetSocketError();
         return false;
     }
 
@@ -157,7 +157,7 @@ bool UdpSocket::JoinMulticastGoup(const std::string& multicastAddress, const std
     }
 
     // Set multicast loopback
-    int32_t nLoopback = loopback;
+    int nLoopback = loopback;
     if (mAddrInfo->ai_addr->sa_family == AF_INET)
     {
         // Set the options for V4
@@ -222,9 +222,9 @@ bool UdpSocket::LeaveMulticastGroup(const std::string& multicastAddress, const s
     
     // Set socket multicast options
     char* optVal = NULL;
-    int32_t optLevel = 0;
-    int32_t option = 0;
-    int32_t optLen = 0;
+    int optLevel = 0;
+    int option = 0;
+    int optLen = 0;
 
     ip_mreq mreqv4;    
     ipv6_mreq mreqv6;
@@ -299,7 +299,7 @@ bool UdpSocket::Bind(const std::string& hostAddress, uint16_t port)
     }
 
     // Set SO_REUSEADDR on the socket to true (1)
-    int32_t optval = 1;
+    int optval = 1;
     SetSockOpt(SOL_SOCKET, SO_REUSEADDR, (char*)&optval, sizeof(optval));
     
     // Set SO_LINGER on the socket to false (0):
@@ -307,10 +307,10 @@ bool UdpSocket::Bind(const std::string& hostAddress, uint16_t port)
     SetSockOpt(SOL_SOCKET, SO_LINGER, (char*)&lingerval, sizeof(lingerval));
 
     // Setup the UDP listening socket
-    int32_t result = bind(mSocket, mAddrInfo->ai_addr, (int32_t)mAddrInfo->ai_addrlen);
+    int result = bind(mSocket, mAddrInfo->ai_addr, (int)mAddrInfo->ai_addrlen);
     if (result == SOCKET_ERROR)
     {
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         THROW(SocketException, error, hostAddress, port);
     }
 
@@ -332,7 +332,7 @@ bool UdpSocket::Bind(const std::string& hostAddress, uint16_t port)
     if (result == SOCKET_ERROR)
     {
         // WSAIoctl(SIO_UDP_CONNRESET) Error
-        int32_t error = GetSocketError();
+        int error = GetSocketError();
         THROW(SocketException, error, HostAddress.cref(), HostPort.cref());
     }
 #endif
