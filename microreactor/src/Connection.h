@@ -5,7 +5,6 @@
 #include <chrono>
 #include <set>
 #include <mutex>
-#include <deque>
 #include "Parkable.h"
 #include "Dispatcher.h"
 #include "Message.h"
@@ -68,7 +67,6 @@ namespace sg { namespace microreactor
         std::set<std::shared_ptr<Reactor>> mActiveReactors;
         TaskPtr mPrecessMessageTask;
         std::atomic<uint32_t> mReceiveBufferSize;
-        std::deque<std::vector<char>> mSendBuffers;
     };
 } }
 

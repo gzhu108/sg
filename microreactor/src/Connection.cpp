@@ -83,14 +83,14 @@ bool Connection::Send(std::iostream& stream)
         return false;
     }
 
-    mSendBuffers.emplace_back(std::vector<char>(length));
-    stream.read(&mSendBuffers.back()[0], length);
+    std::vector<char> sendBuffer(length);
+    stream.read(&sendBuffer[0], length);
     if (stream.eof() || stream.fail() || stream.bad())
     {
         return false;
     }
 
-    return true;
+    return Send(&sendBuffer[0], length) > 0;
 }
 
 bool Connection::Start()
@@ -136,23 +136,6 @@ bool Connection::Stop()
 
 void Connection::ProcessMessage()
 {
-    if (!IsClosed())
-    {
-        // Send data from the send buffers.
-        while (!mSendBuffers.empty())
-        {
-            if (Send(&mSendBuffers[0][0], (int)mSendBuffers[0].size()) > 0)
-            {
-                mSendBuffers.pop_front();
-            }
-            else
-            {
-                // Connection closed
-                return;
-            }
-        }
-    }
-
     auto dispatcher = Dispatcher.cref();
     if (dispatcher != nullptr)
     {
