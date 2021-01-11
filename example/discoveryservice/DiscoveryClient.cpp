@@ -54,8 +54,7 @@ DiscoveryClient::~DiscoveryClient()
 
 void DiscoveryClient::MulticastMSearch(const std::string& multicastAddress, uint16_t port, const std::string& mx)
 {
-    mConnection->SetPeerAddress(multicastAddress);
-    mConnection->SetPeerPort(port);
+    mConnection->SetPeerAddress(multicastAddress).SetPeerPort(port);
 
     RestRequest request;
     request.mMethod = "M-SEARCH";

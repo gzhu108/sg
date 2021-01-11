@@ -41,7 +41,7 @@ Connection::~Connection()
     RemoveAllReactors();
 }
 
-void Connection::RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client)
+Connection& Connection::RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client)
 {
     message->Client.set(client);
 
@@ -50,6 +50,8 @@ void Connection::RegisterMessage(std::shared_ptr<Message> message, std::shared_p
     {
         dispatcher->RegisterMessage(message);
     }
+
+    return *this;
 }
 
 bool Connection::Receive(std::iostream& stream)
@@ -136,6 +138,9 @@ bool Connection::Stop()
 
 void Connection::ProcessMessage()
 {
+    // Flush the socket first
+    Flush();
+    
     auto dispatcher = Dispatcher.cref();
     if (dispatcher != nullptr)
     {

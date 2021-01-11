@@ -34,14 +34,15 @@ namespace sg { namespace microreactor
             return std::static_pointer_cast<T>(Dispatcher.get());
         }
 
-        virtual void RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client);
+        virtual Connection& RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client);
 
         virtual std::string GetPeerAddress() const = 0;
         virtual uint16_t GetPeerPort() const = 0;
 
-        virtual void SetPeerAddress(const std::string& peerAddress) {};
-        virtual void SetPeerPort(uint16_t peerPort) {};
+        virtual Connection& SetPeerAddress(const std::string &peerAddress) { return *this; }
+        virtual Connection& SetPeerPort(uint16_t peerPort) { return *this; }
 
+        virtual Connection& Flush() { return *this; }
         virtual bool Receive(std::iostream& stream);
         virtual bool Send(std::iostream& stream);
 

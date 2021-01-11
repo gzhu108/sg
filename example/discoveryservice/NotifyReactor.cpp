@@ -88,8 +88,7 @@ bool NotifyReactor::Process()
 
 void NotifyReactor::UnicastMSearch(const std::string& unicastAddress, uint16_t port)
 {
-    mConnection.SetPeerAddress(unicastAddress);
-    mConnection.SetPeerPort(port);
+    mConnection.SetPeerAddress(unicastAddress).SetPeerPort(port);
 
     RestRequest request;
     request.mMethod = "M-SEARCH";

@@ -84,24 +84,24 @@ uint16_t UdpConnection::GetPeerPort() const
     return mSocket->PeerPort.cref();
 }
 
-void UdpConnection::SetPeerAddress(const std::string& peerAddress)
+Connection& UdpConnection::SetPeerAddress(const std::string& peerAddress)
 {
-    if (mSocket == nullptr || !mSocket->IsValid())
+    if (mSocket && mSocket->IsValid())
     {
-        return;
+        mSocket->PeerAddress.set(peerAddress);
     }
 
-    mSocket->PeerAddress.set(peerAddress);
+    return *this;
 }
 
-void UdpConnection::SetPeerPort(uint16_t peerPort)
+Connection& UdpConnection::SetPeerPort(uint16_t peerPort)
 {
-    if (mSocket == nullptr || !mSocket->IsValid())
+    if (mSocket && mSocket->IsValid())
     {
-        return;
+        mSocket->PeerPort.set(peerPort);
     }
-
-    mSocket->PeerPort.set(peerPort);
+    
+    return *this;
 }
 
 uint64_t UdpConnection::Receive(char* buffer, int length)
