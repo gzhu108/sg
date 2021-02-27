@@ -15,7 +15,7 @@ namespace $namespace
 
     protected:
         @repeatstart
-        virtual std::shared_ptr<sg::microreactor::Reactor> Create$method$pathnameReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection) override;
+        virtual std::shared_ptr<microreactor::Reactor> Create$method$pathnameReactor(std::shared_ptr<microreactor::RestMessage> request, microreactor::Connection& connection) override;
         @repeatend
     };
 }

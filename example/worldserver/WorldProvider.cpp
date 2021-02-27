@@ -1,6 +1,6 @@
 #include "WorldProvider.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace worldserver;
 

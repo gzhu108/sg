@@ -1,6 +1,6 @@
 #include "StringUtility.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 bool StringUtility::CompareStringICase(const std::string& str1, const std::string& str2)

@@ -2,7 +2,7 @@
 #include "MetricatorRequest.h"
 #include "MetricatorRequestReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace metricatorapi;
 using namespace metricator;
 
@@ -15,7 +15,7 @@ MetricatorMessageDispatcher::~MetricatorMessageDispatcher()
 {
 }
 
-std::shared_ptr<sg::microreactor::Reactor> MetricatorMessageDispatcher::Decode(std::istream& stream, Connection& connection)
+std::shared_ptr<microreactor::Reactor> MetricatorMessageDispatcher::Decode(std::istream& stream, Connection& connection)
 {
     if (GetStreamSize(stream) == 0)
     {

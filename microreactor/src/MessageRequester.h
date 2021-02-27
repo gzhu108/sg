@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_MessageRequester
-#define sg_microreactor_MessageRequester
+#ifndef microreactor_MessageRequester
+#define microreactor_MessageRequester
 
 #include "Message.h"
 #include "Connection.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class MessageRequester
     {
@@ -20,6 +20,6 @@ namespace sg { namespace microreactor
     protected:
         Connection& mConnection;
    };
-}}
+}
 
-#endif // sg_microreactor_MessageRequester
+#endif // microreactor_MessageRequester

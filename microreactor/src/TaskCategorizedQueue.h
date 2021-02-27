@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_TaskCategorizedQueue
-#define sg_microreactor_TaskCategorizedQueue
+#ifndef microreactor_TaskCategorizedQueue
+#define microreactor_TaskCategorizedQueue
 
 #include "TaskQueue.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class TaskCategorizedQueue : public TaskQueue
     {
@@ -42,7 +42,7 @@ namespace sg { namespace microreactor
         CategoryQueue mCategoryQueue;
         Multiqueue mTaskCategorizedQueue;
     };
-}}
+}
 
 
-#endif // sg_microreactor_TaskCategorizedQueue
+#endif // microreactor_TaskCategorizedQueue

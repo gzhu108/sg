@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_ConfigurationSingleton
-#define sg_microreactor_ConfigurationSingleton
+#ifndef microreactor_ConfigurationSingleton
+#define microreactor_ConfigurationSingleton
 
 #include "Configuration.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     namespace ConfigurationSingleton
     {
@@ -13,7 +13,7 @@ namespace sg { namespace microreactor
         std::shared_ptr<Configuration> GetConfiguration();
         void DestroyConfiguration();
     }
-}}
+}
 
 
-#endif // sg_microreactor_ConfigurationSingleton
+#endif // microreactor_ConfigurationSingleton

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Microreactor
-#define sg_microreactor_Microreactor
+#ifndef microreactor_Microreactor
+#define microreactor_Microreactor
 
 #include "Common.h"
 #include "BinarySerializer.h"
@@ -53,4 +53,4 @@
 #include "Uuid.h"
 #include "Application.h"
 
-#endif // sg_microreactor_Microreactor
+#endif // microreactor_Microreactor

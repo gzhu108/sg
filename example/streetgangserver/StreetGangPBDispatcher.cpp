@@ -17,7 +17,7 @@
 #include "PBRequestCreateWorld.h"
 #include "PBRequestGetScene.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 using namespace streetgangpb;
 using namespace streetgangserver;

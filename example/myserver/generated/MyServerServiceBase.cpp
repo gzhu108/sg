@@ -10,12 +10,12 @@ namespace myserver
     {
     }
 
-    MyServerServiceBase::MyServerServiceBase(std::shared_ptr<sg::microreactor::Profile> profile)
+    MyServerServiceBase::MyServerServiceBase(std::shared_ptr<microreactor::Profile> profile)
         : RestService(profile)
     {
     }
 
-    MyServerServiceBase::MyServerServiceBase(std::shared_ptr<sg::microreactor::Listener> listener)
+    MyServerServiceBase::MyServerServiceBase(std::shared_ptr<microreactor::Listener> listener)
         : RestService(listener)
     {
     }
@@ -26,8 +26,8 @@ namespace myserver
 
     bool MyServerServiceBase::Initialize()
     {
-        mListener->GetDispatcher<sg::microreactor::RestDispatcher>()->RegisterResource("GET", "/v1/version", std::bind(&MyServerServiceBase::CreateGETv1versionReactor, this, std::placeholders::_1, std::placeholders::_2));
-        mListener->GetDispatcher<sg::microreactor::RestDispatcher>()->RegisterResource("POST", "/v1/update", std::bind(&MyServerServiceBase::CreatePOSTv1updateReactor, this, std::placeholders::_1, std::placeholders::_2));
+        mListener->GetDispatcher<microreactor::RestDispatcher>()->RegisterResource("GET", "/v1/version", std::bind(&MyServerServiceBase::CreateGETv1versionReactor, this, std::placeholders::_1, std::placeholders::_2));
+        mListener->GetDispatcher<microreactor::RestDispatcher>()->RegisterResource("POST", "/v1/update", std::bind(&MyServerServiceBase::CreatePOSTv1updateReactor, this, std::placeholders::_1, std::placeholders::_2));
 
         return RestService::Initialize();
     }

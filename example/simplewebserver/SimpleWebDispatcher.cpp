@@ -1,7 +1,7 @@
 #include "SimpleWebDispatcher.h"
 #include "GetFileReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace simplewebserver;
 
 

@@ -3,10 +3,10 @@
 #include "Exception.h"
 #include "TcpSocket.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
-TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
+TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<microreactor::Dispatcher> dispatcher)
     : mSocket(socket)
 {
     Dispatcher.set(dispatcher);

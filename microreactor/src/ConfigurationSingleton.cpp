@@ -1,6 +1,6 @@
 #include "ConfigurationSingleton.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 static std::recursive_mutex gConfigurationLock;

@@ -1,6 +1,6 @@
 #include "MessageResponder.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 MessageResponder::MessageResponder(Connection& connection)

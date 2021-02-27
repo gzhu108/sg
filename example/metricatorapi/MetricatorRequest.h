@@ -10,7 +10,7 @@
 
 namespace metricatorapi
 {
-    class MetricatorRequest : public sg::microreactor::Message
+    class MetricatorRequest : public microreactor::Message
     {
     public:
         MetricatorRequest();

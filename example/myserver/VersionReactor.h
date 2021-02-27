@@ -11,7 +11,7 @@ namespace myserver
     class VersionReactor : public GETv1versionReactorBase
     {
     public:
-        VersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        VersionReactor(microreactor::Connection& connection, std::shared_ptr<microreactor::RestRequest> request);
         virtual ~VersionReactor();
 
     public:

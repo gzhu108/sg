@@ -10,7 +10,7 @@
 
 namespace streetgangserver
 {
-    class StreetGangBinaryService : public sg::microreactor::Service
+    class StreetGangBinaryService : public microreactor::Service
     {
     public:
         StreetGangBinaryService();
@@ -22,14 +22,14 @@ namespace streetgangserver
         virtual bool Initialize() override;
         
         void SetResponseTime(std::shared_ptr<streetgangapi::MessageBase> response);
-        void OnTaskPreprocess(const sg::microreactor::TaskPtr& task);
-        void OnTaskPostprocess(const sg::microreactor::TaskPtr& task);
+        void OnTaskPreprocess(const microreactor::TaskPtr& task);
+        void OnTaskPostprocess(const microreactor::TaskPtr& task);
         
     protected:
-        sg::microreactor::Signal<void>::SignalId mConfigurationConnectionId;
+        microreactor::Signal<void>::SignalId mConfigurationConnectionId;
 
         std::map<void*, std::chrono::time_point<std::chrono::high_resolution_clock>> mTaskProcessTime;
-        std::shared_ptr<sg::microreactor::Client> mDiscoveryClient;
+        std::shared_ptr<microreactor::Client> mDiscoveryClient;
         double mTaskLatencyThreshold;
     };
 }

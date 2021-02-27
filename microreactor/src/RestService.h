@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_RestService
-#define sg_microreactor_RestService
+#ifndef microreactor_RestService
+#define microreactor_RestService
 
 #include "Service.h"
 #include "RestDispatcher.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class RestService : public Service
     {
@@ -16,7 +16,7 @@ namespace sg { namespace microreactor
         explicit RestService(std::shared_ptr<Listener> listener);
         virtual ~RestService();
     };
-}}
+}
 
 
-#endif // sg_microreactor_RestService
+#endif // microreactor_RestService

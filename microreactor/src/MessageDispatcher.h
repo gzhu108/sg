@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_MessageDispatcher
-#define sg_microreactor_MessageDispatcher
+#ifndef microreactor_MessageDispatcher
+#define microreactor_MessageDispatcher
 
 #include "Dispatcher.h"
 #include "Connection.h"
 #include "Reactor.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class MessageDispatcher : public Dispatcher
     {
@@ -24,7 +24,7 @@ namespace sg { namespace microreactor
     protected:
         std::stringstream mReceiveStream;
     };
-}}
+}
 
 
-#endif // sg_microreactor_MessageDispatcher
+#endif // microreactor_MessageDispatcher

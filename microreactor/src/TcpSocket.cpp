@@ -1,7 +1,7 @@
 #include "TcpSocket.h"
 #include "Exception.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 TcpSocket::TcpSocket()

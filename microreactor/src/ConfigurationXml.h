@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_ConfigurationXml
-#define sg_microreactor_ConfigurationXml
+#ifndef microreactor_ConfigurationXml
+#define microreactor_ConfigurationXml
 
 #include "Configuration.h"
 #include "ConfigurationSingleton.h"
@@ -11,7 +11,7 @@ namespace rapidxml
     template<class Ch> class xml_document;
 }
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class ConfigurationXml : public Configuration
     {
@@ -42,7 +42,7 @@ namespace sg { namespace microreactor
         uint64_t mFileHash{0};
         std::unique_ptr<rapidxml::xml_document<char>> mXmlDoc;
     };
-}}
+}
 
 
-#endif // sg_microreactor_ConfigurationXml
+#endif // microreactor_ConfigurationXml

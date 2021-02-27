@@ -3,7 +3,7 @@
 #include "TaskManagerSingleton.h"
 #include "Service.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 static std::recursive_mutex gApplicationLock;

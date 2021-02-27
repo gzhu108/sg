@@ -3,7 +3,7 @@
 
 namespace myserver
 {
-    GETv1versionReactorBase::GETv1versionReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request)
+    GETv1versionReactorBase::GETv1versionReactorBase(microreactor::Connection& connection, std::shared_ptr<microreactor::RestRequest> request)
         : RestReactor(connection, request)
     {
         nlohmann::json serializer(*request->mRawMessage);
@@ -19,11 +19,11 @@ namespace myserver
         if (InputMessage() == nullptr)
         {
             LOG("Invalid request [ReqId=%s]\n", InputMessage()->TrackId.cref().c_str());
-            return sg::microreactor::RestResponse::SendErrorWith(mConnection, 400, "Invalid request");
+            return microreactor::RestResponse::SendErrorWith(mConnection, 400, "Invalid request");
         }
 
-        sg::microreactor::RestResponse response;
-        response.mHeaders.emplace_back(sg::microreactor::HttpHeader("Content-Type", "application/json"));
+        microreactor::RestResponse response;
+        response.mHeaders.emplace_back(microreactor::HttpHeader("Content-Type", "application/json"));
 
         auto buffer = std::make_shared<std::string>();
         if (mRequestContent.Write(*buffer))

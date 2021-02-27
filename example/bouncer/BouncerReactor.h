@@ -8,10 +8,10 @@
 
 namespace bouncer
 {
-    class BouncerReactor : public sg::microreactor::Reactor
+    class BouncerReactor : public microreactor::Reactor
     {
     public:
-        BouncerReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::Connection> target, std::istream& stream);
+        BouncerReactor(microreactor::Connection& connection, std::shared_ptr<microreactor::Connection> target, std::istream& stream);
         virtual ~BouncerReactor();
 
     public:
@@ -21,7 +21,7 @@ namespace bouncer
         bool ReceiveTarget();
 
     protected:
-        std::shared_ptr<sg::microreactor::Connection> mTarget;
+        std::shared_ptr<microreactor::Connection> mTarget;
         std::vector<char> mData;
     };
 }

@@ -4,7 +4,7 @@
 #include "TcpListener.h"
 #include "UdpListener.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 std::shared_ptr<Connection> NetworkUtility::CreateConnection(std::shared_ptr<Dispatcher> dispatcher)

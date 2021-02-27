@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_RestFileResponse
-#define sg_microreactor_RestFileResponse
+#ifndef microreactor_RestFileResponse
+#define microreactor_RestFileResponse
 
 #include <fstream>
 #include "RestResponse.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class RestFileResponse : public RestResponse
     {
@@ -20,7 +20,7 @@ namespace sg { namespace microreactor
     protected:
         std::ifstream mFileStream;
     };
-}}
+}
 
 
-#endif // sg_microreactor_RestFileResponse
+#endif // microreactor_RestFileResponse

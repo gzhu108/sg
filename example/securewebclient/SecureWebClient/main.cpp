@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "Microreactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 volatile bool terminateSignal = false;
@@ -21,7 +21,7 @@ int32_t main(int32_t argc, const char* argv[])
         printf("%s\n", text.c_str());
     });
 
-    LOG("simplewebserver (%s)", sg::microreactor::StringUtility::GetHttpTimeString().c_str());
+    LOG("simplewebserver (%s)", microreactor::StringUtility::GetHttpTimeString().c_str());
     LOG("press ctrl+c to terminate");
 
     // Set signal handlers for graceful termination

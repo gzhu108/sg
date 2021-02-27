@@ -8,10 +8,10 @@
 
 namespace metricator
 {
-    class MetricatorRequestReactor : public sg::microreactor::MessageReactor<metricatorapi::MetricatorRequest>
+    class MetricatorRequestReactor : public microreactor::MessageReactor<metricatorapi::MetricatorRequest>
     {
     public:
-        MetricatorRequestReactor(sg::microreactor::Connection& connection, std::shared_ptr<metricatorapi::MetricatorRequest> message);
+        MetricatorRequestReactor(microreactor::Connection& connection, std::shared_ptr<metricatorapi::MetricatorRequest> message);
         virtual ~MetricatorRequestReactor();
 
     public:

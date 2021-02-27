@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_MessageReactor
-#define sg_microreactor_MessageReactor
+#ifndef microreactor_MessageReactor
+#define microreactor_MessageReactor
 
 #include "Reactor.h"
 #include "Connection.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template <typename T = Message>
     class MessageReactor : public Reactor
@@ -27,7 +27,7 @@ namespace sg { namespace microreactor
             return std::static_pointer_cast<MessageType>(mInput);
         }
     };
-}}
+}
 
 
-#endif // sg_microreactor_MessageReactor
+#endif // microreactor_MessageReactor

@@ -6,7 +6,7 @@
 #include "DiscoveryClient.h"
 #include "Uuid.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 using namespace streetgangserver;
 using namespace sg::service;

@@ -8,7 +8,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 
 
@@ -20,7 +20,7 @@ RestRequestGetVersion::~RestRequestGetVersion()
 {
 }
 
-bool RestRequestGetVersion::Decode(std::shared_ptr<sg::microreactor::RestRequest> request)
+bool RestRequestGetVersion::Decode(std::shared_ptr<microreactor::RestRequest> request)
 {
     if (request == nullptr)
     {

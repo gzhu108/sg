@@ -1,7 +1,7 @@
 #include "RestService.h"
 #include "NetworkUtility.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 RestService::RestService(const std::string& hostName, uint16_t port)

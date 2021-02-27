@@ -2,7 +2,7 @@
 #include "Serializer.h"
 #include "StringUtility.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 static const uint64_t CHUNK_SIZE = 1024;

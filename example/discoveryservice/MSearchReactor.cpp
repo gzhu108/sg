@@ -3,7 +3,7 @@
 #include "RestResponse.h"
 #include "StringUtility.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace sg::service;
 
 

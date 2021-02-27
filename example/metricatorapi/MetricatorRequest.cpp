@@ -1,7 +1,7 @@
 #include "MetricatorRequest.h"
 #include "BinarySerializer.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace metricatorapi;
 
 
@@ -25,7 +25,7 @@ void MetricatorRequest::SetMetrics(const std::vector<Metric>& metrics)
 
 bool MetricatorRequest::Encode(std::ostream& stream) const
 {
-    sg::microreactor::BinarySerializer serializer;
+    microreactor::BinarySerializer serializer;
 
     uint64_t count = mMetrics.size();
     serializer.Write(count, stream);
@@ -41,7 +41,7 @@ bool MetricatorRequest::Encode(std::ostream& stream) const
 
 bool MetricatorRequest::Decode(std::istream& stream)
 {
-    sg::microreactor::BinarySerializer serializer;
+    microreactor::BinarySerializer serializer;
 
     uint64_t count = 0;
     if (!serializer.Read(stream, count))

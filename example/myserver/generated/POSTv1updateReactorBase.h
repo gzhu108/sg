@@ -8,10 +8,10 @@
 
 namespace myserver
 {
-    class POSTv1updateReactorBase : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
+    class POSTv1updateReactorBase : public microreactor::RestReactor<microreactor::RestRequest>
     {
     public:
-        POSTv1updateReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        POSTv1updateReactorBase(microreactor::Connection& connection, std::shared_ptr<microreactor::RestRequest> request);
         virtual ~POSTv1updateReactorBase();
 
     public:

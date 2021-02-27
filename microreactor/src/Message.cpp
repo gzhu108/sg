@@ -1,6 +1,6 @@
 #include "Message.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Message::Message()

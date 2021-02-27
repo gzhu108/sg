@@ -8,7 +8,7 @@
 #include "RequestCreateWorld.h"
 #include "RequestGetWorld.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace worldserver;
 

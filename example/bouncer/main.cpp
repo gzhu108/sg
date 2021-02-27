@@ -9,7 +9,7 @@
 #include "BouncerRestService.h"
 #include "BouncerDispatcher.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace bouncer;
 
 

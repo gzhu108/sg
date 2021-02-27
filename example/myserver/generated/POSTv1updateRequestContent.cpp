@@ -1,6 +1,6 @@
 #include "POSTv1updateRequestContent.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace myserver;
 
 

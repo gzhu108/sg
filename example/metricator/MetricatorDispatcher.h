@@ -8,17 +8,17 @@
 
 namespace metricator
 {
-    class MetricatorMessageDispatcher : public sg::microreactor::MessageDispatcher
+    class MetricatorMessageDispatcher : public microreactor::MessageDispatcher
     {
     public:
         MetricatorMessageDispatcher();
         virtual ~MetricatorMessageDispatcher();
 
     public:
-        virtual std::shared_ptr<sg::microreactor::Reactor> Decode(std::istream& stream, sg::microreactor::Connection& connection) override;
+        virtual std::shared_ptr<microreactor::Reactor> Decode(std::istream& stream, microreactor::Connection& connection) override;
 
     protected:
-        sg::microreactor::BinarySerializer mSerializer;
+        microreactor::BinarySerializer mSerializer;
     };
 }
 

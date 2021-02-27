@@ -9,10 +9,10 @@
 
 namespace worldserver
 {
-    class CreateWorldReactor : public sg::microreactor::MessageReactor<worldapi::RequestCreateWorld>
+    class CreateWorldReactor : public microreactor::MessageReactor<worldapi::RequestCreateWorld>
     {
     public:
-        CreateWorldReactor(sg::microreactor::Connection& connection, std::shared_ptr<worldapi::RequestCreateWorld> message, std::shared_ptr<worldapi::WorldResponder> responder);
+        CreateWorldReactor(microreactor::Connection& connection, std::shared_ptr<worldapi::RequestCreateWorld> message, std::shared_ptr<worldapi::WorldResponder> responder);
         virtual ~CreateWorldReactor();
         
     public:

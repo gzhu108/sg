@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Socket
-#define sg_microreactor_Socket
+#ifndef microreactor_Socket
+#define microreactor_Socket
 
 #ifdef _MSC_VER
 
@@ -38,7 +38,7 @@ typedef int SOCKET;
 #define DEFAULT_SOCKET_BUFLEN 2048
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Socket
     {
@@ -101,7 +101,7 @@ namespace sg { namespace microreactor
         bool mInitialized { false };
 #endif
     };
-}}
+}
 
 
-#endif //sg_microreactor_Socket
+#endif //microreactor_Socket

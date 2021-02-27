@@ -10,7 +10,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace bouncer;
 
 

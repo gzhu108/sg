@@ -1,9 +1,9 @@
 #pragma once
-#ifndef sg_microreactor_Comparable
-#define sg_microreactor_Comparable
+#ifndef microreactor_Comparable
+#define microreactor_Comparable
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template<class T, class Compare = std::less<T>>
     class Comparable
@@ -48,7 +48,7 @@ namespace sg { namespace microreactor
         const T& mObject;
         Compare mLess;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Comparable
+#endif // microreactor_Comparable

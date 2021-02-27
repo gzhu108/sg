@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_ScopeLock
-#define sg_microreactor_ScopeLock
+#ifndef microreactor_ScopeLock
+#define microreactor_ScopeLock
 
 #include <mutex>
 #include <atomic>
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     namespace TaskManagerSingleton
     { 
@@ -44,6 +44,6 @@ namespace sg { namespace microreactor
         Mutex& mMutex;
         std::atomic<bool> mShouldLock;
     };
-}}
+}
 
-#endif // sg_microreactor_ScopeLock
+#endif // microreactor_ScopeLock

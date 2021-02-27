@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_HttpParser
-#define sg_microreactor_HttpParser
+#ifndef microreactor_HttpParser
+#define microreactor_HttpParser
 
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     struct HttpChunk
     {
@@ -42,7 +42,7 @@ namespace sg { namespace microreactor
     {
         SetHttpBody(std::make_shared<std::string>(body), message);
     }
-}}
+}
 
 
-#endif // sg_microreactor_HttpParser
+#endif // microreactor_HttpParser

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Uuid
-#define sg_microreactor_Uuid
+#ifndef microreactor_Uuid
+#define microreactor_Uuid
 
 #ifdef _MSC_VER
 #include "Common.h"
@@ -13,7 +13,7 @@
 #include "Serializable.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Uuid : public Serializable
     {
@@ -46,6 +46,6 @@ namespace sg { namespace microreactor
         uuid_t mUuid;
 #endif
     };
-}}
+}
 
-#endif // sg_microreactor_Uuid
+#endif // microreactor_Uuid

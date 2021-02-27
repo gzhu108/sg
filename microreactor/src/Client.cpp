@@ -3,7 +3,7 @@
 #include "NetworkUtility.h"
 #include "Reactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Client::Client()

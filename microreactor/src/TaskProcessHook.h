@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_TaskProcessHook
-#define sg_microreactor_TaskProcessHook
+#ifndef microreactor_TaskProcessHook
+#define microreactor_TaskProcessHook
 
 #include "Task.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class TaskProcessHook
     {
@@ -17,7 +17,7 @@ namespace sg { namespace microreactor
         Emittable<TaskPtr> mPreprocess;
         Emittable<TaskPtr> mPostprocess;
     };
-}}
+}
 
 
-#endif // sg_microreactor_TaskProcessHook
+#endif // microreactor_TaskProcessHook

@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_RestContent
-#define sg_microreactor_RestContent
+#ifndef microreactor_RestContent
+#define microreactor_RestContent
 
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
 
     template <typename ContentSerializer>
@@ -16,7 +16,7 @@ namespace sg { namespace microreactor
         virtual bool Decode(const ContentSerializer& serializer) = 0;
     };
 
-}}
+}
 
 
-#endif // sg_microreactor_RestContent
+#endif // microreactor_RestContent

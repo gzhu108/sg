@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_RestMessage
-#define sg_microreactor_RestMessage
+#ifndef microreactor_RestMessage
+#define microreactor_RestMessage
 
 #include <string>
 #include <vector>
@@ -9,7 +9,7 @@
 #include "HttpHeader.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class RestMessage : public Message
     {
@@ -38,7 +38,7 @@ namespace sg { namespace microreactor
         bool mChunkCompleted = false;
         std::shared_ptr<std::string> mRawMessage;
     };
-}}
+}
 
 
-#endif // sg_microreactor_RestMessage
+#endif // microreactor_RestMessage

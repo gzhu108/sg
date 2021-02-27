@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_Park
-#define sg_microreactor_Park
+#ifndef microreactor_Park
+#define microreactor_Park
 
 #include <iterator>
 #include <unordered_map>
 #include "Parkable.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template <typename T>
     class Park
@@ -82,7 +82,7 @@ namespace sg { namespace microreactor
         mutable std::recursive_mutex mLock;
         std::unordered_map<ParkingSpaceNumber, std::shared_ptr<Parkable<ParkingSpaceNumber>>> mParkables;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Park
+#endif // microreactor_Park

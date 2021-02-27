@@ -7,7 +7,7 @@
 #define SSL_CTX_set_ecdh_auto(dummy, onoff) ((void)0)
 #endif
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 SecureTcpSocket::SecureTcpSocket()

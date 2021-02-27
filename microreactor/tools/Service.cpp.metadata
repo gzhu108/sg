@@ -17,9 +17,9 @@ namespace $namespace
     }
 
     @repeatstart
-    std::shared_ptr<sg::microreactor::Reactor> $serviceService::Create$method$pathnameReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection)
+    std::shared_ptr<microreactor::Reactor> $serviceService::Create$method$pathnameReactor(std::shared_ptr<microreactor::RestMessage> request, microreactor::Connection& connection)
     {
-        auto restRequest = std::static_pointer_cast<sg::microreactor::RestRequest>(request);
+        auto restRequest = std::static_pointer_cast<microreactor::RestRequest>(request);
         return std::make_shared<$method$pathnameReactorBase>(connection, restRequest);
     }
     

@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_RestResponse
-#define sg_microreactor_RestResponse
+#ifndef microreactor_RestResponse
+#define microreactor_RestResponse
 
 #include "RestMessage.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class RestResponse : public RestMessage
     {
@@ -31,7 +31,7 @@ namespace sg { namespace microreactor
             return SendWith(connection, statusCode, statusText, headers, body, true);
         }
     };
-}}
+}
 
 
-#endif // sg_microreactor_RestResponse
+#endif // microreactor_RestResponse

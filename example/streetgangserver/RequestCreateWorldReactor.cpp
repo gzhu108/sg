@@ -3,7 +3,7 @@
 #include "WorldRequester.h"
 #include "WorldClient.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace streetgangapi;
 using namespace streetgangserver;

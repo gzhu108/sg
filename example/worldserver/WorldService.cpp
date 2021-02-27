@@ -3,7 +3,7 @@
 #include "ConfigurationSingleton.h"
 #include "WorldDispatcher.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace worldserver;
 

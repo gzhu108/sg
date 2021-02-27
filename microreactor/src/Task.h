@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Task
-#define sg_microreactor_Task
+#ifndef microreactor_Task
+#define microreactor_Task
 
 #include <functional>
 #include <atomic>
@@ -10,7 +10,7 @@
 #include "Cancelable.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     enum class TaskStatus
     {
@@ -134,7 +134,7 @@ namespace sg { namespace microreactor
     typedef std::shared_ptr<BaseTask> BaseTaskPtr;
 
 #endif // defined(_GLIBCXX_HAS_GTHREADS) && defined(_GLIBCXX_USE_C99_STDINT_TR1) && (ATOMIC_INT_LOCK_FREE > 1)
-}}
+}
 
 
-#endif // sg_microreactor_Task
+#endif // microreactor_Task

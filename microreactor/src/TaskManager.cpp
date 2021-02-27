@@ -2,7 +2,7 @@
 #include "ThreadPool.h"
 #include "TaskQueue.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 TaskManager::TaskManager()

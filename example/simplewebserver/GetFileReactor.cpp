@@ -1,7 +1,7 @@
 #include "GetFileReactor.h"
 #include "ConfigurationSingleton.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace simplewebserver;
 
 

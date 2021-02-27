@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_TcpConnection
-#define sg_microreactor_TcpConnection
+#ifndef microreactor_TcpConnection
+#define microreactor_TcpConnection
 
 #include <vector>
 #include "Connection.h"
@@ -9,12 +9,12 @@
 #define DEFAULT_TCP_CONNECTION_BUFFER_SIZE 4096
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 { 
     class TcpConnection : public Connection
     {
     public:
-        TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
+        TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<microreactor::Dispatcher> dispatcher);
         virtual ~TcpConnection();
         
         PROPERTY_SET(ReceiveBufferSize, uint32_t, DEFAULT_TCP_CONNECTION_BUFFER_SIZE, TcpConnection::SetReceiveBufferSize);
@@ -36,7 +36,7 @@ namespace sg { namespace microreactor
     protected:
         std::shared_ptr<TcpSocket> mSocket;
     };
-}}
+}
 
 
-#endif // sg_microreactor_TcpConnection
+#endif // microreactor_TcpConnection

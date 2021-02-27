@@ -6,7 +6,7 @@
 #include "TaskManagerSingleton.h"
 #include "Reactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 static std::mutex gConnectionMutex;

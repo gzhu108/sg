@@ -1,6 +1,6 @@
 #include "Reactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Reactor::Reactor(Connection& connection, std::shared_ptr<Message> input)

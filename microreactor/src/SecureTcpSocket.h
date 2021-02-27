@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_SecureTcpSocket
-#define sg_microreactor_SecureTcpSocket
+#ifndef microreactor_SecureTcpSocket
+#define microreactor_SecureTcpSocket
 
 #include "TcpSocket.h"
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class SecureTcpSocket : public TcpSocket
     {
@@ -34,7 +34,7 @@ namespace sg { namespace microreactor
         SSL_CTX* mContext;
         SSL* mSsl;
     };
-}}
+}
 
 
-#endif //sg_microreactor_SecureTcpSocket
+#endif //microreactor_SecureTcpSocket

@@ -11,7 +11,7 @@ namespace streetgangapi
     class RestStreetGangResponder : public StreetGangResponder
     {
     public:
-        RestStreetGangResponder(sg::microreactor::Connection& connection);
+        RestStreetGangResponder(microreactor::Connection& connection);
         virtual ~RestStreetGangResponder();
 
     public:

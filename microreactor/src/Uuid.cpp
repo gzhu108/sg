@@ -1,6 +1,6 @@
 #include "Uuid.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Uuid::Uuid()

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_TaskQueue
-#define sg_microreactor_TaskQueue
+#ifndef microreactor_TaskQueue
+#define microreactor_TaskQueue
 
 #include <list>
 #include <set>
@@ -10,7 +10,7 @@
 #include "Task.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class TaskQueue
     {
@@ -57,7 +57,7 @@ namespace sg { namespace microreactor
         std::condition_variable mTaskSubmitted;
         std::atomic<bool> mStop { false };
     };
-}}
+}
 
 
-#endif // sg_microreactor_TaskQueue
+#endif // microreactor_TaskQueue

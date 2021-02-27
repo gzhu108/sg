@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Exception
-#define sg_microreactor_Exception
+#ifndef microreactor_Exception
+#define microreactor_Exception
 
 #include <stdexcept>
 #include <sstream>
@@ -8,7 +8,7 @@
 #define THROW(_ex, ...) throw _ex(__FILE__, __LINE__, ##__VA_ARGS__)
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template<typename T>
     struct Exception : T
@@ -100,7 +100,7 @@ namespace sg { namespace microreactor
         {
         }
     };
-}}
+}
 
 
-#endif //sg_microreactor_Exception
+#endif //microreactor_Exception

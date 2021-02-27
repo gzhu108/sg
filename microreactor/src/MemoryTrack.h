@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_MemoryTrack
-#define sg_microreactor_MemoryTrack
+#ifndef microreactor_MemoryTrack
+#define microreactor_MemoryTrack
 
 // Memory debugging
 #if defined(_MSC_VER)
@@ -40,4 +40,4 @@
 #endif
 
 
-#endif // sg_microreactor_MemoryTrack
+#endif // microreactor_MemoryTrack

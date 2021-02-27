@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "RestDispatcher.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 class RestRequestDispatcherMock : public RestDispatcher

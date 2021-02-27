@@ -3,10 +3,10 @@
 #include "UdpConnection.h"
 #include "Exception.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
-UdpListener::UdpListener(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher)
+UdpListener::UdpListener(std::shared_ptr<UdpSocket> socket, std::shared_ptr<microreactor::Dispatcher> dispatcher)
     : mSocket(socket)
 {
     Dispatcher.set(dispatcher);

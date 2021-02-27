@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <cstdlib>
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 ConfigurationXml::ConfigurationXml(const std::string& configFilePath, const std::string& rootNode)

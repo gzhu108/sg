@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_Parkable
-#define sg_microreactor_Parkable
+#ifndef microreactor_Parkable
+#define microreactor_Parkable
 
 #include "Common.h"
 #include "Shareable.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template <typename T>
     class Parkable : public Shareable
@@ -48,7 +48,7 @@ namespace sg { namespace microreactor
         ParkingSpaceNumber mParkingSpace;
         bool mParked = false;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Parkable
+#endif // microreactor_Parkable

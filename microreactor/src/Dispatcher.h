@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Dispatcher
-#define sg_microreactor_Dispatcher
+#ifndef microreactor_Dispatcher
+#define microreactor_Dispatcher
 
 #include <unordered_map>
 #include "Common.h"
@@ -9,7 +9,7 @@
 #include "Profile.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Connection;
     class Reactor;
@@ -31,7 +31,7 @@ namespace sg { namespace microreactor
     protected:
         Park<Message::ParkingSpaceNumber> mTrackedMessages;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Dispatcher
+#endif // microreactor_Dispatcher

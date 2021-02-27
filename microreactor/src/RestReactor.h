@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_RestReactor
-#define sg_microreactor_RestReactor
+#ifndef microreactor_RestReactor
+#define microreactor_RestReactor
 
 #include "Reactor.h"
 #include "Connection.h"
@@ -9,7 +9,7 @@
 #include "Uuid.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template <typename T = RestMessage>
     class RestReactor : public Reactor
@@ -36,7 +36,7 @@ namespace sg { namespace microreactor
             return response.Send(mConnection);
         }
     };
-}}
+}
 
 
-#endif // sg_microreactor_RestReactor
+#endif // microreactor_RestReactor

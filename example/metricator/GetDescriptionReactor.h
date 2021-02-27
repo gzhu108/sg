@@ -7,10 +7,10 @@
 
 namespace metricator
 {
-    class GetDescriptionReactor : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
+    class GetDescriptionReactor : public microreactor::RestReactor<microreactor::RestRequest>
     {
     public:
-        GetDescriptionReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        GetDescriptionReactor(microreactor::Connection& connection, std::shared_ptr<microreactor::RestRequest> request);
         virtual ~GetDescriptionReactor();
 
     public:

@@ -1,6 +1,6 @@
 #include "MetricatorRequestReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace metricatorapi;
 using namespace metricator;
 

@@ -5,7 +5,7 @@
 using namespace myserver;
 
 
-MyService::MyService(std::shared_ptr<sg::microreactor::Profile> profile)
+MyService::MyService(std::shared_ptr<microreactor::Profile> profile)
     : MyServerServiceBase(profile)
 {
 }
@@ -14,9 +14,9 @@ MyService::~MyService()
 {
 }
 
-std::shared_ptr<sg::microreactor::Reactor> MyService::CreateGETv1versionReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection)
+std::shared_ptr<microreactor::Reactor> MyService::CreateGETv1versionReactor(std::shared_ptr<microreactor::RestMessage> request, microreactor::Connection& connection)
 {
-    auto restRequest = std::static_pointer_cast<sg::microreactor::RestRequest>(request);
+    auto restRequest = std::static_pointer_cast<microreactor::RestRequest>(request);
 
     if (restRequest->mUri.length() < std::string("/v1/version").length())
     {
@@ -26,9 +26,9 @@ std::shared_ptr<sg::microreactor::Reactor> MyService::CreateGETv1versionReactor(
     return std::make_shared<VersionReactor>(connection, restRequest);
 }
 
-std::shared_ptr<sg::microreactor::Reactor> MyService::CreatePOSTv1updateReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection)
+std::shared_ptr<microreactor::Reactor> MyService::CreatePOSTv1updateReactor(std::shared_ptr<microreactor::RestMessage> request, microreactor::Connection& connection)
 {
-    auto restRequest = std::static_pointer_cast<sg::microreactor::RestRequest>(request);
+    auto restRequest = std::static_pointer_cast<microreactor::RestRequest>(request);
 
     if (restRequest->mUri.length() < std::string("/v1/update").length())
     {

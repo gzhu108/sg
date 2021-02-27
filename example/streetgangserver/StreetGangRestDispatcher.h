@@ -7,16 +7,16 @@
 
 namespace streetgangserver
 {
-    class StreetGangRestDispatcher : public sg::microreactor::RestDispatcher
+    class StreetGangRestDispatcher : public microreactor::RestDispatcher
     {
     public:
         explicit StreetGangRestDispatcher();
         virtual ~StreetGangRestDispatcher();
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetVersionReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateCreateWorldReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetSceneReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<microreactor::Reactor> CreateGetVersionReactor(std::shared_ptr<microreactor::RestMessage> message, microreactor::Connection& connection);
+        virtual std::shared_ptr<microreactor::Reactor> CreateCreateWorldReactor(std::shared_ptr<microreactor::RestMessage> message, microreactor::Connection& connection);
+        virtual std::shared_ptr<microreactor::Reactor> CreateGetSceneReactor(std::shared_ptr<microreactor::RestMessage> message, microreactor::Connection& connection);
     };
 }
 

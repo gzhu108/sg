@@ -7,7 +7,7 @@
 
 namespace streetgangclient
 {
-    class StreetGangPBClient : public sg::microreactor::Client
+    class StreetGangPBClient : public microreactor::Client
     {
     public:
         StreetGangPBClient(const std::string& protocol, const std::string& hostAddress, uint16_t port);

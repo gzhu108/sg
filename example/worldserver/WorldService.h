@@ -9,7 +9,7 @@
 
 namespace worldserver
 {
-    class WorldService : public sg::microreactor::Service
+    class WorldService : public microreactor::Service
     {
     public:
         WorldService();
@@ -19,7 +19,7 @@ namespace worldserver
         virtual bool Initialize() override;
         
     protected:
-        sg::microreactor::Signal<void>::SignalId mConfigurationConnectionId;
+        microreactor::Signal<void>::SignalId mConfigurationConnectionId;
     };
 }
 

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_UdpConnection
-#define sg_microreactor_UdpConnection
+#ifndef microreactor_UdpConnection
+#define microreactor_UdpConnection
 
 #include <vector>
 #include "Connection.h"
@@ -9,12 +9,12 @@
 #define DEFAULT_UDP_CONNECTION_BUFFER_SIZE 1440
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class UdpConnection : public Connection
     {
     public:
-        UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<sg::microreactor::Dispatcher> dispatcher);
+        UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<microreactor::Dispatcher> dispatcher);
         virtual ~UdpConnection();
         
     public:
@@ -37,7 +37,7 @@ namespace sg { namespace microreactor
         bool mServerConnection;
         bool mDataRetrieved;
     };
-}}
+}
 
 
-#endif // sg_microreactor_UdpConnection
+#endif // microreactor_UdpConnection

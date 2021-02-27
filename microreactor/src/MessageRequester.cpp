@@ -1,6 +1,6 @@
 #include "MessageRequester.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 MessageRequester::MessageRequester(Connection& connection)

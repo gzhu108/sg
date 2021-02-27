@@ -9,7 +9,7 @@
 #include "WorldService.h"
 #include "ConfigurationXml.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldserver;
 
 

@@ -15,7 +15,7 @@ namespace streetgangapi
         virtual ~RestRequestGetScene();
         
     public:
-        virtual bool Decode(std::shared_ptr<sg::microreactor::RestRequest> request);
+        virtual bool Decode(std::shared_ptr<microreactor::RestRequest> request);
     };
 }
 

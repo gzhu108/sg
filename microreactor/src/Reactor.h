@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_Reactor
-#define sg_microreactor_Reactor
+#ifndef microreactor_Reactor
+#define microreactor_Reactor
 
 #include "Parkable.h"
 #include "Message.h"
 #include "Connection.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Reactor : public Parkable<std::string>
     {
@@ -37,7 +37,7 @@ namespace sg { namespace microreactor
         Connection& mConnection;
         std::shared_ptr<Message> mInput;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Reactor
+#endif // microreactor_Reactor

@@ -11,12 +11,12 @@ namespace $namespace
     {
     }
 
-    $serviceServiceBase::$serviceServiceBase(std::shared_ptr<sg::microreactor::Profile> profile)
+    $serviceServiceBase::$serviceServiceBase(std::shared_ptr<microreactor::Profile> profile)
         : RestService(profile)
     {
     }
 
-    $serviceServiceBase::$serviceServiceBase(std::shared_ptr<sg::microreactor::Listener> listener)
+    $serviceServiceBase::$serviceServiceBase(std::shared_ptr<microreactor::Listener> listener)
         : RestService(listener)
     {
     }
@@ -28,7 +28,7 @@ namespace $namespace
     bool $serviceServiceBase::Initialize()
     {
         @repeatstart
-        mListener->GetDispatcher<sg::microreactor::RestDispatcher>()->RegisterResource("$method", "$path", std::bind(&$serviceServiceBase::Create$method$pathnameReactor, this, std::placeholders::_1, std::placeholders::_2));
+        mListener->GetDispatcher<microreactor::RestDispatcher>()->RegisterResource("$method", "$path", std::bind(&$serviceServiceBase::Create$method$pathnameReactor, this, std::placeholders::_1, std::placeholders::_2));
         @repeatend
         return RestService::Initialize();
     }

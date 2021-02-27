@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_RestDispatcher
-#define sg_microreactor_RestDispatcher
+#ifndef microreactor_RestDispatcher
+#define microreactor_RestDispatcher
 
 #include "Dispatcher.h"
 #include "ReactorFactoryContainer.h"
@@ -8,7 +8,7 @@
 #include "RestResponse.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class RestDispatcher
         : public Dispatcher
@@ -38,7 +38,7 @@ namespace sg { namespace microreactor
         std::recursive_mutex mLock;
         std::map<uintptr_t, std::shared_ptr<RestMessage>> mChunkedMessageStore;
     };
-}}
+}
 
 
-#endif // sg_microreactor_RestDispatcher
+#endif // microreactor_RestDispatcher

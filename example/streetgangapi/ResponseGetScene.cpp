@@ -1,6 +1,6 @@
 #include "ResponseGetScene.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 
 

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Connection
-#define sg_microreactor_Connection
+#ifndef microreactor_Connection
+#define microreactor_Connection
 
 #include <chrono>
 #include <set>
@@ -11,7 +11,7 @@
 #include "Task.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Reactor;
 
@@ -25,7 +25,7 @@ namespace sg { namespace microreactor
 
         PROPERTY(Name, std::string);
         PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
-        PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
+        PROPERTY(Dispatcher, std::shared_ptr<microreactor::Dispatcher>);
         
     public:
         template<typename T>
@@ -69,7 +69,7 @@ namespace sg { namespace microreactor
         TaskPtr mPrecessMessageTask;
         std::atomic<uint32_t> mReceiveBufferSize;
     };
-} }
+}
 
 
-#endif // sg_microreactor_Connection
+#endif // microreactor_Connection

@@ -9,7 +9,7 @@
 #include "worldapi/ResponseCreateWorld.h"
 #include "worldapi/ResponseGetWorld.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace streetgangserver;
 

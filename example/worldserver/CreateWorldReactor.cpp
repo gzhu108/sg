@@ -2,7 +2,7 @@
 #include "WorldManager.h"
 #include "ResponseCreateWorld.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace worldserver;
 

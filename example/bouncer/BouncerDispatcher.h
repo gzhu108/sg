@@ -7,7 +7,7 @@
 
 namespace bouncer
 {
-    class BouncerDispatcher : public sg::microreactor::MessageDispatcher
+    class BouncerDispatcher : public microreactor::MessageDispatcher
     {
     public:
         BouncerDispatcher();
@@ -17,7 +17,7 @@ namespace bouncer
         PROPERTY(TargetPort, uint16_t);
 
     public:
-        virtual std::shared_ptr<sg::microreactor::Reactor> Decode(std::istream& stream, sg::microreactor::Connection& connection) override;
+        virtual std::shared_ptr<microreactor::Reactor> Decode(std::istream& stream, microreactor::Connection& connection) override;
     };
 }
 

@@ -1,6 +1,6 @@
 #include "TaskCategorizedQueue.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 TaskCategorizedQueue::TaskCategorizedQueue()

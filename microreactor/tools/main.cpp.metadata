@@ -5,7 +5,7 @@
 #include <microreactor/Microreactor.h>
 #include "$serviceService.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace $namespace;
 
 
@@ -16,7 +16,7 @@ int32_t main(int32_t argc, const char* argv[])
         printf("%s\n", text.c_str());
     });
 
-    LOG("$namespace (%s)", sg::microreactor::StringUtility::GetHttpTimeString().c_str());
+    LOG("$namespace (%s)", microreactor::StringUtility::GetHttpTimeString().c_str());
     LOG("press ctrl+c to terminate");
 
     std::string configFilePath;

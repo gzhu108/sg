@@ -1,6 +1,6 @@
 #include "Profile.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Profile::Profile()

@@ -4,7 +4,7 @@
 #include "WorldClientDispatcher.h"
 #include "worldapi/ResponseError.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace streetgangserver;
 

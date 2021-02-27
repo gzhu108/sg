@@ -1,7 +1,7 @@
 #include "CreateWorldRequest.pb.h"
 #include "PBRequestCreateWorld.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 
 

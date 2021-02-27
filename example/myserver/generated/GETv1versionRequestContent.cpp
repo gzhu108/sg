@@ -1,6 +1,6 @@
 #include "GETv1versionRequestContent.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace myserver;
 
 

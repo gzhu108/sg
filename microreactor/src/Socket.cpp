@@ -7,7 +7,7 @@
 #define IPv4LOOPBACK 0x100007f
 #endif
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Socket::Socket()

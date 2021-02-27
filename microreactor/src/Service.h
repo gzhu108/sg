@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_Service
-#define sg_microreactor_Service
+#ifndef microreactor_Service
+#define microreactor_Service
 
 #include "Listener.h"
 #include "NetworkUtility.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Service
     {
@@ -30,6 +30,6 @@ namespace sg { namespace microreactor
     protected:
         std::shared_ptr<Listener> mListener;
     };
-}}
+}
 
-#endif // sg_microreactor_Service
+#endif // microreactor_Service

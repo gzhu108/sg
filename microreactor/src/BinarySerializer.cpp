@@ -1,7 +1,7 @@
 #include "BinarySerializer.h"
 #include "Endianness.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 BinarySerializer::BinarySerializer()

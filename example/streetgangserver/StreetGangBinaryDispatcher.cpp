@@ -11,7 +11,7 @@
 #include "BinaryRequestCreateWorld.h"
 #include "BinaryRequestGetScene.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 using namespace streetgangserver;
 

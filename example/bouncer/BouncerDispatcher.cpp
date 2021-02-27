@@ -3,7 +3,7 @@
 #include "NetworkUtility.h"
 #include "Serializer.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace bouncer;
 
 
@@ -15,7 +15,7 @@ BouncerDispatcher::~BouncerDispatcher()
 {
 }
 
-std::shared_ptr<sg::microreactor::Reactor> BouncerDispatcher::Decode(std::istream& stream, Connection& connection)
+std::shared_ptr<microreactor::Reactor> BouncerDispatcher::Decode(std::istream& stream, Connection& connection)
 {
     if (GetStreamSize(stream) == 0)
     {

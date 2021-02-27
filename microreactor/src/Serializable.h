@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_Serializable
-#define sg_microreactor_Serializable
+#ifndef microreactor_Serializable
+#define microreactor_Serializable
 
 #include "Serializer.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Serializable
     {
@@ -13,7 +13,7 @@ namespace sg { namespace microreactor
         virtual bool Serialize(Serializer& serializer, std::ostream& stream) const = 0;
         virtual bool Deserialize(std::istream& stream, Serializer& serializer) = 0;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Serializable
+#endif // microreactor_Serializable

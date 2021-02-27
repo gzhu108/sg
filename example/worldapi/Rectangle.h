@@ -8,7 +8,7 @@
 namespace worldapi
 {
     template<typename T>
-    struct Rectangle : sg::microreactor::Serializable
+    struct Rectangle : microreactor::Serializable
     {
         T mX;
         T mY;
@@ -50,7 +50,7 @@ namespace worldapi
             return (mW * mH) < (other.mW * other.mH);
         }
 
-        virtual bool Serialize(sg::microreactor::Serializer& serializer, std::ostream& stream) const override
+        virtual bool Serialize(microreactor::Serializer& serializer, std::ostream& stream) const override
         {
             return serializer.Write(mX, stream)
                 && serializer.Write(mY, stream)
@@ -58,7 +58,7 @@ namespace worldapi
                 && serializer.Write(mH, stream);
         }
         
-        virtual bool Deserialize(std::istream& stream, sg::microreactor::Serializer& serializer) override
+        virtual bool Deserialize(std::istream& stream, microreactor::Serializer& serializer) override
         {
             if (!serializer.Read(stream, mX))
             {

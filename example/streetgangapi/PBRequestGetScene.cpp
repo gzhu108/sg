@@ -1,7 +1,7 @@
 #include "GetSceneRequest.pb.h"
 #include "PBRequestGetScene.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 
 

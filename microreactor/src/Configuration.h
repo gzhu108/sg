@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Configuration
-#define sg_microreactor_Configuration
+#ifndef microreactor_Configuration
+#define microreactor_Configuration
 
 #pragma warning(push)
 #pragma warning(disable : 4512)
@@ -8,7 +8,7 @@
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Configuration
     {
@@ -34,8 +34,8 @@ namespace sg { namespace microreactor
     protected:
         Emittable<void> mValueUpdated;
     };
-}}
+}
 
 
 #pragma warning(pop)
-#endif // sg_microreactor_Configuration
+#endif // microreactor_Configuration

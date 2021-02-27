@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_NetworkUtility
-#define sg_microreactor_NetworkUtility
+#ifndef microreactor_NetworkUtility
+#define microreactor_NetworkUtility
 
 #include <vector>
 #include "Socket.h"
@@ -9,7 +9,7 @@
 #include "Listener.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     namespace NetworkUtility
     {
@@ -28,6 +28,6 @@ namespace sg { namespace microreactor
         bool GetNetworkInterfaceInfo(std::vector<NetworkInterfaceInfo>& networkInterfaceInfoList);
         std::shared_ptr<addrinfo> GetAddressInfo(const std::string& address, uint16_t port, int32_t type, int32_t protocol, bool forBinding);
     }
-}}
+}
 
 #endif //_MirrorLinkService_Shared_NetworkAdapterFinder_

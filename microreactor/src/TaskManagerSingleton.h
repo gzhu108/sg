@@ -1,23 +1,23 @@
 #pragma once
-#ifndef sg_microreactor_TaskManagerSingleton
-#define sg_microreactor_TaskManagerSingleton
+#ifndef microreactor_TaskManagerSingleton
+#define microreactor_TaskManagerSingleton
 
 #include "TaskManager.h"
 
-#define START_BLOCKING_TASK_LOOP() sg::microreactor::TaskManagerSingleton::GetTaskManager()->BlockingTaskLoop()
-#define STOP_TASK_MANAGER() sg::microreactor::TaskManagerSingleton::GetTaskManager()->Stop()
-#define GET_TASK_PROCESS_HOOK() sg::microreactor::TaskManagerSingleton::GetTaskManager()->GetTaskProcessHook()
-#define GET_ACTIVE_TASK_COUNT(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->GetActiveTaskCount(__VA_ARGS__)
-#define CANCEL_TASKS(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->CancelTasks(__VA_ARGS__)
-#define DESTROY_TASK_MANAGER() sg::microreactor::TaskManagerSingleton::DestroyTaskManager()
-#define CREATE_TASK(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->CreateTask(__VA_ARGS__)
-#define SUBMIT_TASK(...) sg::microreactor::TaskManagerSingleton::GetTaskManager()->Submit(__VA_ARGS__)
+#define START_BLOCKING_TASK_LOOP() microreactor::TaskManagerSingleton::GetTaskManager()->BlockingTaskLoop()
+#define STOP_TASK_MANAGER() microreactor::TaskManagerSingleton::GetTaskManager()->Stop()
+#define GET_TASK_PROCESS_HOOK() microreactor::TaskManagerSingleton::GetTaskManager()->GetTaskProcessHook()
+#define GET_ACTIVE_TASK_COUNT(...) microreactor::TaskManagerSingleton::GetTaskManager()->GetActiveTaskCount(__VA_ARGS__)
+#define CANCEL_TASKS(...) microreactor::TaskManagerSingleton::GetTaskManager()->CancelTasks(__VA_ARGS__)
+#define DESTROY_TASK_MANAGER() microreactor::TaskManagerSingleton::DestroyTaskManager()
+#define CREATE_TASK(...) microreactor::TaskManagerSingleton::GetTaskManager()->CreateTask(__VA_ARGS__)
+#define SUBMIT_TASK(...) microreactor::TaskManagerSingleton::GetTaskManager()->Submit(__VA_ARGS__)
 #define SUBMIT(...) SUBMIT_TASK(CREATE_TASK(__VA_ARGS__))
 #define SUBMIT_MEMBER(_member, ...) AddTask(SUBMIT(std::bind(&_member, this), __VA_ARGS__))
 
 
 #define CANCEL_ALL_TASKS_AND_DESTROY_TASK_MANAGER() \
-    sg::microreactor::TaskManagerSingleton::GetTaskManager()->Pause(); \
+    microreactor::TaskManagerSingleton::GetTaskManager()->Pause(); \
     uint64_t cancelCount = CANCEL_TASKS(); \
     if (cancelCount > 0) \
     { \
@@ -29,7 +29,7 @@
     DESTROY_TASK_MANAGER()
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     namespace TaskManagerSingleton
     {
@@ -38,7 +38,7 @@ namespace sg { namespace microreactor
         std::shared_ptr<TaskManager> GetTaskManager();
         void DestroyTaskManager();
     }
-}}
+}
 
 
-#endif // sg_microreactor_TaskManagerSingleton
+#endif // microreactor_TaskManagerSingleton

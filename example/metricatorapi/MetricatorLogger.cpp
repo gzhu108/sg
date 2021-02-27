@@ -2,7 +2,7 @@
 #include "NetworkUtility.h"
 #include "MetricatorRequester.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace metricatorapi;
 
 

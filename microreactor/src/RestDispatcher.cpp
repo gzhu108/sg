@@ -9,7 +9,7 @@
 
 #define DEFAULT_HTTP_BUFFER_SIZE 10240
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 RestDispatcher::RestDispatcher()
@@ -251,13 +251,13 @@ RestDispatcher::Factory RestDispatcher::GetRestReactorFactory(std::shared_ptr<Re
     return found->second;
 }
 
-void RestDispatcher::PushChunkedMessage(sg::microreactor::Connection& connection, std::shared_ptr<RestMessage> restMessage)
+void RestDispatcher::PushChunkedMessage(microreactor::Connection& connection, std::shared_ptr<RestMessage> restMessage)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     mChunkedMessageStore[reinterpret_cast<uintptr_t>(&connection)] = restMessage;
 }
 
-std::shared_ptr<RestMessage> RestDispatcher::PopChunkedMessage(sg::microreactor::Connection& connection)
+std::shared_ptr<RestMessage> RestDispatcher::PopChunkedMessage(microreactor::Connection& connection)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
     std::shared_ptr<RestMessage> restMessage;

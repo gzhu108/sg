@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_Message
-#define sg_microreactor_Message
+#ifndef microreactor_Message
+#define microreactor_Message
 
 #include <chrono>
 #include "Common.h"
 #include "Parkable.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Reactor;
 
@@ -38,7 +38,7 @@ namespace sg { namespace microreactor
         std::chrono::time_point<std::chrono::high_resolution_clock> mCreationTime{ std::chrono::high_resolution_clock::now() };
         std::chrono::time_point<std::chrono::high_resolution_clock> mRequestTime{ std::chrono::high_resolution_clock::now() };
     };
-}}
+}
 
 
-#endif // sg_microreactor_Message
+#endif // microreactor_Message

@@ -15,7 +15,7 @@
 #include "MetricatorLogger.h"
 #include "DiscoveryClient.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace sg::service;
 using namespace metricatorapi;
 using namespace streetgangapi;

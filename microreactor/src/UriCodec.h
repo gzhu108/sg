@@ -2,14 +2,14 @@
 // RFC1630, RFC1738, RFC2396
 
 #pragma once
-#ifndef sg_microreactor_UriCodec
-#define sg_microreactor_UriCodec
+#ifndef microreactor_UriCodec
+#define microreactor_UriCodec
 
 #include <string>
 #include <assert.h>
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     const char HEX2DEC[256] = 
     {
@@ -129,8 +129,8 @@ namespace sg { namespace microreactor
         delete [] pStart;
         return sResult;
     }
-}}
+}
 
 
-#endif // sg_microreactor_UriCodec
+#endif // microreactor_UriCodec
 

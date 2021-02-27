@@ -4,7 +4,7 @@
 #include "NotifyReactor.h"
 #include "MSearchResponseReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace sg::service;
 
 

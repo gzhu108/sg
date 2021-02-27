@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_RestRequest
-#define sg_microreactor_RestRequest
+#ifndef microreactor_RestRequest
+#define microreactor_RestRequest
 
 #include "RestMessage.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class RestRequest : public RestMessage
     {
@@ -24,7 +24,7 @@ namespace sg { namespace microreactor
             return std::make_shared<RestRequest>();
         }
     };
-}}
+}
 
 
-#endif // sg_microreactor_RestRequest
+#endif // microreactor_RestRequest

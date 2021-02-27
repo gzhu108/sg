@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_Listener
-#define sg_microreactor_Listener
+#ifndef microreactor_Listener
+#define microreactor_Listener
 
 #include <chrono>
 #include "Connection.h"
 #include "Task.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Listener
     {
@@ -19,7 +19,7 @@ namespace sg { namespace microreactor
 
         PROPERTY(Name, std::string);
         PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
-        PROPERTY(Dispatcher, std::shared_ptr<sg::microreactor::Dispatcher>);
+        PROPERTY(Dispatcher, std::shared_ptr<microreactor::Dispatcher>);
         
     public:
         template<typename T>
@@ -50,7 +50,7 @@ namespace sg { namespace microreactor
         std::set<std::shared_ptr<Connection>> mActiveConnections;
         TaskPtr mAcceptTask;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Listener
+#endif // microreactor_Listener

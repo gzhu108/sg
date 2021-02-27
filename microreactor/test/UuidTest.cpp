@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "Uuid.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 TEST(UuidTest, GenerateUuid)

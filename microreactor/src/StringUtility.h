@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_StringUtility
-#define sg_microreactor_StringUtility
+#ifndef microreactor_StringUtility
+#define microreactor_StringUtility
 
 #include <vector>
 #include <locale>
@@ -11,7 +11,7 @@
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     namespace StringUtility
     {
@@ -139,6 +139,6 @@ namespace sg { namespace microreactor
         bool CompareStringICase(const std::string& l, const std::string& r);
         bool CompareStringICase(const std::wstring& l, const std::wstring& r);
     }
-}}
+}
 
-#endif // sg_microreactor_StringUtility
+#endif // microreactor_StringUtility

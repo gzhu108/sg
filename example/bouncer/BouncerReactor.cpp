@@ -3,7 +3,7 @@
 #include "Serializer.h"
 #include "TaskManagerSingleton.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace bouncer;
 
 

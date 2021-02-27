@@ -8,7 +8,7 @@
 
 namespace streetgangserver
 {
-    class WorldClient : public sg::microreactor::Client
+    class WorldClient : public microreactor::Client
     {
     public:
         virtual ~WorldClient();

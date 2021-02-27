@@ -1,6 +1,6 @@
 #include "RestRequest.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 bool RestRequest::Write(std::string& buffer) const

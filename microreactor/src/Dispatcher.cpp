@@ -2,7 +2,7 @@
 #include "Connection.h"
 #include "Reactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Dispatcher::Dispatcher()

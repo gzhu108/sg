@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_Client
-#define sg_microreactor_Client
+#ifndef microreactor_Client
+#define microreactor_Client
 
 #include "Message.h"
 #include "Connection.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Client
     {
@@ -23,7 +23,7 @@ namespace sg { namespace microreactor
 	protected:
 		std::shared_ptr<Connection> mConnection;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Client
+#endif // microreactor_Client

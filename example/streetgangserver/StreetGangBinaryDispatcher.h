@@ -10,21 +10,21 @@
 namespace streetgangserver
 {
     class StreetGangBinaryDispatcher
-        : public sg::microreactor::MessageDispatcher
-        , public sg::microreactor::ReactorFactoryContainer<int32_t>
+        : public microreactor::MessageDispatcher
+        , public microreactor::ReactorFactoryContainer<int32_t>
     {
     public:
         StreetGangBinaryDispatcher();
         virtual ~StreetGangBinaryDispatcher();
 
     public:
-        virtual std::shared_ptr<sg::microreactor::Reactor> Decode(std::istream& stream, sg::microreactor::Connection& connection) override;
+        virtual std::shared_ptr<microreactor::Reactor> Decode(std::istream& stream, microreactor::Connection& connection) override;
 
     protected:
-        std::shared_ptr<sg::microreactor::Reactor> CreateByebyeReactor(std::istream& stream, sg::microreactor::Connection& connection);
-        std::shared_ptr<sg::microreactor::Reactor> CreateGetVersionReactor(std::istream& stream, sg::microreactor::Connection& connection);
-        std::shared_ptr<sg::microreactor::Reactor> CreateCreateWorldReactor(std::istream& stream, sg::microreactor::Connection& connection);
-        std::shared_ptr<sg::microreactor::Reactor> CreateGetSceneReactor(std::istream& stream, sg::microreactor::Connection& connection);
+        std::shared_ptr<microreactor::Reactor> CreateByebyeReactor(std::istream& stream, microreactor::Connection& connection);
+        std::shared_ptr<microreactor::Reactor> CreateGetVersionReactor(std::istream& stream, microreactor::Connection& connection);
+        std::shared_ptr<microreactor::Reactor> CreateCreateWorldReactor(std::istream& stream, microreactor::Connection& connection);
+        std::shared_ptr<microreactor::Reactor> CreateGetSceneReactor(std::istream& stream, microreactor::Connection& connection);
     };
 }
 

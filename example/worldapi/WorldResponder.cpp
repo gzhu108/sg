@@ -4,7 +4,7 @@
 #include "ResponseCreateWorld.h"
 #include "ResponseGetWorld.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 
 

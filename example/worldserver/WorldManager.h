@@ -14,20 +14,20 @@ namespace worldserver
     public:
         worldapi::WorldId AddWorld(std::shared_ptr<WorldType> world)
         {
-            sg::microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
+            microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
             mWorldCollection[world->mId] = world;
             return world->mId;
         }
 
         bool RemoveWorld(const worldapi::WorldId& worldId)
         {
-            sg::microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
+            microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
             return mWorldCollection.erase(worldId) != 0;
         }
 
         std::shared_ptr<WorldType> GetWorld(const worldapi::WorldId& worldId)
         {
-            sg::microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
+            microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
             auto found = mWorldCollection.find(worldId);
             if (found == mWorldCollection.end())
             {

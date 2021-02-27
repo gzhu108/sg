@@ -9,7 +9,7 @@
 
 namespace streetgangapi
 {
-    class MessageBase : public sg::microreactor::Message
+    class MessageBase : public microreactor::Message
     {
     public:
         MessageBase();

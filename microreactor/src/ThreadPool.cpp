@@ -1,6 +1,6 @@
 #include "ThreadPool.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 ThreadPool::ThreadPool(std::shared_ptr<TaskQueue> taskQueue)

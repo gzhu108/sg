@@ -4,7 +4,7 @@
 #include "RestRequest.h"
 #include "RestResponse.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 static int OnMessageBegin(http_parser* parser)

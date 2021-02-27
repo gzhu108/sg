@@ -13,7 +13,7 @@
 #include "DiscoveryService.h"
 #include "GetDescriptionReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace sg::service;
 using namespace metricator;
 

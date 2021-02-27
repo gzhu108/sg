@@ -5,7 +5,7 @@
 #include "RestService.h"
 #include "MSearchReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace sg::service;
 
 
@@ -135,7 +135,7 @@ bool DiscoveryService::AdvertiseByebye()
     return false;
 }
 
-void DiscoveryService::RegisterDescriptionReactorFactory(const std::string& uri, sg::microreactor::RestDispatcher::Factory factory)
+void DiscoveryService::RegisterDescriptionReactorFactory(const std::string& uri, microreactor::RestDispatcher::Factory factory)
 {
     mDescriptionUri = uri;
     mDescriptionReactorFactory = factory;

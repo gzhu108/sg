@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_Profile
-#define sg_microreactor_Profile
+#ifndef microreactor_Profile
+#define microreactor_Profile
 
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Profile
     {
@@ -17,7 +17,7 @@ namespace sg { namespace microreactor
         PROPERTY(Address, std::string, ANY_HOST);
         PROPERTY(Port, uint16_t, 0);
     };
-}}
+}
 
 
-#endif // sg_microreactor_Profile
+#endif // microreactor_Profile

@@ -11,11 +11,11 @@
 namespace streetgangserver
 {
     class RequestByebyeReactor
-        : public sg::microreactor::MessageReactor<streetgangapi::RequestByebye>
+        : public microreactor::MessageReactor<streetgangapi::RequestByebye>
         , public StreetGangReactor
     {
     public:
-        RequestByebyeReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestByebye> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
+        RequestByebyeReactor(microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestByebye> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
         virtual ~RequestByebyeReactor();
 
     public:

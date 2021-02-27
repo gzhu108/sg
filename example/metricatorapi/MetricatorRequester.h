@@ -9,10 +9,10 @@
 
 namespace metricatorapi
 {
-    class MetricatorRequester : public sg::microreactor::MessageRequester
+    class MetricatorRequester : public microreactor::MessageRequester
     {
     public:
-        MetricatorRequester(sg::microreactor::Connection& connection);
+        MetricatorRequester(microreactor::Connection& connection);
         virtual ~MetricatorRequester();
         
     public:

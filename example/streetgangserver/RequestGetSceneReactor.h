@@ -15,17 +15,17 @@
 namespace streetgangserver
 {
     class RequestGetSceneReactor
-        : public sg::microreactor::MessageReactor<streetgangapi::RequestGetScene>
+        : public microreactor::MessageReactor<streetgangapi::RequestGetScene>
         , public StreetGangReactor
     {
     public:
-        RequestGetSceneReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
+        RequestGetSceneReactor(microreactor::Connection& connection, std::shared_ptr<streetgangapi::RequestGetScene> message, std::shared_ptr<streetgangapi::StreetGangResponder> responder);
         virtual ~RequestGetSceneReactor();
         
     public:
         virtual bool Process() override;
-        virtual bool ProcessError(std::shared_ptr<sg::microreactor::Message> errorMessage) override;
-        virtual bool ProcessTimeout(std::shared_ptr<sg::microreactor::Message> timedOutMessage) override;
+        virtual bool ProcessError(std::shared_ptr<microreactor::Message> errorMessage) override;
+        virtual bool ProcessTimeout(std::shared_ptr<microreactor::Message> timedOutMessage) override;
 
         virtual void CheckComplete() override;
 

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Emittable
-#define sg_microreactor_Emittable
+#ifndef microreactor_Emittable
+#define microreactor_Emittable
 
 #pragma warning(push)
 #pragma warning(disable : 4512)
@@ -13,7 +13,7 @@
 #include "Exception.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     // Signal<SignalType>& SignalName = mEmittableMember;
     // typedef std::remove_reference<decltype(SignalName)>::type::SignalId SignalNameId
@@ -142,8 +142,8 @@ namespace sg { namespace microreactor
             }
         }
     };
-}}
+}
 
 
 #pragma warning(pop)
-#endif // sg_microreactor_Emittable
+#endif // microreactor_Emittable

@@ -8,10 +8,10 @@
 
 namespace myserver
 {
-    class GETv1versionReactorBase : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
+    class GETv1versionReactorBase : public microreactor::RestReactor<microreactor::RestRequest>
     {
     public:
-        GETv1versionReactorBase(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        GETv1versionReactorBase(microreactor::Connection& connection, std::shared_ptr<microreactor::RestRequest> request);
         virtual ~GETv1versionReactorBase();
 
     public:

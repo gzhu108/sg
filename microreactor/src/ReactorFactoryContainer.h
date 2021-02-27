@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_ReactorFactoryContainer
-#define sg_microreactor_ReactorFactoryContainer
+#ifndef microreactor_ReactorFactoryContainer
+#define microreactor_ReactorFactoryContainer
 
 #include <map>
 #include "Reactor.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template <typename Key = int32_t, typename InputStream = std::istream>
     class ReactorFactoryContainer
@@ -58,7 +58,7 @@ namespace sg { namespace microreactor
     protected:
         std::map<Key, Factory> mReactorFactoryTable;
     };
-}}
+}
 
 
-#endif // sg_microreactor_ReactorFactoryContainer
+#endif // microreactor_ReactorFactoryContainer

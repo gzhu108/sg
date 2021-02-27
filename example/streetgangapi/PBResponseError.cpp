@@ -1,7 +1,7 @@
 #include "ErrorResponse.pb.h"
 #include "PBResponseError.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 
 

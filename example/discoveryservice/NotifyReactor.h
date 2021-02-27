@@ -9,15 +9,15 @@
 
 namespace sg { namespace service
 {
-    class NotifyReactor : public sg::microreactor::RestReactor<sg::microreactor::RestRequest>
+    class NotifyReactor : public microreactor::RestReactor<microreactor::RestRequest>
     {
     public:
-        NotifyReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestRequest> request);
+        NotifyReactor(microreactor::Connection& connection, std::shared_ptr<microreactor::RestRequest> request);
         virtual ~NotifyReactor();
 
         PROPERTY(ServiceType, std::string);
 
-        sg::microreactor::Signal<sg::microreactor::Uuid>& Byebye = mByebye;
+        microreactor::Signal<microreactor::Uuid>& Byebye = mByebye;
 
     public:
         virtual bool Process() override;
@@ -26,7 +26,7 @@ namespace sg { namespace service
         void UnicastMSearch(const std::string& unicastAddress, uint16_t port);
 
     protected:
-        sg::microreactor::Emittable<sg::microreactor::Uuid> mByebye;
+        microreactor::Emittable<microreactor::Uuid> mByebye;
     };
 }}
 

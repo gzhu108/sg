@@ -12,7 +12,7 @@
 
 #define TASK_LATENCY_THRESHOLD ((double)0.01)
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 using namespace streetgangserver;
 using namespace sg::service;

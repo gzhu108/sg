@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Common
-#define sg_microreactor_Common
+#ifndef microreactor_Common
+#define microreactor_Common
 
 #include "MemoryTrack.h"
 #include <typeinfo>
@@ -49,7 +49,7 @@
 #define LOCAL_HOST_IPV6 "::1"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
 #ifdef _MSC_VER
     inline int32_t GetSocketError()
@@ -63,7 +63,7 @@ namespace sg { namespace microreactor
         return errno;
     }
 #endif
-}}
+}
 
 // workaround for std::to_string not defined
 namespace std
@@ -78,4 +78,4 @@ namespace std
 }
 
 
-#endif // sg_microreactor_Common
+#endif // microreactor_Common

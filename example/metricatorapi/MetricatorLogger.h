@@ -17,7 +17,7 @@ namespace metricatorapi
         void Log(const std::string& text);
 
     protected:
-        std::shared_ptr<sg::microreactor::Connection> mConnection;
+        std::shared_ptr<microreactor::Connection> mConnection;
     };
 }
 

@@ -1,6 +1,6 @@
 #include "Task.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Task::Task()

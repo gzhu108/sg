@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_UdpSocket
-#define sg_microreactor_UdpSocket
+#ifndef microreactor_UdpSocket
+#define microreactor_UdpSocket
 
 #include "Socket.h"
 #include "NetworkUtility.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class UdpSocket : public Socket
     {
@@ -20,7 +20,7 @@ namespace sg { namespace microreactor
         virtual bool LeaveMulticastGroup(const std::string& multicastAddress, const std::string& interfaceAddress);
         virtual bool Bind(const std::string& hostAddress, uint16_t port);
     };
-}}
+}
 
 
-#endif //sg_microreactor_UdpSocket
+#endif //microreactor_UdpSocket

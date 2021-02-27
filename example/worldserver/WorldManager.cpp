@@ -1,6 +1,6 @@
 #include "WorldManager.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace worldapi;
 using namespace worldserver;
 
@@ -28,7 +28,7 @@ WorldManagerSingleton::~WorldManagerSingleton()
 
 const WorldId& WorldManagerSingleton::CreateWorld(const std::string& worldName)
 {
-    sg::microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
+    microreactor::ScopeLock<decltype(mLock)> scopeLock(mLock);
 
     auto worldItr = mNamedWorlds.find(worldName);
     if (worldItr != mNamedWorlds.end())

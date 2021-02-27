@@ -9,21 +9,21 @@
 
 namespace sg { namespace service
 {
-    class MSearchResponseReactor : public sg::microreactor::RestReactor<sg::microreactor::RestResponse>
+    class MSearchResponseReactor : public microreactor::RestReactor<microreactor::RestResponse>
     {
     public:
-        MSearchResponseReactor(sg::microreactor::Connection& connection, std::shared_ptr<sg::microreactor::RestResponse> response);
+        MSearchResponseReactor(microreactor::Connection& connection, std::shared_ptr<microreactor::RestResponse> response);
         virtual ~MSearchResponseReactor();
 
         PROPERTY(ServiceType, std::string);
 
-        sg::microreactor::Signal<ServiceDescription>& ServiceFound = mServiceFound;
+        microreactor::Signal<ServiceDescription>& ServiceFound = mServiceFound;
 
     public:
         virtual bool Process() override;
 
     protected:
-        sg::microreactor::Emittable<ServiceDescription> mServiceFound;
+        microreactor::Emittable<ServiceDescription> mServiceFound;
     };
 }}
 

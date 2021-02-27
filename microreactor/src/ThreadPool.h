@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_ThreadPool
-#define sg_microreactor_ThreadPool
+#ifndef microreactor_ThreadPool
+#define microreactor_ThreadPool
 
 #include <map>
 #include <atomic>
@@ -9,7 +9,7 @@
 #include "TaskQueue.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class ThreadPool : public TaskProcessHook
     {
@@ -32,7 +32,7 @@ namespace sg { namespace microreactor
         std::atomic<uint64_t> mRemoveCount;
         std::atomic<bool> mStop;
     };
-}}
+}
 
 
-#endif // sg_microreactor_ThreadPool
+#endif // microreactor_ThreadPool

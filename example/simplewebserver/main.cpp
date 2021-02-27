@@ -5,7 +5,7 @@
 #include "Microreactor.h"
 #include "SimpleWebDispatcher.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace simplewebserver;
 
 
@@ -16,7 +16,7 @@ std::vector<std::shared_ptr<Listener>>::size_type Initialize(int32_t argc, const
         printf("%s\n", text.c_str());
     });
 
-    LOG("simplewebserver (%s)", sg::microreactor::StringUtility::GetHttpTimeString().c_str());
+    LOG("simplewebserver (%s)", microreactor::StringUtility::GetHttpTimeString().c_str());
     LOG("press ctrl+c to terminate");
 
     std::string configFilePath;

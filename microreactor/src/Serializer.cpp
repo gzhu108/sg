@@ -1,7 +1,7 @@
 #include "Serializer.h"
 #include "Serializable.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
     
 Serializer::Serializer()

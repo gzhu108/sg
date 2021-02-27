@@ -7,14 +7,14 @@
 
 namespace simplewebserver
 {
-    class SimpleWebDispatcher : public sg::microreactor::RestDispatcher
+    class SimpleWebDispatcher : public microreactor::RestDispatcher
     {
     public:
         explicit SimpleWebDispatcher();
         virtual ~SimpleWebDispatcher();
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateGetFileReactor(std::shared_ptr<sg::microreactor::RestMessage> request, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<microreactor::Reactor> CreateGetFileReactor(std::shared_ptr<microreactor::RestMessage> request, microreactor::Connection& connection);
     };
 }
 

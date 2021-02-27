@@ -11,10 +11,10 @@
 
 namespace streetgangapi
 {
-    class StreetGangResponder : public sg::microreactor::MessageResponder
+    class StreetGangResponder : public microreactor::MessageResponder
     {
     public:
-        StreetGangResponder(sg::microreactor::Connection& connection) : sg::microreactor::MessageResponder(connection) {}
+        StreetGangResponder(microreactor::Connection& connection) : microreactor::MessageResponder(connection) {}
         virtual ~StreetGangResponder() {}
 
     public:

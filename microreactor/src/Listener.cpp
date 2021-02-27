@@ -1,7 +1,7 @@
 #include "Listener.h"
 #include "TaskManagerSingleton.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Listener::Listener()

@@ -9,15 +9,15 @@
 
 namespace streetgangclient
 {
-    class ResponseGetVersionReactor : public sg::microreactor::Reactor
+    class ResponseGetVersionReactor : public microreactor::Reactor
     {
     public:
-        ResponseGetVersionReactor(sg::microreactor::Connection& connection, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
+        ResponseGetVersionReactor(microreactor::Connection& connection, std::shared_ptr<streetgangapi::StreetGangRequester> requester);
         virtual ~ResponseGetVersionReactor();
 
     public:
-        virtual bool ProcessError(std::shared_ptr<sg::microreactor::Message> errorMessage) override;
-        virtual bool ProcessTimeout(std::shared_ptr<sg::microreactor::Message> timedOutMessage) override;
+        virtual bool ProcessError(std::shared_ptr<microreactor::Message> errorMessage) override;
+        virtual bool ProcessTimeout(std::shared_ptr<microreactor::Message> timedOutMessage) override;
 
         bool Process(std::shared_ptr<streetgangapi::ResponseGetVersion> response);
 

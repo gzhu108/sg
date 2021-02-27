@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_Shareable
-#define sg_microreactor_Shareable
+#ifndef microreactor_Shareable
+#define microreactor_Shareable
 
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Shareable : public std::enable_shared_from_this<Shareable>
     {
@@ -19,6 +19,6 @@ namespace sg { namespace microreactor
             return std::static_pointer_cast<T>(shared_from_this());
         }
     };
-}}
+}
 
-#endif // sg_microreactor_Shareable
+#endif // microreactor_Shareable

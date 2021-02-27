@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_Serializer
-#define sg_microreactor_Serializer
+#ifndef microreactor_Serializer
+#define microreactor_Serializer
 
 #pragma warning(disable : 4512)
 
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Serializable;
     
@@ -180,7 +180,7 @@ namespace sg { namespace microreactor
             return Write(*val, stream);
         }
     };
-}}
+}
 
 
-#endif // sg_microreactor_Serializer
+#endif // microreactor_Serializer

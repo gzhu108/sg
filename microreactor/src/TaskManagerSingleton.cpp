@@ -1,6 +1,6 @@
 #include "TaskManagerSingleton.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 static std::recursive_mutex gTaskManagerLock;

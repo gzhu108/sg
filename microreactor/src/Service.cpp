@@ -2,7 +2,7 @@
 #include "NetworkUtility.h"
 #include "Serializer.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 Service::Service()

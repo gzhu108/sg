@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Endian
-#define sg_microreactor_Endian
+#ifndef microreactor_Endian
+#define microreactor_Endian
 
 #ifdef _MSC_VER
 #include <WinSock2.h>
@@ -13,7 +13,7 @@
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     namespace Endian
     {
@@ -111,7 +111,7 @@ namespace sg { namespace microreactor
             return in.GetEndian(EndianType::LittleEndian, inout);
         }
     }
-}}
+}
 
 
-#endif //sg_microreactor_Endian
+#endif //microreactor_Endian

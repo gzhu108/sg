@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_Property
-#define sg_microreactor_Property
+#ifndef microreactor_Property
+#define microreactor_Property
 
 #pragma warning(disable : 4512)
 
@@ -10,7 +10,7 @@
 #include "Comparable.h"
 
 #define PROPERTY(_name, _type, ...) \
-    mutable sg::microreactor::Property<_type> _name { std::string(#_name), ##__VA_ARGS__ }
+    mutable microreactor::Property<_type> _name { std::string(#_name), ##__VA_ARGS__ }
 
 #define PROPERTY_GET(_name, _type, _default, _member_getter) \
     PROPERTY(_name, _type, _default, \
@@ -31,7 +31,7 @@
     decltype(_property)::ValueType
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template<class T>
     class Property
@@ -161,7 +161,7 @@ namespace sg { namespace microreactor
         ValueType mValue {};
         Emittable<T> mValueChanged;
     };
-}}
+}
 
 
-#endif // sg_microreactor_Property
+#endif // microreactor_Property

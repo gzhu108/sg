@@ -8,7 +8,7 @@
 #include "BinaryResponseError.h"
 #include "BinaryRequestByebye.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace streetgangapi;
 using namespace streetgangclient;
 

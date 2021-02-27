@@ -1,12 +1,12 @@
 #pragma once
-#ifndef sg_microreactor_TaskFuture
-#define sg_microreactor_TaskFuture
+#ifndef microreactor_TaskFuture
+#define microreactor_TaskFuture
 
 #include <future>
 #include "Task.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     template <typename ValueType>
     class TaskFuture : public std::shared_future<ValueType>
@@ -31,7 +31,7 @@ namespace sg { namespace microreactor
     protected:
         TaskPtr mTask;
     };
-}}
+}
 
 
-#endif // sg_microreactor_TaskFuture
+#endif // microreactor_TaskFuture

@@ -1,6 +1,6 @@
 #include "UpdateReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace myserver;
 
 

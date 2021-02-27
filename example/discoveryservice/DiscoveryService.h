@@ -10,7 +10,7 @@
 
 namespace sg { namespace service
 {
-    class DiscoveryService : public sg::microreactor::Service
+    class DiscoveryService : public microreactor::Service
     {
     public:
         explicit DiscoveryService(const std::string& interfaceAddress = {}, const std::string& multicastAddress = DEFAULT_MULTICAST_ADDRESS, uint16_t multicastPort = DEFAULT_MULTICAST_PORT);
@@ -27,19 +27,19 @@ namespace sg { namespace service
         virtual bool AdvertiseAlive();
         virtual bool AdvertiseByebye();
 
-        virtual void RegisterDescriptionReactorFactory(const std::string& uri, sg::microreactor::RestDispatcher::Factory factory);
+        virtual void RegisterDescriptionReactorFactory(const std::string& uri, microreactor::RestDispatcher::Factory factory);
 
     protected:
-        virtual std::shared_ptr<sg::microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<sg::microreactor::RestMessage> message, sg::microreactor::Connection& connection);
+        virtual std::shared_ptr<microreactor::Reactor> CreateMSearchReactor(std::shared_ptr<microreactor::RestMessage> message, microreactor::Connection& connection);
     
     protected:
         std::string mInterfaceAddress;
         std::string mMulticastAddress;
         uint16_t mMulticastPort;
-        std::shared_ptr<sg::microreactor::UdpSocket> mSocket;
-        std::shared_ptr<sg::microreactor::Service> mDescriptionService;
+        std::shared_ptr<microreactor::UdpSocket> mSocket;
+        std::shared_ptr<microreactor::Service> mDescriptionService;
         std::string mDescriptionUri;
-        sg::microreactor::RestDispatcher::Factory mDescriptionReactorFactory;
+        microreactor::RestDispatcher::Factory mDescriptionReactorFactory;
     };
 }}
 

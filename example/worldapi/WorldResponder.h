@@ -9,10 +9,10 @@
 
 namespace worldapi
 {
-    class WorldResponder : public sg::microreactor::MessageResponder
+    class WorldResponder : public microreactor::MessageResponder
     {
     public:
-        WorldResponder(sg::microreactor::Connection& connection);
+        WorldResponder(microreactor::Connection& connection);
         virtual ~WorldResponder();
 
     public:

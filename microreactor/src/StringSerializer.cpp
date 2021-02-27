@@ -1,7 +1,7 @@
 #include "StringSerializer.h"
 #include "Endianness.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 StringSerializer::StringSerializer()

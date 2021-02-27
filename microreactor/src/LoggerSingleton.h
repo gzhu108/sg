@@ -1,13 +1,13 @@
 #pragma once
-#ifndef sg_microreactor_LoggerSingleton
-#define sg_microreactor_LoggerSingleton
+#ifndef microreactor_LoggerSingleton
+#define microreactor_LoggerSingleton
 
 #include <vector>
 #include <memory>
 #include <string>
 #include <functional>
 
-#define GET_LOGGER() sg::microreactor::LoggerSingleton::Instance()
+#define GET_LOGGER() microreactor::LoggerSingleton::Instance()
 
 #if NO_LOG
 #define LOG(...) (void)0
@@ -16,7 +16,7 @@
 #endif
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class LoggerSingleton
     {
@@ -36,7 +36,7 @@ namespace sg { namespace microreactor
     private:
         LoggerSingleton();
     };
-}}
+}
 
 
-#endif // sg_microreactor_LoggerSingleton
+#endif // microreactor_LoggerSingleton

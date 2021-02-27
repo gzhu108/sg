@@ -1,6 +1,6 @@
 #include "TaskQueue.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 
 
 TaskQueue::TaskQueue()

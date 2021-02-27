@@ -11,18 +11,18 @@
 
 namespace worldapi
 {
-    class WorldRequester : protected sg::microreactor::MessageRequester
+    class WorldRequester : protected microreactor::MessageRequester
     {
     public:
-        WorldRequester(sg::microreactor::Connection& connection, std::shared_ptr<WorldCache> worldCache = nullptr);
+        WorldRequester(microreactor::Connection& connection, std::shared_ptr<WorldCache> worldCache = nullptr);
         virtual ~WorldRequester();
 
     public:
-        virtual std::shared_ptr<ResponseCreateWorld> CreateWorld(const std::string& worldName, std::shared_ptr<sg::microreactor::Reactor> client);
-        virtual std::shared_ptr<ResponseGetWorld> GetWorld(const WorldId& worldId, std::shared_ptr<sg::microreactor::Reactor> client);
+        virtual std::shared_ptr<ResponseCreateWorld> CreateWorld(const std::string& worldName, std::shared_ptr<microreactor::Reactor> client);
+        virtual std::shared_ptr<ResponseGetWorld> GetWorld(const WorldId& worldId, std::shared_ptr<microreactor::Reactor> client);
 
     protected:
-        virtual bool SendMessage(std::shared_ptr<WorldMessage> message, std::shared_ptr<sg::microreactor::Reactor> client);
+        virtual bool SendMessage(std::shared_ptr<WorldMessage> message, std::shared_ptr<microreactor::Reactor> client);
 
     protected:
         std::shared_ptr<WorldCache> mWorldCache;

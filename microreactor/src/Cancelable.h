@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_Cancelable
-#define sg_microreactor_Cancelable
+#ifndef microreactor_Cancelable
+#define microreactor_Cancelable
 
 #include "Common.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class Cancelable
     {
@@ -23,7 +23,7 @@ namespace sg { namespace microreactor
         Emittable<void> mCompleted;
         Emittable<void> mCanceled;
     };
-} }
+}
 
 
-#endif // sg_microreactor_Cancelable
+#endif // microreactor_Cancelable

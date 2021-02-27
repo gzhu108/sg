@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_BinarySerializer
-#define sg_microreactor_BinarySerializer
+#ifndef microreactor_BinarySerializer
+#define microreactor_BinarySerializer
 
 #include "Serializer.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class BinarySerializer : public Serializer
     {
@@ -44,7 +44,7 @@ namespace sg { namespace microreactor
         virtual bool Write(const std::string& val, std::ostream& stream) override;
         virtual bool Write(const Serializable& val, std::ostream& stream) override;
     };
-}}
+}
 
 
-#endif // sg_microreactor_BinarySerializer
+#endif // microreactor_BinarySerializer

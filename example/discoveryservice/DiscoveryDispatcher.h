@@ -7,11 +7,11 @@
 
 namespace sg { namespace service
 {
-    class DiscoveryDispatcher : public sg::microreactor::RestDispatcher
+    class DiscoveryDispatcher : public microreactor::RestDispatcher
     {
     protected:
-        virtual void SendBadMessageResponse(sg::microreactor::Connection& connection) override {}
-        virtual void SendNotFoundResponse(sg::microreactor::Connection& connection) override {}
+        virtual void SendBadMessageResponse(microreactor::Connection& connection) override {}
+        virtual void SendNotFoundResponse(microreactor::Connection& connection) override {}
     };
 }}
 

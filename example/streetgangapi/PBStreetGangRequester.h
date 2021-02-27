@@ -11,17 +11,17 @@ namespace streetgangapi
     class PBStreetGangRequester : public StreetGangRequester
     {
     public:
-        PBStreetGangRequester(sg::microreactor::Connection& connection);
+        PBStreetGangRequester(microreactor::Connection& connection);
         virtual ~PBStreetGangRequester();
 
     public:
-        virtual bool Byebye(std::shared_ptr<sg::microreactor::Reactor> client) override;
-        virtual bool GetVersion(std::shared_ptr<sg::microreactor::Reactor> client) override;
-        virtual bool CreateWorld(const std::string& worldName, std::shared_ptr<sg::microreactor::Reactor> client) override;
-        virtual bool GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect, std::shared_ptr<sg::microreactor::Reactor> client) override;
+        virtual bool Byebye(std::shared_ptr<microreactor::Reactor> client) override;
+        virtual bool GetVersion(std::shared_ptr<microreactor::Reactor> client) override;
+        virtual bool CreateWorld(const std::string& worldName, std::shared_ptr<microreactor::Reactor> client) override;
+        virtual bool GetScene(const SessionId& worldId, const streetgangapi::Rectangle<float>& rect, std::shared_ptr<microreactor::Reactor> client) override;
 
     protected:
-        virtual bool SendMessage(std::shared_ptr<MessageBase> message, std::shared_ptr<sg::microreactor::Reactor> client);
+        virtual bool SendMessage(std::shared_ptr<MessageBase> message, std::shared_ptr<microreactor::Reactor> client);
    };
 }
 

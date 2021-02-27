@@ -1,6 +1,6 @@
 #include "VersionReactor.h"
 
-using namespace sg::microreactor;
+using namespace microreactor;
 using namespace myserver;
 
 
@@ -18,7 +18,7 @@ bool VersionReactor::Process()
     if (InputMessage() == nullptr)
     {
         LOG("Invalid request [ReqId=%s]\n", InputMessage()->TrackId.cref().c_str());
-        return sg::microreactor::RestResponse::SendErrorWith(mConnection, 400, "GET [/v1/version] Invalid request");
+        return microreactor::RestResponse::SendErrorWith(mConnection, 400, "GET [/v1/version] Invalid request");
     }
 
     RestResponse response;

@@ -8,7 +8,7 @@
 namespace streetgangapi
 {
     template<typename T>
-    struct Point : sg::microreactor::Serializable
+    struct Point : microreactor::Serializable
     {
         T mX;
         T mY;
@@ -53,12 +53,12 @@ namespace streetgangapi
             }
         }
 
-        virtual bool Serialize(sg::microreactor::Serializer& serializer, std::ostream& stream) const override
+        virtual bool Serialize(microreactor::Serializer& serializer, std::ostream& stream) const override
         {
             return serializer.Write(mX, stream) && serializer.Write(mY, stream) && serializer.Write(mZ, stream);
         }
         
-        virtual bool Deserialize(std::istream& stream, sg::microreactor::Serializer& serializer) override
+        virtual bool Deserialize(std::istream& stream, microreactor::Serializer& serializer) override
         {
             if (!serializer.Read(stream, mX))
             {

@@ -8,7 +8,7 @@
 
 namespace worldapi
 {
-    class WorldMessage : public sg::microreactor::Message
+    class WorldMessage : public microreactor::Message
     {
     public:
         WorldMessage();

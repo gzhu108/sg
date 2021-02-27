@@ -1,11 +1,11 @@
 #pragma once
-#ifndef sg_microreactor_TcpSocket
-#define sg_microreactor_TcpSocket
+#ifndef microreactor_TcpSocket
+#define microreactor_TcpSocket
 
 #include "Socket.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class TcpSocket : public Socket
     {
@@ -22,7 +22,7 @@ namespace sg { namespace microreactor
     protected:
         virtual bool SetKeepalive(TcpSocket& socket, int keepalive, int keepaliveProbes, int keepaliveIdleTime, int keepaliveProbeInterval);
     };
-}}
+}
 
 
-#endif //sg_microreactor_TcpSocket
+#endif //microreactor_TcpSocket

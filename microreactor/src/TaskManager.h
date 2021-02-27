@@ -1,6 +1,6 @@
 #pragma once
-#ifndef sg_microreactor_TaskManager
-#define sg_microreactor_TaskManager
+#ifndef microreactor_TaskManager
+#define microreactor_TaskManager
 
 #include <functional>
 #include "TaskProcessHook.h"
@@ -8,7 +8,7 @@
 #include "TaskFuture.h"
 
 
-namespace sg { namespace microreactor
+namespace microreactor
 {
     class TaskProcessHook;
     class ThreadPool;
@@ -74,7 +74,7 @@ namespace sg { namespace microreactor
         std::shared_ptr<TaskQueue> mTaskQueue;
         std::shared_ptr<ThreadPool> mThreadPool;
     };
-}}
+}
 
 
-#endif // sg_microreactor_TaskManager
+#endif // microreactor_TaskManager
