@@ -128,14 +128,14 @@ uint64_t TaskQueue::CancelTasks()
     for (auto activeTask : mActivePool)
     {
         activeTask->Cancel();
-        cancelCount++;
+        ++cancelCount;
     }
 
     // Cancel and remove tasks in the queue
     for (auto task : mTaskQueue)
     {
         task->Cancel();
-        cancelCount++;
+        ++cancelCount;
     }
 
     mTaskQueue.clear();

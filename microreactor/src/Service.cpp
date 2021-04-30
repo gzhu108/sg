@@ -96,7 +96,7 @@ int64_t Service::SendAllConnections(const char* buffer, int32_t length)
     {
         if (connection->Send(buffer, length) <= 0)
         {
-            errorCount++;
+            ++errorCount;
         }
     }
 

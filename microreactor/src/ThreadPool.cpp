@@ -60,7 +60,7 @@ void ThreadPool::RemoveThread()
     std::lock_guard<decltype(mLock)> scopeLock(mLock);
     if (mWorkerThreads.size() > mRemoveCount)
     {
-        mRemoveCount++;
+        ++mRemoveCount;
     }
 }
 

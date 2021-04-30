@@ -49,7 +49,7 @@ bool MetricatorRequest::Decode(std::istream& stream)
         return false;
     }
     
-    for (uint64_t i = 0; i < count; i++)
+    for (uint64_t i = 0; i < count; ++i)
     {
         Metric metric;
 

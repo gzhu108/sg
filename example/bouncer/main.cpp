@@ -59,7 +59,7 @@ int32_t main(int32_t argc, const char* argv[])
     const char* targetArgs[] = { "--target", "-t" };
     const char* targetPortArgs[] = { "--target-port", "-q" };
 
-    for (int32_t i = 1; i < argc; i++)
+    for (int32_t i = 1; i < argc; ++i)
     {
         if (FIND_CMD(configArgs, argv[i]))
         {

@@ -73,7 +73,7 @@ int32_t main(int32_t argc, const char* argv[])
     const char* hostArgs[] = {"--host", "-h"};
     const char* portArgs[] = {"--port", "-p"};
 
-    for (int32_t i = 1; i < argc; i++)
+    for (int32_t i = 1; i < argc; ++i)
     {
         if (FIND_CMD(configArgs, argv[i]))
         {

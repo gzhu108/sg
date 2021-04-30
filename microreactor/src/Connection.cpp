@@ -16,7 +16,7 @@ static std::chrono::time_point<std::chrono::high_resolution_clock> gLastReportTi
 static void LogTps()
 {
     gConnectionMutex.lock();
-    gRequestCount++;
+    ++gRequestCount;
     
     std::chrono::time_point<std::chrono::high_resolution_clock> now = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> sinceLastTime = now - gLastReportTime;

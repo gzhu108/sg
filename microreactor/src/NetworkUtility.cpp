@@ -152,7 +152,7 @@ int __cdecl main(int argc, char **argv)
             break;
         }
 
-        Iterations++;
+        ++Iterations;
 
     } while ((dwRetVal == ERROR_BUFFER_OVERFLOW) && (Iterations < MAX_TRIES));
 
@@ -167,7 +167,7 @@ int __cdecl main(int argc, char **argv)
 
             pUnicast = pCurrAddresses->FirstUnicastAddress;
             if (pUnicast != NULL) {
-                for (i = 0; pUnicast != NULL; i++)
+                for (i = 0; pUnicast != NULL; ++i)
                     pUnicast = pUnicast->Next;
                 LOG("\tNumber of Unicast Addresses: %d", i);
             }
@@ -176,7 +176,7 @@ int __cdecl main(int argc, char **argv)
 
             pAnycast = pCurrAddresses->FirstAnycastAddress;
             if (pAnycast) {
-                for (i = 0; pAnycast != NULL; i++)
+                for (i = 0; pAnycast != NULL; ++i)
                     pAnycast = pAnycast->Next;
                 LOG("\tNumber of Anycast Addresses: %d", i);
             }
@@ -185,7 +185,7 @@ int __cdecl main(int argc, char **argv)
 
             pMulticast = pCurrAddresses->FirstMulticastAddress;
             if (pMulticast) {
-                for (i = 0; pMulticast != NULL; i++)
+                for (i = 0; pMulticast != NULL; ++i)
                     pMulticast = pMulticast->Next;
                 LOG("\tNumber of Multicast Addresses: %d", i);
             }
@@ -194,7 +194,7 @@ int __cdecl main(int argc, char **argv)
 
             pDnServer = pCurrAddresses->FirstDnsServerAddress;
             if (pDnServer) {
-                for (i = 0; pDnServer != NULL; i++)
+                for (i = 0; pDnServer != NULL; ++i)
                     pDnServer = pDnServer->Next;
                 LOG("\tNumber of DNS Server Addresses: %d", i);
             }
@@ -208,7 +208,7 @@ int __cdecl main(int argc, char **argv)
             if (pCurrAddresses->PhysicalAddressLength != 0) {
                 LOG("\tPhysical address: ");
                 for (i = 0; i < (int)pCurrAddresses->PhysicalAddressLength;
-                i++) {
+                ++i) {
                     if (i == (pCurrAddresses->PhysicalAddressLength - 1))
                         LOG("%.2X",
                             (int)pCurrAddresses->PhysicalAddress[i]);
@@ -224,7 +224,7 @@ int __cdecl main(int argc, char **argv)
             LOG("\tIpv6IfIndex (IPv6 interface): %u",
                 pCurrAddresses->Ipv6IfIndex);
             LOG("\tZoneIndices (hex): ");
-            for (i = 0; i < 16; i++)
+            for (i = 0; i < 16; ++i)
                 LOG("%lx ", pCurrAddresses->ZoneIndices[i]);
             LOG("");
 
@@ -233,7 +233,7 @@ int __cdecl main(int argc, char **argv)
 
             pPrefix = pCurrAddresses->FirstPrefix;
             if (pPrefix) {
-                for (i = 0; pPrefix != NULL; i++)
+                for (i = 0; pPrefix != NULL; ++i)
                     pPrefix = pPrefix->Next;
                 LOG("\tNumber of IP Adapter Prefix entries: %d", i);
             }

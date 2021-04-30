@@ -101,7 +101,7 @@ uint64_t TaskCategorizedQueue::CancelTasks()
     for (auto activeTask : mActivePool)
     {
         activeTask->Cancel();
-        cancelCount++;
+        ++cancelCount;
     }
 
     // Cancel and remove tasks in the queue
@@ -112,7 +112,7 @@ uint64_t TaskCategorizedQueue::CancelTasks()
         {
             (*task)->Cancel();
             task = taskQueue->erase(task);
-            cancelCount++;
+            ++cancelCount;
         }
     }
 

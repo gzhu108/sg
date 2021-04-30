@@ -29,7 +29,7 @@ std::vector<std::shared_ptr<Listener>>::size_type Initialize(int32_t argc, const
     const char* portArgs[] = { "--port", "-p" };
     const char* securePortArgs[] = { "--secure-port", "-s" };
 
-    for (int32_t i = 1; i < argc; i++)
+    for (int32_t i = 1; i < argc; ++i)
     {
         if (FIND_CMD(configArgs, argv[i]))
         {

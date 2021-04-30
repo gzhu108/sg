@@ -52,7 +52,7 @@ int32_t main(int32_t argc, const char* argv[])
     std::string configFilePath;
     const char* configArgs[] = {"--config", "-c"};
     
-    for (int32_t i = 1; i < argc; i++)
+    for (int32_t i = 1; i < argc; ++i)
     {
         if (FIND_CMD(configArgs, argv[i]))
         {
