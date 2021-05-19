@@ -40,7 +40,7 @@ namespace microreactor
         TaskPtr CreateTask(TaskFunc&& taskFunc, const std::string& taskName = {})
         {
             auto task = std::make_shared<Task>(taskFunc);
-            task->Name.set(taskName);
+            task->Name(taskName);
             return task;
         }
 
@@ -48,7 +48,7 @@ namespace microreactor
         TaskPtr CreateTask(std::function<void ()> run, const std::string& taskName = {})
         {
             auto task = std::make_shared<Task>(run);
-            task->Name.set(taskName);
+            task->Name(taskName);
             return task;
         }
 

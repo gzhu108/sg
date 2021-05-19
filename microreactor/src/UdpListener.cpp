@@ -9,7 +9,7 @@ using namespace microreactor;
 UdpListener::UdpListener(std::shared_ptr<UdpSocket> socket, std::shared_ptr<microreactor::Dispatcher> dispatcher)
     : mSocket(socket)
 {
-    Dispatcher.set(dispatcher);
+    Dispatcher(dispatcher);
 
     if (mSocket == nullptr)
     {
@@ -20,7 +20,7 @@ UdpListener::UdpListener(std::shared_ptr<UdpSocket> socket, std::shared_ptr<micr
     {
         if (dispatcher != nullptr)
         {
-            mSocket->Bind(dispatcher->Address->c_str(), dispatcher->Port.cref());
+            mSocket->Bind(dispatcher->Address->c_str(), dispatcher->Port());
         }
     }
     catch (SocketException& e)
@@ -33,11 +33,11 @@ UdpListener::UdpListener(std::shared_ptr<UdpSocket> socket, std::shared_ptr<micr
     if (dispatcher != nullptr)
     {
         mConnection = std::make_shared<UdpConnection>(mSocket, dispatcher);
-        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name(std::string("[") + mSocket->HostAddress() + "]:" + std::to_string(mSocket->HostPort()));
     }
     else
     {
-        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name(std::string("[") + mSocket->HostAddress() + "]:" + std::to_string(mSocket->HostPort()));
     }
 }
 
@@ -55,7 +55,7 @@ bool UdpListener::Close()
 {
     if (mSocket != nullptr)
     {
-        LOG("Close host: %s:%u", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
+        LOG("Close host: %s:%u", mSocket->HostAddress->c_str(), mSocket->HostPort());
         mSocket->Detach();
         mSocket = nullptr;
     }

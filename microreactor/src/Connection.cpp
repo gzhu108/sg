@@ -43,9 +43,9 @@ Connection::~Connection()
 
 Connection& Connection::RegisterMessage(std::shared_ptr<Message> message, std::shared_ptr<Reactor> client)
 {
-    message->Client.set(client);
+    message->Client(client);
 
-    auto dispatcher = Dispatcher.cref();
+    auto dispatcher = Dispatcher();
     if (dispatcher != nullptr)
     {
         dispatcher->RegisterMessage(message);
@@ -141,7 +141,7 @@ void Connection::ProcessMessage()
     // Flush the socket first
     Flush();
     
-    auto dispatcher = Dispatcher.cref();
+    auto dispatcher = Dispatcher();
     if (dispatcher != nullptr)
     {
         // Remove timed out messages

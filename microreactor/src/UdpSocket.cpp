@@ -333,7 +333,7 @@ bool UdpSocket::Bind(const std::string& hostAddress, uint16_t port)
     {
         // WSAIoctl(SIO_UDP_CONNRESET) Error
         int error = GetSocketError();
-        THROW(SocketException, error, HostAddress.cref(), HostPort.cref());
+        THROW(SocketException, error, HostAddress(), HostPort());
     }
 #endif
 

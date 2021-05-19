@@ -26,7 +26,7 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
         if (dispatcher != nullptr)
         {
             std::string address = LOCAL_HOST;
-            std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(dispatcher->Address.cref(), dispatcher->Port.cref(), SOCK_DGRAM, IPPROTO_UDP, false);
+            std::shared_ptr<addrinfo> addrInfo = NetworkUtility::GetAddressInfo(dispatcher->Address(), dispatcher->Port(), SOCK_DGRAM, IPPROTO_UDP, false);
             if (addrInfo != nullptr && addrInfo->ai_addr->sa_family == AF_INET6)
             {
                 address = LOCAL_HOST_IPV6;
@@ -43,8 +43,8 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
                 Close();
             }
 
-            mSocket->PeerAddress.set(dispatcher->Address.cref());
-            mSocket->PeerPort.set(dispatcher->Port.cref());
+            mSocket->PeerAddress(dispatcher->Address());
+            mSocket->PeerPort(dispatcher->Port());
         }
 
         // Client connection to a server
@@ -53,7 +53,7 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
 
     if (!mSocket->HostAddress->empty())
     {
-        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name(std::string("[") + mSocket->HostAddress() + "]:" + std::to_string(mSocket->HostPort()));
     }
 
     mReceiveBufferSize = DEFAULT_UDP_CONNECTION_BUFFER_SIZE;
@@ -71,7 +71,7 @@ std::string UdpConnection::GetPeerAddress() const
         return "";
     }
 
-    return mSocket->PeerAddress.cref();
+    return mSocket->PeerAddress();
 }
 
 uint16_t UdpConnection::GetPeerPort() const
@@ -81,14 +81,14 @@ uint16_t UdpConnection::GetPeerPort() const
         return 0;
     }
 
-    return mSocket->PeerPort.cref();
+    return mSocket->PeerPort();
 }
 
 Connection& UdpConnection::SetPeerAddress(const std::string& peerAddress)
 {
     if (mSocket && mSocket->IsValid())
     {
-        mSocket->PeerAddress.set(peerAddress);
+        mSocket->PeerAddress(peerAddress);
     }
 
     return *this;
@@ -98,7 +98,7 @@ Connection& UdpConnection::SetPeerPort(uint16_t peerPort)
 {
     if (mSocket && mSocket->IsValid())
     {
-        mSocket->PeerPort.set(peerPort);
+        mSocket->PeerPort(peerPort);
     }
     
     return *this;
@@ -137,10 +137,10 @@ uint64_t UdpConnection::Send(const char* buffer, int length)
 
     try
     {
-        if (mSocket->SendWait(SendTimeout.cref()))
+        if (mSocket->SendWait(SendTimeout()))
         {
             int sent = 0;
-            if (mSocket->SendTo(&buffer[0], length, mSocket->PeerAddress.cref(), mSocket->PeerPort.cref(), sent))
+            if (mSocket->SendTo(&buffer[0], length, mSocket->PeerAddress(), mSocket->PeerPort(), sent))
             {
                 return sent;
             }

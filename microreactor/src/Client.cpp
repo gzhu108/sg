@@ -32,7 +32,7 @@ void Client::Initialize(std::shared_ptr<Connection> connection)
         // Push to the queue to receive messages.
         if (mConnection->Start())
         {
-            ClientName.set(mConnection->Name.cref());
+            ClientName(mConnection->Name());
             if (!ClientName->empty())
             {
                 LOG("Client receive message from %s --> [%s:%d]", ClientName->c_str(), mConnection->GetPeerAddress().c_str(), mConnection->GetPeerPort());
@@ -53,7 +53,7 @@ std::shared_ptr<Connection> Client::GetConnection()
     }
     else if (mConnection->IsClosed())
     {
-        mConnection = NetworkUtility::CreateConnection(mConnection->Dispatcher.cref());
+        mConnection = NetworkUtility::CreateConnection(mConnection->Dispatcher());
     }
 
     return mConnection;

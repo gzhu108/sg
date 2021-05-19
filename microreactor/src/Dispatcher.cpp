@@ -21,10 +21,10 @@ void Dispatcher::Dispatch(Connection& connection)
 void Dispatcher::RegisterMessage(std::shared_ptr<Message> message)
 {
     // Only register the message that expects a response
-    if (message != nullptr && message->ResponseTimeout.cref() > 0)
+    if (message != nullptr && message->ResponseTimeout() > 0)
     {
         // Track the message
-        mTrackedMessages.Add(message->TrackId.cref(), message);
+        mTrackedMessages.Add(message->TrackId(), message);
         message->SetRequestTime();
     }
 }
@@ -43,13 +43,13 @@ void Dispatcher::RemoveTimedOutMessages(Connection& connection)
                     std::chrono::high_resolution_clock::now().time_since_epoch().count(),
                     message->TrackId->c_str());
 
-                auto client = message->Client.cref();
+                auto client = message->Client();
                 if (client != nullptr)
                 {
                     client->ProcessTimeout(message);
                 }
 
-                mTrackedMessages.Remove(message->TrackId.cref());
+                mTrackedMessages.Remove(message->TrackId());
             }
         }
     }

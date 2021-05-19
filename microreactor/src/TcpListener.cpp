@@ -9,7 +9,7 @@ using namespace microreactor;
 TcpListener::TcpListener(std::shared_ptr<TcpSocket> socket, std::shared_ptr<microreactor::Dispatcher> dispatcher)
     : mSocket(socket)
 {
-    Dispatcher.set(dispatcher);
+    Dispatcher(dispatcher);
 
     if (mSocket == nullptr)
     {
@@ -26,7 +26,7 @@ TcpListener::TcpListener(std::shared_ptr<TcpSocket> socket, std::shared_ptr<micr
     {
         try
         {
-            mSocket->Listen(dispatcher->Address->c_str(), dispatcher->Port.cref());
+            mSocket->Listen(dispatcher->Address->c_str(), dispatcher->Port());
         }
         catch (SocketException& e)
         {
@@ -37,7 +37,7 @@ TcpListener::TcpListener(std::shared_ptr<TcpSocket> socket, std::shared_ptr<micr
         }
     }
 
-    Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+    Name(std::string("[") + mSocket->HostAddress() + "]:" + std::to_string(mSocket->HostPort()));
 }
 
 TcpListener::~TcpListener()
@@ -54,7 +54,7 @@ bool TcpListener::Close()
 {
     if (mSocket != nullptr)
     {
-        LOG("Close listener: %s:%u", mSocket->HostAddress->c_str(), mSocket->HostPort.cref());
+        LOG("Close listener: %s:%u", mSocket->HostAddress->c_str(), mSocket->HostPort());
         mSocket->Detach();
         mSocket = nullptr;
     }
@@ -74,7 +74,7 @@ std::shared_ptr<Connection> TcpListener::Listen()
         std::shared_ptr<TcpSocket> clientSocket = mSocket->Accept();
         if (clientSocket != nullptr)
         {
-            std::shared_ptr<TcpConnection> connection = std::make_shared<TcpConnection>(clientSocket, Dispatcher.cref());
+            std::shared_ptr<TcpConnection> connection = std::make_shared<TcpConnection>(clientSocket, Dispatcher());
             return connection;
         }
     }

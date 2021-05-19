@@ -14,11 +14,11 @@ std::shared_ptr<Connection> NetworkUtility::CreateConnection(std::shared_ptr<Dis
         return nullptr;
     }
 
-    if (dispatcher->Protocol.cref() == "tcp")
+    if (dispatcher->Protocol() == "tcp")
     {
         return std::make_shared<TcpConnection>(nullptr, dispatcher);
     }
-    else if (dispatcher->Protocol.cref() == "udp")
+    else if (dispatcher->Protocol() == "udp")
     {
         return std::make_shared<UdpConnection>(nullptr, dispatcher);
     }
@@ -36,13 +36,13 @@ std::shared_ptr<Listener> NetworkUtility::CreateListener(std::shared_ptr<Dispatc
         return nullptr;
     }
 
-    if (dispatcher->Protocol.cref() == "tcp")
+    if (dispatcher->Protocol() == "tcp")
     {
         auto listener = std::make_shared<TcpListener>(nullptr, dispatcher);
         LOG("TCP HOST: %s", listener->Name->c_str());
         return listener;
     }
-    else if (dispatcher->Protocol.cref() == "udp")
+    else if (dispatcher->Protocol() == "udp")
     {
         auto listener = std::make_shared<UdpListener>(nullptr, dispatcher);
         LOG("UDP HOST: %s", listener->Name->c_str());

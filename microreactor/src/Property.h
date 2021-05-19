@@ -153,6 +153,42 @@ namespace microreactor
             return *this;
         }
 
+        auto& set(T&& value)
+        {
+            ScopeLock<decltype(mLock)> scopeLock(mLock);
+            if (Comparable<T>(mValue) != value)
+            {
+                if (mSetter == nullptr)
+                {
+                    mValue = std::move(value);
+                }
+                else
+                {
+                    mSetter(mValue, value);
+                }
+                
+                // Signal property value changed
+                mValueChanged(mValue);
+            }
+
+            return *this;
+        }
+
+        const T& operator ()()
+        {
+            return ref();
+        }
+
+        auto& operator ()(const T& value)
+        {
+            return set(value);
+        }
+
+        auto& operator ()(T&& value)
+        {
+            return set(value);
+        }
+
     private:
         mutable std::recursive_mutex mLock;
         GetterType mGetter;

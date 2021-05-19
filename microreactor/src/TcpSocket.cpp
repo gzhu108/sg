@@ -115,7 +115,7 @@ bool TcpSocket::Connect(const std::string& address, uint16_t port)
         // Get the connection name
         if (GetPeerAddress())
         {
-            LOG("TCP [%s]:%d -> [%s]:%d", HostAddress->c_str(), HostPort.cref(), PeerAddress->c_str(), PeerPort.cref());
+            LOG("TCP [%s]:%d -> [%s]:%d", HostAddress->c_str(), HostPort(), PeerAddress->c_str(), PeerPort());
             mConnected();
         }
 

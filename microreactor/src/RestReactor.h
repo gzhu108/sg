@@ -20,7 +20,7 @@ namespace microreactor
         RestReactor(Connection& connection, std::shared_ptr<MessageType> input)
             : Reactor(connection, input)
         {
-            mInput->TrackId.set(Uuid::GenerateUuid().ToString());
+            mInput->TrackId(Uuid::GenerateUuid().ToString());
         }
 
         virtual ~RestReactor() {}

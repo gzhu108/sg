@@ -152,7 +152,7 @@ bool Socket::Receive(char* buffer, int length, int& bytesReceived)
         {
             return false;
         }
-        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
+        THROW(SocketException, error, PeerAddress(), PeerPort());
     }
     else if (bytesReceived == 0)
     {
@@ -197,7 +197,7 @@ bool Socket::SendWait(const std::chrono::milliseconds& timeout)
     {
         // select error
         int error = GetSocketError();
-        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
+        THROW(SocketException, error, PeerAddress(), PeerPort());
     }
     else if (result > 0)
     {
@@ -253,7 +253,7 @@ bool Socket::Send(const char* buffer, int length, int& bytesSent)
                 bytesSent = (int)(ptrBuf - buffer);
                 return false;
             }
-            THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
+            THROW(SocketException, error, PeerAddress(), PeerPort());
         }
 
         ptrBuf += sent;
@@ -290,7 +290,7 @@ bool Socket::ReceiveFrom(char* buffer, int length, std::string& source, uint16_t
         {
             return false;
         }
-        THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
+        THROW(SocketException, error, PeerAddress(), PeerPort());
     }
     else if (bytesReceived == 0)
     {
@@ -307,8 +307,8 @@ bool Socket::ReceiveFrom(char* buffer, int length, std::string& source, uint16_t
     GetSocketAddress();
     
     // Set the peer name and port
-    PeerAddress.set(source);
-    PeerPort.set(port);
+    PeerAddress(source);
+    PeerPort(port);
 
     return bytesReceived > 0;
 }
@@ -357,7 +357,7 @@ bool Socket::SendTo(const char* buffer, int length, const std::string& destinati
                 bytesSent = (int)(ptrBuf - buffer);
                 return false;
             }
-            THROW(SocketException, error, PeerAddress.cref(), PeerPort.cref());
+            THROW(SocketException, error, PeerAddress(), PeerPort());
         }
 
         ptrBuf += sent;
@@ -471,8 +471,8 @@ bool Socket::GetSocketAddress()
         
         if (GetAddressName(socketAddr, socketName, socketPort))
         {
-            HostAddress.set(socketName);
-            HostPort.set(socketPort);
+            HostAddress(socketName);
+            HostPort(socketPort);
             return true;
         }
     }
@@ -494,8 +494,8 @@ bool Socket::GetPeerAddress()
         
         if (GetAddressName(peerAddr, peerAddress, peerPort))
         {
-            PeerAddress.set(peerAddress);
-            PeerPort.set(peerPort);
+            PeerAddress(peerAddress);
+            PeerPort(peerPort);
             return true;
         }
     }

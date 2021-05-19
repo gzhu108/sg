@@ -9,7 +9,7 @@ using namespace microreactor;
 TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<microreactor::Dispatcher> dispatcher)
     : mSocket(socket)
 {
-    Dispatcher.set(dispatcher);
+    Dispatcher(dispatcher);
 
     if (mSocket == nullptr || !mSocket->IsValid())
     {
@@ -24,7 +24,7 @@ TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<
 
     if (!mSocket->HostAddress->empty())
     {
-        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name(std::string("[") + mSocket->HostAddress() + "]:" + std::to_string(mSocket->HostPort()));
     }
 
     mReceiveBufferSize = DEFAULT_TCP_CONNECTION_BUFFER_SIZE;
@@ -43,7 +43,7 @@ std::string TcpConnection::GetPeerAddress() const
         return "";
     }
 
-    return mSocket->PeerAddress.cref();
+    return mSocket->PeerAddress();
 }
 
 uint16_t TcpConnection::GetPeerPort() const
@@ -53,7 +53,7 @@ uint16_t TcpConnection::GetPeerPort() const
         return 0;
     }
 
-    return mSocket->PeerPort.cref();
+    return mSocket->PeerPort();
 }
 
 uint64_t TcpConnection::Receive(char* buffer, int length)
@@ -100,7 +100,7 @@ uint64_t TcpConnection::Send(const char* buffer, int length)
 
     try
     {
-        if (mSocket->SendWait(SendTimeout.cref()))
+        if (mSocket->SendWait(SendTimeout()))
         {
             int sent = 0;
             if (mSocket->Send(&buffer[0], length, sent))
@@ -132,7 +132,7 @@ bool TcpConnection::Close()
     {
         if (mSocket->IsValid())
         {
-            LOG("Close connection: [%s]:%u", mSocket->PeerAddress->c_str(), mSocket->PeerPort.cref());
+            LOG("Close connection: [%s]:%u", mSocket->PeerAddress->c_str(), mSocket->PeerPort());
             mSocket->Detach();
         }
         
@@ -154,10 +154,10 @@ bool TcpConnection::EnsureClientConnection()
     {
         try
         {
-            mSocket->Connect(Dispatcher.cref()->Address.cref(), Dispatcher.cref()->Port.cref());
+            mSocket->Connect(Dispatcher()->Address(), Dispatcher()->Port());
             if (!mSocket->IsValid())
             {
-                LOG("Failed to connect to [%s]:%u", Dispatcher.cref()->Address->c_str(), Dispatcher.cref()->Port.cref());
+                LOG("Failed to connect to [%s]:%u", Dispatcher()->Address->c_str(), Dispatcher()->Port());
                 return false;
             }
         }
@@ -167,7 +167,7 @@ bool TcpConnection::EnsureClientConnection()
             return false;
         }
 
-        Name.set(std::string("[") + mSocket->HostAddress.cref() + "]:" + std::to_string(mSocket->HostPort.cref()));
+        Name(std::string("[") + mSocket->HostAddress() + "]:" + std::to_string(mSocket->HostPort()));
 
         mReceiveBufferSize = DEFAULT_TCP_CONNECTION_BUFFER_SIZE;
         mSocket->SetReceiveBufferSize(mReceiveBufferSize);

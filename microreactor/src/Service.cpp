@@ -110,7 +110,7 @@ bool Service::Initialize()
 
 void Service::OnConnectionMade(const std::shared_ptr<Connection>& connection)
 {
-    std::string hostName = connection->Name.cref();
+    std::string hostName = connection->Name();
     std::string connectionName = std::string("[") + connection->GetPeerAddress() + "]:" + std::to_string(connection->GetPeerPort());
 
     connection->Closed.Connect([=]()

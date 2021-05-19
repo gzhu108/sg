@@ -146,7 +146,7 @@ namespace microreactor
             typename T::ValueType value;
             if (Read(stream, value))
             {
-                property.set(value);
+                property(value);
                 return true;
             }
             return false;
