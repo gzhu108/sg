@@ -16,7 +16,7 @@ project($serviceService)
 set($serviceService_VERSION_MAJOR 1)
 set($serviceService_VERSION_MINOR 0)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 find_package(unofficial-http-parser CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)

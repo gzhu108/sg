@@ -16,7 +16,7 @@ project(StreetGangServer)
 set(StreetGangServer_VERSION_MAJOR 1)
 set(StreetGangServer_VERSION_MINOR 0)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
  
 # To find and use dependency header files
 find_path(DEPENDENCY_INCLUDE_DIR PATH_SUFFIXES openssl)
