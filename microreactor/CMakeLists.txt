@@ -16,7 +16,7 @@ project(Microreactor)
 set(Microreactor_VERSION_MAJOR 1)
 set(Microreactor_VERSION_MINOR 0)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 # Set compiler and linker flags
 if ((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin"))

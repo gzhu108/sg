@@ -12,7 +12,7 @@ endif()
 
 project(StreetGangProto)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
  
 # To find and use dependency header files
 find_path(DEPENDENCY_INCLUDE_DIR NAMES http_parser.h)
