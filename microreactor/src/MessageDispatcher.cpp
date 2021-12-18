@@ -16,7 +16,7 @@ MessageDispatcher::~MessageDispatcher()
 void MessageDispatcher::Dispatch(Connection& connection)
 {
     // Receive data from the connection
-    if (!connection.Receive(mReceiveStream))
+    if (!connection.Read(mReceiveStream))
     {
         return;
     }

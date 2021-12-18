@@ -26,7 +26,7 @@ bool MessageRequester::SendMessage(std::shared_ptr<Message> message, std::shared
     if (message->Encode(stream))
     {
         // Send message
-        uint64_t sent = mConnection.Send(stream);
+        uint64_t sent = mConnection.Write(stream);
         if (sent > 0)
         {
             // Register the message with the dispatcher

@@ -43,8 +43,8 @@ namespace microreactor
         virtual Connection& SetPeerPort(uint16_t peerPort) { return *this; }
 
         virtual Connection& Flush() { return *this; }
-        virtual bool Receive(std::iostream& stream);
-        virtual bool Send(std::iostream& stream);
+        virtual bool Read(std::iostream& stream);
+        virtual bool Write(std::iostream& stream);
 
         virtual uint64_t Receive(char* buffer, int length) = 0;
         virtual uint64_t Send(const char* buffer, int length) = 0;

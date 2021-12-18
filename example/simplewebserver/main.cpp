@@ -101,6 +101,8 @@ std::vector<std::shared_ptr<Listener>>::size_type Initialize(int32_t argc, const
 
 int32_t main(int32_t argc, const char* argv[])
 {
+    //TaskManagerSingleton::GetTaskManager()->SetThreadPoolSize(10);
+
     std::vector<std::shared_ptr<Listener>> listeners;
     if (Initialize(argc, argv, listeners) == 0)
     {
@@ -108,6 +110,8 @@ int32_t main(int32_t argc, const char* argv[])
     }
     else
     {
+        LOG("PoolSize=%u", TaskManagerSingleton::GetThreadPoolSize());
+
         // Start the REST services
         if (!Application::Context().Run(listeners))
         {

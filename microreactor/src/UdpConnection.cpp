@@ -58,6 +58,7 @@ UdpConnection::UdpConnection(std::shared_ptr<UdpSocket> socket, std::shared_ptr<
 
     mReceiveBufferSize = DEFAULT_UDP_CONNECTION_BUFFER_SIZE;
     mSocket->SetReceiveBufferSize(DEFAULT_UDP_CONNECTION_BUFFER_SIZE);
+    mSocket->SetNonblocking(true);
 }
 
 UdpConnection::~UdpConnection()
@@ -115,9 +116,12 @@ uint64_t UdpConnection::Receive(char* buffer, int length)
     std::string source;
     uint16_t port = 0;
 
-    if (mSocket->ReceiveFrom(&buffer[0], length, source, port, received))
+    if (mSocket->ReceiveWait(std::chrono::milliseconds::zero()))
     {
-        mDataRetrieved = true;
+        if (mSocket->ReceiveFrom(&buffer[0], length, source, port, received))
+        {
+            mDataRetrieved = true;
+        }
     }
 
     return received;

@@ -62,9 +62,6 @@ bool TcpSocket::Listen(const std::string& hostAddress, uint16_t port)
         THROW(SocketException, error, hostAddress, port);
     }
 
-    // Set the socket into non-blocking mode
-    SetNonblocking(true);
-
     return true;
 }
 
@@ -80,10 +77,6 @@ std::shared_ptr<TcpSocket> TcpSocket::Accept()
     }
         
     std::shared_ptr<TcpSocket> clientSocket = std::make_shared<TcpSocket>(socket);
-
-    // Set the socket into non-blocking mode
-    clientSocket->SetNonblocking(true);
-
     return clientSocket;
 }
 
@@ -118,9 +111,6 @@ bool TcpSocket::Connect(const std::string& address, uint16_t port)
             LOG("TCP [%s]:%d -> [%s]:%d", HostAddress->c_str(), HostPort(), PeerAddress->c_str(), PeerPort());
             mConnected();
         }
-
-        // Set the socket into non-blocking mode
-        SetNonblocking(true);
 
         return true;
     }

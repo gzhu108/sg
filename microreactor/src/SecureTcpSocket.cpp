@@ -79,9 +79,6 @@ bool SecureTcpSocket::Connect(const std::string& address, uint16_t port, const s
     mSsl = SSL_new(mContext); //create new SSL connection state
     int result = SSL_set_fd(mSsl, (int)mSocket); // attach the socket descriptor
 
-    // Set the socket non-blocking
-    SetNonblocking(true);
-
     // perform the connection
     result = SSL_connect(mSsl);
     while (result <= 0)

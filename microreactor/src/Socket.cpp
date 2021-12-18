@@ -135,52 +135,65 @@ int Socket::SetNonblocking(bool nonblocking)
     return result;
 }
 
-bool Socket::Receive(char* buffer, int length, int& bytesReceived)
+bool Socket::ReceiveWait(const std::chrono::milliseconds& timeout)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
+    std::unique_ptr<timeval> tv;
+    std::chrono::seconds timeoutSeconds = std::chrono::duration_cast<std::chrono::seconds>(timeout);
+    std::chrono::milliseconds timeoutRemainder = timeout - std::chrono::duration_cast<std::chrono::milliseconds>(timeoutSeconds);
+    std::chrono::microseconds timeoutMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(timeoutRemainder);
 
-    if (buffer == nullptr || length == 0)
-    {
-        THROW(InvalidArgumentException);
-    }
+    tv.reset(new timeval());
+    tv->tv_sec = (decltype(tv->tv_sec))timeoutSeconds.count();
+    tv->tv_usec = (decltype(tv->tv_usec))timeoutMicroseconds.count();
 
-    bytesReceived = recv(mSocket, buffer, length, 0);
-    if (bytesReceived == SOCKET_ERROR)
+    // Select the server socket for checking incoming connection.
+    fd_set readfds;
+    FD_ZERO(&readfds);
+    FD_SET(mSocket, &readfds);
+
+    fd_set exceptfds;
+    FD_ZERO(&exceptfds);
+    FD_SET(mSocket, &exceptfds);
+
+    // Wait until timeout, tv = zero returns immediately, tv = NULL for blocking operation.
+    int result = select((int)mSocket + 1, &readfds, nullptr, &exceptfds, tv.get());
+    if (result == SOCKET_ERROR)
     {
+        // select error
         int error = GetSocketError();
-        if (error == EAGAIN || error == EWOULDBLOCK)
-        {
-            return false;
-        }
         THROW(SocketException, error, PeerAddress(), PeerPort());
     }
-    else if (bytesReceived == 0)
+    else if (result > 0)
     {
-        // Peer socket closed
-        Detach();
+        if (FD_ISSET(mSocket, &readfds))
+        {
+            return true;
+        }
+
+        if (FD_ISSET(mSocket, &exceptfds))
+        {
+            // Socket exception
+            Detach();
+        }
+    }
+    else
+    {
+        // Timeout
     }
 
-    return bytesReceived > 0;
+    return false;
 }
 
 bool Socket::SendWait(const std::chrono::milliseconds& timeout)
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
-
-    // Set the socket into non-blocking mode
-    SetNonblocking(true);
-
     std::unique_ptr<timeval> tv;
-    if (timeout.count() != 0)
-    {
-        std::chrono::seconds timeoutSeconds = std::chrono::duration_cast<std::chrono::seconds>(timeout);
-        std::chrono::milliseconds timeoutRemainder = timeout - std::chrono::duration_cast<std::chrono::milliseconds>(timeoutSeconds);
-        std::chrono::microseconds timeoutMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(timeoutRemainder);
+    std::chrono::seconds timeoutSeconds = std::chrono::duration_cast<std::chrono::seconds>(timeout);
+    std::chrono::milliseconds timeoutRemainder = timeout - std::chrono::duration_cast<std::chrono::milliseconds>(timeoutSeconds);
+    std::chrono::microseconds timeoutMicroseconds = std::chrono::duration_cast<std::chrono::microseconds>(timeoutRemainder);
 
-        tv.reset(new timeval());
-        tv->tv_sec = (decltype(tv->tv_sec))timeoutSeconds.count();
-        tv->tv_usec = (decltype(tv->tv_usec))timeoutMicroseconds.count();
-    }
+    tv.reset(new timeval());
+    tv->tv_sec = (decltype(tv->tv_sec))timeoutSeconds.count();
+    tv->tv_usec = (decltype(tv->tv_usec))timeoutMicroseconds.count();
 
     // Select the server socket for checking incoming connection.
     fd_set writefds;
@@ -191,7 +204,7 @@ bool Socket::SendWait(const std::chrono::milliseconds& timeout)
     FD_ZERO(&exceptfds);
     FD_SET(mSocket, &exceptfds);
 
-    // Wait until timeout for writing, tv = NULL for blocking operation.
+    // Wait until timeout, tv = zero returns immediately, tv = NULL for blocking operation.
     int result = select((int)mSocket + 1, nullptr, &writefds, &exceptfds, tv.get());
     if (result == SOCKET_ERROR)
     {
@@ -220,7 +233,7 @@ bool Socket::SendWait(const std::chrono::milliseconds& timeout)
     return false;
 }
 
-bool Socket::Send(const char* buffer, int length, int& bytesSent)
+bool Socket::Receive(char* buffer, int length, int& bytesReceived)
 {
     ScopeLock<decltype(mLock)> scopeLock(mLock);
 
@@ -229,8 +242,33 @@ bool Socket::Send(const char* buffer, int length, int& bytesSent)
         THROW(InvalidArgumentException);
     }
 
-    // Set the socket into blocking mode
-    //SetNonblocking(false);
+    bytesReceived = recv(mSocket, buffer, length, 0);
+    if (bytesReceived == SOCKET_ERROR)
+    {
+        int error = GetSocketError();
+        if (error == EAGAIN || error == EWOULDBLOCK)
+        {
+            return false;
+        }
+        THROW(SocketException, error, PeerAddress(), PeerPort());
+    }
+    else if (bytesReceived == 0)
+    {
+        // Peer socket closed
+        Detach();
+    }
+
+    return bytesReceived > 0;
+}
+
+bool Socket::Send(const char* buffer, int length, int& bytesSent)
+{
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
+
+    if (buffer == nullptr || length == 0)
+    {
+        THROW(InvalidArgumentException);
+    }
 
     int bytesToSend = length;
     const char* ptrBuf = buffer;

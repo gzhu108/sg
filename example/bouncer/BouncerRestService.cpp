@@ -68,7 +68,7 @@ std::shared_ptr<Reactor> BouncerRestService::CreateBouncerReactor(std::shared_pt
     stream << "\r\n";
     stream.write(request->mBody.mOffset, request->mBody.mLength);
 
-    LOG("Send Request:\n%s\n", stream.str().c_str());
+    LOG("Write Request:\n%s\n", stream.str().c_str());
 
     std::shared_ptr<Connection> target = NetworkUtility::CreateConnection(targetDispatcher);
     return std::make_shared<BouncerReactor>(connection, target, stream);

@@ -231,7 +231,7 @@ bool RestMessage::Send(Connection& connection)
         {
             std::stringstream chunkStream;
             chunkStream << std::uppercase << std::hex << chunk->mBody.mLength << "\r\n" << std::string(chunk->mBody.mOffset, chunk->mBody.mLength);
-            result = connection.Send(chunkStream);
+            result = connection.Write(chunkStream);
         }
 
         std::string terminateChunk("0\r\n\r\n");

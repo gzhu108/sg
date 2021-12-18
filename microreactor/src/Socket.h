@@ -69,6 +69,7 @@ namespace microreactor
         virtual int GetSockOpt(int level, int optname, char* optval, socklen_t* optlen);
 
         virtual int SetNonblocking(bool nonblocking);
+        virtual bool ReceiveWait(const std::chrono::milliseconds& timeout);
         virtual bool SendWait(const std::chrono::milliseconds& timeout);
 
         virtual bool Receive(char* buffer, int length, int& bytesReceived);

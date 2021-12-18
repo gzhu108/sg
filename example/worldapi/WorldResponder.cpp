@@ -67,7 +67,7 @@ bool WorldResponder::SendMessage(std::shared_ptr<WorldMessage> message)
             serializer.Write(messageStream, stream))
         {
             // Send message
-            uint64_t sent = mConnection.Send(stream);
+            uint64_t sent = mConnection.Write(stream);
             if (sent > 0)
             {
                 return true;

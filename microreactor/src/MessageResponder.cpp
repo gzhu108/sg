@@ -26,7 +26,7 @@ bool MessageResponder::SendMessage(std::shared_ptr<Message> message)
     if (message->Encode(stream))
     {
         // Send message
-        uint64_t sent = mConnection.Send(stream);
+        uint64_t sent = mConnection.Write(stream);
         if (sent > 0)
         {
             return true;

@@ -54,7 +54,7 @@ Connection& Connection::RegisterMessage(std::shared_ptr<Message> message, std::s
     return *this;
 }
 
-bool Connection::Receive(std::iostream& stream)
+bool Connection::Read(std::iostream& stream)
 {
     if (mReceiveBufferSize == 0)
     {
@@ -77,7 +77,7 @@ bool Connection::Receive(std::iostream& stream)
     return false;
 }
 
-bool Connection::Send(std::iostream& stream)
+bool Connection::Write(std::iostream& stream)
 {
     int length = (int)GetStreamSize(stream);
     if (length == 0)

@@ -29,6 +29,7 @@ TcpConnection::TcpConnection(std::shared_ptr<TcpSocket> socket, std::shared_ptr<
 
     mReceiveBufferSize = DEFAULT_TCP_CONNECTION_BUFFER_SIZE;
     mSocket->SetReceiveBufferSize(DEFAULT_TCP_CONNECTION_BUFFER_SIZE);
+    mSocket->SetNonblocking(true);
 }
 
 TcpConnection::~TcpConnection()
@@ -72,9 +73,12 @@ uint64_t TcpConnection::Receive(char* buffer, int length)
     try
     {
         int received = 0;
-        if (mSocket->Receive(&buffer[0], length, received))
+        if (mSocket->ReceiveWait(std::chrono::milliseconds::zero()))
         {
-            return received;
+            if (mSocket->Receive(&buffer[0], length, received))
+            {
+                return received;
+            }
         }
     }
     catch (SocketException& e)

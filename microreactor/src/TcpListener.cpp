@@ -71,11 +71,14 @@ std::shared_ptr<Connection> TcpListener::Listen()
 
     try
     {
-        std::shared_ptr<TcpSocket> clientSocket = mSocket->Accept();
-        if (clientSocket != nullptr)
+        if (mSocket->ReceiveWait(std::chrono::milliseconds::zero()))
         {
-            std::shared_ptr<TcpConnection> connection = std::make_shared<TcpConnection>(clientSocket, Dispatcher());
-            return connection;
+            std::shared_ptr<TcpSocket> clientSocket = mSocket->Accept();
+            if (clientSocket != nullptr)
+            {
+                std::shared_ptr<TcpConnection> connection = std::make_shared<TcpConnection>(clientSocket, Dispatcher());
+                return connection;
+            }
         }
     }
     catch (SocketException& e)

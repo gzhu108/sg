@@ -154,7 +154,7 @@ StreetGangBinaryClient::~StreetGangBinaryClient()
                 serializer.Write(messageStream, stream))
             {
                 // Send byebye message
-                mConnection->Send(stream);
+                mConnection->Write(stream);
             }
         }
     }

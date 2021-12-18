@@ -32,7 +32,7 @@ StreetGangPBClient::~StreetGangPBClient()
         if (message->Encode(stream))
         {
             // Send byebye message
-            mConnection->Send(stream);
+            mConnection->Write(stream);
         }
     }
 }
