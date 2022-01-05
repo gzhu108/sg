@@ -214,14 +214,14 @@ std::shared_ptr<RestMessage> RestMessage::Parse(std::shared_ptr<RestMessage> par
 
 bool RestMessage::Send(Connection& connection)
 {
-    std::string buffer;
-    if (Write(buffer))
+    SharedBuffer buffer = std::make_shared<Buffer>();
+    if (Write(*buffer))
     {
         LOG("\n---------------------------------------");
-        LOG("%s", buffer.c_str());
+        LOG("%s", buffer->c_str());
         LOG("\n---------------------------------------");
 
-        bool result = connection.Send(buffer.data(), (int32_t)buffer.length()) == buffer.length();
+        bool result = connection.Send(buffer);
         if (!result || !mBody.mLength)
         {
             return result;
@@ -231,11 +231,12 @@ bool RestMessage::Send(Connection& connection)
         {
             std::stringstream chunkStream;
             chunkStream << std::uppercase << std::hex << chunk->mBody.mLength << "\r\n" << std::string(chunk->mBody.mOffset, chunk->mBody.mLength);
-            result = connection.Write(chunkStream);
+            SharedBuffer chunkBuffer = std::make_shared<Buffer>(chunkStream.str());
+            result = connection.Send(chunkBuffer);
         }
 
-        std::string terminateChunk("0\r\n\r\n");
-        return connection.Send(terminateChunk.data(), (int32_t)terminateChunk.length()) == terminateChunk.length();
+        SharedBuffer terminateChunk = std::make_shared<Buffer>("0\r\n\r\n");
+        return connection.Send(terminateChunk);
     }
 
     return false;

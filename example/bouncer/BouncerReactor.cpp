@@ -32,8 +32,9 @@ bool BouncerReactor::Process()
 
     LOG("%s: Received " FMT_UINT64 " bytes", mConnection.Name->c_str(), mData.size());
 
-    auto bytesSent = mTarget->Send(&mData[0], (int32_t)mData.size());
-    if (bytesSent != mData.size())
+    SharedBuffer buffer = std::make_shared<Buffer>(&mData[0], (int32_t)mData.size());
+    auto bytesSent = mTarget->Send(buffer);
+    if (!mTarget->Send(buffer))
     {
         return false;
     }
@@ -44,25 +45,23 @@ bool BouncerReactor::Process()
 
 bool BouncerReactor::ReceiveTarget()
 {
-    std::vector<char> response;
-    response.resize(10240);
-
     if (!mTarget->IsClosed())
     {
-        auto bytesReceived = mTarget->Receive(&response[0], (int32_t)response.size());
-        LOG("%s: Recieved " FMT_UINT64 " bytes", mTarget->Name->c_str(), bytesReceived);
-        LOG("++++++++++++++++\n%.*s\n-------------------", bytesReceived, &response[0]);
-
-        if (bytesReceived)
+        SharedBuffer response = mTarget->Receive();
+        if (response == nullptr || response->empty())
         {
-            auto bytesSent = mConnection.Send(&response[0], (int32_t)bytesReceived);
-            if (bytesSent != bytesReceived)
-            {
-                return false;
-            }
-
-            LOG("%s: Sent " FMT_UINT64 " bytes", mConnection.Name->c_str(), bytesSent);
+            return false;
         }
+
+        LOG("%s: Recieved " FMT_UINT64 " bytes", mTarget->Name->c_str(), response->size());
+        LOG("++++++++++++++++\n%.*s\n-------------------", response->size(), response->c_str());
+
+        if (!mConnection.Send(response))
+        {
+            return false;
+        }
+
+        LOG("%s: Sent " FMT_UINT64 " bytes", mConnection.Name->c_str(), response->size());
 
         SUBMIT_MEMBER(BouncerReactor::ReceiveTarget, "BouncerReactor::ReceiveTarget");
         return true;

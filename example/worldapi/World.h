@@ -3,7 +3,6 @@
 #define worldapi_World
 
 #include <vector>
-#include "Parkable.h"
 #include "WorldId.h"
 #include "Point.h"
 #include "Rectangle.h"

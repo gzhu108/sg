@@ -31,13 +31,14 @@ static void LogTps()
 
 Connection::Connection()
     : mReceiveBufferSize(0)
+    , mStopped(false)
 {
 }
 
 Connection::~Connection()
 {
-    mPrecessMessageTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
-    mPrecessMessageTask->Cancel();
+    mProcessMessageTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mProcessMessageTask->Cancel();
     RemoveAllReactors();
 }
 
@@ -56,22 +57,17 @@ Connection& Connection::RegisterMessage(std::shared_ptr<Message> message, std::s
 
 bool Connection::Read(std::iostream& stream)
 {
-    if (mReceiveBufferSize == 0)
+    SharedBuffer receiveBuffer = Receive();
+    if (receiveBuffer == nullptr || receiveBuffer->empty())
     {
         return false;
     }
 
-    std::vector<char> receiveBuffer(mReceiveBufferSize);
-    int received = (int)Receive(&receiveBuffer[0], mReceiveBufferSize);
-    if (received > 0)
+    stream.clear();
+    stream.write(receiveBuffer->data(), receiveBuffer->size());
+    if (!stream.eof() && !stream.fail() && !stream.bad())
     {
-        stream.clear();
-        stream.write(&receiveBuffer[0], received);
-
-        if (!stream.eof() && !stream.fail() && !stream.bad())
-        {
-            return true;
-        }
+        return true;
     }
 
     return false;
@@ -85,14 +81,37 @@ bool Connection::Write(std::iostream& stream)
         return false;
     }
 
-    std::vector<char> sendBuffer(length);
-    stream.read(&sendBuffer[0], length);
+    SharedBuffer sendBuffer = std::make_shared<Buffer>(length, '\0');
+    stream.read(&sendBuffer->front(), length);
     if (stream.eof() || stream.fail() || stream.bad())
     {
         return false;
     }
 
-    return Send(&sendBuffer[0], length) > 0;
+    return Send(sendBuffer);
+}
+
+SharedBuffer Connection::Receive()
+{
+    if (mReceiveBufferSize == 0)
+    {
+        return nullptr;
+    }
+
+    std::vector<char> receiveBuffer(mReceiveBufferSize);
+    int received = (int)Receive(&receiveBuffer[0], mReceiveBufferSize);
+    if (received > 0)
+    {
+        return std::make_shared<Buffer>(&receiveBuffer[0], received);
+    }
+
+    return nullptr;
+}
+
+bool Connection::Send(SharedBuffer buffer)
+{
+    buffer.StartTimer();
+    return mSendBufferQueue.Submit(buffer);
 }
 
 bool Connection::Start()
@@ -102,11 +121,11 @@ bool Connection::Start()
     if (!IsClosed())
     {
         // Push to the queue to receive connection data.
-        mPrecessMessageTask = SUBMIT(std::bind(&Connection::ProcessMessage, this), "Connection::PrecessMessage");
-        if (mPrecessMessageTask != nullptr)
+        mProcessMessageTask = SUBMIT(std::bind(&Connection::ProcessMessage, this), "Connection::PrecessMessage");
+        if (mProcessMessageTask != nullptr)
         {
-            auto taskRawPtr = mPrecessMessageTask.get();
-            mPrecessMessageTask->Completed.Connect(std::bind([](Task* task)
+            auto taskRawPtr = mProcessMessageTask.get();
+            mProcessMessageTask->Completed.Connect(std::bind([](Task* task)
             {
                 task->Schedule();
             }, taskRawPtr), reinterpret_cast<uintptr_t>(this));
@@ -120,15 +139,19 @@ bool Connection::Start()
 
 bool Connection::Stop()
 {
-    ScopeLock<decltype(mLock)> scopeLock(mLock);
+    mStopped = true;
 
+    // Send remaining messages before closing
+    SendMessage();
+
+    ScopeLock<decltype(mLock)> scopeLock(mLock);
     if (!IsClosed())
     {
         Close();
     }
 
-    mPrecessMessageTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
-    mPrecessMessageTask->Cancel();
+    mProcessMessageTask->Completed.Disconnect(reinterpret_cast<uintptr_t>(this));
+    mProcessMessageTask->Cancel();
 
     RemoveAllReactors();
     mClosed();
@@ -136,10 +159,12 @@ bool Connection::Stop()
     return true;
 }
 
-void Connection::ProcessMessage()
+void Connection::ReceiveMessage()
 {
-    // Flush the socket first
-    Flush();
+    if (mStopped)
+    {
+        return;
+    }
     
     auto dispatcher = Dispatcher();
     if (dispatcher != nullptr)
@@ -154,6 +179,33 @@ void Connection::ProcessMessage()
             dispatcher->Dispatch(*this);
         }
     }
+}
+
+void Connection::SendMessage()
+{
+    // Send buffered messages
+    SharedBuffer buffer = mSendBufferQueue.GetBuffer();
+    while (buffer != nullptr)
+    {
+        if (buffer.HasTimedOut() || Send(buffer->c_str(), (int)buffer->size()) > 0)
+        {
+            buffer = mSendBufferQueue.GetBuffer();
+        }
+        else
+        {
+            mSendBufferQueue.PutBack(buffer);
+            buffer = nullptr;
+        }
+    }
+
+    // Flush the socket first
+    Flush();
+}
+
+void Connection::ProcessMessage()
+{
+    SendMessage();
+    ReceiveMessage();
 }
 
 void Connection::AddReactor(std::shared_ptr<Reactor> reactor)

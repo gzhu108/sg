@@ -13,13 +13,10 @@ Message::~Message()
 
 bool Message::HasTimedOut()
 {
-    if (ResponseTimeout() > 0)
+    if (ResponseTimeout() > std::chrono::milliseconds::zero())
     {
-        auto responseTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mCreationTime).count();
-        if (responseTime > ResponseTimeout())
-        {
-            return true;
-        }
+        auto responseTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - mRequestTime);
+        return responseTime >= ResponseTimeout();
     }
 
     return false;

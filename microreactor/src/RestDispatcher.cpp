@@ -55,14 +55,8 @@ void RestDispatcher::RegisterResource(const std::string& method, const std::stri
 
 std::shared_ptr<Reactor> RestDispatcher::Decode(Connection& connection)
 {
-    auto message = std::make_shared<std::string>();
-    message->resize(DEFAULT_HTTP_BUFFER_SIZE);
-
-    // Receive data from the connection
-    uint64_t length = connection.Receive(&message->at(0), (int32_t)message->length());
-    message->resize((size_t)length);
-
-    if (message->empty())
+    auto message = connection.Receive();
+    if (message == nullptr || message->empty())
     {
         return nullptr;
     }

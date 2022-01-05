@@ -181,9 +181,6 @@ bool StreetGangBinaryService::Initialize()
 
     mConfigurationConnectionId = configuration->ValueUpdated.Connect(std::bind(&StreetGangBinaryService::Restart, this));
 
-    uint32_t sendTimeout = 100;
-    configuration->GetValue("SendTimeout", sendTimeout);
-
     auto dispatcher = std::make_shared<StreetGangBinaryDispatcher>();
 
     std::string protocol = "tcp";
@@ -216,8 +213,6 @@ bool StreetGangBinaryService::Initialize()
 
     mListener = std::make_shared<TcpListener>(socket, dispatcher);
     LOG("SECURE TCP HOST: %s", mListener->Name->c_str());
-
-    mListener->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
     return true;
 }

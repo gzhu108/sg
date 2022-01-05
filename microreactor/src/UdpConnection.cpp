@@ -141,7 +141,7 @@ uint64_t UdpConnection::Send(const char* buffer, int length)
 
     try
     {
-        if (mSocket->SendWait(SendTimeout()))
+        if (mSocket->SendWait(std::chrono::milliseconds::zero()))
         {
             int sent = 0;
             if (mSocket->SendTo(&buffer[0], length, mSocket->PeerAddress(), mSocket->PeerPort(), sent))

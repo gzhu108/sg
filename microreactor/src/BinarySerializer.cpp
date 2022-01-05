@@ -100,6 +100,14 @@ bool BinarySerializer::Read(std::istream& stream, std::string& val)
     return SerializerRead(*this, stream, val);
 }
 
+bool BinarySerializer::Read(std::istream& stream, std::chrono::milliseconds& val)
+{
+    int64_t intVal = 0;
+    bool result = Read(stream, intVal);
+    val = std::chrono::milliseconds(intVal);
+    return result;
+}
+
 bool BinarySerializer::Read(std::istream& stream, Serializable& val)
 {
     return Serializer::Read(stream, val);
@@ -190,6 +198,12 @@ bool BinarySerializer::Write(double val, std::ostream& stream)
 bool BinarySerializer::Write(const std::string& val, std::ostream& stream)
 {
     return SerializerWrite(*this, val, stream);
+}
+
+bool BinarySerializer::Write(const std::chrono::milliseconds& val, std::ostream& stream)
+{
+    int64_t intVal = Endian::NetOrder(val.count());
+    return Write(intVal, stream);
 }
 
 bool BinarySerializer::Write(const Serializable& val, std::ostream& stream)

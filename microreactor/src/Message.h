@@ -18,7 +18,7 @@ namespace microreactor
         virtual ~Message();
 
         PROPERTY(TrackId, std::string);
-        PROPERTY(ResponseTimeout, int64_t, 0);
+        PROPERTY(ResponseTimeout, std::chrono::milliseconds, std::chrono::milliseconds::zero());
         PROPERTY(Client, std::shared_ptr<Reactor>);
 
     public:
@@ -35,8 +35,8 @@ namespace microreactor
         virtual bool Decode(std::istream& stream);
 
     protected:
-        std::chrono::time_point<std::chrono::high_resolution_clock> mCreationTime{ std::chrono::high_resolution_clock::now() };
-        std::chrono::time_point<std::chrono::high_resolution_clock> mRequestTime{ std::chrono::high_resolution_clock::now() };
+        std::chrono::time_point<std::chrono::high_resolution_clock> mCreationTime { std::chrono::high_resolution_clock::now() };
+        std::chrono::time_point<std::chrono::high_resolution_clock> mRequestTime { std::chrono::high_resolution_clock::now() };
     };
 }
 

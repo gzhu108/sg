@@ -5,10 +5,10 @@
 #include <chrono>
 #include <set>
 #include <mutex>
-#include "Parkable.h"
 #include "Dispatcher.h"
 #include "Message.h"
 #include "Task.h"
+#include "BufferQueue.h"
 
 
 namespace microreactor
@@ -24,7 +24,6 @@ namespace microreactor
         Signal<void>& Closed = mClosed;
 
         PROPERTY(Name, std::string);
-        PROPERTY(SendTimeout, std::chrono::milliseconds, std::chrono::milliseconds(100));
         PROPERTY(Dispatcher, std::shared_ptr<microreactor::Dispatcher>);
         
     public:
@@ -45,9 +44,9 @@ namespace microreactor
         virtual Connection& Flush() { return *this; }
         virtual bool Read(std::iostream& stream);
         virtual bool Write(std::iostream& stream);
-
-        virtual uint64_t Receive(char* buffer, int length) = 0;
-        virtual uint64_t Send(const char* buffer, int length) = 0;
+        
+        virtual SharedBuffer Receive();
+        virtual bool Send(SharedBuffer buffer);
         
         virtual bool Start();
         virtual bool Stop();
@@ -56,7 +55,12 @@ namespace microreactor
         virtual void AddReactor(std::shared_ptr<Reactor> reactor);
 
     protected:
+        virtual uint64_t Receive(char* buffer, int length) = 0;
+        virtual uint64_t Send(const char* buffer, int length) = 0;
         virtual bool Close() = 0;
+
+        virtual void ReceiveMessage();
+        virtual void SendMessage();
         virtual void ProcessMessage();
 
         virtual void RemoveReactor(std::shared_ptr<Reactor> reactor);
@@ -66,8 +70,10 @@ namespace microreactor
         Emittable<void> mClosed;
         std::recursive_mutex mLock;
         std::set<std::shared_ptr<Reactor>> mActiveReactors;
-        TaskPtr mPrecessMessageTask;
+        TaskPtr mProcessMessageTask;
         std::atomic<uint32_t> mReceiveBufferSize;
+        BufferQueue mSendBufferQueue;
+        bool mStopped;
     };
 }
 

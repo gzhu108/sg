@@ -91,10 +91,11 @@ int64_t Service::SendAllConnections(const char* buffer, int32_t length)
         return -1;
     }
 
+    SharedBuffer sendBuffer = std::make_shared<Buffer>(buffer, length);
     int64_t errorCount = 0;
     for (auto& connection : activeConnections)
     {
-        if (connection->Send(buffer, length) <= 0)
+        if (!connection->Send(sendBuffer))
         {
             ++errorCount;
         }

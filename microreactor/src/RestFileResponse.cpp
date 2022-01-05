@@ -53,10 +53,10 @@ RestFileResponse::~RestFileResponse()
 
 bool RestFileResponse::Send(Connection& connection)
 {
-    std::string buffer;
-    if (Write(buffer))
+    SharedBuffer buffer = std::make_shared<Buffer>();
+    if (Write(*buffer))
     {
-        bool result = connection.Send(buffer.data(), (int32_t)buffer.length()) == buffer.length();
+        bool result = connection.Send(buffer);
         if (!result || !mFileStream.is_open() || mBody.mLength)
         {
             return result;
@@ -64,22 +64,21 @@ bool RestFileResponse::Send(Connection& connection)
 
         uint64_t fileSize = GetStreamSize(mFileStream);
         uint64_t chunkSize = std::min(fileSize, CHUNK_SIZE);
-        std::string chunk;
         
         while (chunkSize)
         {
             std::stringstream chunkSizeStream;
             chunkSizeStream << std::uppercase << std::hex << chunkSize << "\r\n";
 
-            chunk.assign(chunkSizeStream.str());
-            size_t offset = chunk.length();
-            chunk.resize(offset + (size_t)chunkSize + 2);
+            SharedBuffer chunk = std::make_shared<Buffer>(chunkSizeStream.str());
+            size_t offset = chunk->size();
+            chunk->resize(offset + (size_t)chunkSize + 2);
 
-            mFileStream.read(&chunk[offset], chunkSize);
-            chunk[offset + (size_t)chunkSize] = '\r';
-            chunk[offset + (size_t)chunkSize + 1] = '\n';
+            mFileStream.read(&(*chunk)[offset], chunkSize);
+            (*chunk)[offset + (size_t)chunkSize] = '\r';
+            (*chunk)[offset + (size_t)chunkSize + 1] = '\n';
 
-            result = connection.Send(chunk.data(), (int32_t)chunk.length()) == chunk.length();
+            result = connection.Send(chunk);
             if (!result || mFileStream.eof() || mFileStream.fail() || mFileStream.bad())
             {
                 break;
@@ -89,8 +88,8 @@ bool RestFileResponse::Send(Connection& connection)
             chunkSize = std::min(fileSize, CHUNK_SIZE);
         }
 
-        std::string terminateChunk("0\r\n\r\n");
-        return connection.Send(terminateChunk.data(), (int32_t)terminateChunk.length()) == terminateChunk.length();
+        SharedBuffer terminateChunk = std::make_shared<Buffer>("0\r\n\r\n");
+        return connection.Send(terminateChunk);
     }
 
     return false;

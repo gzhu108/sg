@@ -126,6 +126,7 @@ namespace microreactor
         virtual bool Read(std::istream& stream, double& val);
         virtual bool Read(std::istream& stream, char* val, uint64_t size);
         virtual bool Read(std::istream& stream, std::string& val);
+        virtual bool Read(std::istream& stream, std::chrono::milliseconds& val);
         virtual bool Read(std::istream& stream, Serializable& val);
         
         virtual bool ReadCount(std::istream& stream, uint16_t& count)
@@ -167,6 +168,7 @@ namespace microreactor
         virtual bool Write(const char* val, uint64_t size, std::ostream& stream);
         virtual bool Write(const char* val, std::ostream& stream);
         virtual bool Write(const std::string& val, std::ostream& stream);
+        virtual bool Write(const std::chrono::milliseconds& val, std::ostream& stream);
         virtual bool Write(const Serializable& val, std::ostream& stream);
         
         virtual bool WriteCount(uint16_t count, std::ostream& stream)

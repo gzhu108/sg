@@ -99,9 +99,9 @@ void NotifyReactor::UnicastMSearch(const std::string& unicastAddress, uint16_t p
     request.mHeaders.emplace_back(HttpHeader("MX", "0"));
     request.mHeaders.emplace_back(HttpHeader("ST", ServiceType.cref()));
 
-    std::string buffer;
-    if (request.Write(buffer))
+    SharedBuffer buffer = std::make_shared<Buffer>();
+    if (request.Write(*buffer))
     {
-        mConnection.Send(buffer.data(), buffer.length());
+        mConnection.Send(buffer);
     }
 }

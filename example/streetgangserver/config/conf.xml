@@ -2,7 +2,6 @@
 
 <Service>
     <Version>1.0.0.1</Version>
-    <SendTimeout>100</SendTimeout>
     <ThreadPoolSize>8</ThreadPoolSize>
     <Protocol>tcp</Protocol>
     <ServiceAddress>0.0.0.0</ServiceAddress>

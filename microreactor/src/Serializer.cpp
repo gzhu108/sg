@@ -99,6 +99,14 @@ bool Serializer::Read(std::istream& stream, std::string& val)
     return !stream.fail() && !stream.bad();
 }
 
+bool Serializer::Read(std::istream& stream, std::chrono::milliseconds& val)
+{
+    int64_t intVal = 0;
+    bool result = Read(stream, intVal);
+    val = std::chrono::milliseconds(intVal);
+    return result;
+}
+
 bool Serializer::Read(std::istream& stream, Serializable& val)
 {
     val.Deserialize(stream, *this);
@@ -192,6 +200,12 @@ bool Serializer::Write(const char* val, std::ostream& stream)
 bool Serializer::Write(const std::string& val, std::ostream& stream)
 {
     stream.write(&val[0], val.length());
+    return !stream.eof() && !stream.fail() && !stream.bad();
+}
+
+bool Serializer::Write(const std::chrono::milliseconds& val, std::ostream& stream)
+{
+    stream << val.count();
     return !stream.eof() && !stream.fail() && !stream.bad();
 }
 

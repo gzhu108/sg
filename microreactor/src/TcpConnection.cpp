@@ -104,7 +104,7 @@ uint64_t TcpConnection::Send(const char* buffer, int length)
 
     try
     {
-        if (mSocket->SendWait(SendTimeout()))
+        if (mSocket->SendWait(std::chrono::milliseconds::zero()))
         {
             int sent = 0;
             if (mSocket->Send(&buffer[0], length, sent))

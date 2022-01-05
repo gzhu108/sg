@@ -21,7 +21,7 @@ void Dispatcher::Dispatch(Connection& connection)
 void Dispatcher::RegisterMessage(std::shared_ptr<Message> message)
 {
     // Only register the message that expects a response
-    if (message != nullptr && message->ResponseTimeout() > 0)
+    if (message != nullptr && message->ResponseTimeout() > std::chrono::milliseconds::zero())
     {
         // Track the message
         mTrackedMessages.Add(message->TrackId(), message);
@@ -34,9 +34,9 @@ void Dispatcher::RemoveTimedOutMessages(Connection& connection)
     std::vector<std::shared_ptr<Parkable<Message::ParkingSpaceNumber>>> trackedMessages;
     if (mTrackedMessages.GetAll(trackedMessages))
     {
-        for (auto& trackedMessage : trackedMessages)
+        for (auto& tracked : trackedMessages)
         {
-            auto message = std::static_pointer_cast<Message>(trackedMessage);
+            auto message = std::static_pointer_cast<Message>(tracked);
             if (message != nullptr && message->HasTimedOut())
             {
                 LOG("[" FMT_INT64 "] Dispatcher::RemoveTimedOutMessages() [TrackId=%s]",

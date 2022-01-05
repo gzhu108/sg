@@ -34,9 +34,6 @@ bool WorldService::Initialize()
 
     mConfigurationConnectionId = configuration->ValueUpdated.Connect(std::bind(&WorldService::Restart, this));
 
-    uint32_t sendTimeout = 100;
-    configuration->GetValue("SendTimeout", sendTimeout);
-
     auto dispatcher = std::make_shared<WorldDispatcher>();
 
     std::string protocol = "tcp";
@@ -52,7 +49,6 @@ bool WorldService::Initialize()
     dispatcher->Port.set(port);
 
     mListener = NetworkUtility::CreateListener(dispatcher);
-    mListener->SendTimeout.set(std::chrono::milliseconds(sendTimeout));
 
     return true;
 }

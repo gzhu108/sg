@@ -27,6 +27,7 @@ namespace microreactor
         virtual bool Read(std::istream& stream, float& val) override;
         virtual bool Read(std::istream& stream, double& val) override;
         virtual bool Read(std::istream& stream, std::string& val) override;
+        virtual bool Read(std::istream& stream, std::chrono::milliseconds& val) override;
         virtual bool Read(std::istream& stream, Serializable& val) override;
 
         virtual bool Write(std::istream& val, std::ostream& stream) override;
@@ -42,6 +43,7 @@ namespace microreactor
         virtual bool Write(float val, std::ostream& stream) override;
         virtual bool Write(double val, std::ostream& stream) override;
         virtual bool Write(const std::string& val, std::ostream& stream) override;
+        virtual bool Write(const std::chrono::milliseconds& val, std::ostream& stream) override;
         virtual bool Write(const Serializable& val, std::ostream& stream) override;
     };
 }

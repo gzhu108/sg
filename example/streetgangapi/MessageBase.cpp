@@ -6,7 +6,7 @@ using namespace streetgangapi;
 
 MessageBase::MessageBase()
 {
-    ResponseTimeout.set(30000);
+    ResponseTimeout.set(std::chrono::milliseconds(30000));
 }
 
 MessageBase::~MessageBase()

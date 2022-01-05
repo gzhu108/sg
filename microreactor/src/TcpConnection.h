@@ -22,13 +22,12 @@ namespace microreactor
     public:
         virtual std::string GetPeerAddress() const override;
         virtual uint16_t GetPeerPort() const override;
-
-        virtual uint64_t Receive(char* buffer, int length) override;
-        virtual uint64_t Send(const char* buffer, int length) override;
-
+        
         virtual bool IsClosed() override;
 
     protected:
+        virtual uint64_t Receive(char* buffer, int length) override;
+        virtual uint64_t Send(const char* buffer, int length) override;
         virtual bool Close() override;
         virtual bool EnsureClientConnection();
         void SetReceiveBufferSize(PROPERTY_TYPE(ReceiveBufferSize)& propertyValue, const uint32_t& value);

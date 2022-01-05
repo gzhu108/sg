@@ -55,8 +55,6 @@ bool DiscoveryService::Initialize()
         return false;
     }
 
-    mListener->SendTimeout.set(std::chrono::milliseconds(1000));
-
     try
     {
         // Initialize multicasting
